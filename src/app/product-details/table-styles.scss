@@ -1,0 +1,25 @@
+table{
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid #1c73ff;
+    border-collapse: collapse;
+    width: 50%;
+    font-size: 11px;
+    text-align: center;
+}
+
+th{
+    border: 1px solid #1c73ff;
+    margin: 0px;
+    padding: 10px;
+    color: #1c73ff;
+}
+
+td{
+    border-bottom: 1px solid #1c73ff;
+    height: 40px;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}

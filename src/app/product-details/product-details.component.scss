@@ -1,0 +1,34 @@
+button{
+    border-radius: 25px;
+    background-color: #ffffff;
+    border: 1px #1c73ff solid;
+    color:  #1c73ff;
+    margin: 10px 20px;
+    width: 150px;
+    padding: 15px;
+    font-weight: 600;
+    font-size: 11px;
+}
+
+button:focus {
+    outline:0;
+}
+
+#tableSelection{
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.selectedButton{
+    border-radius: 25px;
+    background-color: #1c73ff;
+    border: 1px #ffffff solid;
+    color:  #ffffff;
+    margin: 10px 20px;
+    width: 150px;
+    padding: 15px;
+    font-weight: 600;
+    font-size: 11px;
+}

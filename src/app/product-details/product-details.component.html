@@ -1,0 +1,14 @@
+<div id="tableSelection">
+  <button [ngClass]="{'selectedButton': selectedTable == 'outs'}" (click)="selectTable('outs')">Outs</button>
+  <button [ngClass]="{'selectedButton': selectedTable == 'labels'}" (click)="selectTable('labels')">Product Labels</button>
+  <button [ngClass]="{'selectedButton': selectedTable == 'plugs'}" (click)="selectTable('plugs')">Plugs & Spreads</button>
+  <button [ngClass]="{'selectedButton': selectedTable == 'suppliers'}" (click)="selectTable('suppliers')">Supplier</button>
+</div>
+
+<div [ngSwitch]="selectedTable">
+  <app-outs *ngSwitchCase="'outs'"></app-outs>
+  <app-product-labels *ngSwitchCase="'labels'"></app-product-labels>
+  <app-plugs-spreads *ngSwitchCase="'plugs'"></app-plugs-spreads>
+  <app-supplier *ngSwitchCase="'suppliers'"></app-supplier>
+  <app-outs *ngSwitchDefault ></app-outs>
+</div>
