@@ -1,0 +1,23 @@
+.panorama {
+  height: 500px;
+  overflow-y: hidden;
+  text-align: center;
+
+  .image {
+    height: 100%;
+    position: relative;
+
+    img {
+      height: 100%;
+    }
+
+    .annotation {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      top: 100px;
+      left: 100px;
+      border: 2px solid yellow;
+    }
+  }
+}

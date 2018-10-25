@@ -7,6 +7,7 @@ import { OutsComponent } from './product-details/outs/outs.component';
 import { ProductLabelsComponent } from './product-details/product-labels/product-labels.component';
 import { PlugsSpreadsComponent } from './product-details/plugs-spreads/plugs-spreads.component';
 import { SupplierComponent } from './product-details/supplier/supplier.component';
+import { PanoramaComponent } from './panorama/panorama.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { SupplierComponent } from './product-details/supplier/supplier.component
     OutsComponent,
     ProductLabelsComponent,
     PlugsSpreadsComponent,
-    SupplierComponent
+    SupplierComponent,
+    PanoramaComponent
   ],
   imports: [
     BrowserModule
