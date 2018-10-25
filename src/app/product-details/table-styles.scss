@@ -3,7 +3,8 @@ table{
     margin-right: auto;
     border: 1px solid #1c73ff;
     border-collapse: collapse;
-    width: 50%;
+    width: 100%;
+    max-width: 768px;
     font-size: 11px;
     text-align: center;
 }
