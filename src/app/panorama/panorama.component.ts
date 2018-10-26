@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-panorama',
@@ -6,10 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./panorama.component.scss']
 })
 export class PanoramaComponent implements OnInit {
+  @Input() outs: Observable<any[]>;
 
   constructor() { }
 
   ngOnInit() {
+    console.log(this.outs);
   }
-
 }

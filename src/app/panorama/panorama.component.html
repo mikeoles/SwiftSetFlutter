@@ -1,9 +1,9 @@
 <div class="panorama">
   <div class="image">
-    <img src="assets/aisle.png" />
+    <img src="assets/aisle.jpg" />
 
-    <div class="annotation">
-
+    <div class="annotation" *ngFor="let out of outs">
+      annotation {{out.Id}}
     </div>
   </div>
 </div>
