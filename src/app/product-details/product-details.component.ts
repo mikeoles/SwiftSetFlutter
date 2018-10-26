@@ -21,4 +21,7 @@ export class ProductDetailsComponent implements OnInit {
     this.selectedTable = type;
   }
 
+  productSelected(index){
+    alert(index);
+  }
 }

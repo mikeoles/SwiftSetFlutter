@@ -1,54 +1,22 @@
 <table>
     <thead>
-      <tr>
-        <th>Number</th>
-        <th>Product</th>
-        <th>Barcode</th>
-        <th>Product ID</th>
-        <th>Resolution</th>
-        <th>Time Found</th>
+      <tr [class.aboveSelected]="0 == selectedRow">
+        <th>Id</th>
+        <th>Mission Id</th>
+        <th>ProductId</th>
+        <th>Zone</th>
+        <th>Aisle</th>
+        <th>Section</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>1</td>
-        <td>Cookie Krisp</td>
-        <td>34jh343</td>
-        <td>342423</td>
-        <td>720*480</td>
-        <td>22:09:55</td>
-      </tr>
-      <tr>
-          <td>2</td>
-          <td>Cornbread</td>
-          <td>34435656</td>
-          <td>6546457</td>
-          <td>720*480</td>
-          <td>22:09:55</td>
-      </tr>
-      <tr>
-          <td>3</td>
-          <td>Pizza</td>
-          <td>456456</td>
-          <td>3426783</td>
-          <td>1080*720</td>
-          <td>22:09:55</td>
-      </tr>
-      <tr>
-          <td>4</td>
-          <td>Chicken</td>
-          <td>6575757</td>
-          <td>4563456</td>
-          <td>720*480</td>
-          <td>22:09:55</td>
-      </tr>
-      <tr>
-          <td>5</td>
-          <td>Pork Chops</td>
-          <td>6575757</td>
-          <td>4563456</td>
-          <td>720*480</td>
-          <td>22:09:55</td>
+      <tr *ngFor="let product of data; let i = index" (click)="setClickedRow(i)" [class.selected]="i == selectedRow" [class.aboveSelected]="i == aboveSelectedRow">
+        <td>{{product.Id}}</td>
+        <td>{{product.MissionId}}</td>
+        <td>{{product.ProductId}}</td>
+        <td>{{product.Zone}}</td>
+        <td>{{product.Aisle}}</td>
+        <td>{{product.Section}}</td>
       </tr>
     </tbody>
   </table>

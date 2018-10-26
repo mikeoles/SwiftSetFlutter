@@ -1,26 +1,41 @@
 table{
     margin-left: auto;
     margin-right: auto;
-    border: 1px solid #1c73ff;
     border-collapse: collapse;
     width: 100%;
     max-width: 768px;
     font-size: 11px;
     text-align: center;
+
 }
 
 th{
-    border: 1px solid #1c73ff;
+    border-top: 1px solid #1c73ff;
+    border-left: 1px solid #1c73ff;
+    border-right: 1px solid #1c73ff;
     margin: 0px;
     padding: 10px;
     color: #1c73ff;
 }
 
 td{
-    border-bottom: 1px solid #1c73ff;
     height: 40px;
+}
+
+tr{
+    border: 1px solid #1c73ff;
 }
 
 tr:nth-child(even) {
     background-color: #f2f2f2;
+}
+
+.selected{
+    font-weight: 700;
+    border: 1px solid #e8c400 !important;
+}
+
+.aboveSelected{
+    font-weight: 700;
+    border-bottom: 1px solid #e8c400 !important;
 }

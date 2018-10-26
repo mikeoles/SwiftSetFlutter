@@ -6,7 +6,7 @@
 </div>
 
 <div [ngSwitch]="selectedTable">
-  <app-outs *ngSwitchCase="'outs'"></app-outs>
+  <app-outs (productClicked)='productSelected($event)' *ngSwitchCase="'outs'"></app-outs>
   <app-product-labels *ngSwitchCase="'labels'"></app-product-labels>
   <app-plugs-spreads *ngSwitchCase="'plugs'"></app-plugs-spreads>
   <app-supplier *ngSwitchCase="'suppliers'"></app-supplier>
