@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { ApiService } from 'src/app/api.service';
 
 @Component({
@@ -8,10 +8,11 @@ import { ApiService } from 'src/app/api.service';
 })
 export class ProductLabelsComponent implements OnInit {
 
-  selectedRow : Number;
-  aboveSelectedRow: Number;
-
-  labels: any[];
+    @Output() labelsTableClicked = new EventEmitter();
+    @Input() selectedIndex: Number;
+    selectedRow : Number;
+    aboveSelectedRow: Number;
+    labels: any[];
 
   constructor(private apiService: ApiService) {}
 
@@ -19,9 +20,15 @@ export class ProductLabelsComponent implements OnInit {
     this.apiService.getLabels().subscribe(labels => this.labels = labels);
   }
 
+  ngOnChanges(changes) {
+    //update the current index when the user selects a row from one of the tables
+    if(this.selectedIndex) this.selectedRow = this.selectedIndex;
+  }
+
   setClickedRow(index){
     this.selectedRow = index;
     this.aboveSelectedRow = index-1;
+    this.labelsTableClicked.emit(index);
   }
 
 }

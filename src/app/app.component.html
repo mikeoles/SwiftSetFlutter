@@ -1,2 +1,5 @@
-<app-panorama [outs]="outs"></app-panorama>
-<app-product-details></app-product-details>
+<app-panorama [outs]="outs" [gridSelectedId]="currentIndex" [gridSelectedDisplay]="currentDisplay" (panoramaId)='panoramaId($event)'
+    (panoramaDisplay)='panoramaDisplay($event)'>
+</app-panorama>
+<app-product-details (gridId)='gridId($event)' (gridDisplay)='gridDisplay($event)' [panoramaSelectedId]="currentIndex"
+    [panoramaSelectedDisplay]="currentDisplay"></app-product-details>

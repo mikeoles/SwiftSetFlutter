@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { ApiService } from '../../api.service';
 
 @Component({
@@ -8,11 +8,11 @@ import { ApiService } from '../../api.service';
 })
 export class OutsComponent implements OnInit {
 
-  @Output() productClicked = new EventEmitter();
+  @Output() outsTableClicked = new EventEmitter();
+  @Input() selectedIndex: Number;
   selectedRow : Number;
   aboveSelectedRow: Number;
   outs: any[];
-
 
   constructor(private apiService: ApiService) {}
 
@@ -20,10 +20,15 @@ export class OutsComponent implements OnInit {
     this.apiService.getOuts().subscribe(outs => this.outs = outs);
   }
 
+  ngOnChanges(changes) {
+    //update the current index when the user selects a row from one of the tables
+    if(this.selectedIndex) this.selectedRow = this.selectedIndex;
+  }
+
   setClickedRow(index){
     this.selectedRow = index;
     this.aboveSelectedRow = index-1;
-    this.productClicked.emit(index);
+    this.outsTableClicked.emit(index);
   }
 
 }
