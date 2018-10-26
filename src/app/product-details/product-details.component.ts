@@ -22,6 +22,5 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   productSelected(index){
-    alert(index);
   }
 }
