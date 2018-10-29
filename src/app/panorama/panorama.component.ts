@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
-import { compileNgModuleFactory__POST_NGCC__ } from '@angular/core/src/application_ref';
 
 @Component({
   selector: 'app-panorama',
@@ -16,16 +15,17 @@ export class PanoramaComponent implements OnInit {
   currentIndex: Number;
   currentDisplay: String;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
-    console.log(this.outs);
   }
 
   ngOnChanges(changes) {
-    //update the current index when the user selects a row from one of the tables
+    //update the current index when the user selects a row from one of the grids
     if(this.gridSelectedDisplay) this.currentDisplay = this.gridSelectedDisplay;
-    if(this.gridSelectedId) this.currentIndex = this.gridSelectedId;
+    if(this.gridSelectedId || this.gridSelectedId===0) this.currentIndex = this.gridSelectedId;
+    if(this.currentIndex==-1) this.currentIndex = null;
   }
 
   annotationClicked(num,display){

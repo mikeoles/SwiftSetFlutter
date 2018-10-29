@@ -10,7 +10,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let product of outs; let i = index" (click)="setClickedRow(i)" [class.selected]="i == selectedRow" [class.aboveSelected]="i == aboveSelectedRow">
+      <tr *ngFor="let product of outs; let i = index" (click)="setClickedRow(i)" [class.selected]="i == selectedRow" [class.aboveSelected]="i == selectedRow-1">
         <td>{{product.Id}}</td>
         <td>{{product.MissionId}}</td>
         <td>{{product.ProductId}}</td>

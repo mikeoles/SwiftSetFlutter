@@ -2,11 +2,13 @@
   <div class="image">
     <img src="assets/aisle.jpg" />
 
-    <div class="annotation" *ngFor="let out of outs">
+    <div class="annotation" *ngFor="let out of outs; let i = index" [ngStyle]="{'left.px':100*i}">
       annotation {{out.Id}}
     </div>
   </div>
 </div>
+<div *ngIf="currentIndex != undefined">{{currentDisplay}} + {{currentIndex}}</div>
+<div *ngIf="currentIndex == undefined">{{currentDisplay}} + Show All</div>
 <div (click)="annotationClicked(1,'outs')">Outs 1</div>
 <div (click)="annotationClicked(2,'outs')">Outs 2</div>
 <div (click)="annotationClicked(1,'labels')">Labels 1</div>

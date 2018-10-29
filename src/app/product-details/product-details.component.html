@@ -1,14 +1,14 @@
 <div id="tableSelection">
-  <button [ngClass]="{'selectedButton': selectedDisplay == 'outs'}" (click)="selectTable('outs')">Outs</button>
-  <button [ngClass]="{'selectedButton': selectedDisplay == 'labels'}" (click)="selectTable('labels')">Product Labels</button>
-  <button [ngClass]="{'selectedButton': selectedDisplay == 'plugs'}" (click)="selectTable('plugs')">Plugs & Spreads</button>
-  <button [ngClass]="{'selectedButton': selectedDisplay == 'suppliers'}" (click)="selectTable('suppliers')">Supplier</button>
+  <button [ngClass]="{'selectedButton': selectedDisplay == 'outs'}" (click)="selectGrid('outs')">Outs</button>
+  <button [ngClass]="{'selectedButton': selectedDisplay == 'labels'}" (click)="selectGrid('labels')">Product Labels</button>
+  <button *ngIf="showPlugs" [ngClass]="{'selectedButton': selectedDisplay == 'plugs'}" (click)="selectGrid('plugs')">Plugs & Spreads</button>
+  <button *ngIf="showSuppliers" [ngClass]="{'selectedButton': selectedDisplay == 'suppliers'}" (click)="selectGrid('suppliers')">Supplier</button>
 </div>
 
 <div [ngSwitch]="selectedDisplay">
-  <app-outs [selectedIndex]="selectedIndex" (outsTableClicked)='productTableSelected($event)' *ngSwitchCase="'outs'"></app-outs>
-  <app-product-labels [selectedIndex]="selectedIndex" (labelsTableClicked)='productTableSelected($event)' *ngSwitchCase="'labels'"></app-product-labels>
-  <app-plugs-spreads *ngSwitchCase="'plugs'"></app-plugs-spreads>
-  <app-supplier *ngSwitchCase="'suppliers'"></app-supplier>
+  <app-outs [selectedIndex]="selectedIndex" (outsGridClicked)='productGridSelected($event)' *ngSwitchCase="'outs'"></app-outs>
+  <app-product-labels [selectedIndex]="selectedIndex" (labelsGridClicked)='productGridSelected($event)' *ngSwitchCase="'labels'"></app-product-labels>
+  <app-plugs-spreads [selectedIndex]="selectedIndex" (plugsGridClicked)='productGridSelected($event)' *ngSwitchCase="'plugs'"></app-plugs-spreads>
+  <app-supplier [selectedIndex]="selectedIndex" (spreadsGridClicked)='productGridSelected($event)' *ngSwitchCase="'suppliers'"></app-supplier>
   <app-outs *ngSwitchDefault ></app-outs>
 </div>

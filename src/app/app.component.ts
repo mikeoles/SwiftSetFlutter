@@ -20,19 +20,11 @@ export class AppComponent implements OnInit {
     this.apiService.getOuts().subscribe(outs => this.outs = outs);
   }
 
-  gridId(index){
+  setId(index){
     this.currentIndex = index;
   }
 
-  gridDisplay(display){
-    this.currentDisplay = display;
-  }
-
-  panoramaId(index){
-    this.currentIndex = index;
-  }
-  
-  panoramaDisplay(display){
+  setDisplay(display){
     this.currentDisplay = display;
   }
 
