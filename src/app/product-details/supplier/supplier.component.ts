@@ -9,8 +9,8 @@ import { ApiService } from 'src/app/api.service';
 
 export class SupplierComponent implements OnInit {
 
-    @Output() spreadsGridClicked = new EventEmitter();
-    @Input() selectedIndex: number;
+    @Output() suppliersGridClicked = new EventEmitter();
+    @Input() selectedId: number;
     selectedRow : number;
     suppliers: any[];
 
@@ -21,14 +21,21 @@ export class SupplierComponent implements OnInit {
   }
 
   ngOnChanges(changes) {
-    if(this.selectedIndex){
-      this.selectedRow = this.selectedIndex;
+    if(this.selectedId){
+      this.setClickedRow(this.selectedId);
     }
   }
 
-  setClickedRow(index){
-    this.selectedRow = index;
-    this.spreadsGridClicked.emit(index);
+  setClickedRow(id){
+    this.apiService.getLabels().subscribe(suppliers => this.suppliers = suppliers);
+    let i: number;
+    this.selectedRow = -1;
+    for(i=0; i<this.suppliers.length;i++){
+      if(this.suppliers[i].Id==id){
+        this.selectedRow = i;
+      }
+    }
+    this.suppliersGridClicked.emit(id);
   }
 
 }

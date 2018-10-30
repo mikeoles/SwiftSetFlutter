@@ -1,5 +1,5 @@
-<app-panorama [outs]="outs" [gridSelectedId]="currentIndex" [gridSelectedDisplay]="currentDisplay" (panoramaId)='setId($event)'
+<app-panorama [outs]="outs" [labels]="labels" [gridSelectedId]="currentId" [gridSelectedDisplay]="currentDisplay" (panoramaId)='setId($event)'
     (panoramaDisplay)='setDisplay($event)'>
 </app-panorama>
-<app-product-details (gridId)='setId($event)' (gridDisplay)='setDisplay($event)' [panoramaSelectedId]="currentIndex"
+<app-product-details (gridId)='setId($event)' (gridDisplay)='setDisplay($event)' [panoramaSelectedId]="currentId"
     [panoramaSelectedDisplay]="currentDisplay"></app-product-details>

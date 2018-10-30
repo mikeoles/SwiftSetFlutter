@@ -8,11 +8,12 @@ import { Observable } from 'rxjs';
 })
 export class PanoramaComponent implements OnInit {
   @Input() outs: Observable<any[]>;
+  @Input() labels: Observable<any[]>;
   @Input() gridSelectedId: Number;
   @Input() gridSelectedDisplay: String;
   @Output() panoramaId = new EventEmitter();
   @Output() panoramaDisplay = new EventEmitter();
-  currentIndex: Number;
+  currentId: Number;
   currentDisplay: String;
 
   constructor() {
@@ -24,8 +25,8 @@ export class PanoramaComponent implements OnInit {
   ngOnChanges(changes) {
     //update the current index when the user selects a row from one of the grids
     if(this.gridSelectedDisplay) this.currentDisplay = this.gridSelectedDisplay;
-    if(this.gridSelectedId || this.gridSelectedId===0) this.currentIndex = this.gridSelectedId;
-    if(this.currentIndex==-1) this.currentIndex = null;
+    if(this.gridSelectedId || this.gridSelectedId===0) this.currentId = this.gridSelectedId;
+    if(this.currentId==-1) this.currentId = null;
   }
 
   annotationClicked(num,display){

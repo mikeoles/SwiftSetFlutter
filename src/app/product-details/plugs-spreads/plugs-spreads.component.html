@@ -13,7 +13,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let product of spreads; let i = index" (click)="setClickedRow(i)" [class.selected]="i == selectedRow" [class.aboveSelected]="i == selectedRow-1">
+    <tr *ngFor="let product of plugs; let i = index" (click)="setClickedRow(product.Id)" [class.selected]="i == selectedRow" [class.aboveSelected]="i == selectedRow-1">
       <td>{{product.Id}}</td>
       <td>{{product.MissionId}}</td>
       <td>{{product.StoreId}}</td>

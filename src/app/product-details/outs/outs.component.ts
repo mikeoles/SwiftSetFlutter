@@ -9,7 +9,7 @@ import { ApiService } from '../../api.service';
 export class OutsComponent implements OnInit {
 
   @Output() outsGridClicked = new EventEmitter();
-  @Input() selectedIndex: number;
+  @Input() selectedId: number;
   selectedRow : number;
   outs: any[];
 
@@ -20,14 +20,21 @@ export class OutsComponent implements OnInit {
   }
 
   ngOnChanges(changes) {
-    if(this.selectedIndex){
-      this.selectedRow = this.selectedIndex;
+    if(this.selectedId){
+      this.setClickedRow(this.selectedId);
     }
   }
 
-  setClickedRow(index){
-    this.selectedRow = index;
-    this.outsGridClicked.emit(index);
+  setClickedRow(id){
+    this.apiService.getOuts().subscribe(outs => this.outs = outs);
+    let i: number;
+    this.selectedRow = -1;
+    for(i=0; i<this.outs.length;i++){
+      if(this.outs[i].Id==id){
+        this.selectedRow = i;
+      }
+    }
+    this.outsGridClicked.emit(id);
   }
 
 }

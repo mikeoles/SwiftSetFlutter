@@ -9,7 +9,8 @@ import { ApiService } from './api.service';
 export class AppComponent implements OnInit {
   title = 'aisle';
   outs: any[];
-  currentIndex: Number;
+  labels: any[];
+  currentId: Number;
   currentDisplay: String;
 
   constructor(private apiService: ApiService) {
@@ -18,10 +19,11 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.apiService.getOuts().subscribe(outs => this.outs = outs);
+    this.apiService.getLabels().subscribe(labels => this.labels = labels);
   }
 
-  setId(index){
-    this.currentIndex = index;
+  setId(id){
+    this.currentId = id;
   }
 
   setDisplay(display){

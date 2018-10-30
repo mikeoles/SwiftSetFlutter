@@ -9,7 +9,7 @@ import { ApiService } from 'src/app/api.service';
 export class ProductLabelsComponent implements OnInit {
 
     @Output() labelsGridClicked = new EventEmitter();
-    @Input() selectedIndex: number;
+    @Input() selectedId: number;
     selectedRow : number;
     labels: any[];
 
@@ -20,14 +20,21 @@ export class ProductLabelsComponent implements OnInit {
   }
 
   ngOnChanges(changes) {
-    if(this.selectedIndex){
-      this.selectedRow = this.selectedIndex;
+    if(this.selectedId){
+      this.setClickedRow(this.selectedId);
     }
   }
 
-  setClickedRow(index){
-    this.selectedRow = index;
-    this.labelsGridClicked.emit(index);
+  setClickedRow(id){
+    this.apiService.getLabels().subscribe(labels => this.labels = labels);
+    let i: number;
+    this.selectedRow = -1;
+    for(i=0; i<this.labels.length;i++){
+      if(this.labels[i].Id==id){
+        this.selectedRow = i;
+      }
+    }
+    this.labelsGridClicked.emit(id);
   }
 
 }

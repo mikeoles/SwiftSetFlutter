@@ -6,9 +6,9 @@
 </div>
 
 <div [ngSwitch]="selectedDisplay">
-  <app-outs [selectedIndex]="selectedIndex" (outsGridClicked)='productGridSelected($event)' *ngSwitchCase="'outs'"></app-outs>
-  <app-product-labels [selectedIndex]="selectedIndex" (labelsGridClicked)='productGridSelected($event)' *ngSwitchCase="'labels'"></app-product-labels>
-  <app-plugs-spreads [selectedIndex]="selectedIndex" (plugsGridClicked)='productGridSelected($event)' *ngSwitchCase="'plugs'"></app-plugs-spreads>
-  <app-supplier [selectedIndex]="selectedIndex" (spreadsGridClicked)='productGridSelected($event)' *ngSwitchCase="'suppliers'"></app-supplier>
+  <app-outs [selectedId]="selectedId" (outsGridClicked)='productGridSelected($event)' *ngSwitchCase="'outs'"></app-outs>
+  <app-product-labels [selectedId]="selectedId" (labelsGridClicked)='productGridSelected($event)' *ngSwitchCase="'labels'"></app-product-labels>
+  <app-plugs-spreads [selectedId]="selectedId" (plugsGridClicked)='productGridSelected($event)' *ngSwitchCase="'plugs'"></app-plugs-spreads>
+  <app-supplier [selectedId]="selectedId" (suppliersGridClicked)='productGridSelected($event)' *ngSwitchCase="'suppliers'"></app-supplier>
   <app-outs *ngSwitchDefault ></app-outs>
 </div>

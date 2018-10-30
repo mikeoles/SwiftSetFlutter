@@ -10,25 +10,32 @@ import { ApiService } from 'src/app/api.service';
 export class PlugsSpreadsComponent implements OnInit {
 
     @Output() plugsGridClicked = new EventEmitter();
-    @Input() selectedIndex: number;
+    @Input() selectedId: number;
     selectedRow : number;
-    spreads: any[];
+    plugs: any[];
 
   constructor(private apiService: ApiService) {}
 
   ngOnInit() {
-    this.apiService.getLabels().subscribe(spreads => this.spreads = spreads);
+    this.apiService.getLabels().subscribe(plugs => this.plugs = plugs);
   }
 
   ngOnChanges(changes) {
-    if(this.selectedIndex){
-      this.selectedRow = this.selectedIndex;
+    if(this.selectedId){
+      this.setClickedRow(this.selectedId);
     }
   }
 
-  setClickedRow(index){
-    this.selectedRow = index;
-    this.plugsGridClicked.emit(index);
+  setClickedRow(id){
+    this.apiService.getLabels().subscribe(plugs => this.plugs = plugs);
+    let i: number;
+    this.selectedRow = -1;
+    for(i=0; i<this.plugs.length;i++){
+      if(this.plugs[i].Id==id){
+        this.selectedRow = i;
+      }
+    }
+    this.plugsGridClicked.emit(id);
   }
 
 }

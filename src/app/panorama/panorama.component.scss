@@ -11,12 +11,21 @@
       height: 100%;
     }
 
-    .annotation {
+    .outsAnnotation {
       position: absolute;
       width: 100px;
       height: 100px;
       top: 100px;
       border: 2px solid yellow;
+      color: white;
+    }
+
+    .labelsAnnotation {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      top: 300px;
+      border: 2px solid green;
       color: white;
     }
   }
