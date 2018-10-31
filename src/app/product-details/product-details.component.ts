@@ -29,16 +29,15 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   ngOnChanges(changes) {
-    //update the current index when the user selects a row from one of the tables
-    if(this.panoramaSelectedDisplay) this.selectedDisplay = this.panoramaSelectedDisplay;
-    if(this.panoramaSelectedId || this.panoramaSelectedId == 0) this.selectedId = this.panoramaSelectedId;
+    if(this.panoramaSelectedDisplay!=null) this.selectedDisplay = this.panoramaSelectedDisplay;
+    if(this.panoramaSelectedId!=null) this.selectedId = this.panoramaSelectedId;
   }
 
   //Called when the user clicks one of the buttons to change tables
   selectGrid(type){
     this.selectedDisplay = type;
-    this.gridDisplay.emit(type);
     this.selectedId = null;
+    this.gridDisplay.emit(type);
     this.gridId.emit(-1);    //Emit -1 to signal that no elements are selected
   }
 

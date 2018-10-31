@@ -11,22 +11,18 @@
       height: 100%;
     }
 
-    .outsAnnotation {
+    .annotation{
       position: absolute;
-      width: 100px;
-      height: 100px;
-      top: 100px;
-      border: 2px solid yellow;
       color: white;
+      border: 3px solid;
+    }
+
+    .outsAnnotation {
+      border-color: yellow;
     }
 
     .labelsAnnotation {
-      position: absolute;
-      width: 100px;
-      height: 100px;
-      top: 300px;
-      border: 2px solid green;
-      color: white;
+      border-color: lightGreen;
     }
   }
 }

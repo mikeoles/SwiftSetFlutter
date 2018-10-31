@@ -14,10 +14,12 @@ export class PlugsSpreadsComponent implements OnInit {
     selectedRow : number;
     plugs: any[];
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService) {
+    this.apiService.getLabels().subscribe(plugs => this.plugs = plugs);
+
+  }
 
   ngOnInit() {
-    this.apiService.getLabels().subscribe(plugs => this.plugs = plugs);
   }
 
   ngOnChanges(changes) {
@@ -27,7 +29,6 @@ export class PlugsSpreadsComponent implements OnInit {
   }
 
   setClickedRow(id){
-    this.apiService.getLabels().subscribe(plugs => this.plugs = plugs);
     let i: number;
     this.selectedRow = -1;
     for(i=0; i<this.plugs.length;i++){

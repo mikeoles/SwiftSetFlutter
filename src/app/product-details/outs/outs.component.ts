@@ -13,11 +13,11 @@ export class OutsComponent implements OnInit {
   selectedRow : number;
   outs: any[];
 
-  constructor(private apiService: ApiService) {}
-
-  ngOnInit() {
+  constructor(private apiService: ApiService) {
     this.apiService.getOuts().subscribe(outs => this.outs = outs);
   }
+
+  ngOnInit() {}
 
   ngOnChanges(changes) {
     if(this.selectedId){
@@ -26,7 +26,6 @@ export class OutsComponent implements OnInit {
   }
 
   setClickedRow(id){
-    this.apiService.getOuts().subscribe(outs => this.outs = outs);
     let i: number;
     this.selectedRow = -1;
     for(i=0; i<this.outs.length;i++){

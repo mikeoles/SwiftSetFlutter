@@ -1,17 +1,21 @@
 <div class="panorama">
   <div id="pano-image" class="image">
     <img src="assets/aisle.jpg" />
-    <div *ngFor="let out of outs; let i = index">
-      <div class="outsAnnotation" *ngIf="currentDisplay=='outs' && (currentId==out.Id || currentId == undefined)" [ngStyle]="{'left.px':100*i}"
+    <ng-container *ngFor="let out of outs; let i = index">
+      <div class="outsAnnotation annotation" 
+        *ngIf="currentDisplay=='outs' && (currentId==out.Id || currentId == undefined)" 
+        [ngStyle]="{'left.px':out.X1, 'top.px':out.Z1, 'width.px':out.X2-out.X1, 'height.px':out.Z2-out.Z1 }"
         (click)="annotationClicked(out.Id,'outs')">
         out {{out.Id}}
       </div>
-    </div>
-    <div *ngFor="let label of labels; let i = index">
-      <div *ngIf="currentDisplay=='labels' && (currentId==label.Id || currentId == undefined)" class="labelsAnnotation" [ngStyle]="{'left.px':100*i}"
+    </ng-container>
+    <ng-container *ngFor="let label of labels; let i = index">
+      <div class="annotation labelsAnnotation"
+        *ngIf="currentDisplay=='labels' && (currentId==label.Id || currentId == undefined)"
+        [ngStyle]="{'left.px':label.X1, 'top.px':label.Z1, 'width.px':label.X2-label.X1, 'height.px':label.Z2-label.Z1 }"
         (click)="annotationClicked(label.Id,'labels')">
         label {{label.Id}}
       </div>
-    </div>
+    </ng-container>
   </div>
 </div>

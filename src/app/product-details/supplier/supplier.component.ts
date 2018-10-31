@@ -14,10 +14,11 @@ export class SupplierComponent implements OnInit {
     selectedRow : number;
     suppliers: any[];
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService) {
+    this.apiService.getLabels().subscribe(suppliers => this.suppliers = suppliers);
+  }
 
   ngOnInit() {
-    this.apiService.getLabels().subscribe(suppliers => this.suppliers = suppliers);
   }
 
   ngOnChanges(changes) {
@@ -27,7 +28,6 @@ export class SupplierComponent implements OnInit {
   }
 
   setClickedRow(id){
-    this.apiService.getLabels().subscribe(suppliers => this.suppliers = suppliers);
     let i: number;
     this.selectedRow = -1;
     for(i=0; i<this.suppliers.length;i++){
