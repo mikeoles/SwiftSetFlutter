@@ -1,5 +1,5 @@
 <div class="panorama">
-  <div class="image">
+  <div id="pano-image" class="image">
     <img src="assets/aisle.jpg" />
     <div *ngFor="let out of outs; let i = index">
       <div class="outsAnnotation" *ngIf="currentDisplay=='outs' && (currentId==out.Id || currentId == undefined)" [ngStyle]="{'left.px':100*i}"

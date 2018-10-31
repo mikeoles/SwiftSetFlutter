@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
+import panzoom from 'panzoom';
 
 @Component({
   selector: 'app-panorama',
@@ -20,6 +21,14 @@ export class PanoramaComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('outs: ', this.outs);
+
+    const element = document.getElementById('pano-image');
+    panzoom(element, {
+      maxZoom: 10,
+      minZoom: 1,
+      bounds: false,
+    });
   }
 
   ngOnChanges(changes) {
@@ -34,5 +43,5 @@ export class PanoramaComponent implements OnInit {
       this.panoramaDisplay.emit(display);
   }
 
-  
+
 }
