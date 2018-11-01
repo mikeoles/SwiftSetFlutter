@@ -10,8 +10,8 @@ export class AppComponent implements OnInit {
   title = 'aisle';
   outs: any[];
   labels: any[];
-  currentId: Number;
-  currentDisplay: String;
+  currentId: number;
+  currentDisplay: string;
 
   constructor(private apiService: ApiService) {
     this.currentDisplay = 'outs';

@@ -9,15 +9,15 @@ import { environment } from '../../environments/environment';
 
 export class ProductDetailsComponent implements OnInit {
 
-  selectedDisplay: String;
-  selectedId: Number;
+  selectedDisplay: string;
+  selectedId: number;
   showPlugs: Boolean;
   showSuppliers: Boolean;
   
   @Output() gridId = new EventEmitter();
   @Output() gridDisplay = new EventEmitter();
-  @Input() panoramaSelectedId: Number;
-  @Input() panoramaSelectedDisplay: String;
+  @Input() panoramaSelectedId: number;
+  @Input() panoramaSelectedDisplay: string;
 
   constructor() { 
     this.selectedDisplay = "outs";
