@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
 import panzoom from 'panzoom';
-import 'hammerjs';
+import Hammer from 'hammerjs';
 
 @Component({
   selector: 'app-panorama',
@@ -25,15 +25,17 @@ export class PanoramaComponent implements OnInit {
     console.log('outs: ', this.outs);
 
     const element = document.getElementById('pano-image');
-    var hammertime = new Hammer(element);
+    const hammertime = new Hammer(element);
     hammertime.on('tap', function(ev) {
       //This is called only on tap events
+      console.log('tap', ev);
     });
     panzoom(element, {
       maxZoom: 10,
       minZoom: 1,
       bounds: false,
       onTouch: function(e) {
+        console.log('onTouch', e);
         return true;
       }
     });
@@ -57,7 +59,7 @@ export class PanoramaComponent implements OnInit {
       this.panoramaDisplay.emit(display);
     }
   }
-  
+
 
 
 }
