@@ -1,40 +1,64 @@
-table{
-    margin-left: auto;
-    margin-right: auto;
-    border-collapse: collapse;
-    width: 100%;
-    max-width: 768px;
-    font-size: 11px;
-    text-align: center;
+.pane {
+    display: block;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: calc(100vh - 67px - 365px - 95px);
+    width: calc(100%-120px);
+    margin: auto 60px;
+}
 
+#outer {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+
+table{
+    border-collapse: collapse;
+    font-size: 18px;
+    text-align: center;
+    padding: 3px;
+    width: 100%;
 }
 
 th{
-    border-top: 1px solid #1c73ff;
-    border-left: 1px solid #1c73ff;
-    border-right: 1px solid #1c73ff;
-    margin: 0px;
-    padding: 10px;
-    color: #1c73ff;
+    border: 1px solid #467df3;
+    color: #467df3;
+    font-size: 12px;
+    height: 44px;
 }
 
 td{
-    height: 40px;
+    height: 55px;
 }
 
 tr{
-    border: 1px solid #1c73ff;
-}
-
-tr:nth-child(even) {
-    background-color: #f2f2f2;
+    border: 1px solid #707070;
 }
 
 .selected{
-    font-weight: 700;
-    border: 1px solid #e8c400 !important;
+    font-weight: bold;
+    border: 3px solid #FFD54A !important;
 }
 
 .aboveSelected{
-    border-bottom: 1px solid #e8c400 !important;
+    border-bottom: 3px solid #FFD54A !important;
+}
+
+::-webkit-scrollbar {
+    width: 16px;
+    
+}
+
+::-webkit-scrollbar-track {
+    background: white;
+    border: solid 1px #467df3;
+
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #467df3;
+    border: 5px solid transparent;
+    border-radius: 9px;
+    background-clip: content-box;
 }

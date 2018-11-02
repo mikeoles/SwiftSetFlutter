@@ -1,8 +1,8 @@
 <div id="tableSelection">
   <button [ngClass]="{'selectedButton': selectedDisplay == 'outs'}" (click)="selectGrid('outs')">Outs</button>
-  <button [ngClass]="{'selectedButton': selectedDisplay == 'labels'}" (click)="selectGrid('labels')">Product Labels</button>
-  <button *ngIf="showPlugs" [ngClass]="{'selectedButton': selectedDisplay == 'plugs'}" (click)="selectGrid('plugs')">Plugs & Spreads</button>
-  <button *ngIf="showSuppliers" [ngClass]="{'selectedButton': selectedDisplay == 'suppliers'}" (click)="selectGrid('suppliers')">Supplier</button>
+  <button [ngClass]="{'selectedButton': selectedDisplay == 'labels'}" (click)="selectGrid('labels')">Shelf Labels</button>
+  <button *ngIf="showPlugs" [ngClass]="{'selectedButton': selectedDisplay == 'plugs'}" (click)="selectGrid('plugs')">Spreads</button>
+  <button *ngIf="showSuppliers" [ngClass]="{'selectedButton': selectedDisplay == 'suppliers'}" (click)="selectGrid('suppliers')">Suppliers</button>
 </div>
 
 <div [ngSwitch]="selectedDisplay">

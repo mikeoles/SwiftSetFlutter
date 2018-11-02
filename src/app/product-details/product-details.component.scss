@@ -1,13 +1,18 @@
 button{
     border-radius: 25px;
-    background-color: #ffffff;
-    border: 1px #1c73ff solid;
+    background-color: White;
+    border: 3px #1c73ff solid;
     color:  #1c73ff;
-    margin: 10px 20px;
-    width: 150px;
-    padding: 15px;
-    font-weight: 600;
-    font-size: 11px;
+    margin: 20px 50px;
+    width: 185px;
+    height: 55px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.selectedButton{
+    background-color: #1c73ff;
+    color:  White;
 }
 
 button:focus {
@@ -19,16 +24,4 @@ button:focus {
     margin-left: auto;
     margin-right: auto;
     text-align: center;
-}
-
-.selectedButton{
-    border-radius: 25px;
-    background-color: #1c73ff;
-    border: 1px #ffffff solid;
-    color:  #ffffff;
-    margin: 10px 20px;
-    width: 150px;
-    padding: 15px;
-    font-weight: 600;
-    font-size: 11px;
 }

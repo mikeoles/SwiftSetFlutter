@@ -1,28 +1,30 @@
-<table>
-  <thead>
-    <tr [class.aboveSelected]="0 == selectedRow">
-      <th>Id</th>
-      <th>Mission Id</th>
-      <th>Store Id</th>
-      <th>Aisle Id</th>
-      <th>Label Type</th>
-      <th>Barcode</th>
-      <th>Zone</th>
-      <th>Aisle</th>
-      <th>Section</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let product of plugs; let i = index" (click)="setClickedRow(product.Id)" [class.selected]="i == selectedRow" [class.aboveSelected]="i == selectedRow-1">
-      <td>{{product.Id}}</td>
-      <td>{{product.MissionId}}</td>
-      <td>{{product.StoreId}}</td>
-      <td>{{product.AisleId}}</td>
-      <td>{{product.LabelType}}</td>
-      <td>{{product.Barcode}}</td>
-      <td>{{product.Zone}}</td>
-      <td>{{product.Aisle}}</td>
-      <td>{{product.Section}}</td>
-    </tr>
-  </tbody>
-</table>
+<div class="pane">
+  <table>
+    <thead>
+      <tr [class.aboveSelected]="0 == selectedRow">
+        <th>Id</th>
+        <th>Mission Id</th>
+        <th>Store Id</th>
+        <th>Aisle Id</th>
+        <th>Label Type</th>
+        <th>Barcode</th>
+        <th>Zone</th>
+        <th>Aisle</th>
+        <th>Section</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of plugs; let i = index" (click)="setClickedRow(product.Id)" [class.selected]="i == selectedRow" [class.aboveSelected]="i == selectedRow-1">
+        <td>{{product.Id}}</td>
+        <td>{{product.MissionId}}</td>
+        <td>{{product.StoreId}}</td>
+        <td>{{product.AisleId}}</td>
+        <td>{{product.LabelType}}</td>
+        <td>{{product.Barcode}}</td>
+        <td>{{product.Zone}}</td>
+        <td>{{product.Aisle}}</td>
+        <td>{{product.Section}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

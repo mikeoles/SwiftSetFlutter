@@ -1,5 +1,7 @@
 .panorama {
-  height: 500px;
+  height: 365px;
+  display: block;
+  margin: auto;
   overflow: hidden;
   text-align: center;
 
@@ -18,11 +20,15 @@
     }
 
     .outsAnnotation {
-      border-color: #ffd54a;
+      border-color: #FFFFFF;
     }
 
     .labelsAnnotation {
-      border-color: #00cd87;
+      border-color:  #00CD87;
     }
+
+    .plugsAnnotation {
+      border-color:  #467df3;
+    } 
   }
 }
