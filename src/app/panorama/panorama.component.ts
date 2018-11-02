@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import panzoom from 'panzoom';
 import Hammer from 'hammerjs';
@@ -8,15 +8,12 @@ import Hammer from 'hammerjs';
   templateUrl: './panorama.component.html',
   styleUrls: ['./panorama.component.scss']
 })
-export class PanoramaComponent implements OnInit {
+export class PanoramaComponent implements OnInit, OnChanges {
   @Input() outs: Observable<any[]>;
   @Input() labels: Observable<any[]>;
-  @Input() gridSelectedId: number;
-  @Input() gridSelectedDisplay: string;
+  @Input() currentId: number;
+  @Input() currentDisplay: string;
   @Output() panoramaId = new EventEmitter();
-  @Output() panoramaDisplay = new EventEmitter();
-  currentId: number;
-  currentDisplay: string;
 
   constructor() {
   }
@@ -25,11 +22,11 @@ export class PanoramaComponent implements OnInit {
     console.log('outs: ', this.outs);
 
     const element = document.getElementById('pano-image');
-    const hammertime = new Hammer(element);
-    hammertime.on('tap', function(ev) {
-      //This is called only on tap events
-      console.log('tap', ev);
-    });
+    // const hammertime = new Hammer(element);
+    // hammertime.on('tap', function(ev) {
+    //   //This is called only on tap events
+    //   console.log('tap', ev);
+    // });
     panzoom(element, {
       maxZoom: 10,
       minZoom: 1,
@@ -42,24 +39,15 @@ export class PanoramaComponent implements OnInit {
   }
 
   ngOnChanges(changes) {
-    //update the current index when the user selects a row from one of the grids
-    if(this.gridSelectedDisplay) this.currentDisplay = this.gridSelectedDisplay;
-    if(this.gridSelectedId!=null) this.currentId = this.gridSelectedId;
-    if(this.currentId==-1) this.currentId = null;
+    // update the current index when the user selects a row from one of the grids
+    // if(this.currentDisplay) this.currentDisplay = this.currentDisplay;
+    // if(this.currentId!=null) this.currentId = this.currentId;
+    // if(this.currentId==-1) this.currentId = null;
   }
 
-  annotationClicked(num,display){
-    if(this.currentId!=num){
-      this.currentId=num;
+  annotationClicked(num, display) {
+    if (this.currentId !== num) {
       this.panoramaId.emit(num);
     }
-
-    if(this.currentDisplay!==display){
-      this.currentDisplay = display;
-      this.panoramaDisplay.emit(display);
-    }
   }
-
-
-
 }
