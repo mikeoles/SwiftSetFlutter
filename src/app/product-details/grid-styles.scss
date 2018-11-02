@@ -37,12 +37,21 @@ tr{
 }
 
 .selected{
-    font-weight: bold;
-    border: 3px solid #FFD54A !important;
+    font-weight: 700;
 }
 
-.aboveSelected{
-    border-bottom: 3px solid #FFD54A !important;
+.selected td {
+  height: 51px;
+  border-top: 3px solid #FFD54A;
+  border-bottom: 3px solid #FFD54A;
+}
+
+.selected td:first-child {
+  border-left: 3px solid #FFD54A;
+}
+
+.selected td:last-child {
+  border-right: 3px solid #FFD54A;
 }
 
 ::-webkit-scrollbar {

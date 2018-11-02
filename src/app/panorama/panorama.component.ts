@@ -1,16 +1,14 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
-import { Observable } from 'rxjs';
 import panzoom from 'panzoom';
-import Hammer from 'hammerjs';
 
 @Component({
   selector: 'app-panorama',
   templateUrl: './panorama.component.html',
   styleUrls: ['./panorama.component.scss']
 })
-export class PanoramaComponent implements OnInit, OnChanges {
-  @Input() outs: Observable<any[]>;
-  @Input() labels: Observable<any[]>;
+export class PanoramaComponent implements OnInit {
+  @Input() outs: any[];
+  @Input() labels: any[];
   @Input() currentId: number;
   @Input() currentDisplay: string;
   @Output() panoramaId = new EventEmitter();
@@ -22,11 +20,6 @@ export class PanoramaComponent implements OnInit, OnChanges {
     console.log('outs: ', this.outs);
 
     const element = document.getElementById('pano-image');
-    // const hammertime = new Hammer(element);
-    // hammertime.on('tap', function(ev) {
-    //   //This is called only on tap events
-    //   console.log('tap', ev);
-    // });
     panzoom(element, {
       maxZoom: 10,
       minZoom: 1,
@@ -36,13 +29,6 @@ export class PanoramaComponent implements OnInit, OnChanges {
         return true;
       }
     });
-  }
-
-  ngOnChanges(changes) {
-    // update the current index when the user selects a row from one of the grids
-    // if(this.currentDisplay) this.currentDisplay = this.currentDisplay;
-    // if(this.currentId!=null) this.currentId = this.currentId;
-    // if(this.currentId==-1) this.currentId = null;
   }
 
   annotationClicked(num, display) {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, OnChanges } from '@angular/core';
 import { environment } from '../../environments/environment';
 
 @Component({
@@ -9,43 +9,35 @@ import { environment } from '../../environments/environment';
 
 export class ProductDetailsComponent implements OnInit {
 
-  selectedDisplay: string;
-  selectedId: number;
   showPlugs: Boolean;
   showSuppliers: Boolean;
-  
+
   @Output() gridId = new EventEmitter();
   @Output() gridDisplay = new EventEmitter();
-  @Input() panoramaSelectedId: number;
-  @Input() panoramaSelectedDisplay: string;
+  @Input() outs: any[];
+  @Input() labels: any[];
+  @Input() currentId: number;
+  @Input() currentDisplay: string;
 
-  constructor() { 
-    this.selectedDisplay = "outs";
+  constructor() {
     this.showPlugs = environment.showPlugs;
-    this.showSuppliers = environment.showSuppliers
+    this.showSuppliers = environment.showSuppliers;
   }
 
   ngOnInit() {
   }
 
-  ngOnChanges(changes) {
-    if(this.panoramaSelectedDisplay!=null) this.selectedDisplay = this.panoramaSelectedDisplay;
-    if(this.panoramaSelectedId!=null) this.selectedId = this.panoramaSelectedId;
-  }
-
-  //Called when the user clicks one of the buttons to change tables
-  selectGrid(type){
-    this.selectedDisplay = type;
-    this.selectedId = null;
+  // Called when the user clicks one of the buttons to change tables
+  selectGrid(type) {
     this.gridDisplay.emit(type);
-    this.gridId.emit(-1);    //Emit -1 to signal that no elements are selected
+    this.gridId.emit(-1);    // Emit -1 to signal that no elements are selected
   }
 
-  //Called when the user clicks on one of the rows in the table
-  productGridSelected(id){
-    if(id == this.selectedId){
+  // Called when the user clicks on one of the rows in the table
+  productGridSelected(id) {
+    if (id === this.currentId) {
       this.gridId.emit(-1);
-    }else{
+    } else {
       this.gridId.emit(id);
     }
   }

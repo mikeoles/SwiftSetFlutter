@@ -22,12 +22,11 @@ export class AppComponent implements OnInit {
     this.apiService.getLabels().subscribe(labels => this.labels = labels);
   }
 
-  setId(id){
+  setId(id) {
     this.currentId = id;
   }
 
-  setDisplay(display){
+  setDisplay(display) {
     this.currentDisplay = display;
   }
-
 }
