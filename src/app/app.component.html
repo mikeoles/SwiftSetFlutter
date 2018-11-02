@@ -2,6 +2,7 @@
   [currentId]="currentId" [currentDisplay]="currentDisplay"
   (panoramaId)='setId($event)'>
 </app-panorama>
-<app-product-details (gridId)='setId($event)' (gridDisplay)='setDisplay($event)'
-  [panoramaSelectedId]="currentId" [panoramaSelectedDisplay]="currentDisplay">
+<app-product-details [outs]="outs" [labels]="labels"
+  (gridId)='setId($event)' (gridDisplay)='setDisplay($event)'
+  [currentId]="currentId" [currentDisplay]="currentDisplay">
 </app-product-details>

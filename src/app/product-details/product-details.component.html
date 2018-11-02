@@ -1,14 +1,14 @@
 <div id="tableSelection">
-  <button [ngClass]="{'selectedButton': selectedDisplay == 'outs'}" (click)="selectGrid('outs')">Outs</button>
-  <button [ngClass]="{'selectedButton': selectedDisplay == 'labels'}" (click)="selectGrid('labels')">Product Labels</button>
-  <button *ngIf="showPlugs" [ngClass]="{'selectedButton': selectedDisplay == 'plugs'}" (click)="selectGrid('plugs')">Plugs & Spreads</button>
-  <button *ngIf="showSuppliers" [ngClass]="{'selectedButton': selectedDisplay == 'suppliers'}" (click)="selectGrid('suppliers')">Supplier</button>
+  <button [ngClass]="{'selectedButton': currentDisplay == 'outs'}" (click)="selectGrid('outs')">Outs</button>
+  <button [ngClass]="{'selectedButton': currentDisplay == 'labels'}" (click)="selectGrid('labels')">Product Labels</button>
+  <button *ngIf="showPlugs" [ngClass]="{'selectedButton': currentDisplay == 'plugs'}" (click)="selectGrid('plugs')">Plugs & Spreads</button>
+  <button *ngIf="showSuppliers" [ngClass]="{'selectedButton': currentDisplay == 'suppliers'}" (click)="selectGrid('suppliers')">Supplier</button>
 </div>
 
-<div [ngSwitch]="selectedDisplay">
-  <app-outs [selectedId]="selectedId" (outsGridClicked)='productGridSelected($event)' *ngSwitchCase="'outs'"></app-outs>
-  <app-product-labels [selectedId]="selectedId" (labelsGridClicked)='productGridSelected($event)' *ngSwitchCase="'labels'"></app-product-labels>
-  <app-plugs-spreads [selectedId]="selectedId" (plugsGridClicked)='productGridSelected($event)' *ngSwitchCase="'plugs'"></app-plugs-spreads>
-  <app-supplier [selectedId]="selectedId" (suppliersGridClicked)='productGridSelected($event)' *ngSwitchCase="'suppliers'"></app-supplier>
+<div [ngSwitch]="currentDisplay">
+  <app-outs [outs]="outs" [selectedId]="currentId" (outsGridClicked)='productGridSelected($event)' *ngSwitchCase="'outs'"></app-outs>
+  <app-product-labels [labels]="labels" [selectedId]="currentId" (labelsGridClicked)='productGridSelected($event)' *ngSwitchCase="'labels'"></app-product-labels>
+  <app-plugs-spreads [selectedId]="currentId" (plugsGridClicked)='productGridSelected($event)' *ngSwitchCase="'plugs'"></app-plugs-spreads>
+  <app-supplier [selectedId]="currentId" (suppliersGridClicked)='productGridSelected($event)' *ngSwitchCase="'suppliers'"></app-supplier>
   <app-outs *ngSwitchDefault ></app-outs>
 </div>
