@@ -9,32 +9,14 @@ import { ApiService } from 'src/app/api.service';
 
 export class SupplierComponent implements OnInit {
 
-    @Output() suppliersGridClicked = new EventEmitter();
-    @Input() selectedId: number;
-    selectedRow : number;
-    suppliers: any[];
-
-  constructor(private apiService: ApiService) {
-    this.apiService.getLabels().subscribe(suppliers => this.suppliers = suppliers);
-  }
+  @Output() suppliersGridClicked = new EventEmitter();
+  @Input() suppliers: any[];
+  @Input() selectedId: number;
 
   ngOnInit() {
   }
 
-  ngOnChanges(changes) {
-    if(this.selectedId){
-      this.setClickedRow(this.selectedId);
-    }
-  }
-
-  setClickedRow(id){
-    let i: number;
-    this.selectedRow = -1;
-    for(i=0; i<this.suppliers.length;i++){
-      if(this.suppliers[i].Id==id){
-        this.selectedRow = i;
-      }
-    }
+  setClickedRow(id) {
     this.suppliersGridClicked.emit(id);
   }
 
