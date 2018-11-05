@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, NgModule } from '@angular/core';
 import panzoom from 'panzoom';
 
 @Component({

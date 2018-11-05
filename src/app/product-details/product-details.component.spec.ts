@@ -1,6 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProductDetailsComponent } from './product-details.component';
+import { OutsComponent } from './outs/outs.component';
+import { PlugsSpreadsComponent } from './plugs-spreads/plugs-spreads.component';
+import { SupplierComponent } from './supplier/supplier.component';
+import { ProductLabelsComponent } from './product-labels/product-labels.component';
 
 describe('ProductDetailsComponent', () => {
   let component: ProductDetailsComponent;
@@ -8,7 +12,13 @@ describe('ProductDetailsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProductDetailsComponent ]
+      declarations: [ 
+        ProductDetailsComponent,
+        OutsComponent,
+        PlugsSpreadsComponent,
+        SupplierComponent,
+        ProductLabelsComponent 
+      ]
     })
     .compileComponents();
   }));
