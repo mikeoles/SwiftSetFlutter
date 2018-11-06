@@ -63,8 +63,11 @@ describe('ProductLabelsComponent', () => {
     expect(gridEl.childElementCount).toEqual(5);
   })
 
+  it('dispalys correct number of columns',() => {
+    expect(secondRowEl.childElementCount).toEqual(9);
+  })
+
   it('displays labels data', () => {
     expect(secondRowEl.innerHTML.includes('681131972147')).toBeTruthy();
   })
-
 });

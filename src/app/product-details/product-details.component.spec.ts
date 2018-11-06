@@ -5,11 +5,14 @@ import { OutsComponent } from './outs/outs.component';
 import { PlugsSpreadsComponent } from './plugs-spreads/plugs-spreads.component';
 import { SupplierComponent } from './supplier/supplier.component';
 import { ProductLabelsComponent } from './product-labels/product-labels.component';
+import { By } from '@angular/platform-browser';
 
 describe('ProductDetailsComponent', () => {
   let component: ProductDetailsComponent;
   let fixture: ComponentFixture<ProductDetailsComponent>;
-
+  let buttonsEl: HTMLElement;
+  let buttons: HTMLCollection;
+  
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ 
@@ -26,7 +29,11 @@ describe('ProductDetailsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductDetailsComponent);
     component = fixture.componentInstance;
+    component.showPlugs = true;
+    component.showSuppliers = true;
     fixture.detectChanges();
+    buttonsEl = fixture.debugElement.query(By.css('#tableSelection')).nativeElement;
+    buttons = buttonsEl.children;
   });
 
   it('should create', () => {
@@ -91,7 +98,46 @@ describe('ProductDetailsComponent', () => {
 
     component.productGridSelected(2);
     fixture.detectChanges();
-
     expect(component.gridId.emit).toHaveBeenCalledWith(-1);
   });
+
+  it('displays buttons',() =>{
+    expect(buttonsEl.childElementCount).toEqual(4);
+    expect(buttons[0].textContent).toEqual("Outs");
+    expect(buttons[1].textContent).toEqual("Shelf Labels");
+    expect(buttons[2].textContent).toEqual("Spreads");
+    expect(buttons[3].textContent).toEqual("Suppliers");
+  })
+
+  it('can hide plugs',() =>{
+    component.showPlugs = false;
+    fixture.detectChanges();
+    buttons = buttonsEl.children;
+    expect(buttonsEl.childElementCount).toEqual(3);
+    expect(buttons[2].textContent).toEqual("Suppliers");
+  })
+
+  it('can hide suppliers',() =>{
+    component.showSuppliers = false;
+    fixture.detectChanges();
+    buttons = buttonsEl.children;
+    expect(buttonsEl.childElementCount).toEqual(3);
+    expect(buttons[2].textContent).toEqual("Spreads");
+  })
+
+  it('can hide plugs and suppliers', () =>{
+    component.showPlugs = false;
+    component.showSuppliers = false;
+    fixture.detectChanges();
+    buttons = buttonsEl.children;
+    expect(buttonsEl.childElementCount).toEqual(2);
+  })
+
+  it('button can be selected', () =>{
+    component.currentDisplay = "labels";
+    fixture.detectChanges();
+    buttons = buttonsEl.children;
+    expect(buttons[0].getAttribute('class')==='selectedButton').toBeFalsy();
+    expect(buttons[1].getAttribute('class')).toEqual('selectedButton');
+  })
 });

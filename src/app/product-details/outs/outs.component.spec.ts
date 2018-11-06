@@ -64,9 +64,12 @@ describe('OutsComponent', () => {
     expect(gridEl.childElementCount).toEqual(5);
   })
 
+  it('dispalys correct number of columns',() => {
+    expect(secondRowEl.childElementCount).toEqual(6);
+  })
+
   it('displays outs data', () => {
     expect(secondRowEl.innerHTML.includes('550376332')).toBeTruthy();
   })
-  
 
 });
