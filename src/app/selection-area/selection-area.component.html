@@ -1,0 +1,8 @@
+<div class="container">
+  <select [(ngModel)]="missionId" (ngModelChange)="missionChanged()">
+    <option *ngFor="let mission of missions" [value]="mission.Id">Mission {{mission.Id}}</option>
+  </select>
+  <select [(ngModel)]="aisleId" (ngModelChange)="aisleChanged()">
+    <option *ngFor="let aisle of aisles" [value]="aisle.Id">Aisle {{aisle.Id}}</option>
+  </select>
+</div>

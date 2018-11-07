@@ -10,11 +10,19 @@ export class ApiService {
 
   constructor() { }
 
-  getOuts(): Observable<Array<any>> {
+  getOuts(selectedMission:number,selectedAisle:string): Observable<Array<any>> {
     return of(outs);
   }
 
-  getLabels(): Observable<Array<any>> {
+  getLabels(selectedMission:number,selectedAisle:string): Observable<Array<any>> {
+    return of(labels);
+  }
+
+  getMissions(): Observable<Array<any>> {
+    return of(outs);
+  }
+
+  getAisles(selectedMission:number): Observable<Array<any>> {
     return of(labels);
   }
 }

@@ -1,0 +1,24 @@
+select{
+    height: 55px;
+    width: 285px;
+    margin: 28px 60px;
+    padding: 0px 30px;
+    background-color: white;
+    border-radius: 30px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: left;
+    color: #467df3;
+    border: 3px #467df3 solid;
+}
+
+select:focus {
+    outline:0;
+}
+
+.container{
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}

@@ -8,6 +8,8 @@ import { ProductLabelsComponent } from './product-details/product-labels/product
 import { PlugsSpreadsComponent } from './product-details/plugs-spreads/plugs-spreads.component';
 import { SupplierComponent } from './product-details/supplier/supplier.component';
 import { PanoramaComponent } from './panorama/panorama.component';
+import { SelectionAreaComponent } from './selection-area/selection-area.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -17,10 +19,12 @@ import { PanoramaComponent } from './panorama/panorama.component';
     ProductLabelsComponent,
     PlugsSpreadsComponent,
     SupplierComponent,
-    PanoramaComponent
+    PanoramaComponent,
+    SelectionAreaComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
