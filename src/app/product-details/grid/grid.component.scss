@@ -1,24 +1,21 @@
-.pane {
+table {
+    border-collapse: collapse;
+    text-align: center;
+    margin: auto 60px;
+    width: calc(100% - 120px);
+    table-layout: fixed;
+}
+
+table tbody, table thead
+{
     display: block;
+}
+
+table tbody 
+{
     overflow-y: auto;
     overflow-x: hidden;
-    max-height: calc(100vh - 67px - 365px - 95px);
-    width: calc(100%-120px);
-    margin: auto 60px;
-}
-
-#outer {
-    display: flex;
-    flex-flow: column;
-    height: 100%;
-}
-
-table{
-    border-collapse: collapse;
-    font-size: 18px;
-    text-align: center;
-    padding: 3px;
-    width: 100%;
+    height: calc(100vh - 67px - 111px - 365px - 95px - 48px);
 }
 
 th{
@@ -30,12 +27,26 @@ th{
 
 td{
     height: 55px;
+    padding-left: 25px;
+}
+
+th, td{
+    width: 1000px;
 }
 
 tr{
     border: 1px solid #707070;
+    border-right: 0px;
 }
 
+tbody :first-child{
+    border-top: 0px;
+}
+
+
+
+
+//Selection
 .selected{
     font-weight: 700;
 }
@@ -54,15 +65,16 @@ tr{
   border-right: 3px solid #FFD54A;
 }
 
+//Scrollbar
 ::-webkit-scrollbar {
-    width: 16px;
-    
+    width: 16px;    
 }
 
 ::-webkit-scrollbar-track {
     background: white;
     border: solid 1px #467df3;
-
+    border-top: 0px;
+    border-bottom: 0px;
 }
 
 ::-webkit-scrollbar-thumb {
