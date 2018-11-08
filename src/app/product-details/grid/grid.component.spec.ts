@@ -64,8 +64,8 @@ describe('GridComponent', () => {
     expect(gridEl.childElementCount).toEqual(5);
   })
 
-  it('dispalys correct number of columns',() => {
-    expect(secondRowEl.childElementCount).toEqual(6);
+  it('displays correct number of columns',() => {
+    expect(secondRowEl.childElementCount).toEqual(4);
   })
 
   it('displays outs data', () => {

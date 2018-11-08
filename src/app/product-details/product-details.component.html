@@ -1,6 +1,6 @@
 <div id="tableSelection">
-  <button [ngClass]="{'selectedButton': currentDisplay == 'outs'}" (click)="selectGrid('outs')">Outs</button>
-  <button [ngClass]="{'selectedButton': currentDisplay == 'labels'}" (click)="selectGrid('labels')">Shelf Labels</button>
+  <button [ngClass]="{'selectedButton': currentDisplay == 'outs'}" (click)="selectGrid('outs')">Outs  ({{outs.length}})</button>
+  <button [ngClass]="{'selectedButton': currentDisplay == 'labels'}" (click)="selectGrid('labels')">Shelf Labels ({{labels.length}})</button>
   <button *ngIf="showPlugs" [ngClass]="{'selectedButton': currentDisplay == 'plugs'}" (click)="selectGrid('plugs')">Spreads</button>
   <button *ngIf="showSuppliers" [ngClass]="{'selectedButton': currentDisplay == 'suppliers'}" (click)="selectGrid('suppliers')">Suppliers</button>
 </div>
