@@ -2,23 +2,19 @@
   <table>
     <thead>
       <tr>
-        <th>Id</th>
-        <th>Mission Id</th>
-        <th>ProductId</th>
-        <th>Zone</th>
-        <th>Aisle</th>
-        <th>Section</th>
+        <th>Product Name</th>
+        <th>Barcode</th>
+        <th>Product Id</th>
+        <th>Price</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let product of outs; let i = index"
+      <tr *ngFor="let product of products; let i = index"
           (click)="setClickedRow(product.Id)" [class.selected]="product.Id === selectedId">
         <td>{{product.Id}}</td>
         <td>{{product.MissionId}}</td>
         <td>{{product.ProductId}}</td>
         <td>{{product.Zone}}</td>
-        <td>{{product.Aisle}}</td>
-        <td>{{product.Section}}</td>
       </tr>
     </tbody>
   </table>

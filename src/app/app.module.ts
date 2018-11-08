@@ -3,10 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
-import { OutsComponent } from './product-details/outs/outs.component';
-import { ProductLabelsComponent } from './product-details/product-labels/product-labels.component';
-import { PlugsSpreadsComponent } from './product-details/plugs-spreads/plugs-spreads.component';
-import { SupplierComponent } from './product-details/supplier/supplier.component';
+import { GridComponent } from './product-details/grid/grid.component';
 import { PanoramaComponent } from './panorama/panorama.component';
 import { SelectionAreaComponent } from './selection-area/selection-area.component';
 import { FormsModule } from '@angular/forms';
@@ -15,10 +12,7 @@ import { FormsModule } from '@angular/forms';
   declarations: [
     AppComponent,
     ProductDetailsComponent,
-    OutsComponent,
-    ProductLabelsComponent,
-    PlugsSpreadsComponent,
-    SupplierComponent,
+    GridComponent,
     PanoramaComponent,
     SelectionAreaComponent
   ],

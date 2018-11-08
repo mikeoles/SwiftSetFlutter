@@ -1,10 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProductDetailsComponent } from './product-details.component';
-import { OutsComponent } from './outs/outs.component';
-import { PlugsSpreadsComponent } from './plugs-spreads/plugs-spreads.component';
-import { SupplierComponent } from './supplier/supplier.component';
-import { ProductLabelsComponent } from './product-labels/product-labels.component';
+import { GridComponent } from './grid/grid.component';
 import { By } from '@angular/platform-browser';
 
 describe('ProductDetailsComponent', () => {
@@ -17,10 +14,7 @@ describe('ProductDetailsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ 
         ProductDetailsComponent,
-        OutsComponent,
-        PlugsSpreadsComponent,
-        SupplierComponent,
-        ProductLabelsComponent 
+        GridComponent
       ]
     })
     .compileComponents();

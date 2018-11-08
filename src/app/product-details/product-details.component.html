@@ -6,9 +6,8 @@
 </div>
 
 <div [ngSwitch]="currentDisplay">
-  <app-outs [outs]="outs" [selectedId]="currentId" (outsGridClicked)='productGridSelected($event)' *ngSwitchCase="'outs'"></app-outs>
-  <app-product-labels [labels]="labels" [selectedId]="currentId" (labelsGridClicked)='productGridSelected($event)' *ngSwitchCase="'labels'"></app-product-labels>
-  <app-plugs-spreads [plugs]="labels" [selectedId]="currentId" (plugsGridClicked)='productGridSelected($event)' *ngSwitchCase="'plugs'"></app-plugs-spreads>
-  <app-supplier [suppliers]="labels" [selectedId]="currentId" (suppliersGridClicked)='productGridSelected($event)' *ngSwitchCase="'suppliers'"></app-supplier>
-  <app-outs *ngSwitchDefault ></app-outs>
+  <app-grid [products]="outs" [selectedId]="currentId" (gridClicked)='productGridSelected($event)' *ngSwitchCase="'outs'"></app-grid>
+  <app-grid [products]="labels" [selectedId]="currentId" (gridClicked)='productGridSelected($event)' *ngSwitchCase="'labels'"></app-grid>
+  <app-grid [products]="labels" [selectedId]="currentId" (gridClicked)='productGridSelected($event)' *ngSwitchCase="'plugs'"></app-grid>
+  <app-grid [products]="labels" [selectedId]="currentId" (gridClicked)='productGridSelected($event)' *ngSwitchCase="'suppliers'"></app-grid>
 </div>
