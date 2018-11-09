@@ -10,10 +10,15 @@ select{
     text-align: left;
     color: #467df3;
     border: 3px #467df3 solid;
+    :focus{
+      outline:0;
+    }
 }
 
-select:focus {
-    outline:0;
+@media screen and (max-width: 800px) {
+  select {
+    margin:28px 30px;
+  }
 }
 
 .container{

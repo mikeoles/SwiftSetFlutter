@@ -10,6 +10,13 @@ button{
     font-weight: bold;
 }
 
+@media screen and (max-width: 800px) {
+  button {
+    margin: 20px 30px;
+    width: 185px;
+  }
+}
+
 .selectedButton{
     background-color: #467df3;
     color:  White;
