@@ -16,11 +16,11 @@ export class SelectionAreaComponent implements OnInit {
   ngOnInit() {
   }
 
-  missionChanged(){
+  missionChanged() {
     this.selectedMission.emit(this.missionId);
   }
 
-  aisleChanged(){
+  aisleChanged() {
     this.selectedAisle.emit(this.aisleId);
   }
 

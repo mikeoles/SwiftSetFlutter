@@ -10,11 +10,11 @@ export class ApiService {
 
   constructor() { }
 
-  getOuts(selectedMission:number,selectedAisle:string): Observable<Array<any>> {
+  getOuts(selectedMission: number, selectedAisle: string): Observable<Array<any>> {
     return of(outs);
   }
 
-  getLabels(selectedMission:number,selectedAisle:string): Observable<Array<any>> {
+  getLabels(selectedMission: number, selectedAisle: string): Observable<Array<any>> {
     return of(labels);
   }
 
@@ -22,7 +22,7 @@ export class ApiService {
     return of(outs);
   }
 
-  getAisles(selectedMission:number): Observable<Array<any>> {
+  getAisles(selectedMission: number): Observable<Array<any>> {
     return of(labels);
   }
 }

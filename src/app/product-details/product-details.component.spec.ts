@@ -12,12 +12,12 @@ describe('ProductDetailsComponent', () => {
   let fixture: ComponentFixture<ProductDetailsComponent>;
   let buttonsEl: HTMLElement;
   let buttons: HTMLCollection;
-  let outsData = of(outs);
-  let labelsData = of(labels);
+  const outsData = of(outs);
+  const labelsData = of(labels);
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ 
+      declarations: [
         ProductDetailsComponent,
         GridComponent
       ]
@@ -30,8 +30,8 @@ describe('ProductDetailsComponent', () => {
     component = fixture.componentInstance;
     component.showPlugs = true;
     component.showSuppliers = true;
-    outsData.subscribe(outs => component.outs = outs);
-    labelsData.subscribe(labels => component.labels = labels);
+    outsData.subscribe(data => component.outs = data);
+    labelsData.subscribe(data => component.labels = data);
     fixture.detectChanges();
     buttonsEl = fixture.debugElement.query(By.css('#tableSelection')).nativeElement;
     buttons = buttonsEl.children;
@@ -43,15 +43,15 @@ describe('ProductDetailsComponent', () => {
 
   it('should emit display type', () => {
     spyOn(component.gridDisplay, 'emit');
-    component.selectGrid("outs");
+    component.selectGrid('outs');
     fixture.detectChanges();
     expect(component.gridDisplay.emit).toHaveBeenCalledWith('outs');
  });
 
   it('should emit -1 ID when display type clicked', () => {
     spyOn(component.gridId, 'emit');
-    //send any string to selected grid
-    component.selectGrid("labels");
+    // Send any string to selected grid
+    component.selectGrid('labels');
     fixture.detectChanges();
     expect(component.gridId.emit).toHaveBeenCalledWith(-1);
   });
@@ -63,7 +63,7 @@ describe('ProductDetailsComponent', () => {
     fixture.detectChanges();
     expect(component.gridId.emit).toHaveBeenCalledWith(0);
   });
-  
+
   it('should emit ID when a row is clicked and no row is selected', () => {
     spyOn(component.gridId, 'emit');
     component.productGridSelected(3);
@@ -79,48 +79,48 @@ describe('ProductDetailsComponent', () => {
     expect(component.gridId.emit).toHaveBeenCalledWith(-1);
   });
 
-  it('displays buttons',() =>{
+  it('displays buttons', () => {
     expect(buttonsEl.childElementCount).toEqual(4);
-    expect(buttons[0].textContent).toContain("Outs");
-    expect(buttons[1].textContent).toContain("Shelf Labels");
-    expect(buttons[2].textContent).toContain("Spreads");
-    expect(buttons[3].textContent).toContain("Suppliers");
-  })
+    expect(buttons[0].textContent).toContain('Outs');
+    expect(buttons[1].textContent).toContain('Shelf Labels');
+    expect(buttons[2].textContent).toContain('Spreads');
+    expect(buttons[3].textContent).toContain('Suppliers');
+  });
 
-  it('displays counts on buttons',() => {
-    expect(buttons[0].textContent).toContain("(5)");
-    expect(buttons[1].textContent).toContain("(5)");
-  })
+  it('displays counts on buttons', () => {
+    expect(buttons[0].textContent).toContain('(5)');
+    expect(buttons[1].textContent).toContain('(5)');
+  });
 
-  it('can hide plugs',() =>{
+  it('can hide plugs', () => {
     component.showPlugs = false;
     fixture.detectChanges();
     buttons = buttonsEl.children;
     expect(buttonsEl.childElementCount).toEqual(3);
-    expect(buttons[2].textContent).toEqual("Suppliers");
-  })
+    expect(buttons[2].textContent).toEqual('Suppliers');
+  });
 
-  it('can hide suppliers',() =>{
+  it('can hide suppliers', () => {
     component.showSuppliers = false;
     fixture.detectChanges();
     buttons = buttonsEl.children;
     expect(buttonsEl.childElementCount).toEqual(3);
-    expect(buttons[2].textContent).toEqual("Spreads");
-  })
+    expect(buttons[2].textContent).toEqual('Spreads');
+  });
 
-  it('can hide plugs and suppliers', () =>{
+  it('can hide plugs and suppliers', () => {
     component.showPlugs = false;
     component.showSuppliers = false;
     fixture.detectChanges();
     buttons = buttonsEl.children;
     expect(buttonsEl.childElementCount).toEqual(2);
-  })
+  });
 
-  it('button can be selected', () =>{
-    component.currentDisplay = "labels";
+  it('button can be selected', () => {
+    component.currentDisplay = 'labels';
     fixture.detectChanges();
     buttons = buttonsEl.children;
-    expect(buttons[0].getAttribute('class')==='selectedButton').toBeFalsy();
+    expect(buttons[0].getAttribute('class') === 'selectedButton').toBeFalsy();
     expect(buttons[1].getAttribute('class')).toEqual('selectedButton');
-  })
+  });
 });

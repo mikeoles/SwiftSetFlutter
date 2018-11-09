@@ -9,8 +9,8 @@ describe('GridComponent', () => {
   let fixture: ComponentFixture<GridComponent>;
   let secondRowEl: HTMLElement;
   let gridEl: HTMLElement;
-  let data = of(outs);
-  
+  const data = of(outs);
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ GridComponent ]
@@ -36,40 +36,40 @@ describe('GridComponent', () => {
   it('emits id when row is clicked', () => {
     secondRowEl.click();
     expect(component.gridClicked.emit).toHaveBeenCalledWith(2);
-  })
+  });
 
   it('highlights row when clicked', () => {
     component.selectedId = 2;
     fixture.detectChanges();
     expect(secondRowEl.getAttribute('class')).toEqual('selected');
-  })
+  });
 
   it('doesn\'t highlight when different row when clicked', () => {
     component.selectedId = 1;
     fixture.detectChanges();
-    expect(secondRowEl.getAttribute('class')==='selected').toBeFalsy();
-  })
+    expect(secondRowEl.getAttribute('class') === 'selected').toBeFalsy();
+  });
 
   it('doesn\'t highlight when no row is selected', () => {
     component.selectedId = 2;
     fixture.detectChanges();
     expect(secondRowEl.getAttribute('class')).toEqual('selected');
-    
+
     component.selectedId = -1;
     fixture.detectChanges();
-    expect(secondRowEl.getAttribute('class')==='selected').toBeFalsy();
-  })
+    expect(secondRowEl.getAttribute('class') === 'selected').toBeFalsy();
+  });
 
   it('displays correct number of rows', () => {
     expect(gridEl.childElementCount).toEqual(5);
-  })
+  });
 
-  it('displays correct number of columns',() => {
+  it('displays correct number of columns', () => {
     expect(secondRowEl.childElementCount).toEqual(4);
-  })
+  });
 
   it('displays outs data', () => {
     expect(secondRowEl.innerHTML.includes('550376332')).toBeTruthy();
-  })
+  });
 
 });
