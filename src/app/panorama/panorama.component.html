@@ -15,11 +15,7 @@
     </div>
   </div>
   <div id="zoom">
-    <a href (click)="zoomIn()">
-      <fa-icon id="zoomIn" class="zoomIcon" [icon]="faPlus"></fa-icon>
-    </a>
-    <a href (click)="zoomOut()">
-      <fa-icon id="zoomOut" class="zoomIcon" [icon]="faMinus"></fa-icon>
-    </a>
+    <fa-icon id="zoomIn" class="zoomIcon" [icon]="faPlus" (click)="zoomIn()"></fa-icon>
+    <fa-icon id="zoomOut" class="zoomIcon" [icon]="faMinus" (click)="zoomOut()"></fa-icon>
   </div>
 </div>
