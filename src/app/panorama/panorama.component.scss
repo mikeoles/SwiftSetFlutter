@@ -1,10 +1,44 @@
 .panorama {
-  height: 365px;
   display: block;
   margin: auto;
   overflow: hidden;
   text-align: center;
   position: relative;
+
+  .image-owner {
+    height: 365px;
+
+    .image {
+      height: 100%;
+      position: relative;
+
+      img {
+        height: 100%;
+      }
+
+      .annotation{
+        position: absolute;
+        color: white;
+        border: 3px solid;
+      }
+
+      .outsAnnotation {
+        border-color: #FFFFFF;
+      }
+
+      .labelsAnnotation {
+        border-color:  #00CD87;
+      }
+
+      .plugsAnnotation {
+        border-color:  #467df3;
+      }
+
+      .selected {
+        border-color: #ffd54a;
+      }
+    }
+  }
 
   #zoom {
     position: absolute;
@@ -19,7 +53,7 @@
     border-collapse: collapse;
     font-size: 24px;
 
-    .ng-fa-icon {
+    .zoomIcon {
       color: #467df3;
       display: block;
       position: absolute;
@@ -32,33 +66,6 @@
 
       &#zoomIn { top: -3px; }
       &#zoomOut { top: 44px; }
-    }
-  }
-
-  .image {
-    height: 100%;
-    position: relative;
-
-    img {
-      height: 100%;
-    }
-
-    .annotation{
-      position: absolute;
-      color: white;
-      border: 3px solid;
-    }
-
-    .outsAnnotation {
-      border-color: #FFFFFF;
-    }
-
-    .labelsAnnotation {
-      border-color:  #00CD87;
-    }
-
-    .plugsAnnotation {
-      border-color:  #467df3;
     }
   }
 }

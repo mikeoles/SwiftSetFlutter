@@ -53,4 +53,8 @@ export class PanoramaComponent implements OnInit {
     this.panZoomApi.smoothZoom(window.innerWidth / 2, 182, .8);
     return false;
   }
+
+  isSelected(type: String, id: Number) {
+    return this.currentDisplay === type && this.currentId === id;
+  }
 }

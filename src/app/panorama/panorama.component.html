@@ -1,31 +1,35 @@
 <div class="panorama">
-  <div id="pano-image" class="image">
-    <img src="assets/aisle.jpg" />
-    <ng-container *ngIf="currentDisplay=='outs'">
-      <ng-container *ngFor="let out of outs">
-        <div id="outAnnotation-{{out.Id}}"
-          class="outsAnnotation annotation"
-          [ngStyle]="{'left.px':out.X1, 'top.px':out.Z1, 'width.px':out.X2-out.X1, 'height.px':out.Z2-out.Z1 }"
-          (click)="annotationClicked(out.Id, 'outs')">
-        </div>
+  <div class="image-owner">
+    <div id="pano-image" class="image">
+      <img src="assets/aisle.jpg" />
+      <ng-container *ngIf="currentDisplay=='outs'">
+        <ng-container *ngFor="let out of outs">
+          <div id="outAnnotation-{{out.Id}}"
+            class="outsAnnotation annotation"
+            [class.selected]="isSelected('outs', out.Id)"
+            [ngStyle]="{'left.px':out.X1, 'top.px':out.Z1, 'width.px':out.X2-out.X1, 'height.px':out.Z2-out.Z1 }"
+            (click)="annotationClicked(out.Id, 'outs')">
+          </div>
+        </ng-container>
       </ng-container>
-    </ng-container>
-    <ng-container *ngIf="currentDisplay=='labels'">
-      <ng-container *ngFor="let label of labels">
-        <div id="labelAnnotation-{{label.Id}}"
-          class="annotation labelsAnnotation"
-          [ngStyle]="{'left.px':label.X1, 'top.px':label.Z1, 'width.px':label.X2-label.X1, 'height.px':label.Z2-label.Z1 }"
-          (click)="annotationClicked(label.Id, 'labels')">
-        </div>
+      <ng-container *ngIf="currentDisplay=='labels'">
+        <ng-container *ngFor="let label of labels">
+          <div id="labelAnnotation-{{label.Id}}"
+            class="annotation labelsAnnotation"
+            [class.selected]="isSelected('labels', label.Id)"
+            [ngStyle]="{'left.px':label.X1, 'top.px':label.Z1, 'width.px':label.X2-label.X1, 'height.px':label.Z2-label.Z1 }"
+            (click)="annotationClicked(label.Id, 'labels')">
+          </div>
+        </ng-container>
       </ng-container>
-    </ng-container>
+    </div>
   </div>
   <div id="zoom">
     <a href (click)="zoomIn()">
-      <fa-icon [icon]="faPlus" id="zoomIn"></fa-icon>
+      <fa-icon id="zoomIn" class="zoomIcon" [icon]="faPlus"></fa-icon>
     </a>
     <a href (click)="zoomOut()">
-      <fa-icon [icon]="faMinus" id="zoomOut"></fa-icon>
+      <fa-icon id="zoomOut" class="zoomIcon" [icon]="faMinus"></fa-icon>
     </a>
   </div>
 </div>
