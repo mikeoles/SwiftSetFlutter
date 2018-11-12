@@ -7,6 +7,11 @@ import { GridComponent } from './product-details/grid/grid.component';
 import { PanoramaComponent } from './panorama/panorama.component';
 import { SelectionAreaComponent } from './selection-area/selection-area.component';
 import { FormsModule } from '@angular/forms';
+import { DataDisplayComponent } from './data-display/data-display.component';
+import { CountGraphComponent } from './data-display/count-graph/count-graph.component';
+import { StatRingComponent } from './data-display/stat-ring/stat-ring.component';
+import { DataGridComponent } from './data-display/data-grid/data-grid.component';
+import { RoundProgressModule } from 'angular-svg-round-progressbar';
 
 @NgModule({
   declarations: [
@@ -14,11 +19,16 @@ import { FormsModule } from '@angular/forms';
     ProductDetailsComponent,
     GridComponent,
     PanoramaComponent,
-    SelectionAreaComponent
+    SelectionAreaComponent,
+    DataDisplayComponent,
+    CountGraphComponent,
+    StatRingComponent,
+    DataGridComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    RoundProgressModule
   ],
   providers: [],
   bootstrap: [AppComponent]
