@@ -2,8 +2,8 @@
   <div id="missionsContainer">
     <button (click)="selectMissionsDropdown()">
       Mission {{ this.missionId }}
-      <fa-icon *ngIf="showMissions" class="fa" [icon]="faAngleDown"></fa-icon>
-      <fa-icon *ngIf="!showMissions" class="fa" [icon]="faAngleUp"></fa-icon>
+      <fa-icon *ngIf="!showMissions" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
+      <fa-icon *ngIf="showMissions" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
     </button>
     <ul *ngIf="showMissions">
       <li
@@ -18,8 +18,8 @@
   <div id="aislesContainer">
     <button (click)="selectAislesDropdown()">
       Aisle {{ this.aisleId }}
-      <fa-icon *ngIf="showAisles" class="fa" [icon]="faAngleDown"></fa-icon>
-      <fa-icon *ngIf="!showAisles" class="fa" [icon]="faAngleUp"></fa-icon>
+      <fa-icon *ngIf="!showAisles" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
+      <fa-icon *ngIf="showAisles" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
     </button>
     <ul *ngIf="showAisles">
       <li
