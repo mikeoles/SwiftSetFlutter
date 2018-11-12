@@ -1,4 +1,4 @@
-select{
+button{
     height: 55px;
     width: 285px;
     margin: 28px 60px;
@@ -10,13 +10,14 @@ select{
     text-align: left;
     color: #467df3;
     border: 3px #467df3 solid;
-    :focus{
-      outline:0;
-    }
+}
+
+button:focus{
+  outline:0;
 }
 
 @media screen and (max-width: 800px) {
-  select {
+  button {
     margin:28px 30px;
   }
 }
@@ -27,3 +28,50 @@ select{
     margin-right: auto;
     text-align: center;
 }
+
+#missionsContainer,#aislesContainer{
+  display: inline-block;
+  width: auto;
+}
+
+ul{
+  width: 325px;
+  size: 18px;
+  position: absolute;
+  display: block;
+  z-index: 2;
+  margin-top: -9px;
+  margin-left: 60px;
+  padding: 5px 0px 10px 20px;
+  border-radius: 30px;
+  box-shadow: 0px 0px 30px rgba(32, 32, 32, 0.411);
+  background: white;
+  text-align: left;
+  list-style-type: none;
+  li{
+    border-bottom: rgba(211, 211, 211, 0.5) 1px solid;
+    padding: 10px;
+    cursor:pointer;
+  }
+  li:last-child{
+    border-bottom: 0px;
+  }
+  li:hover{
+    color: #467df3;
+  }
+}
+ul:after {
+  z-index: 1;
+  position: absolute;
+  left: 50%;
+  margin-left: -30px;
+  top:-20px;
+  width: 0;
+  height: 0;
+  content:'';
+  border-left: 30px solid transparent;
+  border-right: 30px solid transparent;
+  border-bottom: 30px solid white;
+}
+
+

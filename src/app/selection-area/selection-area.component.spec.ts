@@ -10,8 +10,12 @@ import { By } from '@angular/platform-browser';
 describe('SelectionAreaComponent', () => {
   let component: SelectionAreaComponent;
   let fixture: ComponentFixture<SelectionAreaComponent>;
-  let missionsDropdownEl: HTMLSelectElement;
-  let aislesDropdownEl: HTMLSelectElement;
+  let missionsButtonEl: HTMLButtonElement;
+  let aislesButtonEl: HTMLButtonElement;
+  let missionsDropdownEl: HTMLElement;
+  let aislesDropdownEl: HTMLElement;
+  let missionsListEl: HTMLLIElement;
+  let aislesListEl: HTMLLIElement;
   const missionsData = of(outs);
   const aislesData = of(labels);
 
@@ -22,16 +26,22 @@ describe('SelectionAreaComponent', () => {
     })
     .compileComponents();
   }));
-
   beforeEach(() => {
     fixture = TestBed.createComponent(SelectionAreaComponent);
     component = fixture.componentInstance;
     component.missionId = 1;
     component.aisleId = '1';
+    component.showAisles = true;
+    component.showMissions = true;
     missionsData.subscribe(missions => component.missions = missions);
     aislesData.subscribe(aisles => component.aisles = aisles);
-    missionsDropdownEl = fixture.debugElement.query(By.css('#missions')).nativeElement;
-    aislesDropdownEl = fixture.debugElement.query(By.css('#aisles')).nativeElement;
+    fixture.detectChanges();
+    missionsButtonEl = fixture.debugElement.query(By.css('#missionsContainer > button')).nativeElement;
+    aislesButtonEl = fixture.debugElement.query(By.css('#aislesContainer > button')).nativeElement;
+    missionsDropdownEl = fixture.debugElement.query(By.css('#missionsContainer > ul')).nativeElement;
+    aislesDropdownEl = fixture.debugElement.query(By.css('#aislesContainer > ul')).nativeElement;
+    missionsListEl = fixture.debugElement.query(By.css('#missionsContainer > ul > li:nth-child(2)')).nativeElement;
+    aislesListEl = fixture.debugElement.query(By.css('#aislesContainer > ul > li:nth-child(4)')).nativeElement;
     fixture.detectChanges();
   });
 
@@ -42,80 +52,75 @@ describe('SelectionAreaComponent', () => {
   it('has a dropdown of missions', () => {
     fixture.whenStable().then(() => {
       fixture.detectChanges();
-      expect(missionsDropdownEl.length).toEqual(5);
-      expect(missionsDropdownEl.options[0].text).toContain('Mission 1');
+      expect(missionsDropdownEl.childElementCount).toEqual(5);
+      expect(missionsDropdownEl.children[0].textContent).toEqual('Mission 1');
     });
   });
 
   it('has a dropdown of aisles', () => {
     fixture.whenStable().then(() => {
       fixture.detectChanges();
-      expect(aislesDropdownEl.length).toEqual(5);
-      expect(aislesDropdownEl.options[4].text).toContain('Aisle 5');
+      expect(aislesDropdownEl.childElementCount).toEqual(5);
+      expect(aislesDropdownEl.children[4].textContent).toEqual('Aisle 5');
     });
   });
 
-
   it('emits mission when selected', () => {
     spyOn(component.selectedMission, 'emit');
-    missionsDropdownEl.value = '2';
-    missionsDropdownEl.dispatchEvent(new Event('change'));
+    missionsListEl.click();
+    missionsListEl.dispatchEvent(new Event('change'));
     fixture.detectChanges();
-    expect(component.selectedMission.emit).toHaveBeenCalledWith('2');
+    expect(component.selectedMission.emit).toHaveBeenCalledWith(2);
   });
 
   it('emits aisle when selected', () => {
     spyOn(component.selectedAisle, 'emit');
-    aislesDropdownEl.value = '3';
-    aislesDropdownEl.dispatchEvent(new Event('change'));
+    aislesListEl.click();
+    aislesListEl.dispatchEvent(new Event('change'));
     fixture.detectChanges();
-    expect(component.selectedAisle.emit).toHaveBeenCalledWith('3');
+    expect(component.selectedAisle.emit).toHaveBeenCalledWith(4);
   });
 
   it('starts by displaying first mission', () => {
     fixture.whenStable().then(() => {
       fixture.detectChanges();
-      expect(missionsDropdownEl.value).toEqual('1');
+      expect(missionsButtonEl.textContent).toEqual('Mission 1');
     });
   });
 
   it('automatically selects first aisle from selected mission', () => {
     fixture.whenStable().then(() => {
       fixture.detectChanges();
-      expect(aislesDropdownEl.value).toEqual('1');
+      expect(aislesButtonEl.textContent).toEqual('Aisle 1');
     });
   });
 
-  it('allows the user to select a new aisle', () => {
-    missionsDropdownEl.value = '4';
-    aislesDropdownEl.value = '3';
-    aislesDropdownEl.dispatchEvent(new Event('change'));
+  it('sets mission button based on input', () => {
+    component.missionId  = 3;
     fixture.detectChanges();
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-      expect(aislesDropdownEl.value).toEqual('1');
-    });
-    // Aisle should change
-    expect(aislesDropdownEl.value).toEqual('3');
-    // Mission should not change
-    expect(missionsDropdownEl.value).toEqual('4');
+    expect(missionsButtonEl.textContent).toEqual('Mission 3');
   });
 
-  it('resets the aisle after new mission selected', () => {
-    // Change aisle to 3
-    aislesDropdownEl.value = '3';
-    aislesDropdownEl.dispatchEvent(new Event('change'));
+  it('sets mission button based on input', () => {
+    component.aisleId  = '5';
     fixture.detectChanges();
-    // Select a new misison
-    missionsDropdownEl.value = '4';
-    missionsDropdownEl.dispatchEvent(new Event('change'));
-    fixture.detectChanges();
-    // Check that aisle returns to 1
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-      expect(aislesDropdownEl.value).toEqual('1');
-    });
+    expect(aislesButtonEl.textContent).toEqual('Aisle 5');
   });
 
+  it('hide missions dropdown after click', () => {
+    expect(component.showMissions).toEqual(true);
+    missionsListEl.click();
+    missionsListEl.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+    expect(component.showMissions).toEqual(false);
+  });
+
+  it('hide aisles dropdown after click', () => {
+    expect(component.showAisles).toEqual(true);
+    aislesListEl.click();
+    aislesListEl.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+    expect(component.showAisles).toEqual(false);
+  });
 
 });

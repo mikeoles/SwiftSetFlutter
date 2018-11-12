@@ -6,6 +6,8 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./selection-area.component.scss']
 })
 export class SelectionAreaComponent implements OnInit {
+  showMissions = false;
+  showAisles = false;
   @Input() missions: any[];
   @Input() aisles: any[];
   @Input() missionId: number;
@@ -16,12 +18,24 @@ export class SelectionAreaComponent implements OnInit {
   ngOnInit() {
   }
 
-  missionChanged() {
-    this.selectedMission.emit(this.missionId);
+  missionChanged(mission) {
+    this.selectedMission.emit(mission.Id);
+    this.showMissions = false;
   }
 
-  aisleChanged() {
-    this.selectedAisle.emit(this.aisleId);
+  aisleChanged(aisle) {
+    this.selectedAisle.emit(aisle.Id);
+    this.showAisles = false;
+  }
+
+  selectMissionsDropdown() {
+    this.showMissions = !this.showMissions;
+    this.showAisles = false;
+  }
+
+  selectAislesDropdown() {
+    this.showAisles = !this.showAisles;
+    this.showMissions = false;
   }
 
 }
