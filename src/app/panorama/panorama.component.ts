@@ -38,7 +38,16 @@ export class PanoramaComponent implements OnInit {
     });
   }
 
-  annotationClicked(num, display) {
+  annotations() {
+    switch (this.currentDisplay) {
+    case 'outs':
+      return this.outs;
+    case 'labels':
+      return this.labels;
+    }
+  }
+
+  annotationClicked(num) {
     if (this.currentId !== num) {
       this.panoramaId.emit(num);
     }
@@ -52,9 +61,5 @@ export class PanoramaComponent implements OnInit {
   zoomOut() {
     this.panZoomApi.smoothZoom(window.innerWidth / 2, 182, .8);
     return false;
-  }
-
-  isSelected(type: String, id: Number) {
-    return this.currentDisplay === type && this.currentId === id;
   }
 }
