@@ -4,6 +4,36 @@
   margin: auto;
   overflow: hidden;
   text-align: center;
+  position: relative;
+
+  #zoom {
+    position: absolute;
+    z-index: 1;
+    right: 38px;
+    top: 29px;
+    width: 44px;
+    height: 91px;
+    background-color: white;
+    border: 3px solid #467df3;
+    border-radius: 5px;
+    border-collapse: collapse;
+    font-size: 24px;
+
+    .ng-fa-icon {
+      color: #467df3;
+      display: block;
+      position: absolute;
+      left: -3px;
+      width: 44px;
+      height: 44px;
+      line-height: 44px;
+      border: 3px solid #467df3;
+      border-radius: 5px;
+
+      &#zoomIn { top: -3px; }
+      &#zoomOut { top: 44px; }
+    }
+  }
 
   .image {
     height: 100%;
@@ -29,6 +59,6 @@
 
     .plugsAnnotation {
       border-color:  #467df3;
-    } 
+    }
   }
 }

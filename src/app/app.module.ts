@@ -7,6 +7,7 @@ import { GridComponent } from './product-details/grid/grid.component';
 import { PanoramaComponent } from './panorama/panorama.component';
 import { SelectionAreaComponent } from './selection-area/selection-area.component';
 import { FormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { FormsModule } from '@angular/forms';
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    FontAwesomeModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, NgModule } from '@angular/core';
 import panzoom from 'panzoom';
+import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-panorama',
@@ -12,21 +13,27 @@ export class PanoramaComponent implements OnInit {
   @Input() currentId: number;
   @Input() currentDisplay: string;
   @Output() panoramaId = new EventEmitter();
+  panZoomApi: any;
+  faPlus = faPlus;
+  faMinus = faMinus;
 
   constructor() {
   }
 
   ngOnInit() {
-    console.log('outs: ', this.outs);
-
     const element = document.getElementById('pano-image');
-    panzoom(element, {
+    this.panZoomApi = panzoom(element, {
       maxZoom: 10,
       minZoom: 1,
       bounds: false,
-      onTouch: function(e) {
-        console.log('onTouch', e);
-        return true;
+    });
+
+    element.addEventListener('touchend', (e: TouchEvent) => {
+      if (e.target instanceof HTMLElement) {
+        const touchedElement = e.target as HTMLElement;
+        if (touchedElement.classList.contains('annotation')) {
+          touchedElement.click();
+        }
       }
     });
   }
@@ -35,5 +42,15 @@ export class PanoramaComponent implements OnInit {
     if (this.currentId !== num) {
       this.panoramaId.emit(num);
     }
+  }
+
+  zoomIn() {
+    this.panZoomApi.smoothZoom(window.innerWidth / 2, 182, 1.25);
+    return false;
+  }
+
+  zoomOut() {
+    this.panZoomApi.smoothZoom(window.innerWidth / 2, 182, .8);
+    return false;
   }
 }

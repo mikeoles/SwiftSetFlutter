@@ -20,4 +20,12 @@
       </ng-container>
     </ng-container>
   </div>
+  <div id="zoom">
+    <a href (click)="zoomIn()">
+      <fa-icon [icon]="faPlus" id="zoomIn"></fa-icon>
+    </a>
+    <a href (click)="zoomOut()">
+      <fa-icon [icon]="faMinus" id="zoomOut"></fa-icon>
+    </a>
+  </div>
 </div>
