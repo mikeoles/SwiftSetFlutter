@@ -1,16 +1,15 @@
 .panorama {
-  display: block;
-  margin: auto;
   overflow: hidden;
   text-align: center;
   position: relative;
 
   .image-owner {
     height: 365px;
+    position: relative;
 
     .image {
       height: 100%;
-      position: relative;
+      display: inline-block;
 
       img {
         height: 100%;
@@ -42,7 +41,6 @@
 
   #zoom {
     position: absolute;
-    z-index: 1;
     right: 38px;
     top: 29px;
     width: 44px;
@@ -50,7 +48,6 @@
     background-color: white;
     border: 3px solid #467df3;
     border-radius: 5px;
-    border-collapse: collapse;
     font-size: 24px;
 
     .zoomIcon {
