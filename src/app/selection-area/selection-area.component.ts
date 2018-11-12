@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-selection-area',
@@ -14,6 +15,8 @@ export class SelectionAreaComponent implements OnInit {
   @Input() aisleId: string;
   @Output() selectedMission = new EventEmitter();
   @Output() selectedAisle = new EventEmitter();
+  faAngleDown = faAngleDown;
+  faAngleUp = faAngleUp;
 
   ngOnInit() {
   }

@@ -1,15 +1,34 @@
 <div class="container">
   <div id="missionsContainer">
-    <button (click)="selectMissionsDropdown()">Mission {{this.missionId}}</button>
+    <button (click)="selectMissionsDropdown()">
+      Mission {{ this.missionId }}
+      <fa-icon *ngIf="showMissions" class="fa" [icon]="faAngleDown"></fa-icon>
+      <fa-icon *ngIf="!showMissions" class="fa" [icon]="faAngleUp"></fa-icon>
+    </button>
     <ul *ngIf="showMissions">
-      <li *ngFor="let mission of missions" [value]="mission.Id" (click)="missionChanged(mission)">Mission {{mission.Id}}</li>
+      <li
+        *ngFor="let mission of missions"
+        [value]="mission.Id"
+        (click)="missionChanged(mission)"
+      >
+        Mission {{ mission.Id }}
+      </li>
     </ul>
   </div>
-
   <div id="aislesContainer">
-    <button (click)="selectAislesDropdown()">Aisle {{this.aisleId}}</button>
+    <button (click)="selectAislesDropdown()">
+      Aisle {{ this.aisleId }}
+      <fa-icon *ngIf="showAisles" class="fa" [icon]="faAngleDown"></fa-icon>
+      <fa-icon *ngIf="!showAisles" class="fa" [icon]="faAngleUp"></fa-icon>
+    </button>
     <ul *ngIf="showAisles">
-      <li *ngFor="let aisle of aisles" [value]="aisle.Id" (click)="aisleChanged(aisle)">Aisle {{aisle.Id}}</li>
+      <li
+        *ngFor="let aisle of aisles"
+        [value]="aisle.Id"
+        (click)="aisleChanged(aisle)"
+      >
+        Aisle {{ aisle.Id }}
+      </li>
     </ul>
   </div>
 </div>
