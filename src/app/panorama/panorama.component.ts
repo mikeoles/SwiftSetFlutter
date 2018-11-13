@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, NgModule } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import panzoom from 'panzoom';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 
@@ -12,6 +12,7 @@ export class PanoramaComponent implements OnInit {
   @Input() labels: any[];
   @Input() currentId: number;
   @Input() currentDisplay: string;
+  @Input() panoramaUrl: string;
   @Output() panoramaId = new EventEmitter();
   panZoomApi: any;
   faPlus = faPlus;

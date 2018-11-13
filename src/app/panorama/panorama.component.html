@@ -1,8 +1,7 @@
 <div class="panorama">
   <div class="image-owner">
     <div id="pano-image" class="image">
-      <img src="assets/aisle.jpg" />
-      <!-- <img src="assets/8_foot_panorama.jpg" /> -->
+      <img [src]="panoramaUrl" />
       <ng-container *ngFor="let annotation of annotations()">
         <div class="{{this.currentDisplay}}Annotation annotation"
           [class.selected]="this.currentId === annotation.Id"

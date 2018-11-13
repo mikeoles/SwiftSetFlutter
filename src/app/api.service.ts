@@ -10,6 +10,10 @@ export class ApiService {
 
   constructor() { }
 
+  getPanoramaUrl(selectedMission: number, selectedAisle: string): Observable<string> {
+    return of('assets/aisle.jpg');
+  }
+
   getOuts(selectedMission: number, selectedAisle: string): Observable<Array<any>> {
     return of(outs);
   }
