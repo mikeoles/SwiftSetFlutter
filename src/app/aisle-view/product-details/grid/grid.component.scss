@@ -11,7 +11,7 @@ table tbody, table thead
     display: block;
 }
 
-table tbody 
+table tbody
 {
     overflow-y: auto;
     overflow-x: hidden;
@@ -20,7 +20,7 @@ table tbody
 
 th{
     border: 1px solid #467df3;
-    color: #467df3;
+    color: #a9b3c7;
     font-size: 12px;
     height: 44px;
 }
@@ -67,7 +67,7 @@ tbody :first-child{
 
 //Scrollbar
 ::-webkit-scrollbar {
-    width: 16px;    
+    width: 16px;
 }
 
 ::-webkit-scrollbar-track {

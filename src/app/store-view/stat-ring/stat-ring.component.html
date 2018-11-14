@@ -1,0 +1,14 @@
+<div class="title">{{ title }}</div>
+<div class="positionRelative">
+  <round-progress
+    [current]="current"
+    [max]="max"
+    [color]="'#467df3'"
+    [stroke]="20"
+    [radius]="100"
+    [duration]="3000"
+  ></round-progress>
+  <div class="stat">{{ stat }}</div>
+  <div *ngIf="time" class="mins">MIN</div>
+  <div *ngIf="time" class="secs">SEC</div>
+</div>

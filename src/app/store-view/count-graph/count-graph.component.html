@@ -1,0 +1,12 @@
+<div class="type">{{type}}</div>
+<div class="total">{{total}}</div>
+<div class="graph">
+  <canvas baseChart width="110" height="50"
+  [chartType]="'bar'"
+  [datasets]="barChartData"
+  [labels]="barChartLabels"
+  [options]="barChartOptions"
+  [colors]="colors"
+  [legend]="false"></canvas>
+</div>
+<div class="average">Average: <span>{{average}}</span></div>

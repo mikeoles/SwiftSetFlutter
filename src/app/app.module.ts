@@ -2,16 +2,20 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { ProductDetailsComponent } from './product-details/product-details.component';
-import { GridComponent } from './product-details/grid/grid.component';
-import { PanoramaComponent } from './panorama/panorama.component';
-import { SelectionAreaComponent } from './selection-area/selection-area.component';
+import { ProductDetailsComponent } from './aisle-view/product-details/product-details.component';
+import { GridComponent } from './aisle-view/product-details/grid/grid.component';
+import { PanoramaComponent } from './aisle-view/panorama/panorama.component';
+import { SelectionAreaComponent } from './aisle-view/selection-area/selection-area.component';
 import { FormsModule } from '@angular/forms';
-import { DataDisplayComponent } from './data-display/data-display.component';
-import { CountGraphComponent } from './data-display/count-graph/count-graph.component';
-import { StatRingComponent } from './data-display/stat-ring/stat-ring.component';
-import { DataGridComponent } from './data-display/data-grid/data-grid.component';
+import { StoreViewComponent } from './store-view/store-view.component';
+import { CountGraphComponent } from './store-view/count-graph/count-graph.component';
+import { StatRingComponent } from './store-view/stat-ring/stat-ring.component';
+import { DataGridComponent } from './store-view/data-grid/data-grid.component';
 import { RoundProgressModule } from 'angular-svg-round-progressbar';
+import { ChartsModule } from 'ng2-charts/ng2-charts';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { AisleViewComponent } from './aisle-view/aisle-view.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -20,15 +24,19 @@ import { RoundProgressModule } from 'angular-svg-round-progressbar';
     GridComponent,
     PanoramaComponent,
     SelectionAreaComponent,
-    DataDisplayComponent,
+    StoreViewComponent,
     CountGraphComponent,
     StatRingComponent,
-    DataGridComponent
+    DataGridComponent,
+    PageNotFoundComponent,
+    AisleViewComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    RoundProgressModule
+    RoundProgressModule,
+    ChartsModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

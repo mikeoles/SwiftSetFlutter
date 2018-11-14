@@ -10,7 +10,7 @@ export class StatRingComponent implements OnInit {
   @Input() current: number;
   @Input() title: string;
   @Input() stat: string;
-
+  @Input() time: boolean;
   percentage: number;
 
   constructor() {

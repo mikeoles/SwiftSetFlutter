@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DataDisplayComponent } from './data-display.component';
+import { StoreViewComponent } from './store-view.component';
 
-describe('DataDisplayComponent', () => {
-  let component: DataDisplayComponent;
-  let fixture: ComponentFixture<DataDisplayComponent>;
+describe('StoreViewComponent', () => {
+  let component: StoreViewComponent;
+  let fixture: ComponentFixture<StoreViewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DataDisplayComponent ]
+      declarations: [ StoreViewComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DataDisplayComponent);
+    fixture = TestBed.createComponent(StoreViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
