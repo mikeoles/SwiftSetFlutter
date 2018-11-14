@@ -8,7 +8,27 @@ import labels from './mock/labels.json';
 })
 export class ApiService {
 
-  constructor() { }
+  constructor() {
+    let x = outs[0].X1;
+    let y = outs[0].Z1;
+    let id = Math.max(...outs.map(o => o.Id));
+
+    for (id += 1; id <= 500; id++) {
+      x += 30;
+      if (x > 2000) {
+        x = outs[0].X1;
+        y += 30;
+      }
+      outs.push({
+        ...outs[0],
+        Id: id,
+        X1: x,
+        Z1: y,
+        X2: x + 10,
+        Z2: y + 10,
+      });
+    }
+  }
 
   getPanoramaUrl(selectedMission: number, selectedAisle: string): Observable<string> {
     return of('assets/aisle.jpg');

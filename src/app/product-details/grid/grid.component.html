@@ -9,6 +9,7 @@
   </thead>
   <tbody>
     <tr *ngFor="let product of products; let i = index"
+        id="row-{{product.Id}}"
         (click)="setClickedRow(product.Id)" [class.selected]="product.Id === selectedId">
       <td>{{product.Id}}</td>
       <td>{{product.MissionId}}</td>
