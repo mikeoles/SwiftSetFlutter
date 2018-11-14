@@ -1,8 +1,10 @@
+@import '../../variables.scss';
+
 button{
     border-radius: 25px;
     background-color: White;
-    border: 3px #467df3 solid;
-    color:  #467df3;
+    border: 3px $primary solid;
+    color:  $primary;
     margin: 20px 50px;
     width: 185px;
     height: 55px;
@@ -18,7 +20,7 @@ button{
 }
 
 .selectedButton{
-    background-color: #467df3;
+    background-color: $primary;
     color:  White;
 }
 

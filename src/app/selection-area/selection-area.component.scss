@@ -1,3 +1,5 @@
+@import '../../variables.scss';
+
 button{
     height: 55px;
     width: 285px;
@@ -8,8 +10,8 @@ button{
     font-size: 18px;
     font-weight: bold;
     text-align: left;
-    color: #467df3;
-    border: 3px #467df3 solid;
+    color: $primary;
+    border: 3px $primary solid;
 }
 
 button:focus{
@@ -57,7 +59,7 @@ ul{
     border-bottom: 0px;
   }
   li:hover{
-    color: #467df3;
+    color: $primary;
   }
 }
 ul:after {

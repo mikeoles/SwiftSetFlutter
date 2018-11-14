@@ -1,3 +1,5 @@
+@import "../../../variables.scss";
+
 table {
     border-collapse: collapse;
     text-align: center;
@@ -11,7 +13,7 @@ table tbody, table thead
     display: block;
 }
 
-table tbody 
+table tbody
 {
     overflow-y: auto;
     overflow-x: hidden;
@@ -19,8 +21,8 @@ table tbody
 }
 
 th{
-    border: 1px solid #467df3;
-    color: #467df3;
+    border: 1px solid $primary;
+    color: $primary;
     font-size: 12px;
     height: 44px;
 }
@@ -53,32 +55,32 @@ tbody :first-child{
 
 .selected td {
   height: 51px;
-  border-top: 3px solid #FFD54A;
-  border-bottom: 3px solid #FFD54A;
+  border-top: 3px solid $selected;
+  border-bottom: 3px solid $selected;
 }
 
 .selected td:first-child {
-  border-left: 3px solid #FFD54A;
+  border-left: 3px solid $selected;
 }
 
 .selected td:last-child {
-  border-right: 3px solid #FFD54A;
+  border-right: 3px solid $selected;
 }
 
 //Scrollbar
 ::-webkit-scrollbar {
-    width: 16px;    
+    width: 16px;
 }
 
 ::-webkit-scrollbar-track {
     background: white;
-    border: solid 1px #467df3;
+    border: solid 1px $primary;
     border-top: 0px;
     border-bottom: 0px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #467df3;
+    background-color: $primary;
     border: 5px solid transparent;
     border-radius: 9px;
     background-clip: content-box;
