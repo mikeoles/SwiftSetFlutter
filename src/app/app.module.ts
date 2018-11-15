@@ -10,12 +10,13 @@ import { FormsModule } from '@angular/forms';
 import { StoreViewComponent } from './store-view/store-view.component';
 import { CountGraphComponent } from './store-view/count-graph/count-graph.component';
 import { StatRingComponent } from './store-view/stat-ring/stat-ring.component';
-import { DataGridComponent } from './store-view/data-grid/data-grid.component';
+import { MissionsGridComponent } from './store-view/missions-grid/missions-grid.component';
 import { RoundProgressModule } from 'angular-svg-round-progressbar';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AisleViewComponent } from './aisle-view/aisle-view.component';
 import { AppRoutingModule } from './app-routing.module';
+import { DailyGraphsComponent } from './store-view/daily-graphs/daily-graphs.component';
 
 @NgModule({
   declarations: [
@@ -27,9 +28,10 @@ import { AppRoutingModule } from './app-routing.module';
     StoreViewComponent,
     CountGraphComponent,
     StatRingComponent,
-    DataGridComponent,
+    MissionsGridComponent,
     PageNotFoundComponent,
     AisleViewComponent,
+    DailyGraphsComponent,
   ],
   imports: [
     BrowserModule,

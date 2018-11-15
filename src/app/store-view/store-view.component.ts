@@ -10,6 +10,9 @@ import { ApiService } from '../api.service';
 export class StoreViewComponent implements OnInit {
   today: number = Date.now();
   @Input() missions: any[];
+  spreadsData = [4, 5, 6, 7, 8, 2, 3, 4, 6, 7, 8, 2, 3, 4];
+  labelsData = [5, 5, 6, 7, 8, 2, 3, 4, 6, 7, 8, 2, 3, 4];
+  outsData = [6, 5, 6, 7, 8, 2, 3, 4, 6, 7, 8, 2, 3, 4];
 
   constructor(private apiService: ApiService) {
 

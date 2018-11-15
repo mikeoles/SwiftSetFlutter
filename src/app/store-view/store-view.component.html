@@ -2,20 +2,12 @@
   <img src="../assets/logo.png"/>
 </header>
 <div class="storeInfo">
-  <div class="storeName">YOUR STORE 0343</div>
-  <div class="storeAddress"><Span>Colesprings</Span> 3201 E Platte Ave, Colorado Springs, CO 80909</div>
+  <div class="storeName"><div id="circle"></div>STORE 0054</div>
+  <div class="storeAddress"> Colosprings <span> 3201 E Platte Ave, Colorado Springs, CO 80909 </span></div>
 </div>
-<div class="date">{{today | date:'MMMM d'}} - Today</div>
-<div class="graphs">
-  <app-count-graph [type]="'Outs'" [total]="200" [average]="48"></app-count-graph>
-  <app-count-graph [type]="'Labels'" [total]="200" [average]="48"></app-count-graph>
-  <app-count-graph [type]="'Plugs'" [total]="200" [average]="48"></app-count-graph>
-  <app-count-graph [type]="'Spreads'" [total]="200" [average]="48"></app-count-graph>
-  <app-count-graph [type]="'Suppliers'" [total]="200" [average]="48"></app-count-graph>
-</div>
-<div class="rings">
-  <app-stat-ring [title]="'Data Delivery Average'" [time]="true" [stat]="'08:22'" [current]="6" [max]="10"></app-stat-ring>
-  <app-stat-ring [title]="'Average Mission Coverage'" [time]="false" [stat]="'99%'" [current]="99" [max]="100"></app-stat-ring>
-  <app-stat-ring [title]="'Average Mission Completion'" [time]="false" [stat]="'72%'" [current]="72" [max]="100"></app-stat-ring>
-</div>
-<app-data-grid [products]="missions"></app-data-grid>
+<div class="title">Daily Stats</div>
+<div class="graphDisplay"><app-daily-graphs [title]="'Outs'" [data]="outsData"></app-daily-graphs></div>
+<div class="graphDisplay"><app-daily-graphs [title]="'Labels'" [data]="labelsData"></app-daily-graphs></div>
+<div class="graphDisplay"><app-daily-graphs [title]="'Spreads'" [data]="spreadsData"></app-daily-graphs></div>
+<div class="gridTitle">Summary For November 11th</div>
+<app-missions-grid [products]="missions"></app-missions-grid>

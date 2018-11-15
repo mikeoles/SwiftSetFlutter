@@ -1,0 +1,23 @@
+:host{
+  font-size: 18px;
+}
+
+.subTitle, .graphs, .labels{
+  display: block;
+}
+
+.labels div{
+  display: inline;
+  margin-right: 30px;
+  padding-bottom: 5px;
+}
+
+.labels span{
+  color: #A2A2A2;
+}
+
+.graphs{
+  height: 67px;
+  background: lightgrey;
+  margin: 20px 0px 15px 0px;
+}
