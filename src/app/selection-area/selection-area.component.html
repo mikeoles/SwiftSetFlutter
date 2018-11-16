@@ -5,7 +5,7 @@
       <fa-icon *ngIf="!showMissions" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
       <fa-icon *ngIf="showMissions" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
     </button>
-    <ul *ngIf="showMissions">
+    <ul class="dropdown" *ngIf="showMissions">
       <li
         *ngFor="let mission of missions"
         [value]="mission.Id"
@@ -14,6 +14,7 @@
         Mission {{ mission.Id }}
       </li>
     </ul>
+    <div *ngIf="showMissions" class="pointer"></div>
   </div>
   <div id="aislesContainer">
     <button (click)="selectAislesDropdown()">
@@ -30,5 +31,6 @@
         Aisle {{ aisle.Id }}
       </li>
     </ul>
+    <div *ngIf="showAisles" class="pointer"></div>
   </div>
 </div>

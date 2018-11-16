@@ -9,23 +9,23 @@ import labels from './mock/labels.json';
 export class ApiService {
 
   constructor() {
-    let x = outs[0].X1;
-    let y = outs[0].Z1;
-    let id = Math.max(...outs.map(o => o.Id));
+    let x = labels[0].X1;
+    let y = labels[0].Z1 + 1000;
+    let id = Math.max(...labels.map(o => o.Id));
 
-    for (id += 1; id <= 500; id++) {
-      x += 30;
-      if (x > 2000) {
-        x = outs[0].X1;
-        y += 30;
+    for (id += 1; id <= 1200; id++) {
+      x += 130;
+      if (x > 18000) {
+        x = labels[0].X1;
+        y += 190;
       }
-      outs.push({
-        ...outs[0],
+      labels.push({
+        ...labels[0],
         Id: id,
         X1: x,
         Z1: y,
-        X2: x + 10,
-        Z2: y + 10,
+        X2: x + 100,
+        Z2: y + 50,
       });
     }
   }

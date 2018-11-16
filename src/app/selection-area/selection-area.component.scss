@@ -38,6 +38,8 @@ button:focus{
 
 ul{
   width: 325px;
+  max-height: 350px;
+  overflow: auto;
   size: 18px;
   position: absolute;
   display: block;
@@ -62,20 +64,32 @@ ul{
     color: $primary;
   }
 }
-ul:after {
-  z-index: 1;
-  position: absolute;
-  left: 50%;
-  margin-left: -30px;
-  top:-20px;
-  width: 0;
-  height: 0;
-  content:'';
-  border-left: 30px solid transparent;
-  border-right: 30px solid transparent;
-  border-bottom: 30px solid white;
-}
 
 .fa{
   float: right;
+}
+
+//Scrollbar
+::-webkit-scrollbar {
+  width: 1px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+.pointer{
+  position: absolute;
+  z-index: 2;
+  margin-top: -28px;
+  margin-left: 200px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 20px 20px 20px;
+  border-color: transparent transparent white transparent;
 }

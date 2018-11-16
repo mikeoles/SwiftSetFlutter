@@ -10,7 +10,6 @@
     position: relative;
 
     .image {
-      height: 100%;
       display: inline-block;
 
       img {
@@ -20,7 +19,7 @@
       .annotation{
         position: absolute;
         color: white;
-        border: 3px solid;
+        border: 10px solid;
       }
 
       .outsAnnotation {

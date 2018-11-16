@@ -25,9 +25,10 @@ export class PanoramaComponent implements OnInit {
     const element = document.getElementById('pano-image');
     this.panZoomApi = panzoom(element, {
       maxZoom: 10,
-      minZoom: 1,
+      minZoom: .12,
       bounds: false,
     });
+    this.panZoomApi.zoomAbs(-10, -100, .15);
 
     element.addEventListener('touchend', (e: TouchEvent) => {
       if (e.target instanceof HTMLElement) {

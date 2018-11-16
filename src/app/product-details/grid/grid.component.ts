@@ -15,7 +15,9 @@ export class GridComponent implements OnInit, AfterViewChecked {
 
   ngAfterViewChecked() {
     const row = document.getElementById(`row-${this.selectedId}`);
-    row.scrollIntoView({ behavior: 'instant' });
+    if (row != null) {
+      row.scrollIntoView({ behavior: 'instant' });
+    }
   }
 
   setClickedRow(id) {
