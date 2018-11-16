@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { GridComponent } from './product-details/grid/grid.component';
@@ -22,7 +22,8 @@ import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
     BrowserModule,
     FormsModule,
     FontAwesomeModule,
-    KeyboardShortcutsModule
+    KeyboardShortcutsModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

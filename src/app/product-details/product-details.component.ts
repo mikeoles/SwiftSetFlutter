@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input, OnChanges } from '@angular/core';
 import { environment } from '../../environments/environment';
+import Label from '../label.model';
 
 @Component({
   selector: 'app-product-details',
@@ -14,8 +15,8 @@ export class ProductDetailsComponent implements OnInit {
 
   @Output() gridId = new EventEmitter();
   @Output() gridDisplay = new EventEmitter();
-  @Input() outs: any[];
-  @Input() labels: any[];
+  @Input() outs: Label[] = [];
+  @Input() labels: Label[] = [];
   @Input() currentId: number;
   @Input() currentDisplay: string;
   @Input() panoMode: boolean;

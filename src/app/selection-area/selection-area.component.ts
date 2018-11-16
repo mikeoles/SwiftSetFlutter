@@ -1,5 +1,8 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
+import { formatDate } from '@angular/common';
+import Mission from '../mission.model';
+import Aisle from '../Aisle.model';
 
 @Component({
   selector: 'app-selection-area',
@@ -9,12 +12,12 @@ import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 export class SelectionAreaComponent implements OnInit {
   showMissions = false;
   showAisles = false;
-  @Input() missions: any[];
-  @Input() aisles: any[];
-  @Input() missionId: number;
-  @Input() aisleId: string;
-  @Output() selectedMission = new EventEmitter();
-  @Output() selectedAisle = new EventEmitter();
+  @Input() missions: Mission[];
+  @Input() aisles: Aisle[];
+  @Input() selectedMission: Mission;
+  @Input() selectedAisle: Aisle;
+  @Output() missionSelected = new EventEmitter();
+  @Output() aisleSelected = new EventEmitter();
   faAngleDown = faAngleDown;
   faAngleUp = faAngleUp;
 
@@ -22,12 +25,12 @@ export class SelectionAreaComponent implements OnInit {
   }
 
   missionChanged(mission) {
-    this.selectedMission.emit(mission.Id);
+    this.missionSelected.emit(mission);
     this.showMissions = false;
   }
 
   aisleChanged(aisle) {
-    this.selectedAisle.emit(aisle.Id);
+    this.aisleSelected.emit(aisle);
     this.showAisles = false;
   }
 
@@ -41,4 +44,8 @@ export class SelectionAreaComponent implements OnInit {
     this.showMissions = false;
   }
 
+  missionName(mission: Mission) {
+    const formatted = formatDate(mission.createDateTime, 'M/d/yyyy', 'en-US');
+    return `${formatted} - ${mission.name}`;
+  }
 }

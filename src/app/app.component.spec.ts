@@ -5,12 +5,16 @@ import { ProductDetailsComponent } from './product-details/product-details.compo
 import { GridComponent } from './product-details/grid/grid.component';
 import { SelectionAreaComponent } from './selection-area/selection-area.component';
 import { FormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        FormsModule
+        FormsModule,
+        FontAwesomeModule,
+        HttpClientModule,
       ],
       declarations: [
         AppComponent,

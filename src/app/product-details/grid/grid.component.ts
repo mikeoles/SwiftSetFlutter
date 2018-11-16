@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewChecked, EventEmitter, Output, Input } from '@angular/core';
+import Label from 'src/app/label.model';
 
 @Component({
   selector: 'app-grid',
@@ -8,14 +9,14 @@ import { Component, OnInit, AfterViewChecked, EventEmitter, Output, Input } from
 export class GridComponent implements OnInit, AfterViewChecked {
 
   @Output() gridClicked = new EventEmitter();
-  @Input() products: any[];
+  @Input() products: Label[];
   @Input() selectedId: number;
 
   ngOnInit() {}
 
   ngAfterViewChecked() {
     const row = document.getElementById(`row-${this.selectedId}`);
-    if (row != null) {
+    if (row) {
       row.scrollIntoView({ behavior: 'instant' });
     }
   }

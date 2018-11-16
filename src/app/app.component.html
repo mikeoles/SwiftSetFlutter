@@ -2,8 +2,8 @@
   <span class="helper"></span><img src="../assets/logo.png"/>
 </header>
 <app-selection-area [missions]="missions" [aisles]="aisles"
-  [missionId]="currentMission" [aisleId]="currentAisle"
-  (selectedMission)='setMission($event)' (selectedAisle)='setAisle($event)'>
+  [selectedMission]="selectedMission" [selectedAisle]="selectedAisle"
+  (missionSelected)='setMission($event)' (aisleSelected)='setAisle($event)'>
 </app-selection-area>
 <app-panorama [outs]="outs" [labels]="labels" [panoramaUrl]="panoramaUrl"
   [currentId]="currentId" [currentDisplay]="currentDisplay"

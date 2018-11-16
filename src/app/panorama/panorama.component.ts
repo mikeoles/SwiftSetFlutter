@@ -42,10 +42,12 @@ export class PanoramaComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    if (this.panoMode) {
-      this.panZoomApi.zoomAbs(30, 50, .3);
-    } else {
-      this.panZoomApi.zoomAbs(0, 0, .15);
+    if (this.panZoomApi) {
+      if (this.panoMode) {
+        this.panZoomApi.zoomAbs(30, 50, .3);
+      } else {
+        this.panZoomApi.zoomAbs(0, 0, .15);
+      }
     }
   }
 
@@ -58,9 +60,9 @@ export class PanoramaComponent implements OnInit, OnChanges {
     }
   }
 
-  annotationClicked(num) {
-    if (this.currentId !== num) {
-      this.panoramaId.emit(num);
+  annotationClicked(annotation) {
+    if (this.currentId !== annotation.id) {
+      this.panoramaId.emit(annotation.id);
     }
   }
 

@@ -1,15 +1,15 @@
 <div class="panorama">
   <div [ngClass]="{'panoModeClass': panoMode}" class="image-owner">
     <div id="pano-image" class="image">
-      <img [src]="panoramaUrl" />
+      <img [src]="panoramaUrl" *ngIf="panoramaUrl" />
       <ng-container *ngFor="let annotation of annotations()">
         <div class="{{this.currentDisplay}}Annotation annotation"
-          [class.selected]="this.currentId === annotation.Id"
-          [style.left.px]="annotation.X1"
-          [style.top.px]="annotation.Z1"
-          [style.width.px]="annotation.X2 - annotation.X1"
-          [style.height.px]="annotation.Z2 - annotation.Z1"
-          (click)="annotationClicked(annotation.Id)">
+          [class.selected]="this.currentId === annotation.id"
+          [style.left.px]="annotation.left"
+          [style.top.px]="annotation.top"
+          [style.width.px]="annotation.width"
+          [style.height.px]="annotation.height"
+          (click)="annotationClicked(annotation)">
         </div>
       </ng-container>
     </div>
