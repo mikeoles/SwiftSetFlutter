@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit, OnChanges } from '@angular/core';
 import panzoom from 'panzoom';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 
@@ -7,12 +7,13 @@ import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './panorama.component.html',
   styleUrls: ['./panorama.component.scss']
 })
-export class PanoramaComponent implements OnInit {
+export class PanoramaComponent implements OnInit, OnChanges {
   @Input() outs: any[];
   @Input() labels: any[];
   @Input() currentId: number;
   @Input() currentDisplay: string;
   @Input() panoramaUrl: string;
+  @Input() panoMode: boolean;
   @Output() panoramaId = new EventEmitter();
   panZoomApi: any;
   faPlus = faPlus;
@@ -38,6 +39,14 @@ export class PanoramaComponent implements OnInit {
         }
       }
     });
+  }
+
+  ngOnChanges() {
+    if (this.panoMode) {
+      this.panZoomApi.zoomAbs(30, 50, .3);
+    } else {
+      this.panZoomApi.zoomAbs(0, 0, .15);
+    }
   }
 
   annotations() {

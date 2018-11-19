@@ -1,5 +1,5 @@
 <div class="panorama">
-  <div class="image-owner">
+  <div [ngClass]="{'panoModeClass': panoMode}" class="image-owner">
     <div id="pano-image" class="image">
       <img [src]="panoramaUrl" />
       <ng-container *ngFor="let annotation of annotations()">

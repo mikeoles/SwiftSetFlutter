@@ -8,6 +8,7 @@ import { PanoramaComponent } from './panorama/panorama.component';
 import { SelectionAreaComponent } from './selection-area/selection-area.component';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     BrowserModule,
     FormsModule,
     FontAwesomeModule,
+    KeyboardShortcutsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

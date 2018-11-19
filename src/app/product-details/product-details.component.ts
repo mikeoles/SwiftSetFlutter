@@ -18,6 +18,7 @@ export class ProductDetailsComponent implements OnInit {
   @Input() labels: any[];
   @Input() currentId: number;
   @Input() currentDisplay: string;
+  @Input() panoMode: boolean;
 
   constructor() {
     this.showPlugs = environment.showPlugs;
