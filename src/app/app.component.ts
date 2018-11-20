@@ -28,13 +28,13 @@ export class AppComponent implements OnInit {
     this.currentDisplay = 'outs';
     this.panoMode = false;
     this.keyboard.add([
-         {
-             key: 'ctrl o',
-             command: () => this.changePanoMode(),
-             preventDefault: true
-            }
-     ]);
-    }
+      {
+        key: 'ctrl o',
+        command: () => this.changePanoMode(),
+        preventDefault: true
+      }
+    ]);
+  }
 
   ngOnInit() {
     this.apiService.getMissions().subscribe(missions => {
