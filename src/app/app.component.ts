@@ -63,6 +63,8 @@ export class AppComponent implements OnInit {
       this.outs = fullAisle.outs;
       this.labels = fullAisle.labels;
       this.panoramaUrl = fullAisle.panoramaUrl;
+      this.currentDisplay = 'outs';
+      this.currentId = null;
     });
   }
 
