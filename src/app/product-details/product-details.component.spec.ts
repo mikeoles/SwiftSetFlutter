@@ -3,17 +3,27 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProductDetailsComponent } from './product-details.component';
 import { GridComponent } from './grid/grid.component';
 import { By } from '@angular/platform-browser';
-import outs from '../mock/outs.json';
-import labels from '../mock/labels.json';
-import { of } from 'rxjs';
+import Label from '../label.model';
 
 describe('ProductDetailsComponent', () => {
   let component: ProductDetailsComponent;
   let fixture: ComponentFixture<ProductDetailsComponent>;
   let buttonsEl: HTMLElement;
   let buttons: HTMLCollection;
-  const outsData = of(outs);
-  const labelsData = of(labels);
+  const labels: Label[] = [
+    { id: 1, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 } },
+    { id: 2, name: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 } },
+    { id: 3, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 } },
+    { id: 4, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 } },
+    { id: 5, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 } },
+  ];
+  const outs: Label[] = [
+    { id: 6, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 } },
+    { id: 7, name: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 } },
+    { id: 8, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 } },
+    { id: 9, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 } },
+    { id: 10, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 } },
+  ];
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -30,8 +40,8 @@ describe('ProductDetailsComponent', () => {
     component = fixture.componentInstance;
     component.showPlugs = true;
     component.showSuppliers = true;
-    outsData.subscribe(data => component.outs = data);
-    labelsData.subscribe(data => component.labels = data);
+    component.labels = labels;
+    component.outs = outs;
     fixture.detectChanges();
     buttonsEl = fixture.debugElement.query(By.css('#tableSelection')).nativeElement;
     buttons = buttonsEl.children;
