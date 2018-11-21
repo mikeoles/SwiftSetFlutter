@@ -1,4 +1,4 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { PanoramaComponent } from './panorama/panorama.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
