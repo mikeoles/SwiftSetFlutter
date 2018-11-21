@@ -1,6 +1,36 @@
 <div class="subTitle">{{title}}</div>
-<div class="graphs">{{data}}</div>
+<div class='graphs' *ngFor="let dayData of barChartData; let i = index">
+  <div class="dayGraph" *ngIf="currentIndex !== i">
+      <div class="dateOverlay">
+        {{data[i].date | date:'M/d'}}
+      </div>
+      <canvas   baseChart
+      id="{{i}}"
+      [chartType]="'bar'"
+      [data]="dayData"
+      [options]="barChartOptions"
+      [colors]="mainColor"
+      [legend]="false"
+      (chartClick)="chartClicked($event)">
+      </canvas>
+  </div>
+  <div class="dayGraph" *ngIf="currentIndex === i">
+    <div class="dateOverlay dateOverlaySelected">
+      {{data[i].date | date:'M/d'}}
+    </div>
+    <canvas   baseChart
+    id="{{i}}"
+    [chartType]="'bar'"
+    [data]="dayData"
+    [options]="barChartOptions"
+    [colors]="selectedColor"
+    [legend]="false"
+    (chartClick)="chartClicked($event)">
+    </canvas>
+  </div>
+</div>
+
 <div class="labels">
-  <div class="average"><span>Average: </span>{{ average | number : '1.0-0'}}</div>
-  <div class="today"><span>Today: </span>{{today}}</div>
+  <div class="average"><span>Average: </span>{{overallAverage}}</div>
+  <div class="today" *ngIf="todaysAverage!=null"><span>Today: </span>{{todaysAverage}}</div>
 </div>

@@ -6,7 +6,8 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./missions-grid.component.scss']
 })
 export class MissionsGridComponent implements OnInit {
-  @Input() products: any[];
+  @Input() missions: any[];
+  @Input() missionsDate: number;
 
   constructor() { }
 

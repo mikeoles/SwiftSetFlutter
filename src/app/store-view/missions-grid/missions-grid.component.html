@@ -1,22 +1,24 @@
+<div class="gridTitle">Summary For {{missionsDate | date:'MMMM d'}}</div>
+
 <table>
-    <thead>
-      <tr>
-        <th>Mission ID</th>
-        <th>Time</th>
-        <th>Outs</th>
-        <th>Labels</th>
-        <th>Spreads</th>
-        <th>Aisles Scanned</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let product of products; let i = index">
-        <td>{{product.Id}}</td>
-        <td>{{product.Id}}</td>
-        <td>{{product.Id}}</td>
-        <td>{{product.Id}}</td>
-        <td>{{product.Id}}</td>
-        <td>{{product.Id}}</td>
-      </tr>
-    </tbody>
-  </table>
+  <thead>
+    <tr>
+      <th>Mission ID</th>
+      <th>Time</th>
+      <th>Outs</th>
+      <th>Labels</th>
+      <th>Spreads</th>
+      <th>Aisles Scanned</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let mission of missions; let i = index">
+      <td>{{mission.MissionId}}</td>
+      <td>{{mission.Time}}</td>
+      <td>{{mission.Outs}}</td>
+      <td>{{mission.Labels}}</td>
+      <td>{{mission.Spreads}}</td>
+      <td>{{mission.AislesScanned}}</td>
+    </tr>
+  </tbody>
+</table>

@@ -23,7 +23,7 @@ export class AisleViewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.apiService.getMissions().subscribe(missions => this.missions = missions);
+    this.apiService.getAllMissions().subscribe(missions => this.missions = missions);
     this.activatedRoute.params.forEach((params: Params) => {
       if (params['missionId'] !== undefined) {
         this.currentMission = params['missionId'];

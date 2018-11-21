@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
 
 @Component({
@@ -8,18 +8,32 @@ import { ApiService } from '../api.service';
 })
 
 export class StoreViewComponent implements OnInit {
-  today: number = Date.now();
-  @Input() missions: any[];
-  spreadsData = [4, 5, 6, 7, 8, 2, 3, 4, 6, 7, 8, 2, 3, 4];
-  labelsData = [5, 5, 6, 7, 8, 2, 3, 4, 6, 7, 8, 2, 3, 4];
-  outsData = [6, 5, 6, 7, 8, 2, 3, 4, 6, 7, 8, 2, 3, 4];
+  missions: any[];
+  selectedIndex: string;
+  selectedDate: string;
+  spreadsData: any[];
+  labelsData: any[];
+  outsData: any[];
+  spreadsAverage: number;
+  labelsAverage: number;
+  outsAverage: number;
 
   constructor(private apiService: ApiService) {
-
+    this.apiService.getMissionSummaries().subscribe(summaries => this.outsData = summaries.outs);
+    this.apiService.getMissionSummaries().subscribe(summaries => this.outsAverage = summaries.AverageOuts);
+    this.apiService.getMissionSummaries().subscribe(summaries => this.spreadsData = summaries.spreads);
+    this.apiService.getMissionSummaries().subscribe(summaries => this.spreadsAverage = summaries.AverageSpreads);
+    this.apiService.getMissionSummaries().subscribe(summaries => this.labelsData = summaries.labels);
+    this.apiService.getMissionSummaries().subscribe(summaries => this.labelsAverage = summaries.AverageLabels);
   }
 
   ngOnInit() {
-    this.apiService.getMissions().subscribe(missions => this.missions = missions);
+  }
+
+  setIndex(selectedValues) {
+    this.selectedIndex = selectedValues.index;
+    this.selectedDate = selectedValues.date;
+    this.apiService.getMissions(this.selectedDate).subscribe(missions => this.missions = missions);
   }
 
 }
