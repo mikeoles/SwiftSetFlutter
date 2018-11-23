@@ -1,0 +1,20 @@
+<table>
+  <thead>
+    <tr>
+      <th>Aisle</th>
+      <th>Percent Scanned</th>
+      <th>Outs</th>
+      <th>Labels</th>
+      <th>Spreads</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let aisle of aisles; let i = index" (click)="viewAisle(aisle.AisleId)">
+      <td>{{aisle.AisleId}}</td>
+      <td>{{aisle.PercentScanned}}</td>
+      <td>{{aisle.Outs}}</td>
+      <td>{{aisle.Labels}}</td>
+      <td>{{aisle.Spreads}}</td>
+    </tr>
+  </tbody>
+</table>

@@ -3,10 +3,11 @@ import { Routes, RouterModule } from '@angular/router';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { StoreViewComponent } from './store-view/store-view.component';
 import { AisleViewComponent } from './aisle-view/aisle-view.component';
+import { MissionViewComponent } from './mission-view/mission-view.component';
 
 const routes: Routes = [
   { path: 'mission/:missionId/aisle/:aisleId', component: AisleViewComponent },
-  { path: 'mission/:id', component: PageNotFoundComponent },
+  { path: 'mission/:missionId', component: MissionViewComponent },
   { path: 'store', component: StoreViewComponent },
   { path: '',
     redirectTo: '/store',

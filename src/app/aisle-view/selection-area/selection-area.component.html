@@ -9,7 +9,7 @@
   <div id="aislesContainer">
     <button (click)="selectAislesDropdown()">Aisle {{this.aisleId}}</button>
     <ul *ngIf="showAisles">
-      <li *ngFor="let aisle of aisles" [value]="aisle.Id" (click)="aisleChanged(aisle)">Aisle {{aisle.Id}}</li>
+      <li *ngFor="let aisle of aisles" [value]="aisle.Id" (click)="aisleChanged(aisle)">Aisle {{aisle.AisleId}}</li>
     </ul>
   </div>
 </div>

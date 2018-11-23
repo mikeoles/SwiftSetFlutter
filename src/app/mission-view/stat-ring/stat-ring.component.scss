@@ -1,15 +1,12 @@
 :host {
   display: inline-block;
-  width: auto;
-  height: 100%;
-  margin: 10px 40px 20px 40px;
-  box-sizing: border-box;
+  margin: 50px auto 0px auto;
 }
 
 .title{
   display: block;
   margin: auto;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   text-align: center;
 }
 
@@ -22,10 +19,14 @@
 }
 
 .stat {
-  top: 60px;
-  width: 100%;
-  font-size: 55px;
+  top: 80px;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  font-size: 65px;
   font-weight: 900;
+  font-style: italic;
 }
 
 .mins{

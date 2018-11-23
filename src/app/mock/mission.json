@@ -1,0 +1,81 @@
+{
+  "Outs": 472,
+  "Labels": 2016,
+  "Spreads": 59,
+  "AislesScanned": 44,
+  "Date": "11-19-1995",
+  "Time": "10:44",
+  "Aisles": [
+    {
+      "AisleId": "AA01",
+      "PercentScanned": 99,
+      "Outs": 10,
+      "Labels": 73,
+      "Spreads": 4
+    },
+    {
+      "AisleId": "AA02",
+      "PercentScanned": 99,
+      "Outs": 10,
+      "Labels": 73,
+      "Spreads": 4
+    },
+    {
+      "AisleId": "AA03",
+      "PercentScanned": 99,
+      "Outs": 10,
+      "Labels": 73,
+      "Spreads": 4
+    },
+    {
+      "AisleId": "AA04",
+      "PercentScanned": 99,
+      "Outs": 10,
+      "Labels": 73,
+      "Spreads": 4
+    },
+    {
+      "AisleId": "AA05",
+      "PercentScanned": 99,
+      "Outs": 10,
+      "Labels": 73,
+      "Spreads": 4
+    },
+    {
+      "AisleId": "AA06",
+      "PercentScanned": 99,
+      "Outs": 10,
+      "Labels": 73,
+      "Spreads": 4
+    },
+    {
+      "AisleId": "AA07",
+      "PercentScanned": 99,
+      "Outs": 10,
+      "Labels": 73,
+      "Spreads": 4
+    },
+    {
+      "AisleId": "AA08",
+      "PercentScanned": 99,
+      "Outs": 10,
+      "Labels": 73,
+      "Spreads": 4
+    },
+    {
+      "AisleId": "AA09",
+      "PercentScanned": 99,
+      "Outs": 10,
+      "Labels": 73,
+      "Spreads": 4
+    },
+    {
+      "AisleId": "AA10",
+      "PercentScanned": 99,
+      "Outs": 10,
+      "Labels": 73,
+      "Spreads": 4
+    }
+  ]
+
+}

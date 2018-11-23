@@ -6,7 +6,7 @@
   <div class="storeAddress"> Colosprings <span> 3201 E Platte Ave, Colorado Springs, CO 80909 </span></div>
 </div>
 <div class="title">Daily Stats</div>
-<div class="graphDisplay"><app-daily-graphs [title]="'Outs'" [data]="outsData" [overallAverage]="outsAverage" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>
-<div class="graphDisplay"><app-daily-graphs [title]="'Labels'" [data]="labelsData" [overallAverage]="labelsAverage" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>
-<div class="graphDisplay"><app-daily-graphs [title]="'Spreads'" [data]="spreadsData" [overallAverage]="spreadsAverage" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>
+<div class="graphDisplay"><app-daily-graphs [title]="'Outs'" [data]="summary.outs" [overallAverage]="summary.AverageOuts" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>
+<div class="graphDisplay"><app-daily-graphs [title]="'Labels'" [data]="summary.labels" [overallAverage]="summary.AverageLabels" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>
+<div class="graphDisplay"><app-daily-graphs [title]="'Spreads'" [data]="summary.spreads" [overallAverage]="summary.AverageSpreads" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>
 <app-missions-grid *ngIf="missions" [missions]="missions" [missionsDate]="selectedDate"></app-missions-grid>

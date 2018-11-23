@@ -8,8 +8,7 @@ import { PanoramaComponent } from './aisle-view/panorama/panorama.component';
 import { SelectionAreaComponent } from './aisle-view/selection-area/selection-area.component';
 import { FormsModule } from '@angular/forms';
 import { StoreViewComponent } from './store-view/store-view.component';
-import { CountGraphComponent } from './store-view/count-graph/count-graph.component';
-import { StatRingComponent } from './store-view/stat-ring/stat-ring.component';
+import { StatRingComponent } from './mission-view/stat-ring/stat-ring.component';
 import { MissionsGridComponent } from './store-view/missions-grid/missions-grid.component';
 import { RoundProgressModule } from 'angular-svg-round-progressbar';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
@@ -17,6 +16,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { AisleViewComponent } from './aisle-view/aisle-view.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DailyGraphsComponent } from './store-view/daily-graphs/daily-graphs.component';
+import { MissionViewComponent } from './mission-view/mission-view.component';
+import { AislesGridComponent } from './mission-view/aisles-grid/aisles-grid.component';
 
 @NgModule({
   declarations: [
@@ -26,12 +27,13 @@ import { DailyGraphsComponent } from './store-view/daily-graphs/daily-graphs.com
     PanoramaComponent,
     SelectionAreaComponent,
     StoreViewComponent,
-    CountGraphComponent,
     StatRingComponent,
     MissionsGridComponent,
     PageNotFoundComponent,
     AisleViewComponent,
     DailyGraphsComponent,
+    MissionViewComponent,
+    AislesGridComponent,
   ],
   imports: [
     BrowserModule,

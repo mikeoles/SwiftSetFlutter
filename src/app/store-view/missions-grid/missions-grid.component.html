@@ -12,7 +12,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let mission of missions; let i = index">
+    <tr *ngFor="let mission of missions; let i = index" (click)="viewMission(mission.MissionId)">
       <td>{{mission.MissionId}}</td>
       <td>{{mission.Time}}</td>
       <td>{{mission.Outs}}</td>

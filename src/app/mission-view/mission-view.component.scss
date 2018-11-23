@@ -1,0 +1,45 @@
+:host{
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.left{
+  float: left;
+}
+
+.right{
+  float: right;
+}
+
+img{
+  padding: 10px 40px;
+}
+
+.missionInfo{
+  border: solid black;
+  border-width: 1px 0px;
+  padding: 20px 40px;
+}
+
+.missionAddress span{
+  font-weight: normal;
+}
+
+.statRings{
+  width:calc(100%-80px);
+  text-align:center;
+}
+
+.grid, .statRings{
+  margin-left: 40px;
+  margin-right: 40px;
+}
+
+#circle {
+  display: inline-block;
+  margin-right: 20px;
+  width: 20px;
+  height: 20px;
+  border-radius: 25px;
+  background: green;
+}

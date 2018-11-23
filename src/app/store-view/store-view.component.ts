@@ -9,22 +9,12 @@ import { ApiService } from '../api.service';
 
 export class StoreViewComponent implements OnInit {
   missions: any[];
+  summary: any;
   selectedIndex: string;
   selectedDate: string;
-  spreadsData: any[];
-  labelsData: any[];
-  outsData: any[];
-  spreadsAverage: number;
-  labelsAverage: number;
-  outsAverage: number;
 
   constructor(private apiService: ApiService) {
-    this.apiService.getMissionSummaries().subscribe(summaries => this.outsData = summaries.outs);
-    this.apiService.getMissionSummaries().subscribe(summaries => this.outsAverage = summaries.AverageOuts);
-    this.apiService.getMissionSummaries().subscribe(summaries => this.spreadsData = summaries.spreads);
-    this.apiService.getMissionSummaries().subscribe(summaries => this.spreadsAverage = summaries.AverageSpreads);
-    this.apiService.getMissionSummaries().subscribe(summaries => this.labelsData = summaries.labels);
-    this.apiService.getMissionSummaries().subscribe(summaries => this.labelsAverage = summaries.AverageLabels);
+    this.apiService.getMissionSummaries().subscribe(summaries => this.summary = summaries);
   }
 
   ngOnInit() {

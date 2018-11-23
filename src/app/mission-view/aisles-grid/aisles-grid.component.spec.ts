@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CountGraphComponent } from './count-graph.component';
+import { AislesGridComponent } from './aisles-grid.component';
 
-describe('CountGraphComponent', () => {
-  let component: CountGraphComponent;
-  let fixture: ComponentFixture<CountGraphComponent>;
+describe('AislesGridComponent', () => {
+  let component: AislesGridComponent;
+  let fixture: ComponentFixture<AislesGridComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CountGraphComponent ]
+      declarations: [ AislesGridComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CountGraphComponent);
+    fixture = TestBed.createComponent(AislesGridComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -32,14 +32,14 @@ export class AisleViewComponent implements OnInit {
         this.currentAisle = params['aisleId'];
       }
     });
-    this.apiService.getAisles(this.currentMission).subscribe(aisles => this.aisles = aisles);
+    this.apiService.getMission(this.currentMission).subscribe(mission => this.aisles = mission.Aisles);
     this.setAisle(this.currentAisle);
   }
 
   setMission(id) {
     this.currentMission = id;
-    this.apiService.getAisles(this.currentMission).subscribe(aisles => this.aisles = aisles);
-    this.setAisle(this.aisles[0].Id);
+    this.apiService.getMission(this.currentMission).subscribe(mission => this.aisles = mission.Aisles);
+    this.setAisle(this.aisles[0].AisleId);
   }
 
   setAisle(id) {

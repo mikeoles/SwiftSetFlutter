@@ -1,23 +1,19 @@
 :host{
   display: block;
-  margin-bottom: 40px;
+  margin: 90px auto 40px auto;
 }
 
 table {
   border-collapse: collapse;
   text-align: center;
-  margin: auto 40px;
-  width: calc(100% - 80px);
+  margin: auto;
+  width: 100%;
   table-layout: fixed;
 }
 
 table tbody, table thead
 {
   display: block;
-}
-
-.gridTitle{
-  margin: 90px 40px 35px 40px;
 }
 
 th{

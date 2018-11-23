@@ -24,7 +24,7 @@ export class SelectionAreaComponent implements OnInit {
   }
 
   aisleChanged(aisle) {
-    this.selectedAisle.emit(aisle.Id);
+    this.selectedAisle.emit(aisle.AisleId);
     this.showAisles = false;
   }
 

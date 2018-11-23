@@ -11,10 +11,8 @@ export class StatRingComponent implements OnInit {
   @Input() title: string;
   @Input() stat: string;
   @Input() time: boolean;
-  percentage: number;
 
   constructor() {
-    this.percentage = 80;
   }
 
   ngOnInit() {
