@@ -45,8 +45,6 @@ export class AppComponent implements OnInit {
 
   changePanoMode(): any {
     this.panoMode = !this.panoMode;
-    // Export panomode to grid and hide grid class based on it
-    // change size of pano based on it
   }
 
   setMission(mission: Mission) {

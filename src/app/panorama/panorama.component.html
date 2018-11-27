@@ -5,10 +5,10 @@
       <ng-container *ngFor="let annotation of annotations()">
         <div class="{{this.currentDisplay}}Annotation annotation"
           [class.selected]="this.currentId === annotation.id"
-          [style.left.px]="annotation.left"
-          [style.top.px]="annotation.top"
-          [style.width.px]="annotation.width"
-          [style.height.px]="annotation.height"
+          [style.left.px]="annotation.bounds.left"
+          [style.top.px]="annotation.bounds.top"
+          [style.width.px]="annotation.bounds.width"
+          [style.height.px]="annotation.bounds.height"
           (click)="annotationClicked(annotation)">
         </div>
       </ng-container>
