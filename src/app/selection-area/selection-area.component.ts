@@ -45,7 +45,7 @@ export class SelectionAreaComponent implements OnInit {
   }
 
   missionName(mission: Mission) {
-    const formatted = formatDate(mission.createDateTime, 'M/d/yyyy', 'en-US');
+    const formatted = formatDate(mission.missionDateTime, 'M/d/yyyy', 'en-US');
     return `${formatted} - ${mission.name}`;
   }
 }

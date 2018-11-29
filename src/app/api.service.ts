@@ -22,7 +22,9 @@ export class ApiService {
       //   "value": [
       //     {
       //       "Id": 1,
-      //       "MissionId": "044429UTC",
+      //       "StoreId": "1851",
+      //       "Mission": "044429UTC",
+      //       "MissionDate": "2018-11-09T02:10:25Z",
       //       "CreateDate": "2018-11-09T02:10:25Z"
       //     }
       //   ]
@@ -44,10 +46,9 @@ export class ApiService {
       //   "value": [
       //     {
       //       "Id": 4,
-      //       "MissionId": "165839UTC",
-      //       "Zone": "AA",
       //       "Aisle": "3",
-      //       "FilePath": "165839UTC/AA/3/AA03_color_panorama.jpg"
+      //       "FilePath": "165839UTC/AA/3/AA03_color_panorama.jpg",
+      //       "CreateDate": "2018-11-09T02:10:25Z"
       //     }
       //   ]
       // }
@@ -66,25 +67,22 @@ export class ApiService {
       // {
       //   "@odata.context": "$metadata#Panos(Labels(),Outs())/$entity",
       //   "Id": 1,
-      //   "MissionId": "044429UTC",
-      //   "Zone": "AA",
       //   "Aisle": "3",
       //   "FilePath": "04429UTC/AA/3/AA03_color_panorama.jpg",
+      //   "CreateDate": "2018-11-09T02:10:25Z",
       //   "Labels": [
       //     {
       //       "Id": 3,
-      //       "MissionId": "044429UTC",
-      //       "StoreId": "1851",
       //       "AisleId": "AA.3",
       //       "LabelType": "PRODUCT",
       //       "Barcode": "681131026420",
-      //       "Zone": "AA",
       //       "Aisle": "3",
       //       "Section": null,
       //       "X1": 0.3073472083,
       //       "Z1": 2.074207783,
       //       "X2": 0.3073472083,
-      //       "Z2": 2.074207783
+      //       "Z2": 2.074207783,
+      //       "CreateDate": "2018-11-09T02:10:25Z",
       //     }
       //   ],
       //   "Outs": []
@@ -98,7 +96,8 @@ export class ApiService {
   createMission(mission: any): Mission {
     return {
       id: mission.Id,
-      name: mission.MissionId,
+      name: mission.Mission,
+      missionDateTime: new Date(mission.MissionDate),
       createDateTime: new Date(mission.CreateDate),
     };
   }
@@ -106,7 +105,7 @@ export class ApiService {
   createAisle(aisle: any): Aisle {
     return {
       id: aisle.Id,
-      name: `${aisle.Zone}${aisle.Aisle}`,
+      name: `${aisle.Aisle}`,
       panoramaUrl: `${environment.apiUrl}/resources/${aisle.FilePath}`,
       labels: (aisle.Labels || []).map(l => this.createLabel(l)),
       outs: (aisle.Outs || []).map(l => this.createLabel(l)),
