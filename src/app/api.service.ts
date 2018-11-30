@@ -46,6 +46,7 @@ export class ApiService {
       //   "value": [
       //     {
       //       "Id": 4,
+      //       "Zone": "AA",
       //       "Aisle": "3",
       //       "FilePath": "165839UTC/AA/3/AA03_color_panorama.jpg",
       //       "CreateDate": "2018-11-09T02:10:25Z"
@@ -105,7 +106,7 @@ export class ApiService {
   createAisle(aisle: any): Aisle {
     return {
       id: aisle.Id,
-      name: `${aisle.Aisle}`,
+      name: `${aisle.Zone}${aisle.Aisle}`,
       panoramaUrl: `${environment.apiUrl}/resources/${aisle.FilePath}`,
       labels: (aisle.Labels || []).map(l => this.createLabel(l)),
       outs: (aisle.Outs || []).map(l => this.createLabel(l)),
@@ -115,10 +116,10 @@ export class ApiService {
   createLabel(label: any): Label {
     return {
       id: label.Id,
-      name: label.ProductName || 'Unknown Product Name',
-      barcode: label.Barcode || '000000000000',
-      productId: label.ProductId || 'A0000',
-      price: label.Price || 0,
+      name: label.Product.Description || 'Unknown Product Name',
+      barcode: label.Barcode || label.Product.Barcode || '000000000000',
+      productId: label.Product.ItemId || '',
+      price: label.Product.Price || 0,
       bounds: {
         top: label.Z1,
         left: label.X1,
