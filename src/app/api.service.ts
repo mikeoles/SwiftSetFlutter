@@ -121,8 +121,8 @@ export class ApiService {
       productId: label.Product.ItemId || '',
       price: label.Product.Price || 0,
       bounds: {
-        top: label.Z1,
-        left: label.X1,
+        top: label.Z1 - 10,
+        left: label.X1 - 10,
         width: label.X2 - label.X1,
         height: label.Z2 - label.Z1,
       }
