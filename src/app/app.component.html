@@ -1,0 +1,15 @@
+<header>
+  <span class="helper"></span><img src="../assets/logo.png"/>
+</header>
+<app-selection-area [missions]="missions" [aisles]="aisles"
+  [selectedMission]="selectedMission" [selectedAisle]="selectedAisle"
+  (missionSelected)='setMission($event)' (aisleSelected)='setAisle($event)'>
+</app-selection-area>
+<app-panorama [outs]="outs" [labels]="labels" [panoramaUrl]="panoramaUrl"
+  [currentId]="currentId" [currentDisplay]="currentDisplay"
+  (panoramaId)='setId($event)' [panoMode]='panoMode'>
+</app-panorama>
+<app-product-details [outs]="outs" [labels]="labels"
+  (gridId)='setId($event)' (gridDisplay)='setDisplay($event)'
+  [currentId]="currentId" [currentDisplay]="currentDisplay" [panoMode]='panoMode'>
+</app-product-details>

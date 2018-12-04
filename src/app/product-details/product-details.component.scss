@@ -1,0 +1,36 @@
+@import '../../variables.scss';
+
+button{
+    border-radius: 25px;
+    background-color: White;
+    border: 3px $primary solid;
+    color:  $primary;
+    margin: 20px 50px;
+    width: 185px;
+    height: 55px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 800px) {
+  button {
+    margin: 20px 30px;
+    width: 185px;
+  }
+}
+
+.selectedButton{
+    background-color: $primary;
+    color:  White;
+}
+
+button:focus {
+    outline:0;
+}
+
+#tableSelection{
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}

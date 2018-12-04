@@ -1,0 +1,21 @@
+<div class="panorama">
+  <div [ngClass]="{'panoModeClass': panoMode}" class="image-owner">
+    <div id="pano-image" class="image">
+      <img [src]="panoramaUrl" *ngIf="panoramaUrl" />
+      <ng-container *ngFor="let annotation of annotations()">
+        <div class="{{this.currentDisplay}}Annotation annotation"
+          [class.selected]="this.currentId === annotation.id"
+          [style.left.px]="annotation.bounds.left"
+          [style.top.px]="annotation.bounds.top"
+          [style.width.px]="annotation.bounds.width"
+          [style.height.px]="annotation.bounds.height"
+          (click)="annotationClicked(annotation)">
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <div id="zoom">
+    <fa-icon id="zoomIn" class="zoomIcon" [icon]="faPlus" (click)="zoomIn()"></fa-icon>
+    <fa-icon id="zoomOut" class="zoomIcon" [icon]="faMinus" (click)="zoomOut()"></fa-icon>
+  </div>
+</div>

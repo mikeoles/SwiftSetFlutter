@@ -1,0 +1,11 @@
+@import '../variables';
+
+header{
+    height: 65px;
+    border: solid 1px $greyBorder;
+}
+
+img {
+    display: block;
+    margin: 15px auto;
+}

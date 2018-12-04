@@ -1,0 +1,36 @@
+<div class="container">
+  <div id="missionsContainer">
+    <button (click)="selectMissionsDropdown()">
+      Mission {{selectedMission?.name}}
+      <fa-icon *ngIf="!showMissions" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
+      <fa-icon *ngIf="showMissions" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
+    </button>
+    <ul class="dropdown" *ngIf="showMissions">
+      <li
+        *ngFor="let mission of missions"
+        [value]="mission"
+        (click)="missionChanged(mission)"
+      >
+        {{missionName(mission)}}
+      </li>
+    </ul>
+    <div *ngIf="showMissions" class="pointer"></div>
+  </div>
+  <div id="aislesContainer">
+    <button (click)="selectAislesDropdown()">
+      Aisle {{selectedAisle?.name}}
+      <fa-icon *ngIf="!showAisles" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
+      <fa-icon *ngIf="showAisles" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
+    </button>
+    <ul *ngIf="showAisles">
+      <li
+        *ngFor="let aisle of aisles"
+        [value]="aisle"
+        (click)="aisleChanged(aisle)"
+      >
+        {{aisle?.name}}
+      </li>
+    </ul>
+    <div *ngIf="showAisles" class="pointer"></div>
+  </div>
+</div>
