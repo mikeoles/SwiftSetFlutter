@@ -26,23 +26,25 @@ node("basic") {
                 userRemoteConfigs: scm.userRemoteConfigs
             ])
         }
-        stage('Setup') {
-            withEnv(["NPM_CONFIG_LOGLEVEL=warn"]) {
-                sh 'npm install'
+
+        docker.image('node:11-alpine').inside {
+            stage('Setup') {
+                withEnv(["NPM_CONFIG_LOGLEVEL=warn"]) {
+                    sh 'npm install'
+                }
+            }
+
+            stage('Test') {
+                withEnv(["CHROME_BIN=/usr/bin/chromium-browser"]) {
+                    sh 'ng test --progress=false --watch false'
+                }
+                junit '**/test-results.xml'
+            }
+
+            stage('Lint') {
+                sh 'ng lint'
             }
         }
-
-        stage('Test') {
-            withEnv(["CHROME_BIN=/usr/bin/chromium-browser"]) {
-                sh 'ng test --progress=false --watch false'
-            }
-            junit '**/test-results.xml'
-        }
-
-        stage('Lint') {
-            sh 'ng lint'
-        }
-
         stage('Build') {
             echo 'Building....'
         }
@@ -54,7 +56,7 @@ node("basic") {
         currentBuild.result = "FAILURE"
         caughtError = error
     } finally {
-        sendBuildResultStatus(currentBuild.result, 'ess')
+        sendBuildResultStatus(currentBuild.result, 'demo-system')
 
         stage("Cleanup Workspace") {
             step([$class: 'WsCleanup'])
