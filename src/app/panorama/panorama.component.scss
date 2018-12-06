@@ -74,6 +74,18 @@
   }
 }
 
+@media (max-width: 1112px){
+  .image-owner{
+    height: 291px !important;
+  }
+}
+
+@media screen and (orientation: portrait) {
+  .image-owner {
+    height: 385px !important;
+  }
+}
+
 .panoModeClass{
   height: calc(100vh - 67px - 111px - 95px) !important;
 }

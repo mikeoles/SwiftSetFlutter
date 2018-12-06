@@ -2,7 +2,13 @@
 
 header{
     height: 65px;
-    border: solid 1px $greyBorder;
+    border-bottom: solid 1px $greyBorder;
+}
+
+@media (max-width: 1112px) {
+  header{
+    height: 49px;
+  }
 }
 
 img {

@@ -12,10 +12,11 @@ button{
     font-weight: bold;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 1112px) {
   button {
-    margin: 20px 30px;
-    width: 185px;
+    width: 150px !important;
+    height: 48px !important;
+    font-size: 14px !important;
   }
 }
 
