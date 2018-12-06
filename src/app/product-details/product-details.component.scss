@@ -6,7 +6,7 @@ button{
     border: 3px $primary solid;
     color:  $primary;
     margin: 20px 50px;
-    width: 185px;
+    width: 200px;
     height: 55px;
     font-size: 18px;
     font-weight: bold;
@@ -14,7 +14,7 @@ button{
 
 @media screen and (max-width: 1112px) {
   button {
-    width: 150px !important;
+    width: 160px !important;
     height: 48px !important;
     font-size: 14px !important;
   }
