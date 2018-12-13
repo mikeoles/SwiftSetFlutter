@@ -23,6 +23,7 @@ export class AppComponent implements OnInit {
   currentDisplay: string;
   panoramaUrl: string;
   panoMode: boolean;
+  panoTouched: boolean;
 
   constructor(private apiService: ApiService, private keyboard: KeyboardShortcutsService) {
     this.currentDisplay = 'outs';
@@ -68,6 +69,10 @@ export class AppComponent implements OnInit {
 
   setId(id) {
     this.currentId = id;
+  }
+
+  hideDropdowns(clicked) {
+    this.panoTouched = true;
   }
 
   setDisplay(display) {

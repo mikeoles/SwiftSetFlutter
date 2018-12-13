@@ -4,7 +4,6 @@ import {
   Input,
   Output,
   EventEmitter,
-  AfterViewInit,
   OnChanges
 } from '@angular/core';
 import panzoom from 'panzoom';
@@ -23,6 +22,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
   @Input() panoramaUrl: string;
   @Input() panoMode: boolean;
   @Output() panoramaId = new EventEmitter();
+  @Output() panoramaTouched = new EventEmitter();
   panZoomApi: any;
   faPlus = faPlus;
   faMinus = faMinus;
@@ -40,6 +40,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
     this.panZoomApi.zoomAbs(-10, -100, this.zoomLevel);
 
     element.addEventListener('touchend', (e: TouchEvent) => {
+      this.panoramaTouched.emit(true);
       if (e.target instanceof HTMLElement) {
         const touchedElement = e.target as HTMLElement;
         if (touchedElement.classList.contains('annotation')) {

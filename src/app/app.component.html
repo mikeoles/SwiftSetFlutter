@@ -3,11 +3,11 @@
 </header>
 <app-selection-area [missions]="missions" [aisles]="aisles"
   [selectedMission]="selectedMission" [selectedAisle]="selectedAisle"
-  (missionSelected)='setMission($event)' (aisleSelected)='setAisle($event)'>
+  (missionSelected)='setMission($event)' (aisleSelected)='setAisle($event)' [panoTouched]=panoTouched>
 </app-selection-area>
 <app-panorama [outs]="outs" [labels]="labels" [panoramaUrl]="panoramaUrl"
   [currentId]="currentId" [currentDisplay]="currentDisplay"
-  (panoramaId)='setId($event)' [panoMode]='panoMode'>
+  (panoramaId)='setId($event)' [panoMode]='panoMode' (panoramaTouched)='hideDropdowns($event)'>
 </app-panorama>
 <app-product-details [outs]="outs" [labels]="labels"
   (gridId)='setId($event)' (gridDisplay)='setDisplay($event)'
