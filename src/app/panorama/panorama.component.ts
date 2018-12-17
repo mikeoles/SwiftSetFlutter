@@ -23,7 +23,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
   @Input() panoMode: boolean;
   @Output() panoramaId = new EventEmitter();
   @Output() panoramaTouched = new EventEmitter();
-  selectedIdWithPano: false;
+  selectedIdWithPano = false;
   panZoomApi: any;
   faPlus = faPlus;
   faMinus = faMinus;
@@ -91,9 +91,13 @@ export class PanoramaComponent implements OnInit, OnChanges {
   }
 
   annotationClicked(annotation) {
-    if (this.currentId !== annotation.id && !this.panoMode) {
+    if (!this.panoMode) {
+      if (this.currentId !== annotation.id) {
+        this.panoramaId.emit(annotation.id);
+      } else {
+        this.panoramaId.emit(-1);
+      }
       this.selectedIdWithPano = true;
-      this.panoramaId.emit(annotation.id);
     }
   }
 
