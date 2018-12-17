@@ -23,11 +23,12 @@ export class PanoramaComponent implements OnInit, OnChanges {
   @Input() panoMode: boolean;
   @Output() panoramaId = new EventEmitter();
   @Output() panoramaTouched = new EventEmitter();
+  selectedIdWithPano: false;
   panZoomApi: any;
   faPlus = faPlus;
   faMinus = faMinus;
   zoomLevel = 0.15;
-
+  panoHeight = 365;
   constructor() {}
 
   ngOnInit() {
@@ -55,27 +56,28 @@ export class PanoramaComponent implements OnInit, OnChanges {
       if (this.panoMode) {
         this.currentId = -1;
         this.panZoomApi.zoomAbs(30, 50, 0.3);
-      } else {
-        if (this.currentId && this.currentId !== -1) {
+      } else if (this.currentId && this.currentId !== -1 && !this.selectedIdWithPano) {
           const annotations = this.annotations();
           let selectedX: number, selectedY: number, i: number;
+          const currentZoomLevel = this.panZoomApi.getTransform().scale;
           for (i = 0; i < annotations.length; i++) {
             if (annotations[i].id === this.currentId) {
               selectedX =
                 annotations[i].bounds.left +
                 annotations[i].bounds.width / 2 -
-                (window.screen.width / 2) * (1 / this.zoomLevel);
+                (window.screen.width / 2) * (1 / currentZoomLevel);
               selectedY =
                 annotations[i].bounds.top +
                 annotations[i].bounds.height / 2 -
-                (365 / 2) * (1 / this.zoomLevel);
+                (this.panoHeight / 2) * (1 / currentZoomLevel);
               this.panZoomApi.zoomAbs(0, 0, 1);
               this.panZoomApi.moveTo(selectedX * -1, selectedY * -1);
+              break;
             }
           }
-        }
-        this.panZoomApi.zoomAbs(0, 0, this.zoomLevel);
+        this.panZoomApi.zoomAbs(0, 0, currentZoomLevel);
       }
+      this.selectedIdWithPano = false;
     }
   }
 
@@ -90,6 +92,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
 
   annotationClicked(annotation) {
     if (this.currentId !== annotation.id && !this.panoMode) {
+      this.selectedIdWithPano = true;
       this.panoramaId.emit(annotation.id);
     }
   }

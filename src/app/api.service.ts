@@ -116,14 +116,14 @@ export class ApiService {
   createLabel(label: any): Label {
     return {
       id: label.Id,
-      name: label.Product.Description || 'Unknown Product Name',
+      name: 'Unknown Product Name',
       barcode: label.Barcode || label.Product.Barcode || '000000000000',
       productId: label.Product.ItemId || '',
       price: label.Product.Price || 0,
       bounds: {
         top: label.Z1 - 10,
         left: label.X1 - 10,
-        width: label.X2 - label.X1,
+        width: (label.X2 - label.X1),
         height: label.Z2 - label.Z1,
       }
     };

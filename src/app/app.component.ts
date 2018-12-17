@@ -71,7 +71,7 @@ export class AppComponent implements OnInit {
     this.currentId = id;
   }
 
-  hideDropdowns(clicked) {
+  hideDropdowns() {
     this.panoTouched = true;
   }
 
