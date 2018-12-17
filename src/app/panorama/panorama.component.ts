@@ -76,6 +76,9 @@ export class PanoramaComponent implements OnInit, OnChanges {
             }
           }
         this.panZoomApi.zoomAbs(0, 0, currentZoomLevel);
+      } else if (this.currentId === null) {
+        this.panZoomApi.zoomAbs(0, 0, this.zoomLevel);
+        this.panZoomApi.moveTo(0, 0);
       }
       this.selectedIdWithPano = false;
     }
