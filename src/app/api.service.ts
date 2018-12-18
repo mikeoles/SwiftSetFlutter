@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../environments/environment';
+import { EnvironmentService } from './environment.service';
 import Mission from './mission.model';
 import Aisle from './aisle.model';
 import Label from './label.model';
@@ -11,11 +11,14 @@ import Label from './label.model';
   providedIn: 'root'
 })
 export class ApiService {
+  apiUrl: String;
 
-  constructor(private http: HttpClient) {}
+  constructor(private environment: EnvironmentService, private http: HttpClient) {
+    this.apiUrl = environment.config.apiUrl;
+  }
 
   getMissions(): Observable<Mission[]> {
-    return this.http.get(`${environment.apiUrl}/DemoService/Missions`).pipe(
+    return this.http.get(`${this.apiUrl}/DemoService/Missions`).pipe(
       // API result
       // {
       //   "@odata.context": "$metadata#Missions",
@@ -39,7 +42,7 @@ export class ApiService {
   }
 
   getAisles(missionId: number): Observable<Aisle[]> {
-    return this.http.get(`${environment.apiUrl}/DemoService/Missions(${missionId})/Panos`).pipe(
+    return this.http.get(`${this.apiUrl}/DemoService/Missions(${missionId})/Panos`).pipe(
       // API result
       // {
       //   "@odata.context": "$metadata#Panos",
@@ -63,7 +66,7 @@ export class ApiService {
   }
 
   getAisle(aisleId: number): Observable<Aisle> {
-    return this.http.get(`${environment.apiUrl}/DemoService/Panos(${aisleId})?$expand=Labels,Outs`).pipe(
+    return this.http.get(`${this.apiUrl}/DemoService/Panos(${aisleId})?$expand=Labels,Outs`).pipe(
       // API result
       // {
       //   "@odata.context": "$metadata#Panos(Labels(),Outs())/$entity",
@@ -107,7 +110,7 @@ export class ApiService {
     return {
       id: aisle.Id,
       name: `${aisle.Zone}${aisle.Aisle}`,
-      panoramaUrl: `${environment.apiUrl}/resources/${aisle.FilePath}`,
+      panoramaUrl: `${this.apiUrl}/resources/${aisle.FilePath}`,
       labels: (aisle.Labels || []).map(l => this.createLabel(l)),
       outs: (aisle.Outs || []).map(l => this.createLabel(l)),
     };
