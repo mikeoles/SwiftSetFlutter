@@ -1,5 +1,5 @@
 <div class="container">
-  <img id="logo" src="../assets/logo.png"/>
+  <img id="logo" (click)="logoClicked()" src="../assets/logo.png"/>
   <div id="missionsContainer">
     <button class="dropdownButton" [ngClass]="{'selectedButton': showMissions}" (click)="selectMissionsDropdown()">
       Mission {{selectedMission?.name}}

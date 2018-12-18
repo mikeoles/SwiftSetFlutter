@@ -26,6 +26,17 @@ button{
 @media (max-width: 1024px){
   button{
     font-size: 14px !important;
+    margin: 20px 20px !important;
+    width: 220px !important;
+  }
+
+  .container{
+    margin-left: 180px !important;
+    width: calc(100vw - 180px) !important;
+  }
+
+  #logo{
+    top: 25px !important;
   }
 }
 
@@ -112,5 +123,5 @@ ul{
 #logo{
   position: absolute;
   left: 25px;
-  top: 30px;
+  top: 35px;
 }
