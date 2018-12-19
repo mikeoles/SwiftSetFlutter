@@ -12,7 +12,7 @@
         [value]="mission"
         (click)="missionChanged(mission)"
       >
-        {{missionName(mission)}}
+        {{mission?.name}}
       </li>
     </ul>
     <div *ngIf="showMissions" class="pointer"></div>
