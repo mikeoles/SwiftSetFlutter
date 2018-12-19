@@ -1,6 +1,6 @@
 <app-selection-area [missions]="missions" [aisles]="aisles"
   [selectedMission]="selectedMission" [selectedAisle]="selectedAisle"
-  (missionSelected)='setMission($event)' (aisleSelected)='setAisle($event)' [panoTouched]=panoTouched>
+  (missionSelected)='setMission($event)' (aisleSelected)='setAisle($event)' [panoTouched]=panoTouched (panoSwitch)='changePanoMode()'>
 </app-selection-area>
 <app-panorama [outs]="outs" [labels]="labels" [panoramaUrl]="panoramaUrl"
   [currentId]="currentId" [currentDisplay]="currentDisplay"

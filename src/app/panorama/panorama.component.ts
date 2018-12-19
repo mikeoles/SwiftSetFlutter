@@ -27,7 +27,8 @@ export class PanoramaComponent implements OnInit, OnChanges {
   panZoomApi: any;
   faPlus = faPlus;
   faMinus = faMinus;
-  zoomLevel = 0.15;
+  startingZoomLevel = 0.15;
+  zoomedInLevel = 0.5;
   panoHeight = 365;
   constructor() {}
 
@@ -38,7 +39,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
       minZoom: 0.12,
       bounds: false
     });
-    this.panZoomApi.zoomAbs(-10, -100, this.zoomLevel);
+    this.panZoomApi.zoomAbs(-10, -100, this.startingZoomLevel);
 
     element.addEventListener('touchend', (e: TouchEvent) => {
       this.panoramaTouched.emit(true);
@@ -59,7 +60,10 @@ export class PanoramaComponent implements OnInit, OnChanges {
       } else if (this.currentId && this.currentId !== -1 && !this.selectedIdWithPano) {
           const annotations = this.annotations();
           let selectedX: number, selectedY: number, i: number;
-          const currentZoomLevel = this.panZoomApi.getTransform().scale;
+          let currentZoomLevel = this.panZoomApi.getTransform().scale;
+          if (currentZoomLevel < this.zoomedInLevel) {
+            currentZoomLevel = this.zoomedInLevel;
+          }
           for (i = 0; i < annotations.length; i++) {
             if (annotations[i].id === this.currentId) {
               selectedX =
@@ -77,7 +81,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
           }
         this.panZoomApi.zoomAbs(0, 0, currentZoomLevel);
       } else if (this.currentId === null) {
-        this.panZoomApi.zoomAbs(0, 0, this.zoomLevel);
+        this.panZoomApi.zoomAbs(0, 0, this.startingZoomLevel);
         this.panZoomApi.moveTo(0, 0);
       }
       this.selectedIdWithPano = false;

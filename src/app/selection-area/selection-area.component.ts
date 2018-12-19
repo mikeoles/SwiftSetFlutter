@@ -19,6 +19,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   @Input() panoTouched: boolean;
   @Output() missionSelected = new EventEmitter();
   @Output() aisleSelected = new EventEmitter();
+  @Output() panoSwitch = new EventEmitter();
   faAngleDown = faAngleDown;
   faAngleUp = faAngleUp;
 
@@ -67,5 +68,9 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   missionName(mission: Mission) {
     const formatted = formatDate(mission.missionDateTime, 'M/d/yyyy', 'en-US');
     return `${formatted} - ${mission.name}`;
+  }
+
+  logoClicked() {
+    this.panoSwitch.emit();
   }
 }
