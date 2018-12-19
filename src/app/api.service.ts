@@ -110,7 +110,7 @@ export class ApiService {
     return {
       id: aisle.Id,
       name: `${aisle.Zone}${aisle.Aisle}`,
-      panoramaUrl: `${this.apiUrl}/resources/${aisle.FilePath}`,
+      panoramaUrl: `${aisle.FilePath}`,
       labels: (aisle.Labels || []).map(l => this.createLabel(l)),
       outs: (aisle.Outs || []).map(l => this.createLabel(l)),
     };
