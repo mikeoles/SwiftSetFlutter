@@ -55,7 +55,6 @@ export class PanoramaComponent implements OnInit, OnChanges {
   ngOnChanges() {
     if (this.panZoomApi) {
       if (this.panoMode) {
-        this.currentId = -1;
         this.panZoomApi.zoomAbs(30, 50, 0.3);
       } else if (this.currentId && this.currentId !== -1 && !this.selectedIdWithPano) {
           const annotations = this.annotations();

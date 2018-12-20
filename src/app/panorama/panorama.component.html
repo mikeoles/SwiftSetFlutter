@@ -4,7 +4,7 @@
       <img [src]="panoramaUrl" *ngIf="panoramaUrl" />
       <ng-container *ngFor="let annotation of annotations()">
         <div class="{{this.currentDisplay}}Annotation annotation"
-          [class.selected]="this.currentId === annotation.id"
+          [class.selected]="(this.currentId === annotation.id) && !this.panoMode"
           [style.left.px]="annotation.bounds.left"
           [style.top.px]="annotation.bounds.top"
           [style.width.px]="annotation.bounds.width"

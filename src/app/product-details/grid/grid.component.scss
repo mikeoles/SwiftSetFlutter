@@ -71,6 +71,7 @@ tbody :first-child{
 ::-webkit-scrollbar-track {
     background: white;
     border-right: solid 1px $primary;
+    border-bottom: solid 1px $primary;
 }
 
 ::-webkit-scrollbar-thumb {
