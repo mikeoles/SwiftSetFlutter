@@ -20,6 +20,13 @@ table tbody
     height: calc(100vh - 111px - 365px - 95px - 48px);
 }
 
+@media (max-width: 1366px){
+  table tbody
+  {
+      height: calc(100vh - 111px - 365px - 95px - 48px - 31px);
+  }
+}
+
 th{
     border: 1px solid $primary;
     color: $primary;
