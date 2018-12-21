@@ -48,10 +48,12 @@ export class PanoramaComponent implements OnInit, OnChanges {
     });
 
     owner.addEventListener('touchend', (e: TouchEvent) => {
-      if ((this.panZoomApi.getTransform().x > window.screen.width) ||
-      (this.panZoomApi.getTransform().x * -1 > this.currentWidth * this.panZoomApi.getTransform().scale) ||
-      (this.panZoomApi.getTransform().y > this.panoHeight) ||
-      (this.panZoomApi.getTransform().y * -1 > (this.panoHeight + this.yOffset * this.panZoomApi.getTransform().scale))) {
+      if (
+        (this.panZoomApi.getTransform().x > window.screen.width) ||
+        (this.panZoomApi.getTransform().x * -1 > this.currentWidth * this.panZoomApi.getTransform().scale) ||
+        (this.panZoomApi.getTransform().y > this.panoHeight) ||
+        (this.panZoomApi.getTransform().y * -1 > this.currentHeight * this.panZoomApi.getTransform().scale)
+      ) {
         this.centerImage(this.currentWidth);
       }
     });
