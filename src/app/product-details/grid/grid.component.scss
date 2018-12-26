@@ -20,13 +20,6 @@ table tbody
     height: calc(100vh - 111px - 365px - 95px - 48px);
 }
 
-@media (max-width: 1366px){
-  table tbody
-  {
-      height: calc(100vh - 111px - 365px - 95px - 48px - 31px);
-  }
-}
-
 th{
     border: 1px solid $primary;
     color: $primary;
@@ -88,13 +81,25 @@ tbody :first-child{
     background-clip: content-box;
 }
 
+//Ipad Pro
+@media (max-width: 1366px){
+  table tbody
+  {
+      height: calc(100vh - 111px - 365px - 95px - 48px - 31px);
+  }
+}
+
+//Ipad Pro
 @media (max-width: 1366px) and (min-width: 1366px) {
   th, td{
     width: 311px !important;
   }
 }
 
-@media (max-width: 1112px){
+//Ipad Mini
+@media (max-width: 1048px){
+  margin: auto 50px !important;
+  width: calc(100% - 100px) !important;
   th{
     height: 33px !important;
   }
@@ -103,18 +108,21 @@ tbody :first-child{
     height: 48px !important;
   }
 
-  table tbody{
-    height: calc(100vh - 50px - 85px - 291px - 95px - 48px) !important;
-  }
-}
-
-@media (max-width: 1024px){
   tr{
     font-size: 12px !important;
   }
 }
 
-@media (max-width: 1112px) {
-  margin: auto 50px !important;
-  width: calc(100% - 100px) !important;
+//Ipad Mini Lanscape
+@media (max-width: 1048px) and (orientation: landscape){
+  table tbody{
+    height: calc(100vh - 613px) !important;
+  }
+}
+
+//Ipad Mini Portrait
+@media (max-width: 1048px) and (orientation: portrait) {
+  table tbody{
+    height: calc(100vh - 633px) !important;
+  }
 }

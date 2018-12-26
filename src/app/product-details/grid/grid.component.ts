@@ -32,7 +32,7 @@ export class GridComponent implements OnInit, AfterViewChecked {
 
   // Change selected row on keyup and keydown
   @HostListener('window:keyup', ['$event'])
-  clickout(event) {
+  keyscroll(event) {
     if (event.keyCode === KEY_CODE.UP && this.selectedId >= 0) {
       const index = this.findIndexById(this.selectedId);
       if (index > 0) {
@@ -44,6 +44,11 @@ export class GridComponent implements OnInit, AfterViewChecked {
         this.gridClicked.emit( this.products[index + 1].id );
       }
     }
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll(event: Event) {
+    event.preventDefault();
   }
 
   // Return the table index based on a product id
