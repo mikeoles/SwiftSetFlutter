@@ -46,11 +46,6 @@ export class GridComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  @HostListener('window:scroll', ['$event'])
-  onWindowScroll(event: Event) {
-    event.preventDefault();
-  }
-
   // Return the table index based on a product id
   findIndexById(id: number) {
     for (let i = 0; i < this.products.length; i++) {

@@ -5,3 +5,10 @@ body {
 *{
   font-family: 'Open Sans', sans-serif;
 }
+
+html,
+body {
+  position: fixed;
+  overflow: hidden;
+  width: 100%;
+}
