@@ -22,6 +22,11 @@
         border: 10px solid;
       }
 
+      .clickRadius{
+        position: absolute;
+        border: 0px solid;
+      }
+
       .outsAnnotation {
         border-color: $outs;
       }
