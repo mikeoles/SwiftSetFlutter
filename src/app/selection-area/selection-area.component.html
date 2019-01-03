@@ -9,6 +9,7 @@
     <ul class="dropdown" *ngIf="showMissions">
       <li
         *ngFor="let mission of missions"
+        [class.selected]="mission.id === this.selectedMission.id"
         [value]="mission"
         (click)="missionChanged(mission)"
       >
@@ -25,6 +26,7 @@
     </button>
     <ul *ngIf="showAisles">
       <li
+        [class.selected]="aisle.id === this.selectedAisle.id"
         *ngFor="let aisle of aisles"
         [value]="aisle"
         (click)="aisleChanged(aisle)"

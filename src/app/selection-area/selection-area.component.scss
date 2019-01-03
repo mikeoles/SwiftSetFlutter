@@ -110,6 +110,10 @@ ul{
   float: right;
 }
 
+.selected{
+  color: $primary;
+}
+
 //Scrollbar
 ::-webkit-scrollbar {
   width: 1px;
