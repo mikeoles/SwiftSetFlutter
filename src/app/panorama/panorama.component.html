@@ -5,18 +5,20 @@
       <ng-container *ngFor="let annotation of annotations()">
         <div class="{{this.currentDisplay}}Annotation annotation"
           [class.selected]="(this.currentId === annotation.id) && !this.panoMode"
-          [style.left.px]="annotation.bounds.left"
-          [style.top.px]="annotation.bounds.top"
-          [style.width.px]="annotation.bounds.width"
-          [style.height.px]="annotation.bounds.height">
-      </div>
-          <!-- Just to make it easier to click during NRF -->
-          <div class="clickRadius"
           [style.left.px]="annotation.bounds.left-70"
           [style.top.px]="annotation.bounds.top-70"
           [style.width.px]="annotation.bounds.width+140"
           [style.height.px]="annotation.bounds.height+140"
           (click)="annotationClicked(annotation)">
+      </div>
+          <!-- Just to make it easier to click during NRF -->
+          <div class="realBorder"
+          [class.selected]="(this.currentId === annotation.id) && !this.panoMode"
+          [style.left.px]="annotation.bounds.left"
+          [style.top.px]="annotation.bounds.top"
+          [style.width.px]="annotation.bounds.width"
+          [style.height.px]="annotation.bounds.height"
+          >
         </div>
       </ng-container>
     </div>

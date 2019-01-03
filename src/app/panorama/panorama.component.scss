@@ -18,13 +18,13 @@
 
       .annotation{
         position: absolute;
-        color: white;
-        border: 10px solid;
+        border: 0px solid;
       }
 
-      .clickRadius{
+      .realBorder{
         position: absolute;
-        border: 0px solid;
+        color: white;
+        border: 10px solid;
       }
 
       .outsAnnotation {
