@@ -12,8 +12,8 @@ button{
     font-weight: bold;
 }
 
-//Ipad Mini
-@media screen and (max-width: 1048px) {
+//Ipad Mini and 10.5 pro
+@media screen and (max-width: 1112px) {
   button {
     width: 180px !important;
     height: 48px !important;

@@ -45,16 +45,16 @@ button{
   }
 }
 
-//iPad mini landscape mode
-@media (max-width: 1048px) and (orientation: landscape) {
+//iPad mini and 10.5 pro landscape mode
+@media (max-width: 1112px) and (orientation: landscape) {
   .container{
     margin-left: 180px !important;
     width: calc(100vw - 180px) !important;
   }
 }
 
-//iPad mini portrait mode
-@media (max-width: 768px) and (orientation: portrait) {
+//iPad mini and 10.5 pro portrait mode
+@media (max-width: 834px) and (orientation: portrait) {
   #missionsContainer button {
     width: 280px !important;
   }

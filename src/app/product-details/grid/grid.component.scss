@@ -110,8 +110,8 @@ tbody :first-child{
 
 
 
-//Ipad Mini Lanscape
-@media (max-width: 1048px) and (orientation: landscape){
+//Ipad Mini and 10.5 pro Lanscape
+@media (max-width: 1112px) and (orientation: landscape){
   table tbody{
     height: calc(100vh - 655px) !important;
   }
@@ -130,8 +130,8 @@ tbody :first-child{
   }
 }
 
-//Ipad Mini Portrait
-@media (max-width: 768px) and (orientation: portrait) {
+//Ipad Mini and 10.5 pro Portrait
+@media (max-width: 834px) and (orientation: portrait) {
   table tbody{
     height: calc(100vh - 675px) !important;
   }
