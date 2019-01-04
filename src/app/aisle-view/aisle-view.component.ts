@@ -23,7 +23,7 @@ export class AisleViewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.apiService.getAllMissions().subscribe(missions => this.missions = missions);
+    this.apiService.getMissions().subscribe(missions => this.missions = missions);
     this.activatedRoute.params.forEach((params: Params) => {
       if (params['missionId'] !== undefined) {
         this.currentMission = params['missionId'];
@@ -44,8 +44,8 @@ export class AisleViewComponent implements OnInit {
 
   setAisle(id) {
     this.currentAisle = id;
-    this.apiService.getOuts(this.currentMission, this.currentAisle).subscribe(outs => this.outs = outs);
-    this.apiService.getLabels(this.currentMission, this.currentAisle).subscribe(labels => this.labels = labels);
+    this.apiService.getOuts(this.currentAisle).subscribe(outs => this.outs = outs);
+    this.apiService.getLabels(this.currentAisle).subscribe(labels => this.labels = labels);
   }
 
   setId(id) {

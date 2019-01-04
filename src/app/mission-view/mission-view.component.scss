@@ -21,8 +21,27 @@ img{
   padding: 20px 40px;
 }
 
-.missionAddress span{
+.missionDate span{
   font-weight: normal;
+}
+
+.exportButton, .missionDate{
+  display: inline-block;
+}
+
+.exportButton{
+  float: right;
+  background-color: #467df3;
+  border-radius: 5px;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: left;
+  border: 3px #467df3 solid
+}
+
+button:focus{
+outline:0;
 }
 
 .statRings{

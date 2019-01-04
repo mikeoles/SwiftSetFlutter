@@ -1,7 +1,9 @@
 {
-  "AverageOuts": 1241,
+  "StoreName": "Store 0054",
+  "StoreAddress": "3201 E Platte Ave, Colorado Springs, CO 80909",
+  "AverageOuts": 124,
   "AverageLabels": 4521,
-  "AverageSpreads": 4521,
+  "AverageSpreads": 31,
   "outs": [
     {
       "date":  "2018-11-8",

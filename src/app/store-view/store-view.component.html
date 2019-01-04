@@ -2,11 +2,11 @@
   <img src="../assets/logo.png"/>
 </header>
 <div class="storeInfo">
-  <div class="storeName"><div id="circle"></div>STORE 0054</div>
-  <div class="storeAddress"> Colosprings <span> 3201 E Platte Ave, Colorado Springs, CO 80909 </span></div>
+  <div class="storeName"><div id="circle"></div>{{store.StoreName}}</div>
+  <div class="storeAddress"> Colosprings <span> {{store.StoreAddress}}</span></div>
 </div>
 <div class="title">Daily Stats</div>
-<div class="graphDisplay"><app-daily-graphs [title]="'Outs'" [data]="summary.outs" [overallAverage]="summary.AverageOuts" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>
-<div class="graphDisplay"><app-daily-graphs [title]="'Labels'" [data]="summary.labels" [overallAverage]="summary.AverageLabels" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>
-<div class="graphDisplay"><app-daily-graphs [title]="'Spreads'" [data]="summary.spreads" [overallAverage]="summary.AverageSpreads" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>
+<div class="graphDisplay"><app-daily-graphs [title]="'Outs'" [data]="store.outs" [overallAverage]="store.AverageOuts" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>
+<div class="graphDisplay"><app-daily-graphs [title]="'Labels'" [data]="store.labels" [overallAverage]="store.AverageLabels" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>
+<div class="graphDisplay"><app-daily-graphs [title]="'Spreads'" [data]="store.spreads" [overallAverage]="store.AverageSpreads" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>
 <app-missions-grid *ngIf="missions" [missions]="missions" [missionsDate]="selectedDate"></app-missions-grid>

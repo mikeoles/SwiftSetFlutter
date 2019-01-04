@@ -3,7 +3,8 @@
 </header>
 <div class="missionInfo">
   <div class="missionName"><div id="circle"></div>STORE 0054</div>
-  <div class="missionAddress"> Mission: <span> Mission {{currentMisison}} on {{mission.Date | date:'M/d'}} {{mission.Time}}</span></div>
+  <div class="missionDate"> Mission: <span> Mission {{currentMission}} on {{mission.Date | date:'M/d'}} {{mission.Time}}</span></div>
+  <button class="exportButton" (click)="exportMission()">Export Mission</button>
 </div>
 <div class="statRings">
   <app-stat-ring class="left" [title]="'Outs'" [stat]="mission.Outs" [current]="60" max="100"></app-stat-ring>
@@ -11,5 +12,5 @@
   <app-stat-ring class="right" [title]="'Labels'" [stat]="mission.Labels" [current]="60" max="100"></app-stat-ring>
 </div>
 <div class="grid">
-  <app-aisles-grid [aisles]="mission.Aisles" [missionId]="currentMisison"></app-aisles-grid>
+  <app-aisles-grid [aisles]="mission.Aisles" [missionId]="currentMission"></app-aisles-grid>
 </div>

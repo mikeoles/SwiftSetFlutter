@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import outs from './mock/outs.json';
 import labels from './mock/labels.json';
-import missionSummaries from './mock/summaries.json';
+import store from './mock/store.json';
 import missions from './mock/missions.json';
 import aisles from './mock/aisles.json';
 import mission from './mock/mission.json';
@@ -14,15 +14,15 @@ export class ApiService {
 
   constructor() { }
 
-  getOuts(selectedMission: number, selectedAisle: string): Observable<Array<any>> {
+  getOuts(selectedAisle: string): Observable<Array<any>> {
     return of(outs);
   }
 
-  getLabels(selectedMission: number, selectedAisle: string): Observable<Array<any>> {
+  getLabels(selectedAisle: string): Observable<Array<any>> {
     return of(labels);
   }
 
-  getAllMissions(): Observable<Array<any>> {
+  getMissions(): Observable<Array<any>> {
     return of(outs);
   }
 
@@ -30,11 +30,11 @@ export class ApiService {
     return of(aisles);
   }
 
-  getMissionSummaries() {
-    return of(missionSummaries);
+  getStore(id: number) {
+    return of(store);
   }
 
-  getMissions(date: string): Observable<Array<any>> {
+  getDateMissions(date: string): Observable<Array<any>> {
     return of(missions);
   }
 
