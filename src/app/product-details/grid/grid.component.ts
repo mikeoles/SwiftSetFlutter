@@ -65,7 +65,9 @@ export class GridComponent implements OnInit, AfterViewChecked, OnChanges {
       }
       currentProduct = nextProduct;
     }
-    currentRow.push(this.products[this.products.length - 1]);
+    if (this.products.length > 1) {
+      currentRow.push(this.products[this.products.length - 1]);
+    }
     currentRow.sort(horizontal);
     sortedProducts = sortedProducts.concat(currentRow);
     this.products = sortedProducts;
