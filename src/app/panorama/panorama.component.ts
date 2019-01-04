@@ -62,7 +62,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
       this.panoramaTouched.emit(true);
       if (e.target instanceof HTMLElement) {
         const touchedElement = e.target as HTMLElement;
-        if (touchedElement.classList.contains('annotation')) {
+        if (touchedElement.classList.contains('bigTouch')) {
           touchedElement.click();
         }
       }
