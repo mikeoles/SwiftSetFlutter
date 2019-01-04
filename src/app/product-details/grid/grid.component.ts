@@ -22,9 +22,14 @@ export class GridComponent implements OnInit, AfterViewChecked, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    if (!this.products) {
+      return;
+    }
+
     if (!changes['products'] || this.products.length < 1) {
       return;
     }
+
     function vertical(a,  b) {
       if (a.bounds.top < b.bounds.top) {
         return -1;
