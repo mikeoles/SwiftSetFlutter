@@ -97,12 +97,13 @@ ul{
     border-bottom: rgba(211, 211, 211, 0.5) 1px solid;
     padding: 10px;
     cursor:pointer;
+    color: $primary;
   }
   li:last-child{
     border-bottom: 0px;
   }
   li:hover{
-    color: $primary;
+    color: black;
   }
 }
 
@@ -111,7 +112,7 @@ ul{
 }
 
 .selected{
-  color: $primary;
+  color: black !important;
 }
 
 //Scrollbar
@@ -141,7 +142,7 @@ ul{
 
 .selectedButton{
   background-color: $primary;
-  color:  White;
+  color:  black;
 }
 
 #logo{

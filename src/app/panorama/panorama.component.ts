@@ -29,7 +29,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
   faPlus = faPlus;
   faMinus = faMinus;
   startingZoomLevel = .17;
-  panoZoomLevel = .25;
+  panoZoomLevel = .3;
   zoomedInLevel = .5;
   panoHeight = 365;
   yOffset = 750;
@@ -54,7 +54,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
         (this.panZoomApi.getTransform().y > this.panoHeight) ||
         (this.panZoomApi.getTransform().y * -1 > this.currentHeight * this.panZoomApi.getTransform().scale)
       ) {
-        this.centerImage(this.currentWidth);
+        this.centerImage(this.currentWidth, this.currentHeight);
       }
     });
 
@@ -73,7 +73,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
     if (this.panZoomApi) {
       if (changes['panoMode']) {
         const element = document.getElementById('pano-image');
-        this.centerImage(element.offsetWidth);
+        this.centerImage(element.offsetWidth, element.offsetHeight);
       } else {
         if (this.currentId && this.currentId !== -1 && !this.selectedIdWithPano) {
 
@@ -106,7 +106,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
           const element = document.getElementById('pano-image');
           const interval = setInterval(() => {
             if (element.offsetWidth !== 0 && element.offsetWidth !== this.currentWidth) {
-              this.centerImage(element.offsetWidth);
+              this.centerImage(element.offsetWidth, element.offsetHeight);
               this.currentWidth = element.offsetWidth;
               this.currentHeight = element.offsetHeight;
               clearInterval(interval);
@@ -127,11 +127,16 @@ export class PanoramaComponent implements OnInit, OnChanges {
     }
   }
 
-  centerImage(imageWidth: number) {
+  centerImage(imageWidth: number, imageHeight: number) {
     let moveX = 0;
+    let moveY = this.yOffset;
     let zoom = this.startingZoomLevel;
     if (this.panoMode) {
       zoom = this.panoZoomLevel;
+      const top = document.getElementById('missionsContainer');
+      const bottom = document.getElementById('tableSelection');
+      const paneHeight = window.innerHeight - top.offsetHeight - bottom.offsetHeight;
+      moveY = (imageHeight / 2) - (paneHeight / 2) * (1 / zoom);
     }
     // If image is smaller than screen, center image
     if (imageWidth * this.startingZoomLevel < window.innerWidth) {
@@ -139,7 +144,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
     }
 
     this.panZoomApi.zoomAbs(0, 0, 1);
-    this.panZoomApi.moveTo(moveX * -1, this.yOffset * -1);
+    this.panZoomApi.moveTo(moveX * -1, moveY * -1);
     this.panZoomApi.zoomAbs(0, 0, zoom);
   }
 
