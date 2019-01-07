@@ -7,6 +7,7 @@ import { GridComponent } from './aisle-view/product-details/grid/grid.component'
 import { PanoramaComponent } from './aisle-view/panorama/panorama.component';
 import { SelectionAreaComponent } from './aisle-view/selection-area/selection-area.component';
 import { FormsModule } from '@angular/forms';
+import { ChartsModule } from 'ng2-charts';
 import { StoreViewComponent } from './store-view/store-view.component';
 import { StatRingComponent } from './mission-view/stat-ring/stat-ring.component';
 import { MissionsGridComponent } from './store-view/missions-grid/missions-grid.component';
@@ -39,6 +40,7 @@ import { EnvironmentService } from './environment.service';
   ],
   imports: [
     BrowserModule,
+    ChartsModule,
     FormsModule,
     FontAwesomeModule,
     KeyboardShortcutsModule,

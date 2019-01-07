@@ -31,6 +31,7 @@
     "font-awesome": "^4.7.0",
     "hammerjs": "^2.0.8",
     "ng-keyboard-shortcuts": "^6.1.1",
+    "ng2-charts": "^1.6.0",
     "panzoom": "^7.0.2",
     "rxjs": "~6.3.3",
     "zone.js": "~0.8.26"
