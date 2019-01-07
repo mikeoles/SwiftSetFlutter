@@ -1,3 +1,5 @@
+@import "../../../../variables";
+
 table {
     border-collapse: collapse;
     text-align: center;
@@ -15,36 +17,33 @@ table tbody
 {
     overflow-y: auto;
     overflow-x: hidden;
-    height: calc(100vh - 67px - 111px - 365px - 95px - 48px);
+    -webkit-overflow-scrolling: touch;
+    height: calc(100vh - 111px - 365px - 95px - 48px);
 }
 
 th{
-    border: 1px solid #467df3;
-    color: #a9b3c7;
+    border: 1px solid $primary;
+    color: $primary;
     font-size: 12px;
     height: 44px;
 }
 
 td{
     height: 55px;
-    padding-left: 25px;
 }
 
+
 th, td{
-    width: 1000px;
+  width: 1000px;
 }
 
 tr{
     border: 1px solid #707070;
-    border-right: 0px;
 }
 
 tbody :first-child{
     border-top: 0px;
 }
-
-
-
 
 //Selection
 .selected{
@@ -53,16 +52,16 @@ tbody :first-child{
 
 .selected td {
   height: 51px;
-  border-top: 3px solid #FFD54A;
-  border-bottom: 3px solid #FFD54A;
+  border-top: 3px solid $selected;
+  border-bottom: 3px solid $selected;
 }
 
 .selected td:first-child {
-  border-left: 3px solid #FFD54A;
+  border-left: 3px solid $selected;
 }
 
 .selected td:last-child {
-  border-right: 3px solid #FFD54A;
+  border-right: 3px solid $selected;
 }
 
 //Scrollbar
@@ -72,14 +71,79 @@ tbody :first-child{
 
 ::-webkit-scrollbar-track {
     background: white;
-    border: solid 1px #467df3;
-    border-top: 0px;
-    border-bottom: 0px;
+    border-right: solid 1px $primary;
+    border-bottom: solid 1px $primary;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #467df3;
+    background-color: $primary;
     border: 5px solid transparent;
     border-radius: 9px;
     background-clip: content-box;
+}
+
+//Ipad Pro Landscape
+@media (max-width: 1366px)  and (orientation: landscape){
+  th, td{
+    width: 311px !important;
+  }
+
+  table tbody
+  {
+      height: calc(100vh - 111px - 365px - 95px - 48px - 17px);
+  }
+}
+
+//Ipad Pro Landscape
+@media (max-width: 1366px) and (orientation: portrait) {
+  th, td{
+    width: 311px !important;
+  }
+
+  table tbody
+  {
+      height: calc(100vh - 111px - 365px - 95px - 48px - 31px);
+  }
+}
+
+
+
+//Ipad Mini and 10.5 pro Lanscape
+@media (max-width: 1112px) and (orientation: landscape){
+  table tbody{
+    height: calc(100vh - 655px) !important;
+  }
+  margin: auto 50px !important;
+  width: calc(100% - 100px) !important;
+  th{
+    height: 33px !important;
+  }
+
+  td{
+    height: 48px !important;
+  }
+
+  tr{
+    font-size: 12px !important;
+  }
+}
+
+//Ipad Mini and 10.5 pro Portrait
+@media (max-width: 834px) and (orientation: portrait) {
+  table tbody{
+    height: calc(100vh - 675px) !important;
+  }
+  margin: auto 50px !important;
+  width: calc(100% - 100px) !important;
+  th{
+    height: 33px !important;
+  }
+
+  td{
+    height: 48px !important;
+  }
+
+  tr{
+    font-size: 12px !important;
+  }
 }

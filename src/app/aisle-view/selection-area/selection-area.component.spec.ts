@@ -2,10 +2,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SelectionAreaComponent } from './selection-area.component';
 import { FormsModule } from '@angular/forms';
-import outs from '../mock/outs.json';
-import labels from '../mock/labels.json';
-import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
+import Aisle from '../aisle.model';
+import Mission from '../mission.model';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 describe('SelectionAreaComponent', () => {
   let component: SelectionAreaComponent;
@@ -16,12 +16,21 @@ describe('SelectionAreaComponent', () => {
   let aislesDropdownEl: HTMLElement;
   let missionsListEl: HTMLLIElement;
   let aislesListEl: HTMLLIElement;
-  const missionsData = of(outs);
-  const aislesData = of(labels);
+  const missions: Mission[] = [
+    { id: 1, name: '1111', createDateTime: new Date('2018-12-12') },
+    { id: 2, name: '2222', createDateTime: new Date('2001-01-01') },
+  ];
+  const aisles: Aisle[] = [
+    { id: 1, name: '1111', panoramaUrl: '', labels: [], outs: [] },
+    { id: 2, name: '2222', panoramaUrl: '', labels: [], outs: [] },
+    { id: 3, name: '3333', panoramaUrl: '', labels: [], outs: [] },
+    { id: 4, name: '4444', panoramaUrl: '', labels: [], outs: [] },
+    { id: 5, name: '5555', panoramaUrl: '', labels: [], outs: [] },
+  ];
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule],
+      imports: [FormsModule, FontAwesomeModule],
       declarations: [ SelectionAreaComponent ]
     })
     .compileComponents();
@@ -29,12 +38,12 @@ describe('SelectionAreaComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SelectionAreaComponent);
     component = fixture.componentInstance;
-    component.missionId = 1;
-    component.aisleId = '1';
     component.showAisles = true;
     component.showMissions = true;
-    missionsData.subscribe(missions => component.missions = missions);
-    aislesData.subscribe(aisles => component.aisles = aisles);
+    component.missions = missions;
+    component.aisles = aisles;
+    component.selectedMission = missions[0];
+    component.selectedAisle = aisles[0];
     fixture.detectChanges();
     missionsButtonEl = fixture.debugElement.query(By.css('#missionsContainer > button')).nativeElement;
     aislesButtonEl = fixture.debugElement.query(By.css('#aislesContainer > button')).nativeElement;
@@ -52,8 +61,8 @@ describe('SelectionAreaComponent', () => {
   it('has a dropdown of missions', () => {
     fixture.whenStable().then(() => {
       fixture.detectChanges();
-      expect(missionsDropdownEl.childElementCount).toEqual(5);
-      expect(missionsDropdownEl.children[0].textContent).toEqual('Mission 1');
+      expect(missionsDropdownEl.childElementCount).toEqual(2);
+      expect(missionsDropdownEl.children[0].textContent).toEqual(' 12/11/2018 - 1111 ');
     });
   });
 
@@ -61,50 +70,50 @@ describe('SelectionAreaComponent', () => {
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(aislesDropdownEl.childElementCount).toEqual(5);
-      expect(aislesDropdownEl.children[4].textContent).toEqual('Aisle 5');
+      expect(aislesDropdownEl.children[4].textContent).toEqual(' 5555 ');
     });
   });
 
   it('emits mission when selected', () => {
-    spyOn(component.selectedMission, 'emit');
+    spyOn(component.missionSelected, 'emit');
     missionsListEl.click();
     missionsListEl.dispatchEvent(new Event('change'));
     fixture.detectChanges();
-    expect(component.selectedMission.emit).toHaveBeenCalledWith(2);
+    expect(component.missionSelected.emit).toHaveBeenCalledWith(missions[1]);
   });
 
   it('emits aisle when selected', () => {
-    spyOn(component.selectedAisle, 'emit');
+    spyOn(component.aisleSelected, 'emit');
     aislesListEl.click();
     aislesListEl.dispatchEvent(new Event('change'));
     fixture.detectChanges();
-    expect(component.selectedAisle.emit).toHaveBeenCalledWith(4);
+    expect(component.aisleSelected.emit).toHaveBeenCalledWith(aisles[3]);
   });
 
   it('starts by displaying first mission', () => {
     fixture.whenStable().then(() => {
       fixture.detectChanges();
-      expect(missionsButtonEl.textContent).toEqual('Mission 1');
+      expect(missionsButtonEl.textContent).toEqual(' Mission 1111 ');
     });
   });
 
   it('automatically selects first aisle from selected mission', () => {
     fixture.whenStable().then(() => {
       fixture.detectChanges();
-      expect(aislesButtonEl.textContent).toEqual('Aisle 1');
+      expect(aislesButtonEl.textContent).toEqual(' Aisle 1111 ');
     });
   });
 
   it('sets mission button based on input', () => {
-    component.missionId  = 3;
+    component.selectedMission  = missions[1];
     fixture.detectChanges();
-    expect(missionsButtonEl.textContent).toEqual('Mission 3');
+    expect(missionsButtonEl.textContent).toEqual(' Mission 2222 ');
   });
 
   it('sets mission button based on input', () => {
-    component.aisleId  = '5';
+    component.selectedAisle = aisles[1];
     fixture.detectChanges();
-    expect(aislesButtonEl.textContent).toEqual('Aisle 5');
+    expect(aislesButtonEl.textContent).toEqual(' Aisle 2222 ');
   });
 
   it('hide missions dropdown after click', () => {
