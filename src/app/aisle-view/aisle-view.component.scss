@@ -7,3 +7,9 @@ img {
   display: block;
   margin: 15px auto;
 }
+
+html,
+body {
+  position: fixed;
+  overflow: hidden;
+}

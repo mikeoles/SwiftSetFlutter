@@ -4,12 +4,14 @@ import { KeyboardShortcutsService } from 'ng-keyboard-shortcuts';
 import Mission from './../mission.model';
 import Aisle from './../aisle.model';
 import Label from './../label.model';
+import { ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-aisle-view',
   templateUrl: './aisle-view.component.html',
   styleUrls: ['./aisle-view.component.scss'],
-  providers: [ KeyboardShortcutsService ]
+  providers: [ KeyboardShortcutsService ],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class AisleViewComponent implements OnInit {
