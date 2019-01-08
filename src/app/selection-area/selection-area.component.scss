@@ -10,7 +10,7 @@ button{
     font-size: 18px;
     font-weight: bold;
     text-align: left;
-    color: black;
+    color: #434343;
     border: 3px $primary solid;
 }
 
@@ -142,7 +142,7 @@ ul{
 
 .selectedButton{
   background-color: $primary;
-  color:  black;
+  color:  #434343;
 }
 
 #logo{
