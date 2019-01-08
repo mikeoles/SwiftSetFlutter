@@ -29,7 +29,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
   faPlus = faPlus;
   faMinus = faMinus;
   startingZoomLevel = .17;
-  panoZoomLevel = .3;
+  panoZoomLevel = .25;
   zoomedInLevel = .5;
   panoHeight = 365;
   yOffset = 750;
@@ -133,16 +133,18 @@ export class PanoramaComponent implements OnInit, OnChanges {
     let zoom = this.startingZoomLevel;
     if (this.panoMode) {
       zoom = this.panoZoomLevel;
-      const top = document.getElementById('missionsContainer');
-      const bottom = document.getElementById('tableSelection');
-      const paneHeight = window.innerHeight - top.offsetHeight - bottom.offsetHeight;
-      moveY = (imageHeight / 2) - (paneHeight / 2) * (1 / zoom);
+      // Center vertically in pano mode
+      if (imageHeight * zoom < window.innerHeight) {
+        const top = document.getElementById('missionsContainer');
+        const bottom = document.getElementById('tableSelection');
+        const paneHeight = window.innerHeight - top.offsetHeight - bottom.offsetHeight;
+        moveY = (imageHeight / 2) - (paneHeight / 2) * (1 / zoom);
+      }
     }
     // If image is smaller than screen, center image
-    if (imageWidth * this.startingZoomLevel < window.innerWidth) {
+    if (imageWidth * zoom < window.innerWidth * 2) {
       moveX = (imageWidth / 2) - (window.innerWidth / 2) * (1 / zoom);
     }
-
     this.panZoomApi.zoomAbs(0, 0, 1);
     this.panZoomApi.moveTo(moveX * -1, moveY * -1);
     this.panZoomApi.zoomAbs(0, 0, zoom);
