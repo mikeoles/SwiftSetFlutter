@@ -1,3 +1,5 @@
+@import "../../../variables";
+
 :host{
   display: block;
   margin-bottom: 40px;
@@ -21,8 +23,8 @@ table tbody, table thead
 }
 
 th{
-  border: 1px solid #467df3;
-  color: #467df3;
+  border: 1px solid $primary;
+  color: $primary;
   font-size: 12px;
   height: 44px;
 }
@@ -38,7 +40,7 @@ th, td{
 }
 
 tr{
-  border: 1px solid #707070;
+  border: 1px solid $greyBorder;
 }
 
 tbody :first-child{

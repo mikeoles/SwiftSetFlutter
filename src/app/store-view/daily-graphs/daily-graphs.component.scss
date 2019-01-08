@@ -1,3 +1,5 @@
+@import "../../../variables";
+
 :host{
   font-size: 18px;
 }
@@ -41,5 +43,5 @@
 }
 
 .dateOverlaySelected{
-  color: #467df3;
+  color: $primary;
 }

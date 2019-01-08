@@ -1,3 +1,5 @@
+@import "../../../variables";
+
 :host{
   display: block;
   margin: 90px auto 40px auto;
@@ -6,8 +8,8 @@
 table {
   border-collapse: collapse;
   text-align: center;
-  margin: auto;
-  width: 100%;
+  margin: auto 40px;
+  width: calc(100% - 80px);
   table-layout: fixed;
 }
 
@@ -17,8 +19,8 @@ table tbody, table thead
 }
 
 th{
-  border: 1px solid #467df3;
-  color: #467df3;
+  border: 1px solid $primary;
+  color: $primary;
   font-size: 12px;
   height: 44px;
 }
@@ -30,11 +32,11 @@ td{
 }
 
 th, td{
-  width: 300px;
-}
+  width: 1000px;
+  }
 
 tr{
-  border: 1px solid #707070;
+  border: 1px solid $greyBorder;
 }
 
 tbody :first-child{
