@@ -8,9 +8,9 @@ button{
     background-color: white;
     border-radius: 30px;
     font-size: 18px;
-    font-weight: bold;
+    font-weight: 900;
     text-align: left;
-    color: black;
+    color: $primary;
     border: 3px $primary solid;
 }
 
@@ -142,7 +142,7 @@ ul{
 
 .selectedButton{
   background-color: $primary;
-  color:  black;
+  color: white;
 }
 
 #logo{
