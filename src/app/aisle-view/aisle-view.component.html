@@ -1,15 +1,12 @@
-<header>
-  <span class="helper"></span><img src="../assets/logo.png"/>
-</header>
 <app-selection-area [missions]="missions" [aisles]="aisles"
-  [missionId]="currentMission" [aisleId]="currentAisle"
-  (selectedMission)='setMission($event)' (selectedAisle)='setAisle($event)'>
+  [selectedMission]="selectedMission" [selectedAisle]="selectedAisle"
+  (missionSelected)='setMission($event)' (aisleSelected)='setAisle($event)' [panoTouched]=panoTouched (panoSwitch)='changePanoMode()'>
 </app-selection-area>
-<app-panorama [outs]="outs" [labels]="labels"
+<app-panorama [outs]="outs" [labels]="labels" [panoramaUrl]="panoramaUrl"
   [currentId]="currentId" [currentDisplay]="currentDisplay"
-  (panoramaId)='setId($event)'>
+  (panoramaId)='setId($event)' [panoMode]='panoMode' (panoramaTouched)='hideDropdowns($event)'>
 </app-panorama>
 <app-product-details [outs]="outs" [labels]="labels"
   (gridId)='setId($event)' (gridDisplay)='setDisplay($event)'
-  [currentId]="currentId" [currentDisplay]="currentDisplay">
+  [currentId]="currentId" [currentDisplay]="currentDisplay" [panoMode]='panoMode'>
 </app-product-details>

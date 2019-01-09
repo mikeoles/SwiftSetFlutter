@@ -1,34 +1,90 @@
+@import '../../../variables';
+
 .panorama {
-  height: 365px;
-  display: block;
-  margin: auto;
   overflow: hidden;
   text-align: center;
+  position: relative;
 
-  .image {
-    height: 100%;
+  .image-owner {
+    height: 365px;
     position: relative;
 
-    img {
-      height: 100%;
-    }
+    .image {
+      display: inline-block;
 
-    .annotation{
-      position: absolute;
-      color: white;
-      border: 3px solid;
-    }
+      img {
+        height: 100%;
+      }
 
-    .outsAnnotation {
-      border-color: #FFFFFF;
-    }
+      .bigTouch{
+        position: absolute;
+        border: 0px solid;
+      }
 
-    .labelsAnnotation {
-      border-color:  #00CD87;
-    }
+      .annotation{
+        position: absolute;
+        color: white;
+        border: 10px solid;
+      }
 
-    .plugsAnnotation {
-      border-color:  #467df3;
-    } 
+      .outsAnnotation {
+        border-color: $outs;
+      }
+
+      .labelsAnnotation {
+        border-color:  $labels;
+      }
+
+      .plugsAnnotation {
+        border-color:  $primary;
+      }
+
+      .selected {
+        border-color: $selected;
+      }
+    }
   }
+
+  #zoom {
+    position: absolute;
+    right: 38px;
+    top: 29px;
+    width: 44px;
+    height: 91px;
+    background-color: white;
+    border: 3px solid $primary;
+    border-radius: 5px;
+    font-size: 24px;
+    user-select: none;
+
+    .zoomIcon {
+      color: $primary;
+      display: block;
+      position: absolute;
+      left: -3px;
+      width: 44px;
+      height: 44px;
+      line-height: 44px;
+      border: 3px solid $primary;
+      border-radius: 5px;
+      cursor: pointer;
+
+      &:active {
+        background-color: #cdd9f3;
+      }
+
+      &#zoomIn { top: -3px; }
+      &#zoomOut { top: 44px; }
+    }
+  }
+}
+
+@media screen and (orientation: portrait) {
+  .image-owner {
+    height: 385px !important;
+  }
+}
+
+.panoModeClass{
+  height: calc(100vh - 111px - 95px) !important;
 }

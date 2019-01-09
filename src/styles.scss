@@ -2,6 +2,16 @@ body {
   margin: 0;
 }
 
+@font-face {
+  font-family: OpenSans;
+  src: url(assets/Open_Sans/OpenSans-Regular.ttf) format("opentype");
+}
+
 *{
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'OpenSans', sans-serif;
+}
+
+html,
+body {
+  width: 100%;
 }

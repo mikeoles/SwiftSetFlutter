@@ -1,6 +1,6 @@
-import { environment } from '../../../environments/environment';
 import { Component, OnInit, Output, EventEmitter, Input, OnChanges } from '@angular/core';
-import Label from '../../label.model';
+import { environment } from '../../environments/environment';
+import Label from '../label.model';
 
 @Component({
   selector: 'app-product-details',

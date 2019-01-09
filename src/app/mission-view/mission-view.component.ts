@@ -7,6 +7,7 @@ import { Params, ActivatedRoute } from '@angular/router';
   templateUrl: './mission-view.component.html',
   styleUrls: ['./mission-view.component.scss']
 })
+
 export class MissionViewComponent implements OnInit {
   mission: any;
   currentMission: number;

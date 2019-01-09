@@ -42,7 +42,7 @@ export class DailyGraphsComponent implements OnInit, OnChanges {
     }
   };
   public barChartData: Array<Array<number>> = [];
-  public mainColor = [{ backgroundColor: '#467df3' }];
+  public mainColor = [{ backgroundColor: '#2baae1' }];
   public selectedColor = [{ backgroundColor: '#FFD54A' }];
 
 
