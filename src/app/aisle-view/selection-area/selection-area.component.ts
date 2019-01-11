@@ -3,6 +3,9 @@ import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import { formatDate } from '@angular/common';
 import Mission from '../../mission.model';
 import Aisle from '../../aisle.model';
+import * as jsPDF from 'jspdf';
+import 'jspdf-autotable';
+import Label from 'src/app/label.model';
 
 @Component({
   selector: 'app-selection-area',
@@ -17,6 +20,8 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   @Input() selectedMission: Mission;
   @Input() selectedAisle: Aisle;
   @Input() panoTouched: boolean;
+  @Input() panoramaUrl: string;
+  @Input() outs: Label[] = [];
   @Output() missionSelected = new EventEmitter();
   @Output() aisleSelected = new EventEmitter();
   @Output() panoSwitch = new EventEmitter();
@@ -72,5 +77,23 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
 
   logoClicked() {
     this.panoSwitch.emit();
+  }
+
+  exportPDF() {
+    const doc = new jsPDF();
+
+    const img = new Image();
+    img.src = this.panoramaUrl;
+    doc.addImage(img, 'PNG', 5, 10, 200, 76);
+
+    const body = [];
+    const head = [['Product Name', 'Barcode', 'Product Id', 'Price']];
+    for (let i = 0; i < this.outs.length ; i++) {
+      const row = [this.outs[i].name, this.outs[i].barcode, this.outs[i].productId, this.outs[i].price];
+      body.push(row);
+    }
+
+    doc.autoTable({head: head, body: body, startY: 90});
+    doc.save(this.selectedMission.name + '-' + this.selectedAisle.name + '.pdf');
   }
 }
