@@ -17,36 +17,32 @@ table tbody
 {
     overflow-y: auto;
     overflow-x: hidden;
-    height: calc(100vh - 67px - 111px - 365px - 95px - 48px);
+    -webkit-overflow-scrolling: touch;
+    height: calc(100vh - 111px - 365px - 95px - 48px);
 }
 
 th{
     border: 1px solid $primary;
-    color: $primary;
-    font-size: 12px;
+    color: #434343;
     height: 44px;
 }
 
 td{
     height: 55px;
-    padding-left: 25px;
 }
 
+
 th, td{
-    width: 1000px;
+  width: 1000px;
 }
 
 tr{
     border: 1px solid #707070;
-    border-right: 0px;
 }
 
 tbody :first-child{
     border-top: 0px;
 }
-
-
-
 
 //Selection
 .selected{
@@ -74,9 +70,8 @@ tbody :first-child{
 
 ::-webkit-scrollbar-track {
     background: white;
-    border: solid 1px $primary;
-    border-top: 0px;
-    border-bottom: 0px;
+    border-right: solid 1px $primary;
+    border-bottom: solid 1px $primary;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -84,4 +79,72 @@ tbody :first-child{
     border: 5px solid transparent;
     border-radius: 9px;
     background-clip: content-box;
+}
+
+
+
+//Ipad Pro Landscape
+@media (max-width: 1366px)  and (orientation: landscape){
+  th, td{
+    width: 311px !important;
+  }
+
+  table tbody
+  {
+      height: calc(100vh - 111px - 365px - 95px - 48px - 17px);
+  }
+}
+
+//Ipad Pro Landscape
+@media (max-width: 1366px) and (orientation: portrait) {
+  th, td{
+    width: 311px !important;
+  }
+
+  table tbody
+  {
+      height: calc(100vh - 111px - 365px - 95px - 48px - 31px);
+  }
+}
+
+
+
+//Ipad Mini and 10.5 pro Lanscape
+@media (max-width: 1112px) and (orientation: landscape){
+  table tbody{
+    height: calc(100vh - 655px) !important;
+  }
+  margin: auto 50px !important;
+  width: calc(100% - 100px) !important;
+  th{
+    height: 33px !important;
+  }
+
+  td{
+    height: 48px !important;
+  }
+
+  tr{
+    font-size: 12px !important;
+  }
+}
+
+//Ipad Mini and 10.5 pro Portrait
+@media (max-width: 834px) and (orientation: portrait) {
+  table tbody{
+    height: calc(100vh - 675px) !important;
+  }
+  margin: auto 50px !important;
+  width: calc(100% - 100px) !important;
+  th{
+    height: 33px !important;
+  }
+
+  td{
+    height: 48px !important;
+  }
+
+  tr{
+    font-size: 12px !important;
+  }
 }

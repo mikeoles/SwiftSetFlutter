@@ -4,8 +4,8 @@ import {
   Input,
   Output,
   EventEmitter,
-  AfterViewInit,
-  OnChanges
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 import panzoom from 'panzoom';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
@@ -23,58 +23,98 @@ export class PanoramaComponent implements OnInit, OnChanges {
   @Input() panoramaUrl: string;
   @Input() panoMode: boolean;
   @Output() panoramaId = new EventEmitter();
+  @Output() panoramaTouched = new EventEmitter();
+  selectedIdWithPano = false;
   panZoomApi: any;
   faPlus = faPlus;
   faMinus = faMinus;
-  zoomLevel = 0.15;
-
+  startingZoomLevel = .17;
+  panoZoomLevel = .25;
+  zoomedInLevel = .5;
+  panoHeight = 365;
+  yOffset = 750;
+  currentWidth = 0;
+  currentHeight = 0;
   constructor() {}
 
   ngOnInit() {
+
     const element = document.getElementById('pano-image');
+    const owner = document.getElementById('image-owner');
+
     this.panZoomApi = panzoom(element, {
       maxZoom: 10,
       minZoom: 0.12,
-      bounds: false
     });
-    this.panZoomApi.zoomAbs(-10, -100, this.zoomLevel);
+
+    owner.addEventListener('touchend', (e: TouchEvent) => {
+      if (
+        (this.panZoomApi.getTransform().x > window.screen.width) ||
+        (this.panZoomApi.getTransform().x * -1 > this.currentWidth * this.panZoomApi.getTransform().scale) ||
+        (this.panZoomApi.getTransform().y > this.panoHeight) ||
+        (this.panZoomApi.getTransform().y * -1 > this.currentHeight * this.panZoomApi.getTransform().scale)
+      ) {
+        this.centerImage(this.currentWidth, this.currentHeight);
+      }
+    });
 
     element.addEventListener('touchend', (e: TouchEvent) => {
+      this.panoramaTouched.emit(true);
       if (e.target instanceof HTMLElement) {
         const touchedElement = e.target as HTMLElement;
-        if (touchedElement.classList.contains('annotation')) {
+        if (touchedElement.classList.contains('bigTouch')) {
           touchedElement.click();
         }
       }
     });
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
     if (this.panZoomApi) {
-      if (this.panoMode) {
-        this.currentId = -1;
-        this.panZoomApi.zoomAbs(30, 50, 0.3);
+      if (changes['panoMode']) {
+        const element = document.getElementById('pano-image');
+        this.centerImage(element.offsetWidth, element.offsetHeight);
       } else {
-        if (this.currentId && this.currentId !== -1) {
+        if (this.currentId && this.currentId !== -1 && !this.selectedIdWithPano) {
+
           const annotations = this.annotations();
           let selectedX: number, selectedY: number, i: number;
+          let currentZoomLevel = this.panZoomApi.getTransform().scale;
+          if (currentZoomLevel < this.zoomedInLevel) {
+            currentZoomLevel = this.zoomedInLevel;
+          }
+
           for (i = 0; i < annotations.length; i++) {
             if (annotations[i].id === this.currentId) {
               selectedX =
                 annotations[i].bounds.left +
                 annotations[i].bounds.width / 2 -
-                (window.screen.width / 2) * (1 / this.zoomLevel);
+                (window.screen.width / 2) * (1 / currentZoomLevel);
               selectedY =
                 annotations[i].bounds.top +
                 annotations[i].bounds.height / 2 -
-                (365 / 2) * (1 / this.zoomLevel);
-              this.panZoomApi.zoomAbs(0, 0, 1);
-              this.panZoomApi.moveTo(selectedX * -1, selectedY * -1);
+                (this.panoHeight / 2) * (1 / currentZoomLevel);
+              break;
             }
           }
+
+          this.panZoomApi.zoomAbs(0, 0, 1);
+          this.panZoomApi.moveTo(selectedX * -1, selectedY * -1);
+          this.panZoomApi.zoomAbs(0, 0, currentZoomLevel);
+
+        } else if (this.currentId === null) {
+          const element = document.getElementById('pano-image');
+          const interval = setInterval(() => {
+            if (element.offsetWidth !== 0 && element.offsetWidth !== this.currentWidth) {
+              this.centerImage(element.offsetWidth, element.offsetHeight);
+              this.currentWidth = element.offsetWidth;
+              this.currentHeight = element.offsetHeight;
+              clearInterval(interval);
+            }
+          }, 10);
         }
-        this.panZoomApi.zoomAbs(0, 0, this.zoomLevel);
       }
+      this.selectedIdWithPano = false;
     }
   }
 
@@ -87,9 +127,37 @@ export class PanoramaComponent implements OnInit, OnChanges {
     }
   }
 
+  centerImage(imageWidth: number, imageHeight: number) {
+    let moveX = 0;
+    let moveY = this.yOffset;
+    let zoom = this.startingZoomLevel;
+    if (this.panoMode) {
+      zoom = this.panoZoomLevel;
+      // Center vertically in pano mode
+      if (imageHeight * zoom < window.innerHeight) {
+        const top = document.getElementById('missionsContainer');
+        const bottom = document.getElementById('tableSelection');
+        const paneHeight = window.innerHeight - top.offsetHeight - bottom.offsetHeight;
+        moveY = (imageHeight / 2) - (paneHeight / 2) * (1 / zoom);
+      }
+    }
+    // If image is smaller than screen, center image
+    if (imageWidth * zoom < window.innerWidth * 2) {
+      moveX = (imageWidth / 2) - (window.innerWidth / 2) * (1 / zoom);
+    }
+    this.panZoomApi.zoomAbs(0, 0, 1);
+    this.panZoomApi.moveTo(moveX * -1, moveY * -1);
+    this.panZoomApi.zoomAbs(0, 0, zoom);
+  }
+
   annotationClicked(annotation) {
-    if (this.currentId !== annotation.id && !this.panoMode) {
-      this.panoramaId.emit(annotation.id);
+    if (!this.panoMode) {
+      if (this.currentId !== annotation.id) {
+        this.panoramaId.emit(annotation.id);
+      } else {
+        this.panoramaId.emit(-1);
+      }
+      this.selectedIdWithPano = true;
     }
   }
 

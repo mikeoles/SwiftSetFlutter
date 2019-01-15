@@ -6,16 +6,18 @@ button{
     border: 3px $primary solid;
     color:  $primary;
     margin: 20px 50px;
-    width: 185px;
+    width: 220px;
     height: 55px;
     font-size: 18px;
     font-weight: bold;
 }
 
-@media screen and (max-width: 800px) {
+//Ipad Mini and 10.5 pro
+@media screen and (max-width: 1112px) {
   button {
-    margin: 20px 30px;
-    width: 185px;
+    width: 180px !important;
+    height: 48px !important;
+    font-size: 14px !important;
   }
 }
 

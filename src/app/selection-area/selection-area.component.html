@@ -1,6 +1,7 @@
 <div class="container">
+  <img id="logo" (click)="logoClicked()" src="../assets/logo.png"/>
   <div id="missionsContainer">
-    <button (click)="selectMissionsDropdown()">
+    <button class="dropdownButton" [ngClass]="{'selectedButton': showMissions}" (click)="selectMissionsDropdown()">
       Mission {{selectedMission?.name}}
       <fa-icon *ngIf="!showMissions" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
       <fa-icon *ngIf="showMissions" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
@@ -8,22 +9,24 @@
     <ul class="dropdown" *ngIf="showMissions">
       <li
         *ngFor="let mission of missions"
+        [class.selected]="mission.id === this.selectedMission.id"
         [value]="mission"
         (click)="missionChanged(mission)"
       >
-        {{missionName(mission)}}
+        {{mission?.name}}
       </li>
     </ul>
     <div *ngIf="showMissions" class="pointer"></div>
   </div>
   <div id="aislesContainer">
-    <button (click)="selectAislesDropdown()">
+    <button class="dropdownButton" [ngClass]="{'selectedButton': showAisles}" (click)="selectAislesDropdown()">
       Aisle {{selectedAisle?.name}}
       <fa-icon *ngIf="!showAisles" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
       <fa-icon *ngIf="showAisles" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
     </button>
     <ul *ngIf="showAisles">
       <li
+        [class.selected]="aisle.id === this.selectedAisle.id"
         *ngFor="let aisle of aisles"
         [value]="aisle"
         (click)="aisleChanged(aisle)"

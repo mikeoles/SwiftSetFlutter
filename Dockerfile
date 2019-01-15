@@ -32,9 +32,10 @@ FROM nginx:1.15.6-alpine
 
 # copy artifact build from the 'build environment'
 COPY --from=builder /usr/src/app/dist/aisle /usr/share/nginx/html
+COPY ./docker-run.sh /
 
 # expose port 80
 EXPOSE 80
 
 # run nginx
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["/bin/sh", "/docker-run.sh"]
