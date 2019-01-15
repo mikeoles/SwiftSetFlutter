@@ -1,69 +1,34 @@
-node("basic") {
-    caughtError = 0
+def config = [
+  slackNotificationChannel: 'demo-system'
+]
 
-    try {
-        stage('Checkout') {
-            checkout([
-                $class           : 'GitSCM',
-                branches         : scm.branches,
-                extensions       : scm.extensions + [
-                        [$class: 'CheckoutOption', timeout: 60],
-                        [
-                                $class             : 'SubmoduleOption',
-                                parentCredentials  : true,
-                                disableSubmodules  : false,
-                                recursiveSubmodules: true,
-                                trackingSubmodules : false
-                        ],
-                        [
-                                $class   : 'CloneOption',
-                                noTags   : false,
-                                shallow  : false,
-                                depth    : 0,
-                                reference: ''
-                        ],
-                ],
-                userRemoteConfigs: scm.userRemoteConfigs
-            ])
-        }
+def releaseBranch = 'master'
+def registry = 'bossanova-cloud-container.jfrog.io'
+def imageName = 'demo-images/demo-ui'
+def artifactoryCredential = 'jenkins_build_jumpcloud'
+def tagName = "${BRANCH_NAME}-${BUILD_ID}"
+def fullImageTag = ""
 
-        docker.image('node:11-alpine').inside {
-            stage('Setup') {
-                withEnv(["NPM_CONFIG_LOGLEVEL=warn"]) {
-                    sh 'npm install'
-                }
-            }
+build(config) {
+  stage('Checkout') {
+    gitCheckout()
+  }
 
-            stage('Test') {
-                withEnv(["CHROME_BIN=/usr/bin/chromium-browser"]) {
-                    sh 'ng test --progress=false --watch false'
-                }
-                junit '**/test-results.xml'
-            }
-
-            stage('Lint') {
-                sh 'ng lint'
-            }
-        }
-        stage('Build') {
-            echo 'Building....'
-        }
-
-        stage('Deploy') {
-            echo 'Deploying....'
-        }
-    } catch (error) {
-        currentBuild.result = "FAILURE"
-        caughtError = error
-    } finally {
-        sendBuildResultStatus(currentBuild.result, 'demo-system')
-
-        stage("Cleanup Workspace") {
-            step([$class: 'WsCleanup'])
-        }
-
-        if (caughtError != 0) {
-            throw caughtError
-        }
+  stage('Pre-Build') {
+    if(env.BRANCH_NAME == releaseBranch) {
+      tagName = sh(returnStdout: true, script: "grep -e 'version' package.json | grep -o -e '[0-9.]\\+'").trim()
     }
+
+    fullImageTag = "${registry}/${imageName}:${tagName}"
+  }
+
+  stage('Build') {
+    docker.build(fullImageTag)
+  }
+
+  stage('Push') {
+    docker.withRegistry("https://${registry}", artifactoryCredential) {
+      sh("docker push ${fullImageTag}")
+    }
+  }
 }
