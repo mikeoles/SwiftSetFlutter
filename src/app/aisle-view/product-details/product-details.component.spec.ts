@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProductDetailsComponent } from './product-details.component';
 import { GridComponent } from './grid/grid.component';
 import { By } from '@angular/platform-browser';
-import Label from '../label.model';
+import Label from '../../label.model';
 
 describe('ProductDetailsComponent', () => {
   let component: ProductDetailsComponent;

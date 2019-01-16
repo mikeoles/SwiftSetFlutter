@@ -3,8 +3,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SelectionAreaComponent } from './selection-area.component';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import Aisle from '../aisle.model';
-import Mission from '../mission.model';
+import Aisle from '../../aisle.model';
+import Mission from '../../mission.model';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 describe('SelectionAreaComponent', () => {
@@ -17,8 +17,8 @@ describe('SelectionAreaComponent', () => {
   let missionsListEl: HTMLLIElement;
   let aislesListEl: HTMLLIElement;
   const missions: Mission[] = [
-    { id: 1, name: '1111', createDateTime: new Date('2018-12-12') },
-    { id: 2, name: '2222', createDateTime: new Date('2001-01-01') },
+    { id: 1, name: '1111', createDateTime: new Date('2018-12-12'), missionDateTime: new Date('2018-12-12') },
+    { id: 2, name: '2222', createDateTime: new Date('2001-01-01'), missionDateTime: new Date('2001-01-01') },
   ];
   const aisles: Aisle[] = [
     { id: 1, name: '1111', panoramaUrl: '', labels: [], outs: [] },
@@ -62,7 +62,7 @@ describe('SelectionAreaComponent', () => {
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(missionsDropdownEl.childElementCount).toEqual(2);
-      expect(missionsDropdownEl.children[0].textContent).toEqual(' 12/11/2018 - 1111 ');
+      expect(missionsDropdownEl.children[0].textContent).toEqual(' 1111 ');
     });
   });
 

@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { RouterTestingModule } from '@angular/router/testing';
 import { AislesGridComponent } from './aisles-grid.component';
 
 describe('AislesGridComponent', () => {
@@ -8,7 +8,10 @@ describe('AislesGridComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AislesGridComponent ]
+      declarations: [ AislesGridComponent ],
+      imports: [
+        RouterTestingModule.withRoutes([])
+      ]
     })
     .compileComponents();
   }));

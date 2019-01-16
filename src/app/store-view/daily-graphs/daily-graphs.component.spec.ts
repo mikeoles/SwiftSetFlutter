@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DailyGraphsComponent } from './daily-graphs.component';
+import { ChartsModule } from 'ng2-charts';
 
 describe('DailyGraphsComponent', () => {
   let component: DailyGraphsComponent;
@@ -8,7 +9,8 @@ describe('DailyGraphsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DailyGraphsComponent ]
+      declarations: [ DailyGraphsComponent ],
+      imports: [ ChartsModule ]
     })
     .compileComponents();
   }));
@@ -16,6 +18,7 @@ describe('DailyGraphsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DailyGraphsComponent);
     component = fixture.componentInstance;
+    component.data = [];
     fixture.detectChanges();
   });
 

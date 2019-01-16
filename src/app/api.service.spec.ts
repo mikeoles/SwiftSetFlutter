@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { ApiService } from './api.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClient } from '@angular/common/http';
+import { EnvironmentService } from './environment.service';
 
 describe('ApiService', () => {
   let httpClient: HttpClient;
@@ -10,7 +11,10 @@ describe('ApiService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule]
+      imports: [HttpClientTestingModule],
+      providers: [
+        { provide: EnvironmentService, useValue: { config: { apiUrl: 'http://example.com' }}}
+      ]
     });
 
     httpClient = TestBed.get(HttpClient);
