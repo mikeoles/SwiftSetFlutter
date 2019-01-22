@@ -49,10 +49,7 @@ export class DailyGraphsComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnInit() {
-    let i: number;
-    for (i = 0; i < this.data.length; i++) {
-      this.barChartData.push([this.data[i].dailyAverage]);
-    }
+    this.barChartData = this.data.map(d => [d.dailyAverage]);
   }
 
   ngOnChanges() {
