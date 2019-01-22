@@ -6,6 +6,7 @@ import { ApiService } from '../api.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Component, Input } from '@angular/core';
 import { of } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({selector: 'app-stat-ring', template: ''})
 class AppStatRingStubComponent {
@@ -40,6 +41,9 @@ describe('MissionViewComponent', () => {
       ],
       providers: [
         { provide: ApiService, useValue: apiServiceSpy },
+        { provide: ActivatedRoute, useValue: {
+          params: [{ missionId: 1 }],
+        }},
       ],
     })
     .compileComponents();
@@ -56,5 +60,14 @@ describe('MissionViewComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should set the current mission', () => {
+    expect(component.currentMission).toEqual(1);
+    expect(apiService.getMission).toHaveBeenCalledWith(1);
+  });
+
+  it('should export data', () => {
+    // TODO: Figure out how to test the link
   });
 });
