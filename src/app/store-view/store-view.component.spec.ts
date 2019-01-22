@@ -6,7 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ApiService } from '../api.service';
 import Mission from '../mission.model';
 import { of } from 'rxjs';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({selector: 'app-daily-graphs', template: ''})
 class AppDailyGraphsStubComponent {
@@ -37,7 +37,6 @@ describe('StoreViewComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
-        RouterTestingModule.withRoutes([]),
       ],
       declarations: [
         StoreViewComponent,
@@ -46,6 +45,9 @@ describe('StoreViewComponent', () => {
       ],
       providers: [
         { provide: ApiService, useValue: apiServiceSpy },
+        { provide: ActivatedRoute, useValue: {
+          params: [{ id: 1}],
+        }},
       ],
     })
     .compileComponents();
@@ -63,5 +65,17 @@ describe('StoreViewComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should set the store id', () => {
+    expect(component.storeId).toEqual(1);
+    expect(component.store).toEqual(store);
+  });
+
+  it('should change index', () => {
+    component.setIndex({ index: 2, date: 'date' });
+    expect(component.selectedIndex).toEqual(2);
+    expect(component.selectedDate).toEqual('date');
+    expect(component.missions).toEqual(missions);
   });
 });

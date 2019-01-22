@@ -12,7 +12,7 @@ export class StoreViewComponent implements OnInit {
   missions: any[];
   store: any;
   storeId: number;
-  selectedIndex: string;
+  selectedIndex: number;
   selectedDate: string;
 
   constructor(private apiService: ApiService, private activatedRoute: ActivatedRoute) {
