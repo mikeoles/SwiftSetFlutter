@@ -58,19 +58,21 @@ describe('SelectionAreaComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('has a dropdown of missions', () => {
+  it('has a dropdown of missions', done => {
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(missionsDropdownEl.childElementCount).toEqual(2);
       expect(missionsDropdownEl.children[0].textContent).toEqual(' 1111 ');
+      done();
     });
   });
 
-  it('has a dropdown of aisles', () => {
+  it('has a dropdown of aisles', done => {
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(aislesDropdownEl.childElementCount).toEqual(5);
       expect(aislesDropdownEl.children[4].textContent).toEqual(' 5555 ');
+      done();
     });
   });
 
@@ -90,17 +92,19 @@ describe('SelectionAreaComponent', () => {
     expect(component.aisleSelected.emit).toHaveBeenCalledWith(aisles[3]);
   });
 
-  it('starts by displaying first mission', () => {
+  it('starts by displaying first mission', done => {
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(missionsButtonEl.textContent).toEqual(' Mission 1111 ');
+      done();
     });
   });
 
-  it('automatically selects first aisle from selected mission', () => {
+  it('automatically selects first aisle from selected mission', done => {
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(aislesButtonEl.textContent).toEqual(' Aisle 1111 ');
+      done();
     });
   });
 
