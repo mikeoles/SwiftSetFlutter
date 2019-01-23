@@ -4,7 +4,7 @@
 </app-selection-area>
 <app-panorama [outs]="outs" [labels]="labels" [panoramaUrl]="panoramaUrl"
   [currentId]="currentId" [currentDisplay]="currentDisplay"
-  (panoramaId)='setId($event)' [panoMode]='panoMode' (panoramaTouched)='hideDropdowns($event)'>
+  (panoramaId)='setId($event)' [panoMode]='panoMode' (panoramaTouched)='hideDropdowns()'>
 </app-panorama>
 <app-product-details [outs]="outs" [labels]="labels"
   (gridId)='setId($event)' (gridDisplay)='setDisplay($event)'

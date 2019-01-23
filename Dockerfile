@@ -17,22 +17,20 @@ WORKDIR /usr/src/app
 # add `/usr/src/app/node_modules/.bin` to $PATH
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
-# install and cache app dependencies
-COPY package.json /usr/src/app/package.json
-RUN npm install
-RUN npm install -g @angular/cli@7.2.2 --unsafe
-
 # add app
 COPY . /usr/src/app
+
+# install dependencies
+RUN npm install
 
 # lint
 RUN ng lint
 
-# tests
+# test
 RUN ng test --watch=false --browsers ChromeHeadlessNoSandbox
 
-# generate build
-RUN npm run build
+# build
+RUN ng build --prod
 
 ##################
 ### production ###
@@ -41,7 +39,7 @@ RUN npm run build
 # base image
 FROM nginx:1.15.6-alpine
 
-# copy artifact build from the 'build environment'
+# copy artifact build from the builder
 COPY --from=builder /usr/src/app/dist/aisle /usr/share/nginx/html
 COPY ./docker-run.sh /
 
