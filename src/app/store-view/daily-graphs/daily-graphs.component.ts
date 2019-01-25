@@ -50,6 +50,7 @@ export class DailyGraphsComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnInit() {
+    this.barChartData = this.data.map(d => [d.dailyAverage]);
     this.data.forEach((data: any) => {
       this.max = data.dailyAverage > this.max ? data.dailyAverage : this.max;
     });

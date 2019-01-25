@@ -30,7 +30,6 @@ describe('GridComponent', () => {
     fixture.detectChanges();
     spyOn(component.gridClicked, 'emit');
     secondRowEl = fixture.debugElement.query(By.css('div > table > tbody > tr:nth-child(2)')).nativeElement;
-    console.log(secondRowEl);
     gridEl = fixture.debugElement.query(By.css('div > table > tbody')).nativeElement;
 
   });

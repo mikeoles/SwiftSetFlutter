@@ -81,7 +81,7 @@ export class GridComponent implements OnInit, AfterViewChecked, OnChanges {
   ngAfterViewChecked() {
     const row = document.getElementById(`row-${this.selectedId}`);
     if (row) {
-      row.scrollIntoView({ behavior: 'instant' });
+      row.scrollIntoView({ behavior: 'auto' });
     }
   }
 
