@@ -8,7 +8,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 import panzoom from 'panzoom';
-import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faMinus, faArrowsAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-panorama',
@@ -28,6 +28,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
   panZoomApi: any;
   faPlus = faPlus;
   faMinus = faMinus;
+  faArrowsAlt = faArrowsAlt;
   startingZoomLevel = .17;
   panoZoomLevel = .25;
   zoomedInLevel = .5;
@@ -142,7 +143,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
       }
     }
     // If image is smaller than screen, center image
-    if (imageWidth * zoom < window.innerWidth * 2) {
+    if (imageWidth * zoom < window.innerWidth) {
       moveX = (imageWidth / 2) - (window.innerWidth / 2) * (1 / zoom);
     }
     this.panZoomApi.zoomAbs(0, 0, 1);
@@ -169,5 +170,9 @@ export class PanoramaComponent implements OnInit, OnChanges {
   zoomOut() {
     this.panZoomApi.smoothZoom(window.innerWidth / 2, 182, 0.8);
     return false;
+  }
+
+  resetZoom() {
+    this.centerImage(this.currentWidth, this.currentHeight);
   }
 }
