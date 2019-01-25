@@ -1,12 +1,15 @@
 <header>
   <img src="../assets/logo.png"/>
 </header>
-<div class="storeInfo">
-  <div class="storeName"><div id="circle"></div>{{store.StoreName}}</div>
-  <div class="storeAddress"> Colosprings <span> {{store.StoreAddress}}</span></div>
+<div *ngIf="store" class="storeInfo">
+  <div class="storeName"><div id="circle"></div>{{store.storeName}}</div>
+  <div class="storeAddress">{{store.storeAddress}}</div>
 </div>
 <div class="title">Daily Stats</div>
-<div class="graphDisplay"><app-daily-graphs [title]="'Outs'" [data]="store.outs" [overallAverage]="store.AverageOuts" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>
-<div class="graphDisplay"><app-daily-graphs [title]="'Labels'" [data]="store.labels" [overallAverage]="store.AverageLabels" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>
-<div class="graphDisplay"><app-daily-graphs [title]="'Spreads'" [data]="store.spreads" [overallAverage]="store.AverageSpreads" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>
-<app-missions-grid *ngIf="missions" [missions]="missions" [missionsDate]="selectedDate"></app-missions-grid>
+<div *ngIf="store">
+  <div class="graphDisplay"><app-daily-graphs [title]="'Outs'" [data]="store.summaryOuts" [overallAverage]="store.totalAverageOuts" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>
+  <div class="graphDisplay"><app-daily-graphs [title]="'Labels'" [data]="store.summaryLabels" [overallAverage]="store.totalAverageLabels" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>
+  <!-- <div class="graphDisplay"><app-daily-graphs [title]="'Spreads'" [data]="store.summarySpreads" [overallAverage]="store.totalAverageSpreads" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div> -->
+</div>
+
+<app-missions-grid *ngIf="missionSummaries" [missionSummaries]="missionSummaries" [missionsDate]="selectedDate"></app-missions-grid>

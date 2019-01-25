@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import Aisle from '../../aisle.model';
 
 @Component({
   selector: 'app-aisles-grid',
@@ -8,10 +9,12 @@ import { Router } from '@angular/router';
 })
 export class AislesGridComponent implements OnInit {
 
-  @Input() aisles: any[];
+  @Input() aisles: Aisle[];
   @Input() missionId: number;
 
-  constructor( private router: Router) {}
+  constructor( private router: Router) {
+
+  }
 
   ngOnInit() {
   }

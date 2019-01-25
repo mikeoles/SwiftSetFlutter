@@ -8,9 +8,9 @@ import { MissionViewComponent } from './mission-view/mission-view.component';
 const routes: Routes = [
   { path: 'mission/:missionId/aisle/:aisleId', component: AisleViewComponent },
   { path: 'mission/:missionId', component: MissionViewComponent },
-  { path: 'store', component: StoreViewComponent },
+  { path: 'store/:storeId', component: StoreViewComponent },
   { path: '',
-    redirectTo: '/store',
+    redirectTo: '/store/1',
     pathMatch: 'full'
   },
   { path: '**', component: PageNotFoundComponent }

@@ -13,6 +13,7 @@ export class DailyGraphsComponent implements OnInit, OnChanges {
   @Input() currentIndex: number;
   todaysAverage: number;
   displayedDays = 14;
+  max = 0;
 
   public barChartType: 'bar';
   public barChartLegend: false;
@@ -29,7 +30,7 @@ export class DailyGraphsComponent implements OnInit, OnChanges {
         display: false,
         ticks: {
           beginAtZero: true,
-          max : 1500,
+          max : 100,
         },
       }],
     },
@@ -49,10 +50,20 @@ export class DailyGraphsComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnInit() {
-    let i: number;
-    for (i = 0; i < this.data.length; i++) {
+    this.data.forEach((data: any) => {
+      this.max = data.dailyAverage > this.max ? data.dailyAverage : this.max;
+    });
+    this.max += 1;
+    for (let i = 0; i < this.data.length; i++) {
       this.barChartData.push([this.data[i].dailyAverage]);
     }
+    this.barChartOptions.scales.yAxes = [{
+      display: false,
+      ticks: {
+        beginAtZero: true,
+        max : this.max,
+      },
+    }];
   }
 
   ngOnChanges() {

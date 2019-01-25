@@ -9,12 +9,12 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let aisle of aisles; let i = index" (click)="viewAisle(aisle.AisleId)">
-      <td>{{aisle.AisleId}}</td>
-      <td>{{aisle.PercentScanned}}</td>
-      <td>{{aisle.Outs}}</td>
-      <td>{{aisle.Labels}}</td>
-      <td>{{aisle.Spreads}}</td>
+    <tr *ngFor="let aisle of aisles; let i = index" (click)="viewAisle(aisle.id)">
+      <td>{{aisle.id}}</td>
+      <td>0%</td>
+      <td>{{aisle.outs.length}}</td>
+      <td>{{aisle.labels.length}}</td>
+      <td>{{aisle.spreads.length}}</td>
     </tr>
   </tbody>
 </table>

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
 import { Params, ActivatedRoute } from '@angular/router';
+import MissionSummary from '../missionSummary.model';
+import Aisle from '../aisle.model';
+import Mission from '../mission.model';
 
 @Component({
   selector: 'app-mission-view',
@@ -9,7 +12,9 @@ import { Params, ActivatedRoute } from '@angular/router';
 })
 
 export class MissionViewComponent implements OnInit {
-  mission: any;
+  missionSummary: MissionSummary;
+  mission: Mission;
+  aisles: Aisle[];
   currentMission: number;
   service: ApiService;
 
@@ -23,7 +28,20 @@ export class MissionViewComponent implements OnInit {
         this.currentMission = params['missionId'];
       }
     });
-    this.apiService.getMission(this.currentMission).subscribe(mission => this.mission = mission);
+    this.apiService.getMission(this.currentMission).subscribe(mission => {
+      this.mission = mission;
+      this.apiService.getMissionSummary(this.mission.name).subscribe(missionSummary => {
+        this.missionSummary = missionSummary;
+        this.apiService.getAisles(this.currentMission).subscribe(aisles => {
+          this.aisles = aisles;
+          for (let i = 0; i < this.aisles.length; i++) {
+            this.apiService.getAisle(this.aisles[i].id).subscribe(aisle => {
+              this.aisles[i] = aisle;
+            });
+          }
+        });
+      });
+    });
     this.service = this.apiService;
   }
 
@@ -36,17 +54,17 @@ export class MissionViewComponent implements OnInit {
     let csvContent = 'data:text/csv;charset=utf-8,%EF%BB%BF';
     let labels, outs;
     csvContent += headers.join(',') + '\n';
-    for (let i = 0; i < this.mission.Aisles.length; i++) {
-      const aisle = this.mission.Aisles[i];
-      this.apiService.getLabels(aisle.AisleId).subscribe(l => labels = l);
-      this.apiService.getOuts(aisle.AisleId).subscribe(o => outs = o);
+    for (let i = 0; i < this.aisles.length; i++) {
+      const aisle = this.aisles[i];
+      this.apiService.getLabels(aisle.id).subscribe(l => labels = l);
+      this.apiService.getOuts(aisle.id).subscribe(o => outs = o);
       const outsBarcodes: Set<string> = new Set<string>();
       for (let j = 0; j < outs.length; j++) {
         outsBarcodes.add(outs[j].Barcode);
       }
       for (let j = 0; j < labels.length; j++) {
         const inStock: Boolean = !outsBarcodes.has(labels[j].Barcode);
-        const row = [aisle.AisleId,
+        const row = [aisle.id,
           '\'' + labels[j].Barcode ,
           'Info' ,
           inStock.toString(),

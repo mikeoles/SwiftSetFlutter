@@ -47,7 +47,7 @@ export class AisleViewComponent implements OnInit {
     });
   }
 
-  changePanoMode(): any {
+  changePanoMode() {
     this.panoMode = !this.panoMode;
   }
 
