@@ -30,7 +30,7 @@ export class MissionViewComponent implements OnInit {
     });
     this.apiService.getMission(this.currentMission).subscribe(mission => {
       this.mission = mission;
-      this.apiService.getMissionSummary(this.mission.name).subscribe(missionSummary => {
+      this.apiService.getMissionSummary(this.currentMission).subscribe(missionSummary => {
         this.missionSummary = missionSummary;
         this.apiService.getAisles(this.currentMission).subscribe(aisles => {
           this.aisles = aisles;

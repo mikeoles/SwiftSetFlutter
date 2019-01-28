@@ -79,6 +79,7 @@ export class ApiService {
 
   createMissionSummary(missionSummary: any): MissionSummary {
     return {
+      missionId: missionSummary.MissionId,
       mission: missionSummary.Mission,
       storeId: missionSummary.StoreId,
       missionDateTime: new Date(missionSummary.MissionDateTime),
@@ -172,8 +173,8 @@ export class ApiService {
     );
   }
 
-  getMissionSummary(mission: string): Observable<MissionSummary> {
-    return this.http.get(`${this.apiUrl}/DemoService/MissionSummaries('${mission}')`).pipe(
+  getMissionSummary(mission: number): Observable<MissionSummary> {
+    return this.http.get(`${this.apiUrl}/DemoService/MissionSummaries(${mission})`).pipe(
       // API result
       // {
       //   "@odata.context": "$metadata#MissionSummaries",
