@@ -7,6 +7,8 @@ import { ApiService } from '../api.service';
 import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import MissionSummary from '../missionSummary.model';
+import DaySummary from '../daySummary.model';
+import Store from '../store.model';
 
 @Component({selector: 'app-daily-graphs', template: ''})
 class AppDailyGraphsStubComponent {
@@ -27,12 +29,27 @@ describe('StoreViewComponent', () => {
   let apiService: jasmine.SpyObj<ApiService>;
 
   const missions: MissionSummary[] = [
-    { mission: '1', storeId: '1', missionDateTime: new Date(), outs: 5, labels: 6, spreads: 7, aislesScanned: 2 },
+    { missionId: 1, mission: '', storeId: '', missionDateTime: new Date(), outs: 1, labels: 1, spreads: 1, aislesScanned: 1 },
   ];
-  const store: any = {};
+  const daySummaries: DaySummary[] = [
+    {
+      date: new Date('2018-12-12'),
+      dailyAverage: 1,
+    }
+  ];
+  const store: Store = {  id: 1,
+    storeName: '',
+    storeAddress: '',
+    totalAverageOuts: 1,
+    totalAverageLabels: 1,
+    totalAverageSpreads: 1,
+    summaryOuts: daySummaries,
+    summaryLabels: daySummaries,
+    summarySpreads: daySummaries
+  };
 
   beforeEach(async(() => {
-    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getStore', 'getDateMissions']);
+    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getStore', 'getMissionSummaries']);
 
     TestBed.configureTestingModule({
       imports: [

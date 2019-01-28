@@ -1,6 +1,6 @@
 import DaySummary from './daySummary.model';
 
-export default class MissionSummary {
+export default class Store {
   id: number;
   storeName: string;
   storeAddress: string;

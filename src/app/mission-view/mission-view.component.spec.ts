@@ -7,6 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Component, Input } from '@angular/core';
 import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import Label from '../label.model';
 
 @Component({selector: 'app-stat-ring', template: ''})
 class AppStatRingStubComponent {
@@ -24,13 +25,18 @@ describe('MissionViewComponent', () => {
   let fixture: ComponentFixture<MissionViewComponent>;
   let apiService: jasmine.SpyObj<ApiService>;
 
+  const labels: Label[] = [
+    { id: 1, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 } },
+    { id: 2, name: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 } },
+  ];
   const mission = { id: 1, name: '1111', createDateTime: new Date('2018-12-12'), missionDateTime: new Date('2018-12-12') };
-  const missionSummary = { id: 1 };
-  const aisles = [{ id: 1 }];
-  const aisle = {id: 1 };
+  const missionSummary = {   missionId: 1, mission: '', storeId: '', missionDateTime: new Date('2018-12-12'),
+  outs: 1, labels: 1, spreads: 1, aislesScanned: 1};
+  const aisles = [{  id: 1, name: '', panoramaUrl: '', labels: labels, outs: labels, spreads: [] }];
+  const aisle = {  id: 1, name: '', panoramaUrl: '', labels: labels, outs: labels, spreads: [] };
 
   beforeEach(async(() => {
-    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getMission']);
+    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getMission', 'getMissionSummary', 'getAisles', 'getAisle']);
 
     TestBed.configureTestingModule({
       imports: [
