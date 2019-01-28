@@ -19,8 +19,8 @@ describe('AisleViewComponent', () => {
   let component: AisleViewComponent;
   let apiService: jasmine.SpyObj<ApiService>;
   const missions: Mission[] = [
-    { id: 1, name: '1111', createDateTime: new Date('2018-12-12'), missionDateTime: new Date('2018-12-12') },
-    { id: 2, name: '2222', createDateTime: new Date('2001-01-01'), missionDateTime: new Date('2001-01-01') },
+    { id: 1, name: '1111', storeId: '1', createDateTime: new Date('2018-12-12'), missionDateTime: new Date('2018-12-12') },
+    { id: 2, name: '2222', storeId: '1', createDateTime: new Date('2001-01-01'), missionDateTime: new Date('2001-01-01') },
   ];
   const labels: Label[] = [
     { id: 1, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 } },
@@ -30,11 +30,11 @@ describe('AisleViewComponent', () => {
     { id: 5, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 } },
   ];
   const aisles: Aisle[] = [
-    { id: 1, name: '1111', panoramaUrl: '', labels: labels, outs: labels },
-    { id: 2, name: '2222', panoramaUrl: '', labels: labels, outs: labels },
-    { id: 3, name: '3333', panoramaUrl: '', labels: labels, outs: labels },
-    { id: 4, name: '4444', panoramaUrl: '', labels: labels, outs: labels },
-    { id: 5, name: '5555', panoramaUrl: '', labels: labels, outs: labels },
+    { id: 1, name: '1111', panoramaUrl: '', labels: labels, outs: labels, spreads: [] },
+    { id: 2, name: '2222', panoramaUrl: '', labels: labels, outs: labels, spreads: [] },
+    { id: 3, name: '3333', panoramaUrl: '', labels: labels, outs: labels, spreads: [] },
+    { id: 4, name: '4444', panoramaUrl: '', labels: labels, outs: labels, spreads: [] },
+    { id: 5, name: '5555', panoramaUrl: '', labels: labels, outs: labels, spreads: [] },
   ];
 
 

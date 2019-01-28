@@ -4,9 +4,9 @@ import { StoreViewComponent } from './store-view.component';
 import { Component, Input } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ApiService } from '../api.service';
-import Mission from '../mission.model';
 import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import MissionSummary from '../missionSummary.model';
 
 @Component({selector: 'app-daily-graphs', template: ''})
 class AppDailyGraphsStubComponent {
@@ -16,8 +16,9 @@ class AppDailyGraphsStubComponent {
 }
 @Component({selector: 'app-missions-grid', template: ''})
 class AppMissionsGridStubComponent {
-  @Input() missions: any[];
+  @Input() missionSummaries: any[];
   @Input() missionsDate: any[];
+
 }
 
 describe('StoreViewComponent', () => {
@@ -25,9 +26,8 @@ describe('StoreViewComponent', () => {
   let fixture: ComponentFixture<StoreViewComponent>;
   let apiService: jasmine.SpyObj<ApiService>;
 
-  const missions: Mission[] = [
-    { id: 1, name: '1111', createDateTime: new Date('2018-12-12'), missionDateTime: new Date('2018-12-12') },
-    { id: 2, name: '2222', createDateTime: new Date('2001-01-01'), missionDateTime: new Date('2001-01-01') },
+  const missions: MissionSummary[] = [
+    { mission: '1', storeId: '1', missionDateTime: new Date(), outs: 5, labels: 6, spreads: 7, aislesScanned: 2 },
   ];
   const store: any = {};
 
@@ -46,14 +46,14 @@ describe('StoreViewComponent', () => {
       providers: [
         { provide: ApiService, useValue: apiServiceSpy },
         { provide: ActivatedRoute, useValue: {
-          params: [{ id: 1}],
+          params: [{ storeId: '1' }],
         }},
       ],
     })
     .compileComponents();
 
     apiService = TestBed.get(ApiService);
-    apiService.getDateMissions.and.returnValue(of(missions));
+    apiService.getMissionSummaries.and.returnValue(of(missions));
     apiService.getStore.and.returnValue(of(store));
   }));
 
@@ -68,14 +68,15 @@ describe('StoreViewComponent', () => {
   });
 
   it('should set the store id', () => {
-    expect(component.storeId).toEqual(1);
+    expect(component.storeId).toEqual('1');
     expect(component.store).toEqual(store);
   });
 
   it('should change index', () => {
-    component.setIndex({ index: 2, date: 'date' });
-    expect(component.selectedIndex).toEqual(2);
-    expect(component.selectedDate).toEqual('date');
-    expect(component.missions).toEqual(missions);
+    const index = { index: '2', date: new Date() };
+    component.setIndex(index);
+    expect(component.selectedIndex).toEqual(index.index);
+    expect(component.selectedDate).toEqual(index.date);
+    expect(component.missionSummaries).toEqual(missions);
   });
 });

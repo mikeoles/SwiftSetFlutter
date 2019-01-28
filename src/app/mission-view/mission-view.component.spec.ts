@@ -25,6 +25,9 @@ describe('MissionViewComponent', () => {
   let apiService: jasmine.SpyObj<ApiService>;
 
   const mission = { id: 1, name: '1111', createDateTime: new Date('2018-12-12'), missionDateTime: new Date('2018-12-12') };
+  const missionSummary = { id: 1 };
+  const aisles = [{ id: 1 }];
+  const aisle = {id: 1 };
 
   beforeEach(async(() => {
     const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getMission']);
@@ -50,6 +53,9 @@ describe('MissionViewComponent', () => {
 
     apiService = TestBed.get(ApiService);
     apiService.getMission.and.returnValue(of(mission));
+    apiService.getMissionSummary.and.returnValue(of(missionSummary));
+    apiService.getAisles.and.returnValue(of(aisles));
+    apiService.getAisle.and.returnValue(of(aisle));
   }));
 
   beforeEach(() => {
