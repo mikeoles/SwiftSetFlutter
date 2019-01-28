@@ -41,6 +41,7 @@ FROM nginx:1.15.6-alpine
 
 # copy artifact build from the builder
 COPY --from=builder /usr/src/app/dist/aisle /usr/share/nginx/html
+COPY ./nginx_app.conf /etc/nginx/conf.d/default.conf
 COPY ./docker-run.sh /
 
 # Use iso8601 time format in access logs
