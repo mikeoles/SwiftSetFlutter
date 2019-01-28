@@ -1,5 +1,7 @@
 import { Component, OnInit, AfterViewChecked, EventEmitter, Output, Input, HostListener, OnChanges, SimpleChanges } from '@angular/core';
+import { environment } from '../../../../environments/environment';
 import Label from 'src/app/label.model';
+import { labelScrollOptions } from 'src/app/labelScrollOptions';
 
 export enum KEY_CODE {
   UP = 38,
@@ -30,27 +32,11 @@ export class GridComponent implements OnInit, AfterViewChecked, OnChanges {
       return;
     }
 
-    function vertical(a,  b) {
-      if (a.bounds.top < b.bounds.top) {
-        return -1;
-      }
-      if (a.bounds.top > b.bounds.top) {
-        return 1;
-      }
-      return 0;
+    if (environment.labelScrolling === labelScrollOptions.vertical) {
+      this.products.sort(this.horizontal);
+    } else {
+      this.products.sort(this.vertical);
     }
-
-    function horizontal(a,  b) {
-      if (a.bounds.left < b.bounds.left) {
-        return -1;
-      }
-      if (a.bounds.left > b.bounds.left) {
-        return 1;
-      }
-      return 0;
-    }
-
-    this.products.sort(vertical);
 
     let sortedProducts: Label[] = [];
     let currentProduct = this.products[0];
@@ -60,22 +46,69 @@ export class GridComponent implements OnInit, AfterViewChecked, OnChanges {
 
     for (let i = 1; i < this.products.length - 1; i++) {
       nextProduct = this.products[i];
-      if (currentProduct.bounds.top + currentProduct.bounds.height < nextProduct.bounds.top) {
-        currentRow.sort(horizontal);
+      if (this.isSameLevel(currentProduct, nextProduct)) {
+        if (environment.labelScrolling === labelScrollOptions.vertical) {
+          currentRow.sort(this.vertical);
+        } else {
+          currentRow.sort(this.horizontal);
+        }
         sortedProducts = sortedProducts.concat(currentRow);
         currentRow = [];
         currentRow.push(nextProduct);
       } else {
         currentRow.push(nextProduct);
       }
+
       currentProduct = nextProduct;
     }
+
     if (this.products.length > 1) {
       currentRow.push(this.products[this.products.length - 1]);
     }
-    currentRow.sort(horizontal);
+
+    if (environment.labelScrolling === labelScrollOptions.vertical) {
+      currentRow.sort(this.vertical);
+    } else {
+      currentRow.sort(this.horizontal);
+    }
+
     sortedProducts = sortedProducts.concat(currentRow);
     this.products = sortedProducts;
+  }
+
+  // check if labels are on same row or column
+  isSameLevel(currentProduct: Label, nextProduct: Label) {
+    if (environment.labelScrolling === labelScrollOptions.horizontal
+      && currentProduct.bounds.top + currentProduct.bounds.height < nextProduct.bounds.top) {
+      return true;
+    }
+    if (environment.labelScrolling === labelScrollOptions.vertical
+      && currentProduct.bounds.left + currentProduct.bounds.width < nextProduct.bounds.left) {
+      return true;
+    }
+    return false;
+  }
+
+  // sort labels vertically
+  vertical(a,  b) {
+    if (a.bounds.top < b.bounds.top) {
+      return -1;
+    }
+    if (a.bounds.top > b.bounds.top) {
+      return 1;
+    }
+    return 0;
+  }
+
+  // sort labels horizontally
+  horizontal(a,  b) {
+    if (a.bounds.left < b.bounds.left) {
+      return -1;
+    }
+    if (a.bounds.left > b.bounds.left) {
+      return 1;
+    }
+    return 0;
   }
 
   ngAfterViewChecked() {
