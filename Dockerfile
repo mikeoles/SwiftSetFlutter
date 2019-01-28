@@ -43,6 +43,9 @@ FROM nginx:1.15.6-alpine
 COPY --from=builder /usr/src/app/dist/aisle /usr/share/nginx/html
 COPY ./docker-run.sh /
 
+# Use iso8601 time format in access logs
+RUN sed -i "s/time_local/time_iso8601/" /etc/nginx/nginx.conf
+
 # expose port 80
 EXPOSE 80
 
