@@ -4,6 +4,7 @@ import { Params, ActivatedRoute } from '@angular/router';
 import MissionSummary from '../missionSummary.model';
 import Aisle from '../aisle.model';
 import Mission from '../mission.model';
+import Label from '../label.model';
 
 @Component({
   selector: 'app-mission-view',
@@ -46,33 +47,31 @@ export class MissionViewComponent implements OnInit {
   }
 
   exportMission() {
-    const headers = ['Aisle name',
+    const headers = ['Aisle Name',
       'Barcode',
       'Product Info',
       'Out Of Stock',
       'Location'];
     let csvContent = 'data:text/csv;charset=utf-8,%EF%BB%BF';
-    let labels, outs;
     csvContent += headers.join(',') + '\n';
     for (let i = 0; i < this.aisles.length; i++) {
       const aisle = this.aisles[i];
-      this.apiService.getLabels(aisle.id).subscribe(l => labels = l);
-      this.apiService.getOuts(aisle.id).subscribe(o => outs = o);
+      const outs: Label[] = aisle.outs;
+      const labels: Label[]  = aisle.labels;
       const outsBarcodes: Set<string> = new Set<string>();
       for (let j = 0; j < outs.length; j++) {
-        outsBarcodes.add(outs[j].Barcode);
+        outsBarcodes.add(outs[j].barcode);
       }
       for (let j = 0; j < labels.length; j++) {
-        const inStock: Boolean = !outsBarcodes.has(labels[j].Barcode);
+        const outOfStock: Boolean = outsBarcodes.has(labels[j].barcode);
         const row = [aisle.id,
-          '\'' + labels[j].Barcode ,
+          '\'' + labels[j].barcode ,
           'Info' ,
-          inStock.toString(),
-          'X: ' + labels[j].X1 + ' Y: ' + labels[j].Z1].join(',');
+          outOfStock.toString(),
+          'X: ' + labels[j].bounds.left + ' Y: ' + labels[j].bounds.top].join(',');
         csvContent += row + '\n';
       }
     }
-
 
     // do the download stuff
     const encodedUri = csvContent;
