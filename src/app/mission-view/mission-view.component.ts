@@ -5,6 +5,7 @@ import MissionSummary from '../missionSummary.model';
 import Aisle from '../aisle.model';
 import Mission from '../mission.model';
 import Label from '../label.model';
+import Store from '../store.model';
 
 @Component({
   selector: 'app-mission-view',
@@ -15,6 +16,10 @@ import Label from '../label.model';
 export class MissionViewComponent implements OnInit {
   missionSummary: MissionSummary;
   mission: Mission;
+  store: Store;
+  averageLabels: number;
+  averageOuts: number;
+  averageSpreads: number;
   aisles: Aisle[];
   currentMission: number;
   service: ApiService;
@@ -40,6 +45,12 @@ export class MissionViewComponent implements OnInit {
               this.aisles[i] = aisle;
             });
           }
+        });
+        this.apiService.getStore(mission.storeId).subscribe(store => {
+          this.store = store;
+          this.averageLabels = Math.max(store.totalAverageLabels, this.missionSummary.labels);
+          this.averageOuts = Math.max(store.totalAverageOuts, this.missionSummary.outs);
+          this.averageSpreads = Math.max(store.totalAverageSpreads, this.missionSummary.spreads);
         });
       });
     });
@@ -78,7 +89,7 @@ export class MissionViewComponent implements OnInit {
     const link = document.createElement('a');
     link.setAttribute('target', '_blank');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', 'Mission-' + this.currentMission + '.csv');
+    link.setAttribute('download', 'Mission-' + this.mission.name + '.csv');
     document.body.appendChild(link);
     link.click();
     link.remove();

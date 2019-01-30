@@ -39,7 +39,8 @@
   font-size: 14px;
   color: white;
   bottom: 2px;
-  width: 100%;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .dateOverlaySelected{

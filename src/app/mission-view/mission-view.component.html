@@ -2,14 +2,14 @@
   <img src="../assets/logo.png"/>
 </header>
 <div *ngIf="mission" class="missionInfo">
-  <div class="missionName"><div id="circle"></div>STORE {{mission.storeId}}</div>
+  <div class="missionName">STORE {{mission.storeId}}</div>
   <div class="missionDate"> Mission: <span> {{mission.name}} on {{mission.missionDateTime | date:'MMM d h:ma'}}</span></div>
   <button class="exportButton" (click)="exportMission()">Export Mission</button>
 </div>
 <div *ngIf="missionSummary" class="statRings">
-  <app-stat-ring class="center" [title]="'Labels'" [stat]="missionSummary.labels" [current]="60" max="100"></app-stat-ring>
-  <app-stat-ring class="left" [title]="'Outs'" [stat]="missionSummary.outs" [current]="60" max="100"></app-stat-ring>
-  <app-stat-ring class="right" [title]="'Spreads'" [stat]="missionSummary.spreads" [current]="60" max="100"></app-stat-ring>
+  <app-stat-ring class="left" [title]="'Outs'" [stat]="missionSummary.outs" [current]="missionSummary.outs" [max]="store.totalAverageOuts"></app-stat-ring>
+  <app-stat-ring class="right" [title]="'Labels'" [stat]="missionSummary.labels" [current]="missionSummary.labels" [max]="store.totalAverageLabels"></app-stat-ring>
+  <!-- <app-stat-ring class="right" [title]="'Spreads'" [stat]="missionSummary.spreads" [current]="0" [max]="100"></app-stat-ring> -->
 </div>
 <div class="grid">
   <app-aisles-grid [aisles]="aisles" [missionId]="currentMission"></app-aisles-grid>
