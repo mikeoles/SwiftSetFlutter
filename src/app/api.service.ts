@@ -5,11 +5,7 @@ import { EnvironmentService } from './environment.service';
 import Mission from './mission.model';
 import Aisle from './aisle.model';
 import Label from './label.model';
-import { Observable, of } from 'rxjs';
-import outs from './mock/outs.json';
-import labels from './mock/labels.json';
-import storeMock from './mock/store.json';
-import randomMissions from './mock/missions.json';
+import { Observable } from 'rxjs';
 import MissionSummary from './missionSummary.model';
 import Store from './store.model';
 import { formatDate } from '@angular/common';
@@ -23,21 +19,6 @@ export class ApiService {
 
   constructor(private environment: EnvironmentService, private http: HttpClient) {
     this.apiUrl = environment.config.apiUrl;
-  }
-  getOuts(selectedAisle: number): Observable<Array<any>> {
-    return of(outs);
-  }
-
-  getLabels(selectedAisle: number): Observable<Array<any>> {
-    return of(labels);
-  }
-
-  getStores(id: string) {
-    return of(storeMock);
-  }
-
-  getDateMissions(date: string): Observable<Array<any>> {
-    return of(randomMissions);
   }
 
   createAisle(aisle: any): Aisle {
@@ -55,7 +36,7 @@ export class ApiService {
     return {
       id: label.Id,
       name: label.Product.Description || 'Unknown Product Name',
-      barcode: label.Barcode || label.Product.Barcode || '000000000000',
+      barcode: label.Product.Barcode || '000000000000',
       productId: label.Product.ItemId || '',
       price: label.Product.Price || 0,
       bounds: {
