@@ -13,6 +13,7 @@ import Label from '../label.model';
 class AppStatRingStubComponent {
   @Input() stat: string;
   @Input() current: string;
+  @Input() max: string;
 }
 @Component({selector: 'app-aisles-grid', template: ''})
 class AppAislesGridStubComponent {
@@ -34,9 +35,10 @@ describe('MissionViewComponent', () => {
   outs: 1, labels: 1, spreads: 1, aislesScanned: 1};
   const aisles = [{  id: 1, name: '', panoramaUrl: '', labels: labels, outs: labels, spreads: [] }];
   const aisle = {  id: 1, name: '', panoramaUrl: '', labels: labels, outs: labels, spreads: [] };
+  const store = { id: 1 };
 
   beforeEach(async(() => {
-    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getMission', 'getMissionSummary', 'getAisles', 'getAisle']);
+    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getStore', 'getMission', 'getMissionSummary', 'getAisles', 'getAisle']);
 
     TestBed.configureTestingModule({
       imports: [
@@ -62,6 +64,7 @@ describe('MissionViewComponent', () => {
     apiService.getMissionSummary.and.returnValue(of(missionSummary));
     apiService.getAisles.and.returnValue(of(aisles));
     apiService.getAisle.and.returnValue(of(aisle));
+    apiService.getStore.and.returnValue(of(store));
   }));
 
   beforeEach(() => {
