@@ -1,0 +1,42 @@
+:host {
+  display: inline-block;
+  margin: 50px auto 50px auto;
+}
+
+.title{
+  display: block;
+  margin: auto;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.positionRelative{
+  position: relative;
+}
+
+.mins, .secs, .stat{
+  position: absolute;
+}
+
+.stat {
+  top: 80px;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  font-size: 65px;
+  font-weight: 900;
+  font-style: italic;
+}
+
+.mins{
+  left: 55px;
+  font-size: 10px;
+  top: 120px;
+}
+
+.secs{
+  left: 130px;
+  font-size: 10px;
+  top: 120px;
+}

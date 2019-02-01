@@ -1,0 +1,29 @@
+[
+  {
+    "Id": 1,
+    "MissionId": "1",
+    "Time": "12:30",
+    "Outs": "600",
+    "Labels": "725",
+    "Spreads": "1123",
+    "AislesScanned": 50
+  },
+  {
+    "Id": 2,
+    "MissionId": "2",
+    "Time": "3:00",
+    "Outs": "700",
+    "Labels": "711",
+    "Spreads": "1203",
+    "AislesScanned": 49
+  },
+  {
+    "Id": 3,
+    "MissionId": "3",
+    "Time": "4:30",
+    "Outs": "800",
+    "Labels": "719",
+    "Spreads": "1000",
+    "AislesScanned": 47
+  }
+]

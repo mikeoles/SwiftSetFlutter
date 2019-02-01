@@ -1,0 +1,18 @@
+<table>
+  <thead>
+    <tr>
+      <th>Aisle</th>
+      <th>Outs</th>
+      <th>Labels</th>
+      <!-- <th>Spreads</th> -->
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let aisle of aisles; let i = index" (click)="viewAisle(aisle.id)">
+      <td>{{aisle.id}}</td>
+      <td>{{aisle.outs.length}}</td>
+      <td>{{aisle.labels.length}}</td>
+      <!-- <td>{{aisle.spreads.length}}</td> -->
+    </tr>
+  </tbody>
+</table>

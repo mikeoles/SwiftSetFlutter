@@ -1,0 +1,12 @@
+<app-selection-area [missions]="missions" [aisles]="aisles"
+  [selectedMission]="selectedMission" [selectedAisle]="selectedAisle" [panoramaUrl]="panoramaUrl" [outs]="outs"
+  (missionSelected)='setMission($event)' (aisleSelected)='setAisle($event)' [panoTouched]=panoTouched (panoSwitch)='changePanoMode()'>
+</app-selection-area>
+<app-panorama [outs]="outs" [labels]="labels" [panoramaUrl]="panoramaUrl"
+  [currentId]="currentId" [currentDisplay]="currentDisplay"
+  (panoramaId)='setId($event)' [panoMode]='panoMode' (panoramaTouched)='hideDropdowns()'>
+</app-panorama>
+<app-product-details [outs]="outs" [labels]="labels"
+  (gridId)='setId($event)' (gridDisplay)='setDisplay($event)'
+  [currentId]="currentId" [currentDisplay]="currentDisplay" [panoMode]='panoMode'>
+</app-product-details>

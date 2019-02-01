@@ -1,0 +1,68 @@
+@import "../../variables";
+
+:host{
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.left{
+  float: left;
+  margin-left: 250px;
+}
+
+.right{
+  float: right;
+  margin-right: 250px;
+}
+
+img{
+  padding: 10px 40px;
+}
+
+.missionInfo{
+  border: solid black;
+  border-width: 1px 0px;
+  padding: 20px 40px;
+}
+
+.missionDate span{
+  font-weight: normal;
+}
+
+.exportButton, .missionDate{
+  display: inline-block;
+}
+
+.exportButton{
+  float: right;
+  background-color: $primary;
+  border-radius: 5px;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: left;
+  border: 3px $primary solid
+}
+
+button:focus{
+  outline:0;
+}
+
+.statRings{
+  width:calc(100%-80px);
+  text-align:center;
+}
+
+.grid, .statRings{
+  margin-left: 40px;
+  margin-right: 40px;
+}
+
+#circle {
+  display: inline-block;
+  margin-right: 20px;
+  width: 20px;
+  height: 20px;
+  border-radius: 25px;
+  background: green;
+}

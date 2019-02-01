@@ -101,8 +101,7 @@
             ],
             "exclude": [
               "**/node_modules/**",
-              "**/src/app/mock/labels.json",
-              "**/src/app/mock/outs.json"
+              "**/src/app/mock/*"
             ]
           }
         }

@@ -6,4 +6,5 @@ export default class Aisle {
   panoramaUrl: string;
   labels: Label[];
   outs: Label[];
+  spreads: Label[];
 }
