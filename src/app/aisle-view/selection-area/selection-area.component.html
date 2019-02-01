@@ -1,41 +1,45 @@
 <div class="container">
-  <img id="logo" (click)="logoClicked()" src="../assets/logo.png"/>
-  <div id="missionsContainer">
-    <button class="dropdownButton" [ngClass]="{'selectedButton': showMissions}" (click)="selectMissionsDropdown()">
-      Mission {{selectedMission?.name}}
-      <fa-icon *ngIf="!showMissions" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
-      <fa-icon *ngIf="showMissions" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
-    </button>
-    <ul class="dropdown" *ngIf="showMissions">
-      <li
-        *ngFor="let mission of missions"
-        [class.selected]="mission.id === this.selectedMission.id"
-        [value]="mission"
-        (click)="missionChanged(mission)"
-      >
-        {{mission?.name}}
-      </li>
-    </ul>
-    <div *ngIf="showMissions" class="pointer"></div>
+  <div class="topBar">
+    <img id="logo" (click)="logoClicked()" src="../assets/logo.png"/>
   </div>
-  <div id="aislesContainer">
-    <button class="dropdownButton" [ngClass]="{'selectedButton': showAisles}" (click)="selectAislesDropdown()">
-      Aisle {{selectedAisle?.name}}
-      <fa-icon *ngIf="!showAisles" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
-      <fa-icon *ngIf="showAisles" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
-    </button>
-    <ul *ngIf="showAisles">
-      <li
-        [class.selected]="aisle.id === this.selectedAisle.id"
-        *ngFor="let aisle of aisles"
-        [value]="aisle"
-        (click)="aisleChanged(aisle)"
-      >
-        {{aisle?.name}}
-      </li>
-    </ul>
-    <div *ngIf="showAisles" class="pointer"></div>
+  <div class="bottomBar">
+    <div id="missionsContainer">
+      <button class="dropdownButton" [ngClass]="{'selectedButton': showMissions}" (click)="selectMissionsDropdown()">
+        Mission {{selectedMission?.name}}
+        <fa-icon *ngIf="!showMissions" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
+        <fa-icon *ngIf="showMissions" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
+      </button>
+      <ul class="dropdown" *ngIf="showMissions">
+        <li
+          *ngFor="let mission of missions"
+          [class.selected]="mission.id === this.selectedMission.id"
+          [value]="mission"
+          (click)="missionChanged(mission)"
+        >
+          {{mission?.name}}
+        </li>
+      </ul>
+      <div *ngIf="showMissions" class="pointer"></div>
+    </div>
+    <div id="aislesContainer">
+      <button class="dropdownButton" [ngClass]="{'selectedButton': showAisles}" (click)="selectAislesDropdown()">
+        Aisle {{selectedAisle?.name}}
+        <fa-icon *ngIf="!showAisles" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
+        <fa-icon *ngIf="showAisles" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
+      </button>
+      <ul *ngIf="showAisles">
+        <li
+          [class.selected]="aisle.id === this.selectedAisle.id"
+          *ngFor="let aisle of aisles"
+          [value]="aisle"
+          (click)="aisleChanged(aisle)"
+        >
+          {{aisle?.name}}
+        </li>
+      </ul>
+      <div *ngIf="showAisles" class="pointer"></div>
+    </div>
+    <button class="resetPanoButton" (click)="resetPanoClick()">Reset Pano</button>
+    <button class="pdfButton" (click)="exportPDF()">Download PDF</button>
   </div>
-<button class="resetPanoButton" (click)="resetPanoClick()">Reset Pano</button>
-<button class="pdfButton" (click)="exportPDF()">Download PDF</button>
 </div>

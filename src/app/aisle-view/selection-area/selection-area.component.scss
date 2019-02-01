@@ -1,10 +1,24 @@
 @import '../../../variables';
 
+.topBar{
+  background-color: $primary;
+  display: block;
+}
+
+#logo{
+  margin: auto;
+  padding: 20px;
+}
+
+.bottomBar{
+  display: block;
+}
+
 button{
     height: 55px;
     width: 285px;
     padding: 0px 30px;
-    margin: 28px 60px;
+    margin: 20px 20px;
     background-color: white;
     border-radius: 30px;
     font-size: 18px;
@@ -28,8 +42,11 @@ button{
   right: 25px;
 }
 
-#missionsContainer button {
-  width: 375px;
+#missionsContainer{
+  margin-left: 10px;
+  button {
+    width: 375px;
+  }
 }
 
 @media (max-width: 1366px) {
@@ -85,9 +102,6 @@ button:focus{
 
 .container{
     width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
 }
 
 #missionsContainer,#aislesContainer{
@@ -161,11 +175,4 @@ ul{
 .selectedButton{
   background-color: $primary;
   color:  #434343;
-}
-
-#logo{
-  position: absolute;
-  left: 25px;
-  top: 37px;
-  margin: 0px;
 }
