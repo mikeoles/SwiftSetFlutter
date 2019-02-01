@@ -29,7 +29,6 @@ export class PanoramaComponent implements OnInit, OnChanges {
   panZoomApi: any;
   faPlus = faPlus;
   faMinus = faMinus;
-  faArrowsAlt = faArrowsAlt;
   startingZoomLevel = .17;
   panoZoomLevel = .25;
   zoomedInLevel = .5;
