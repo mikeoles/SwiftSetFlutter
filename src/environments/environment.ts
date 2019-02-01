@@ -9,6 +9,9 @@ export const environment = {
   apiUrl: 'http://localhost:4000/',
   showPlugs: false,
   showSuppliers: false,
+  departments: false,
+  zones: false,
+  sections: false,
   labelScrolling: labelScrollOptions.horizontal
 };
 

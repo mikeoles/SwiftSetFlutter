@@ -6,6 +6,7 @@ import Aisle from '../aisle.model';
 import Mission from '../mission.model';
 import Label from '../label.model';
 import Store from '../store.model';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-mission-view',
@@ -58,11 +59,13 @@ export class MissionViewComponent implements OnInit {
   }
 
   exportMission() {
+    const showAllLabels = false;
     const headers = ['Aisle Name',
       'Barcode',
-      'Product Info',
-      'Out Of Stock',
       'Location'];
+    if (showAllLabels) {
+      headers.concat('Out Of Stock');
+    }
     let csvContent = 'data:text/csv;charset=utf-8,%EF%BB%BF';
     csvContent += headers.join(',') + '\n';
     for (let i = 0; i < this.aisles.length; i++) {
@@ -74,13 +77,21 @@ export class MissionViewComponent implements OnInit {
         outsBarcodes.add(outs[j].barcode);
       }
       for (let j = 0; j < labels.length; j++) {
-        const outOfStock: Boolean = outsBarcodes.has(labels[j].barcode);
-        const row = [aisle.id,
+        const row = [
+          aisle.id,
           '\'' + labels[j].barcode ,
-          'Info' ,
-          outOfStock.toString(),
-          'X: ' + labels[j].bounds.left + ' Y: ' + labels[j].bounds.top].join(',');
-        csvContent += row + '\n';
+          'X: ' + labels[j].bounds.left + ' Y: ' + labels[j].bounds.top,
+        ].join(',');
+
+        const outOfStock: Boolean = outsBarcodes.has(labels[j].barcode);
+
+        if (showAllLabels) {
+          row.concat(',' + outOfStock.toString());
+        }
+
+        if (showAllLabels || outOfStock) {
+          csvContent += row + '\n';
+        }
       }
     }
 
