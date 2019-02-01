@@ -1,0 +1,150 @@
+@import "../../../variables.scss";
+
+table {
+    border-collapse: collapse;
+    text-align: center;
+    margin: auto 60px;
+    width: calc(100% - 120px);
+    table-layout: fixed;
+}
+
+table tbody, table thead
+{
+    display: block;
+}
+
+table tbody
+{
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    height: calc(100vh - 111px - 365px - 95px - 48px);
+}
+
+th{
+    border: 1px solid $primary;
+    color: #434343;
+    height: 44px;
+}
+
+td{
+    height: 55px;
+}
+
+
+th, td{
+  width: 1000px;
+}
+
+tr{
+    border: 1px solid #707070;
+}
+
+tbody :first-child{
+    border-top: 0px;
+}
+
+//Selection
+.selected{
+    font-weight: 700;
+}
+
+.selected td {
+  height: 51px;
+  border-top: 3px solid $selected;
+  border-bottom: 3px solid $selected;
+}
+
+.selected td:first-child {
+  border-left: 3px solid $selected;
+}
+
+.selected td:last-child {
+  border-right: 3px solid $selected;
+}
+
+//Scrollbar
+::-webkit-scrollbar {
+    width: 16px;
+}
+
+::-webkit-scrollbar-track {
+    background: white;
+    border-right: solid 1px $primary;
+    border-bottom: solid 1px $primary;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: $primary;
+    border: 5px solid transparent;
+    border-radius: 9px;
+    background-clip: content-box;
+}
+
+
+
+//Ipad Pro Landscape
+@media (max-width: 1366px)  and (orientation: landscape){
+  th, td{
+    width: 311px !important;
+  }
+
+  table tbody
+  {
+      height: calc(100vh - 111px - 365px - 95px - 48px - 17px);
+  }
+}
+
+//Ipad Pro Landscape
+@media (max-width: 1366px) and (orientation: portrait) {
+  th, td{
+    width: 311px !important;
+  }
+
+  table tbody
+  {
+      height: calc(100vh - 111px - 365px - 95px - 48px - 31px);
+  }
+}
+
+
+
+//Ipad Mini and 10.5 pro Lanscape
+@media (max-width: 1112px) and (orientation: landscape){
+  table tbody{
+    height: calc(100vh - 655px) !important;
+  }
+  margin: auto 50px !important;
+  width: calc(100% - 100px) !important;
+  th{
+    height: 33px !important;
+  }
+
+  td{
+    height: 48px !important;
+  }
+
+  tr{
+    font-size: 12px !important;
+  }
+}
+
+//Ipad Mini and 10.5 pro Portrait
+@media (max-width: 834px) and (orientation: portrait) {
+  table tbody{
+    height: calc(100vh - 675px) !important;
+  }
+  margin: auto 50px !important;
+  width: calc(100% - 100px) !important;
+  th{
+    height: 33px !important;
+  }
+
+  td{
+    height: 48px !important;
+  }
+
+  tr{
+    font-size: 12px !important;
+  }
+}

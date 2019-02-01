@@ -1,0 +1,152 @@
+@import '../../variables.scss';
+
+button{
+    height: 55px;
+    width: 285px;
+    padding: 0px 30px;
+    margin: 28px 60px;
+    background-color: white;
+    border-radius: 30px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: left;
+    color: #434343;
+    border: 3px $primary solid;
+}
+
+#missionsContainer button {
+  width: 375px;
+}
+
+@media (max-width: 1366px) {
+  button{
+    font-size: 14px !important;
+    margin: 20px 60px !important;
+  }
+
+  #aislesContainer button {
+    width: 220px !important;
+  }
+
+  #logo{
+    top: 25px !important;
+  }
+}
+
+//Both iPads portrait mode
+@media (max-width: 1366px) and (orientation: portrait) {
+  button{
+    margin: 20px 20px !important;
+  }
+
+  .container{
+    margin-left: 180px !important;
+    width: calc(100vw - 180px) !important;
+  }
+}
+
+//iPad mini and 10.5 pro landscape mode
+@media (max-width: 1112px) and (orientation: landscape) {
+  .container{
+    margin-left: 180px !important;
+    width: calc(100vw - 180px) !important;
+  }
+}
+
+//iPad mini and 10.5 pro portrait mode
+@media (max-width: 834px) and (orientation: portrait) {
+  #missionsContainer button {
+    width: 280px !important;
+  }
+}
+
+
+button:focus{
+  outline:0;
+}
+
+.container{
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+#missionsContainer,#aislesContainer{
+  display: inline-block;
+  width: auto;
+}
+
+ul{
+  width: 325px;
+  max-height: 350px;
+  overflow: auto;
+  size: 18px;
+  position: absolute;
+  display: block;
+  z-index: 2;
+  margin-top: -9px;
+  margin-left: 60px;
+  padding: 5px 0px 10px 20px;
+  border-radius: 30px;
+  box-shadow: 0px 0px 30px rgba(32, 32, 32, 0.411);
+  background: white;
+  text-align: left;
+  list-style-type: none;
+  li{
+    border-bottom: rgba(211, 211, 211, 0.5) 1px solid;
+    padding: 10px;
+    cursor:pointer;
+    color: $primary;
+  }
+  li:last-child{
+    border-bottom: 0px;
+  }
+  li:hover{
+    color: black;
+  }
+}
+
+.fa{
+  float: right;
+}
+
+.selected{
+  color: black !important;
+}
+
+//Scrollbar
+::-webkit-scrollbar {
+  width: 1px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+.pointer{
+  position: absolute;
+  z-index: 2;
+  margin-top: -28px;
+  margin-left: 200px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 20px 20px 20px;
+  border-color: transparent transparent white transparent;
+}
+
+.selectedButton{
+  background-color: $primary;
+  color:  #434343;
+}
+
+#logo{
+  position: absolute;
+  left: 25px;
+  top: 35px;
+}

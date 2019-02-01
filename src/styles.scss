@@ -1,0 +1,19 @@
+body {
+  margin: 0;
+}
+
+@font-face {
+  font-family: OpenSans;
+  src: url(assets/Open_Sans/OpenSans-Regular.ttf) format("opentype");
+}
+
+*{
+  font-family: 'OpenSans', sans-serif;
+}
+
+html,
+body {
+  position: fixed;
+  overflow: hidden;
+  width: 100%;
+}

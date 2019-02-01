@@ -1,0 +1,62 @@
+[
+  {
+    "Id": 1,
+    "MissionId": "044429UTC",
+    "ProductId": "554021648",
+    "Zone": "AA",
+    "Aisle": "7",
+    "Section": "1",
+    "X1": 25,
+    "Z1": 25,
+    "X2": 35,
+    "Z2": 35
+  },
+  {
+    "Id": 2,
+    "MissionId": "044429UTC",
+    "ProductId": "550376332",
+    "Zone": "AA",
+    "Aisle": "7",
+    "Section": "1",
+    "X1": 2220,
+    "Z1": 350,
+    "X2": 2230,
+    "Z2": 360
+  },
+  {
+    "Id": 3,
+    "MissionId": "044429UTC",
+    "ProductId": "552808986",
+    "Zone": "AA",
+    "Aisle": "7",
+    "Section": "1",
+    "X1": 500,
+    "Z1": 300,
+    "X2": 600,
+    "Z2": 320
+  },
+  {
+    "Id": 4,
+    "MissionId": "044429UTC",
+    "ProductId": "552131970",
+    "Zone": "AA",
+    "Aisle": "7",
+    "Section": "1",
+    "X1": 900,
+    "Z1": 150,
+    "X2": 950,
+    "Z2": 350
+  },
+  {
+    "Id": 5,
+    "MissionId": "044429UTC",
+    "ProductId": "293399",
+    "Zone": "AA",
+    "Aisle": "7",
+    "Section": "1",
+    "X1": 750,
+    "Z1": 30,
+    "X2": 800,
+    "Z2": 150
+  }
+]
