@@ -10,23 +10,22 @@ button{
     font-size: 18px;
     font-weight: bold;
     text-align: left;
-    color: #434343;
+    color: $primary;
     border: 3px $primary solid;
 }
 
+.resetPanoButton{
+  text-align: center;
+  width: auto;
+  position: absolute;
+  right: 250px;
+}
+
 .pdfButton{
-  background-color: $primary;
-  border-radius: 5px;
-  color: white;
-  font-size: 18px;
-  font-weight: bold;
-  text-align: left;
-  border: 3px $primary solid;
+  text-align: center;
+  width: auto;
   position: absolute;
   right: 25px;
-  height: 35px;
-  width: 200px;
-  margin: 38px 0px;
 }
 
 #missionsContainer button {
