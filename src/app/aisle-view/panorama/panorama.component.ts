@@ -8,7 +8,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 import panzoom from 'panzoom';
-import { faPlus, faMinus, faArrowsAlt } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-panorama',
@@ -22,6 +22,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
   @Input() currentDisplay: string;
   @Input() panoramaUrl: string;
   @Input() panoMode: boolean;
+  @Input() resetPano = false;
   @Output() panoramaId = new EventEmitter();
   @Output() panoramaTouched = new EventEmitter();
   selectedIdWithPano = false;
@@ -75,6 +76,8 @@ export class PanoramaComponent implements OnInit, OnChanges {
       if (changes['panoMode']) {
         const element = document.getElementById('pano-image');
         this.centerImage(element.offsetWidth, element.offsetHeight);
+      } else if (changes['resetPano'] !== undefined) {
+        this.resetZoom();
       } else {
         if (this.currentId && this.currentId !== -1 && !this.selectedIdWithPano) {
 
