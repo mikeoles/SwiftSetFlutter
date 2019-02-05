@@ -21,6 +21,7 @@ import { AislesGridComponent } from './mission-view/aisles-grid/aisles-grid.comp
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
 import { EnvironmentService } from './environment.service';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { EnvironmentService } from './environment.service';
     HttpClientModule,
     FormsModule,
     RoundProgressModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [
     EnvironmentService,
