@@ -12,7 +12,7 @@ export const environment = {
   departments: true,
   zones: true,
   sections: true,
-  labelScrolling: labelScrollOptions.horizontal
+  labelScrolling: labelScrollOptions.vertical
 };
 
 /*

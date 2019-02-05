@@ -33,7 +33,7 @@ export class ApiService {
   }
 
   createLabel(label: any): Label {
-    const department = Math.random() > .5 ? 'Outdoors' : 'Electronics';
+    const department = Math.random() > .5 ? 'Produce' : 'Frozen';
     const section = Math.random() > .5 ? 'Section A' : 'Section B';
     const zone = Math.random() > .5 ? 'Zone 1' : 'Zone 2';
 
