@@ -6,7 +6,7 @@ import Aisle from '../aisle.model';
 import Mission from '../mission.model';
 import Label from '../label.model';
 import Store from '../store.model';
-import { environment } from 'src/environments/environment.prod';
+import { ModalService } from '../services/modal.service';
 
 @Component({
   selector: 'app-mission-view',
@@ -25,7 +25,7 @@ export class MissionViewComponent implements OnInit {
   currentMission: number;
   service: ApiService;
 
-  constructor(private apiService: ApiService, private activatedRoute: ActivatedRoute) {
+  constructor(private apiService: ApiService, private activatedRoute: ActivatedRoute, private modalService: ModalService) {
 
   }
 
@@ -58,13 +58,21 @@ export class MissionViewComponent implements OnInit {
     this.service = this.apiService;
   }
 
-  exportMission() {
-    const showAllLabels = false;
-    const headers = ['Aisle Name',
+  openModal(id: string) {
+    this.modalService.open(id);
+  }
+
+  closeModal(id: string) {
+      this.modalService.close(id);
+  }
+
+  exportMission(exportType: string, modalId: string) {
+    const showAllLabels = exportType === 'labels';
+    let headers = ['Aisle Name',
       'Barcode',
       'Location'];
     if (showAllLabels) {
-      headers.concat('Out Of Stock');
+      headers = headers.concat('Out Of Stock');
     }
     let csvContent = 'data:text/csv;charset=utf-8,%EF%BB%BF';
     csvContent += headers.join(',') + '\n';
@@ -77,7 +85,7 @@ export class MissionViewComponent implements OnInit {
         outsBarcodes.add(outs[j].barcode);
       }
       for (let j = 0; j < labels.length; j++) {
-        const row = [
+        let row = [
           aisle.id,
           '\'' + labels[j].barcode ,
           'X: ' + labels[j].bounds.left + ' Y: ' + labels[j].bounds.top,
@@ -86,13 +94,14 @@ export class MissionViewComponent implements OnInit {
         const outOfStock: Boolean = outsBarcodes.has(labels[j].barcode);
 
         if (showAllLabels) {
-          row.concat(',' + outOfStock.toString());
+          row = row.concat(',' + outOfStock.toString());
         }
 
         if (showAllLabels || outOfStock) {
           csvContent += row + '\n';
         }
       }
+      this.modalService.close(modalId);
     }
 
     // do the download stuff

@@ -21,6 +21,8 @@ import { AislesGridComponent } from './mission-view/aisles-grid/aisles-grid.comp
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
 import { EnvironmentService } from './environment.service';
+import { ModalComponent } from './mission-view/modal.component';
+import { ModalService } from './services/modal.service';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,7 @@ import { EnvironmentService } from './environment.service';
     DailyGraphsComponent,
     MissionViewComponent,
     AislesGridComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +61,8 @@ import { EnvironmentService } from './environment.service';
       },
       multi: true,
       deps: [EnvironmentService]
-    }
+    },
+    ModalService
   ],
   bootstrap: [AppComponent]
 })
