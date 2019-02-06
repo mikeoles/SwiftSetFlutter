@@ -46,7 +46,13 @@ img{
   height: 55px;
   text-align: center;
   margin-top: -26px;
-  padding: 0px 20px;
+  padding: 1px 20px;
+}
+
+button > img,
+button > span {
+  vertical-align: middle;
+  padding: 0px;
 }
 
 button:focus{
@@ -71,3 +77,5 @@ button:focus{
   border-radius: 25px;
   background: green;
 }
+
+

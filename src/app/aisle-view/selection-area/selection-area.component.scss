@@ -27,6 +27,15 @@ button{
   height: 35px;
   width: 200px;
   margin: 38px 0px;
+  padding: 1px 20px;
+}
+
+button > img,
+button > span {
+  vertical-align: middle;
+  padding: 0px 5px;
+  margin: 0px;
+  display: inline-block;
 }
 
 #missionsContainer button {

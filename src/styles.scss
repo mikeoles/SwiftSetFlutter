@@ -1,3 +1,5 @@
+@import "./variables";
+
 body {
   margin: 0;
 }
@@ -21,15 +23,28 @@ app-export-modal {
   display: none;
 
   button{
-    border-radius: 25px;
-    background-color: White;
-    border: 3px blue solid;
-    color:  blue;
-    margin: 20px 50px;
-    width: 220px;
-    height: 55px;
-    font-size: 18px;
-    font-weight: bold;
+    border-radius: 25px !important;
+    background-color: White !important;
+    border: 3px $primary solid !important;
+    color:  $primary !important;
+    margin: 10px 25px !important;
+    width: calc(100% - 50px) !important;
+    height: 55px !important;
+    font-size: 18px !important;
+    font-weight: bold !important;
+    text-align: center !important;
+  }
+
+  .cancel{
+    color: $greyBorder !important;
+    border-color: $greyBorder !important;
+    margin-top: 20px !important;
+  }
+
+  .exportTitle{
+    font-size: 24px;
+    font-weight: 900;
+    margin-bottom: 30px;
   }
 
   .modal {
@@ -47,12 +62,12 @@ app-export-modal {
       overflow: auto;
 
       .modal-body {
-          padding: 20px;
-          background: #fff;
-          text-align: center;
-
-          /* margin exposes part of the modal background */
-          margin: 100px 400px;
+        padding: 20px;
+        background: #fff;
+        text-align: center;
+        /* margin exposes part of the modal background */
+        margin: 200px 750px;
+        border-radius: 20px;
       }
   }
 
