@@ -4,5 +4,8 @@ export const environment = {
   production: true,
   showPlugs: false,
   showSuppliers: false,
-  labelScrolling: labelScrollOptions.horizontal
+  departments: true,
+  zones: true,
+  sections: true,
+  labelScrolling: labelScrollOptions.vertical
 };
