@@ -6,6 +6,7 @@ import Aisle from '../../aisle.model';
 import * as jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import Label from 'src/app/label.model';
+import { ModalService } from '../../services/modal.service';
 
 @Component({
   selector: 'app-selection-area',
@@ -22,13 +23,14 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   @Input() panoTouched: boolean;
   @Input() panoramaUrl: string;
   @Input() outs: Label[] = [];
+  @Input() labels: Label[] = [];
   @Output() missionSelected = new EventEmitter();
   @Output() aisleSelected = new EventEmitter();
   @Output() panoSwitch = new EventEmitter();
   faAngleDown = faAngleDown;
   faAngleUp = faAngleUp;
 
-  constructor(private eRef: ElementRef) {
+  constructor(private eRef: ElementRef, private modalService: ModalService) {
   }
 
   ngOnInit() {
@@ -48,6 +50,14 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
       this.showMissions = false;
       this.showAisles = false;
     }
+  }
+
+  openModal(id: string) {
+    this.modalService.open(id);
+  }
+
+  closeModal(id: string) {
+      this.modalService.close(id);
   }
 
   missionChanged(mission) {
@@ -77,6 +87,49 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
 
   logoClicked() {
     this.panoSwitch.emit();
+  }
+
+  exportAisle(exportType: string, modalId: string) {
+    const showAllLabels = exportType === 'labels';
+    let headers = ['Barcode',
+      'Location'];
+    if (showAllLabels) {
+      headers = headers.concat('Out Of Stock');
+    }
+    let csvContent = 'data:text/csv;charset=utf-8,%EF%BB%BF';
+    csvContent += headers.join(',') + '\n';
+
+    const outsBarcodes: Set<string> = new Set<string>();
+    for (let j = 0; j < this.outs.length; j++) {
+      outsBarcodes.add(this.outs[j].barcode);
+    }
+    for (let j = 0; j < this.labels.length; j++) {
+      let row = [
+        '\'' + this.labels[j].barcode ,
+        'X: ' + this.labels[j].bounds.left + ' Y: ' + this.labels[j].bounds.top,
+      ].join(',');
+
+      const outOfStock: Boolean = outsBarcodes.has(this.labels[j].barcode);
+
+      if (showAllLabels) {
+        row = row.concat(',' + outOfStock.toString());
+      }
+
+      if (showAllLabels || outOfStock) {
+        csvContent += row + '\n';
+      }
+    }
+    this.modalService.close(modalId);
+
+    // do the download stuff
+    const encodedUri = csvContent;
+    const link = document.createElement('a');
+    link.setAttribute('target', '_blank');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', 'Aisle-' + this.selectedAisle.name + '.csv');
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
   }
 
   exportPDF() {

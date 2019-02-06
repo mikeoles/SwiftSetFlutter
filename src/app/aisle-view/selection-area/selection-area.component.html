@@ -36,5 +36,17 @@
     </ul>
     <div *ngIf="showAisles" class="pointer"></div>
   </div>
+  <button class="exportButton" (click)="openModal('export-popup')">Export CSV</button>
 <button class="pdfButton" (click)="exportPDF()">Download PDF</button>
 </div>
+<app-export-modal id="export-popup">
+  <div class="modal">
+      <div class="modal-body">
+          <h1 style="height:100px">Type of file to export</h1>
+          <button (click)="exportAisle('outs','export-popup')">Outs</button>
+          <button (click)="exportAisle('labels','export-popup')">Labels</button>
+          <button (click)="closeModal('export-popup');">Close</button>
+      </div>
+  </div>
+  <div class="modal-background"></div>
+</app-export-modal>
