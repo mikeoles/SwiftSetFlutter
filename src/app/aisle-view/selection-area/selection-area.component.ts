@@ -25,6 +25,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   @Output() missionSelected = new EventEmitter();
   @Output() aisleSelected = new EventEmitter();
   @Output() panoSwitch = new EventEmitter();
+  @Output() resetPano = new EventEmitter();
   faAngleDown = faAngleDown;
   faAngleUp = faAngleUp;
 
@@ -77,6 +78,10 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
 
   logoClicked() {
     this.panoSwitch.emit();
+  }
+
+  resetPanoClick() {
+    this.resetPano.emit();
   }
 
   exportPDF() {

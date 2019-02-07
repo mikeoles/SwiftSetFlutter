@@ -1,36 +1,52 @@
 @import '../../../variables';
 
+.topBar{
+  background-color: $primary;
+  display: block;
+}
+
+#logo{
+  margin: auto;
+  padding: 20px;
+}
+
+.bottomBar{
+  display: block;
+}
+
 button{
     height: 55px;
     width: 285px;
     padding: 0px 30px;
-    margin: 28px 60px;
+    margin: 20px 20px;
     background-color: white;
     border-radius: 30px;
     font-size: 18px;
     font-weight: bold;
     text-align: left;
-    color: #434343;
+    color: $primary;
     border: 3px $primary solid;
 }
 
-.pdfButton{
-  background-color: $primary;
-  border-radius: 5px;
-  color: white;
-  font-size: 18px;
-  font-weight: bold;
-  text-align: left;
-  border: 3px $primary solid;
+.resetPanoButton{
+  text-align: center;
+  width: auto;
   position: absolute;
-  right: 25px;
-  height: 35px;
-  width: 200px;
-  margin: 38px 0px;
+  right: 250px;
 }
 
-#missionsContainer button {
-  width: 375px;
+.pdfButton{
+  text-align: center;
+  width: auto;
+  position: absolute;
+  right: 25px;
+}
+
+#missionsContainer{
+  margin-left: 10px;
+  button {
+    width: 375px;
+  }
 }
 
 @media (max-width: 1366px) {
@@ -86,9 +102,6 @@ button:focus{
 
 .container{
     width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
 }
 
 #missionsContainer,#aislesContainer{
@@ -162,11 +175,4 @@ ul{
 .selectedButton{
   background-color: $primary;
   color:  #434343;
-}
-
-#logo{
-  position: absolute;
-  left: 25px;
-  top: 37px;
-  margin: 0px;
 }

@@ -4,6 +4,8 @@ import { ProductDetailsComponent } from './product-details.component';
 import { GridComponent } from './grid/grid.component';
 import { By } from '@angular/platform-browser';
 import Label from '../../label.model';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { FormsModule } from '@angular/forms';
 
 describe('ProductDetailsComponent', () => {
   let component: ProductDetailsComponent;
@@ -11,18 +13,28 @@ describe('ProductDetailsComponent', () => {
   let buttonsEl: HTMLElement;
   let buttons: HTMLCollection;
   const labels: Label[] = [
-    { id: 1, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 } },
-    { id: 2, name: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 } },
-    { id: 3, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 } },
-    { id: 4, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 } },
-    { id: 5, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 } },
+    { id: 1, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 },
+    department: '', zone: '', section: '' },
+    { id: 2, name: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 },
+    department: '', zone: '', section: '' },
+    { id: 3, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 },
+    department: '', zone: '', section: '' },
+    { id: 4, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 },
+    department: '', zone: '', section: '' },
+    { id: 5, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 },
+    department: '', zone: '', section: '' },
   ];
   const outs: Label[] = [
-    { id: 6, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 } },
-    { id: 7, name: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 } },
-    { id: 8, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 } },
-    { id: 9, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 } },
-    { id: 10, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 } },
+    { id: 6, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 },
+    department: '', zone: '', section: '' },
+    { id: 7, name: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 },
+    department: '', zone: '', section: '' },
+    { id: 8, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 },
+    department: '', zone: '', section: '' },
+    { id: 9, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 },
+    department: '', zone: '', section: '' },
+    { id: 10, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 },
+    department: '', zone: '', section: '' },
   ];
 
   beforeEach(async(() => {
@@ -30,6 +42,10 @@ describe('ProductDetailsComponent', () => {
       declarations: [
         ProductDetailsComponent,
         GridComponent
+      ],
+      imports: [
+        NgMultiSelectDropDownModule.forRoot(),
+        FormsModule
       ]
     })
     .compileComponents();
