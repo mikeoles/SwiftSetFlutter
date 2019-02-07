@@ -10,4 +10,7 @@ export default class Label {
     width: number;
     height: number;
   };
+  department: string ;
+  zone: string;
+  section: string;
 }

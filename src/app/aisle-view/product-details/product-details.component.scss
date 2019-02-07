@@ -5,11 +5,20 @@ button{
     background-color: White;
     border: 3px $primary solid;
     color:  $primary;
-    margin: 20px 50px;
+    margin: 20px 50px 20px 0px;
     width: 220px;
     height: 55px;
     font-size: 18px;
     font-weight: bold;
+}
+
+//Some dropdown specific styles are in styles.scss
+
+.dropdown {
+  display: inline-block;
+  width: 167px;
+  color: #2baae1;
+  margin: 10px 60px 10px 0px;
 }
 
 //Ipad Mini and 10.5 pro
@@ -31,8 +40,35 @@ button:focus {
 }
 
 #tableSelection{
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
+    margin-left: 60px;
+    float: left;
+}
+
+#filterButtons{
+  margin: 10px 60px;
+  float: right;
+  border: 1px $greyBorder solid;
+  border-radius: 80px;
+  height: auto;
+  padding-left: 30px;
+  button{
+    display: inline-block;
+    margin: 9px 20px;
+    text-align: left;
+    padding: 0px 20px;
+  }
+  div{
+    display: inline-block;
+    color: $greyBorder;
+    font-weight: bold;
+    margin-right: 10px;
+  }
+}
+
+.fa{
+  float: right;
+}
+
+#filterTitle{
+  margin-right: 20px;
 }

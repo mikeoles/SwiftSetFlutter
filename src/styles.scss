@@ -93,3 +93,31 @@ body.modal-open {
   overflow: hidden;
 }
 
+
+.dropdown-btn {
+  border-radius: 30px !important;
+  border: 3px $primary solid !important;
+  font-weight: bold !important;
+  height: 37px !important;
+  line-height: 37px !important;
+  font-size: 18px !important;
+}
+
+.selected-item{
+  background-color: $primary !important;
+  border: $primary 1px solid !important;
+  border-radius: 30px !important;
+}
+
+.multiselect-item-checkbox input + div:before{
+  background: #2baae1 !important;
+  border: #2baae1 2px solid !important;
+}
+
+.dropdown-btn:focus {
+  outline:0;
+}
+
+#filterTitle {
+  margin-right: 25px !important;
+}

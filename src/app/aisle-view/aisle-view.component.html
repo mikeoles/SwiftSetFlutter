@@ -1,10 +1,10 @@
 <app-selection-area [missions]="missions" [aisles]="aisles"
   [selectedMission]="selectedMission" [selectedAisle]="selectedAisle" [panoramaUrl]="panoramaUrl" [outs]="outs" [labels]="labels"
-  (missionSelected)='setMission($event)' (aisleSelected)='setAisle($event)' [panoTouched]=panoTouched (panoSwitch)='changePanoMode()'>
+  (missionSelected)='setMission($event)' (aisleSelected)='setAisle($event)' [panoTouched]=panoTouched (panoSwitch)='changePanoMode()' (resetPano)='resetPanoClicked()'>
 </app-selection-area>
 <app-panorama [outs]="outs" [labels]="labels" [panoramaUrl]="panoramaUrl"
   [currentId]="currentId" [currentDisplay]="currentDisplay"
-  (panoramaId)='setId($event)' [panoMode]='panoMode' (panoramaTouched)='hideDropdowns()'>
+  (panoramaId)='setId($event)' [panoMode]='panoMode' (panoramaTouched)='hideDropdowns()' [resetPano]='resetPano'>
 </app-panorama>
 <app-product-details [outs]="outs" [labels]="labels"
   (gridId)='setId($event)' (gridDisplay)='setDisplay($event)'

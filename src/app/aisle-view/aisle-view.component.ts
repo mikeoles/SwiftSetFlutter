@@ -27,6 +27,7 @@ export class AisleViewComponent implements OnInit {
   panoramaUrl: string;
   panoMode: boolean;
   panoTouched: boolean;
+  resetPano: boolean;
 
   constructor(private apiService: ApiService, private keyboard: KeyboardShortcutsService) {
     this.currentDisplay = 'outs';
@@ -49,6 +50,10 @@ export class AisleViewComponent implements OnInit {
 
   changePanoMode() {
     this.panoMode = !this.panoMode;
+  }
+
+  resetPanoClicked() {
+    this.resetPano = !this.resetPano;
   }
 
   setMission(mission: Mission) {

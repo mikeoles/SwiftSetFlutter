@@ -6,7 +6,7 @@ import Aisle from '../aisle.model';
 import Mission from '../mission.model';
 import Label from '../label.model';
 import Store from '../store.model';
-import { ModalService } from '../services/modal.service';
+import { ModalService } from '../modal/modal.service';
 
 @Component({
   selector: 'app-mission-view',
@@ -67,39 +67,27 @@ export class MissionViewComponent implements OnInit {
   }
 
   exportMission(exportType: string, modalId: string) {
-    const showAllLabels = exportType === 'labels';
-    let headers = ['Aisle Name',
+    const headers = ['Aisle Name',
       'Barcode',
       'Location'];
-    if (showAllLabels) {
-      headers = headers.concat('Out Of Stock');
-    }
     let csvContent = 'data:text/csv;charset=utf-8,%EF%BB%BF';
     csvContent += headers.join(',') + '\n';
+
     for (let i = 0; i < this.aisles.length; i++) {
       const aisle = this.aisles[i];
       const outs: Label[] = aisle.outs;
       const labels: Label[]  = aisle.labels;
-      const outsBarcodes: Set<string> = new Set<string>();
-      for (let j = 0; j < outs.length; j++) {
-        outsBarcodes.add(outs[j].barcode);
-      }
-      for (let j = 0; j < labels.length; j++) {
-        let row = [
+
+      const exportData: Label[] = exportType === 'labels' ? labels : outs;
+      for (let j = 0; j < exportData.length; j++) {
+        const row = [
           aisle.id,
-          '\'' + labels[j].barcode ,
-          'X: ' + labels[j].bounds.left + ' Y: ' + labels[j].bounds.top,
+          '\'' + exportData[j].barcode ,
+          'X: ' + exportData[j].bounds.left + ' Y: ' + exportData[j].bounds.top,
         ].join(',');
 
-        const outOfStock: Boolean = outsBarcodes.has(labels[j].barcode);
+        csvContent += row + '\n';
 
-        if (showAllLabels) {
-          row = row.concat(',' + outOfStock.toString());
-        }
-
-        if (showAllLabels || outOfStock) {
-          csvContent += row + '\n';
-        }
       }
       this.modalService.close(modalId);
     }
@@ -109,7 +97,7 @@ export class MissionViewComponent implements OnInit {
     const link = document.createElement('a');
     link.setAttribute('target', '_blank');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', 'Mission-' + this.mission.name + '.csv');
+    link.setAttribute('download', 'Mission-' + this.mission.name + '-' + exportType + '.csv');
     document.body.appendChild(link);
     link.click();
     link.remove();

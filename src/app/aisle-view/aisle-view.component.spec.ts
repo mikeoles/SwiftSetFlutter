@@ -13,6 +13,7 @@ import Aisle from '../aisle.model';
 import { of } from 'rxjs';
 import Label from '../label.model';
 import { By } from '@angular/platform-browser';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 describe('AisleViewComponent', () => {
   let fixture: ComponentFixture<AisleViewComponent>;
@@ -23,11 +24,16 @@ describe('AisleViewComponent', () => {
     { id: 2, name: '2222', storeId: '1', createDateTime: new Date('2001-01-01'), missionDateTime: new Date('2001-01-01') },
   ];
   const labels: Label[] = [
-    { id: 1, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 } },
-    { id: 2, name: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 } },
-    { id: 3, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 } },
-    { id: 4, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 } },
-    { id: 5, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 } },
+    { id: 1, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 },
+    department: '', zone: '', section: '' },
+    { id: 2, name: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 },
+    department: '', zone: '', section: '' },
+    { id: 3, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 },
+    department: '', zone: '', section: '' },
+    { id: 4, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 },
+    department: '', zone: '', section: '' },
+    { id: 5, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 },
+    department: '', zone: '', section: '' },
   ];
   const aisles: Aisle[] = [
     { id: 1, name: '1111', panoramaUrl: '', labels: labels, outs: labels, spreads: [] },
@@ -46,6 +52,7 @@ describe('AisleViewComponent', () => {
         FormsModule,
         FontAwesomeModule,
         HttpClientModule,
+        NgMultiSelectDropDownModule.forRoot()
       ],
       declarations: [
         AisleViewComponent,

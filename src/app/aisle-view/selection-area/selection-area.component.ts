@@ -6,7 +6,7 @@ import Aisle from '../../aisle.model';
 import * as jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import Label from 'src/app/label.model';
-import { ModalService } from '../../services/modal.service';
+import { ModalService } from '../../modal/modal.service';
 
 @Component({
   selector: 'app-selection-area',
@@ -27,6 +27,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   @Output() missionSelected = new EventEmitter();
   @Output() aisleSelected = new EventEmitter();
   @Output() panoSwitch = new EventEmitter();
+  @Output() resetPano = new EventEmitter();
   faAngleDown = faAngleDown;
   faAngleUp = faAngleUp;
 
@@ -89,47 +90,36 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
     this.panoSwitch.emit();
   }
 
+  resetPanoClick() {
+    this.resetPano.emit();
+  }
+
   exportAisle(exportType: string, modalId: string) {
-    const showAllLabels = exportType === 'labels';
-    let headers = ['Barcode',
+    const headers = ['Barcode',
       'Location'];
-    if (showAllLabels) {
-      headers = headers.concat('Out Of Stock');
-    }
     let csvContent = 'data:text/csv;charset=utf-8,%EF%BB%BF';
     csvContent += headers.join(',') + '\n';
 
-    const outsBarcodes: Set<string> = new Set<string>();
-    for (let j = 0; j < this.outs.length; j++) {
-      outsBarcodes.add(this.outs[j].barcode);
-    }
-    for (let j = 0; j < this.labels.length; j++) {
-      let row = [
-        '\'' + this.labels[j].barcode ,
-        'X: ' + this.labels[j].bounds.left + ' Y: ' + this.labels[j].bounds.top,
+    const exportData: Label[] = exportType === 'labels' ? this.labels : this.outs;
+    for (let j = 0; j < exportData.length; j++) {
+      const row = [
+        '\'' + exportData[j].barcode ,
+        'X: ' + exportData[j].bounds.left + ' Y: ' + exportData[j].bounds.top,
       ].join(',');
-
-      const outOfStock: Boolean = outsBarcodes.has(this.labels[j].barcode);
-
-      if (showAllLabels) {
-        row = row.concat(',' + outOfStock.toString());
-      }
-
-      if (showAllLabels || outOfStock) {
-        csvContent += row + '\n';
-      }
+      csvContent += row + '\n';
     }
-    this.modalService.close(modalId);
 
-    // do the download stuff
+    // download the file
     const encodedUri = csvContent;
     const link = document.createElement('a');
     link.setAttribute('target', '_blank');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', 'Aisle-' + this.selectedAisle.name + '.csv');
+    link.setAttribute('download', 'Aisle-' + this.selectedAisle.name + '-' + exportType + '.csv');
     document.body.appendChild(link);
     link.click();
     link.remove();
+
+    this.modalService.close(modalId);
   }
 
   exportPDF() {
