@@ -1,9 +1,10 @@
 export default class Label {
-  id: number;
-  name: string;
+  labelId: number;
+  labelName: string;
   barcode: string;
   productId: string;
   price: number;
+  customFields: object;
   bounds: {
     top: number;
     left: number;

@@ -7,6 +7,7 @@ import Mission from '../mission.model';
 import Label from '../label.model';
 import Store from '../store.model';
 import { ModalService } from '../modal/modal.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-mission-view',
@@ -42,7 +43,7 @@ export class MissionViewComponent implements OnInit {
         this.apiService.getAisles(this.currentMission).subscribe(aisles => {
           this.aisles = aisles;
           for (let i = 0; i < this.aisles.length; i++) {
-            this.apiService.getAisle(this.aisles[i].id).subscribe(aisle => {
+            this.apiService.getAisle(this.aisles[i].aisleId).subscribe(aisle => {
               this.aisles[i] = aisle;
             });
           }
@@ -67,27 +68,33 @@ export class MissionViewComponent implements OnInit {
   }
 
   exportMission(exportType: string, modalId: string) {
-    const headers = ['Aisle Name',
-      'Barcode',
-      'Location'];
+    const exportFields: string[] = environment.exportFields;
     let csvContent = 'data:text/csv;charset=utf-8,%EF%BB%BF';
-    csvContent += headers.join(',') + '\n';
+    csvContent += exportFields.join(',') + '\n';
 
     for (let i = 0; i < this.aisles.length; i++) {
       const aisle = this.aisles[i];
       const outs: Label[] = aisle.outs;
       const labels: Label[]  = aisle.labels;
-
       const exportData: Label[] = exportType === 'labels' ? labels : outs;
       for (let j = 0; j < exportData.length; j++) {
-        const row = [
-          aisle.id,
-          '\'' + exportData[j].barcode ,
-          'X: ' + exportData[j].bounds.left + ' Y: ' + exportData[j].bounds.top,
-        ].join(',');
-
-        csvContent += row + '\n';
-
+        const label: Label = exportData[j];
+        let row = [];
+        for (let k = 0; k < exportFields.length; k++) {
+          const field: string = exportFields[k].replace(/\s/g, '');
+          const fieldLowercase = field.charAt(0).toLowerCase() + field.slice(1);
+          if (label[fieldLowercase]) {
+            row = row.concat(label[fieldLowercase]);
+          } else if (aisle[fieldLowercase]) {
+            row = row.concat(aisle[fieldLowercase]);
+          } else if (this.mission[fieldLowercase]) {
+            row = row.concat(this.mission[fieldLowercase]);
+          } else {
+            row = row.concat(label.customFields[field]);
+          }
+        }
+        csvContent += row.join(',') + '\n';
+        row = [];
       }
       this.modalService.close(modalId);
     }
@@ -97,7 +104,7 @@ export class MissionViewComponent implements OnInit {
     const link = document.createElement('a');
     link.setAttribute('target', '_blank');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', 'Mission-' + this.mission.name + '-' + exportType + '.csv');
+    link.setAttribute('download', 'Mission-' + this.mission.missionName + '-' + exportType + '.csv');
     document.body.appendChild(link);
     link.click();
     link.remove();

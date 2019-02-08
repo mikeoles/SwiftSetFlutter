@@ -12,9 +12,9 @@
   </thead>
   <tbody>
     <tr *ngFor="let product of products"
-        id="row-{{product.id}}"
-        (click)="setClickedRow(product.id)" [class.selected]="product.id === selectedId">
-      <td>{{product.name}}</td>
+        id="row-{{product.labelId}}"
+        (click)="setClickedRow(product.labelId)" [class.selected]="product.labelId === selectedId">
+      <td>{{product.labelName}}</td>
       <td>{{product.barcode}}</td>
       <td>{{product.productId}}</td>
       <td>{{product.price | currency}}</td>

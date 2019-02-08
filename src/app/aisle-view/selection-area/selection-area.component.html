@@ -5,36 +5,36 @@
   <div class="bottomBar">
     <div id="missionsContainer">
       <button class="dropdownButton" [ngClass]="{'selectedButton': showMissions}" (click)="selectMissionsDropdown()">
-        Mission {{selectedMission?.name}}
+        Mission {{selectedMission?.missionName}}
         <fa-icon *ngIf="!showMissions" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
         <fa-icon *ngIf="showMissions" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
       </button>
       <ul class="dropdown" *ngIf="showMissions">
         <li
           *ngFor="let mission of missions"
-          [class.selected]="mission.id === this.selectedMission.id"
+          [class.selected]="mission.missionId === this.selectedMission.missionId"
           [value]="mission"
           (click)="missionChanged(mission)"
         >
-          {{mission?.name}}
+          {{mission?.missionName}}
         </li>
       </ul>
       <div *ngIf="showMissions" class="pointer"></div>
     </div>
     <div id="aislesContainer">
       <button class="dropdownButton" [ngClass]="{'selectedButton': showAisles}" (click)="selectAislesDropdown()">
-        Aisle {{selectedAisle?.name}}
+        Aisle {{selectedAisle?.aisleName}}
         <fa-icon *ngIf="!showAisles" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
         <fa-icon *ngIf="showAisles" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
       </button>
       <ul *ngIf="showAisles">
         <li
-          [class.selected]="aisle.id === this.selectedAisle.id"
+          [class.selected]="aisle.aisleId === this.selectedAisle.aisleId"
           *ngFor="let aisle of aisles"
           [value]="aisle"
           (click)="aisleChanged(aisle)"
         >
-          {{aisle?.name}}
+          {{aisle?.aisleName}}
         </li>
       </ul>
       <div *ngIf="showAisles" class="pointer"></div>

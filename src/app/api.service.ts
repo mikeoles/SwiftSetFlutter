@@ -23,8 +23,8 @@ export class ApiService {
 
   createAisle(aisle: any): Aisle {
     return {
-      id: aisle.Id,
-      name: `${aisle.Zone}${aisle.Aisle}`,
+      aisleId: aisle.Id,
+      aisleName: `${aisle.Zone}${aisle.Aisle}`,
       panoramaUrl: `${aisle.FilePath}`,
       labels: (aisle.Labels || []).map(l => this.createLabel(l)),
       outs: (aisle.Outs || []).map(l => this.createLabel(l)),
@@ -38,10 +38,11 @@ export class ApiService {
     const zone = Math.random() > .5 ? 'Zone 1' : 'Zone 2';
 
     return {
-      id: label.Id,
-      name: label.Product.Description || 'Unknown Product Name',
+      labelId: label.Id,
+      labelName: label.Product.Description || 'Unknown Product Name',
       barcode: label.Product.Barcode || '000000000000',
       productId: label.Product.ItemId || '',
+      customFields: label.Product,
       price: label.Product.Price || 0,
       bounds: {
         top: label.Z1 - 10,
@@ -57,8 +58,8 @@ export class ApiService {
 
   createMission(mission: any): Mission {
     return {
-      id: mission.Id,
-      name: mission.Mission,
+      missionId: mission.Id,
+      missionName: mission.Mission,
       storeId: mission.StoreId,
       missionDateTime: new Date(mission.MissionDate),
       createDateTime: new Date(mission.CreateDate),
@@ -247,7 +248,7 @@ export class ApiService {
       map<any, Aisle[]>(o => o.value.map(a => this.createAisle(a))),
 
       // Sort by name
-      map(aisles => aisles.sort((a, b) => a.name.localeCompare(b.name))),
+      map(aisles => aisles.sort((a, b) => a.aisleName.localeCompare(b.aisleName))),
     );
   }
 

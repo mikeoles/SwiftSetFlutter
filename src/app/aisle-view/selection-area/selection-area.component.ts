@@ -7,6 +7,7 @@ import * as jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import Label from 'src/app/label.model';
 import { ModalService } from '../../modal/modal.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-selection-area',
@@ -83,7 +84,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
 
   missionName(mission: Mission) {
     const formatted = formatDate(mission.missionDateTime, 'M/d/yyyy', 'en-US');
-    return `${formatted} - ${mission.name}`;
+    return `${formatted} - ${mission.missionName}`;
   }
 
   logoClicked() {
@@ -114,7 +115,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
     const link = document.createElement('a');
     link.setAttribute('target', '_blank');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', 'Aisle-' + this.selectedAisle.name + '-' + exportType + '.csv');
+    link.setAttribute('download', 'Aisle-' + this.selectedAisle.aisleName + '-' + exportType + '.csv');
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -132,11 +133,11 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
     const body = [];
     const head = [['Product Name', 'Barcode', 'Product Id', 'Price']];
     for (let i = 0; i < this.outs.length ; i++) {
-      const row = [this.outs[i].name, this.outs[i].barcode, this.outs[i].productId, this.outs[i].price];
+      const row = [this.outs[i].labelName, this.outs[i].barcode, this.outs[i].productId, this.outs[i].price];
       body.push(row);
     }
 
     doc.autoTable({head: head, body: body, startY: 90});
-    doc.save(this.selectedMission.name + '-' + this.selectedAisle.name + '.pdf');
+    doc.save(this.selectedMission.missionName + '-' + this.selectedAisle.aisleName + '.pdf');
   }
 }

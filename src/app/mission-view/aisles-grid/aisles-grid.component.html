@@ -8,8 +8,8 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let aisle of aisles; let i = index" (click)="viewAisle(aisle.id)">
-      <td>{{aisle.id}}</td>
+    <tr *ngFor="let aisle of aisles; let i = index" (click)="viewAisle(aisle.aisleId)">
+      <td>{{aisle.aisleId}}</td>
       <td>{{aisle.outs.length}}</td>
       <td>{{aisle.labels.length}}</td>
       <!-- <td>{{aisle.spreads.length}}</td> -->

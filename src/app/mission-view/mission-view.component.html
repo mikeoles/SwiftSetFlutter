@@ -3,7 +3,7 @@
 </header>
 <div *ngIf="mission" class="missionInfo">
   <div class="missionName">STORE {{mission.storeId}}</div>
-  <div class="missionDate"> Mission: <span> {{mission.name}} on {{mission.missionDateTime | date:'MMM d h:ma'}}</span></div>
+  <div class="missionDate"> Mission: <span> {{mission.missionName}} on {{mission.missionDateTime | date:'MMM d h:ma'}}</span></div>
   <button class="exportButton" (click)="openModal('export-popup')"><img class="exportImage" src="../../assets/export-white.png"> <span>Export</span></button>
 </div>
 <div *ngIf="missionSummary" class="statRings">

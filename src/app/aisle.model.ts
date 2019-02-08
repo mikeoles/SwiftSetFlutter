@@ -1,8 +1,8 @@
 import Label from './label.model';
 
 export default class Aisle {
-  id: number;
-  name: string;
+  aisleId: number;
+  aisleName: string;
   panoramaUrl: string;
   labels: Label[];
   outs: Label[];
