@@ -27,10 +27,10 @@ describe('MissionViewComponent', () => {
   let apiService: jasmine.SpyObj<ApiService>;
 
   const labels: Label[] = [
-    { id: 1, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 },
-    department: '', zone: '', section: '' },
-    { id: 2, name: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 },
-    department: '', zone: '', section: '' },
+    { labelId: 1, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0,
+    bounds: { top: 0, left: 0, width: 0, height: 0 }, customFields: {}, section: '' },
+    { labelId: 2, labelName: 'label name', barcode: '550376332', productId: '12345', price: 0.0,
+    bounds: { top: 0, left: 0, width: 0, height: 0 }, customFields: [], section: '' },
   ];
   const mission = { id: 1, name: '1111', createDateTime: new Date('2018-12-12'), missionDateTime: new Date('2018-12-12') };
   const missionSummary = {   missionId: 1, mission: '', storeId: '', missionDateTime: new Date('2018-12-12'),

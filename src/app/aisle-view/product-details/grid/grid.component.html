@@ -6,7 +6,6 @@
       <th>Product Id</th>
       <th>Price</th>
       <th>Department</th>
-      <th>Zone</th>
       <th>Section</th>
     </tr>
   </thead>
@@ -18,8 +17,7 @@
       <td>{{product.barcode}}</td>
       <td>{{product.productId}}</td>
       <td>{{product.price | currency}}</td>
-      <td>{{product.department}}</td>
-      <td>{{product.zone}}</td>
+      <td>{{product.customFields['department']}}</td>
       <td>{{product.section}}</td>
     </tr>
   </tbody>

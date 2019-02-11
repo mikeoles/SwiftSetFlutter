@@ -26,6 +26,7 @@ export class ApiService {
       aisleId: aisle.Id,
       aisleName: `${aisle.Zone}${aisle.Aisle}`,
       panoramaUrl: `${aisle.FilePath}`,
+      zone: aisle.Zone,
       labels: (aisle.Labels || []).map(l => this.createLabel(l)),
       outs: (aisle.Outs || []).map(l => this.createLabel(l)),
       spreads: []
@@ -33,16 +34,11 @@ export class ApiService {
   }
 
   createLabel(label: any): Label {
-    const department = Math.random() > .5 ? 'Produce' : 'Frozen';
-    const section = Math.random() > .5 ? 'Section A' : 'Section B';
-    const zone = Math.random() > .5 ? 'Zone 1' : 'Zone 2';
-
     return {
       labelId: label.Id,
       labelName: label.Product.Description || 'Unknown Product Name',
       barcode: label.Product.Barcode || '000000000000',
       productId: label.Product.ItemId || '',
-      customFields: label.Product,
       price: label.Product.Price || 0,
       bounds: {
         top: label.Z1 - 10,
@@ -50,9 +46,8 @@ export class ApiService {
         width: label.X2 - label.X1,
         height: label.Z2 - label.Z1,
       },
-      department: department,
-      zone: zone,
-      section: section
+      section: label.Section,
+      customFields: label.Product
     };
   }
 

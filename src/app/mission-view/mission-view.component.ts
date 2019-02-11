@@ -89,6 +89,8 @@ export class MissionViewComponent implements OnInit {
             row = row.concat(aisle[fieldLowercase]);
           } else if (this.mission[fieldLowercase]) {
             row = row.concat(this.mission[fieldLowercase]);
+          } else if (label.bounds[fieldLowercase]) {
+            row = row.concat(label.bounds[fieldLowercase]);
           } else {
             row = row.concat(label.customFields[field]);
           }

@@ -10,7 +10,6 @@ export const environment = {
   showPlugs: false,
   showSuppliers: false,
   departments: true,
-  zones: true,
   sections: true,
   exportFields: config.exportFields,
   labelScrolling: labelScrollOptions.vertical
