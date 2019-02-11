@@ -10,7 +10,13 @@ export default class Label {
     width: number;
     height: number;
   };
-  department: string;
+  boundsMeters: {
+    top: number;
+    left: number;
+    width: number;
+    height: number;
+  };
+  department: string ;
   zone: string;
   section: string;
 }

@@ -34,7 +34,6 @@ export class ApiService {
 
   createLabel(label: any): Label {
     const department = Math.random() > .5 ? 'Produce' : 'Frozen';
-    const section = Math.random() > .5 ? 'Section A' : 'Section B';
     const zone = Math.random() > .5 ? 'Zone 1' : 'Zone 2';
 
     return {
@@ -49,9 +48,15 @@ export class ApiService {
         width: label.X2 - label.X1,
         height: label.Z2 - label.Z1,
       },
+      boundsMeters: {
+        top: label.Z1M,
+        left: label.X1M,
+        width: label.X2M - label.X1M,
+        height: label.Z2M - label.Z1M,
+      },
       department: department,
       zone: zone,
-      section: section
+      section: label.Section
     };
   }
 
