@@ -13,5 +13,11 @@ export default class Label {
     width: number;
     height: number;
   };
+  boundsMeters: {
+    top: number;
+    left: number;
+    width: number;
+    height: number;
+  };
   section: string;
 }

@@ -46,6 +46,12 @@ export class ApiService {
         width: label.X2 - label.X1,
         height: label.Z2 - label.Z1,
       },
+      boundsMeters: {
+        top: label.Z1M,
+        left: label.X1M,
+        width: label.X2M - label.X1M,
+        height: label.Z2M - label.Z1M,
+      },
       section: label.Section,
       customFields: [{name: 'Item Description', value: 'Test Desc'}]
     };
