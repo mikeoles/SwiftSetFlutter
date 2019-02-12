@@ -47,7 +47,7 @@ export class ApiService {
         height: label.Z2 - label.Z1,
       },
       section: label.Section,
-      customFields: label.Product
+      customFields: [{name: 'Item Description', value: 'Test Desc'}]
     };
   }
 

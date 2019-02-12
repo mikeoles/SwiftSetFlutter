@@ -1,10 +1,12 @@
+import CustomField from './customField.model';
+
 export default class Label {
   labelId: number;
   labelName: string;
   barcode: string;
   productId: string;
   price: number;
-  customFields: object;
+  customFields: Array<CustomField>;
   bounds: {
     top: number;
     left: number;

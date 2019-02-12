@@ -81,22 +81,28 @@ export class MissionViewComponent implements OnInit {
         const label: Label = exportData[j];
         let row = [];
         for (let k = 0; k < exportFields.length; k++) {
-          const field: string = exportFields[k].replace(/\s/g, '');
-          const fieldLowercase = field.charAt(0).toLowerCase() + field.slice(1);
+          const field: string = exportFields[k];
+          let fieldLowercase = field.charAt(0).toLowerCase() + field.slice(1);
+          fieldLowercase = fieldLowercase.replace(/\s/g, '');
+          let cellValue = '';
           if (label[fieldLowercase]) {
-            row = row.concat(label[fieldLowercase]);
+            cellValue = label[fieldLowercase];
           } else if (aisle[fieldLowercase]) {
-            row = row.concat(aisle[fieldLowercase]);
+            cellValue = aisle[fieldLowercase];
           } else if (this.mission[fieldLowercase]) {
-            row = row.concat(this.mission[fieldLowercase]);
+            cellValue = this.mission[fieldLowercase];
           } else if (label.bounds[fieldLowercase]) {
-            row = row.concat(label.bounds[fieldLowercase]);
+            cellValue = label.bounds[fieldLowercase];
           } else {
-            row = row.concat(label.customFields[field]);
+            for (let l = 0; l < label.customFields.length; l++) {
+              if (label.customFields[l].name === field) {
+                cellValue = label.customFields[0].value;
+              }
+            }
           }
+          row = row.concat(cellValue);
         }
         csvContent += row.join(',') + '\n';
-        row = [];
       }
       this.modalService.close(modalId);
     }
