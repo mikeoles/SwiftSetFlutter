@@ -12,12 +12,10 @@ export default class Label {
     left: number;
     width: number;
     height: number;
-  };
-  boundsMeters: {
-    top: number;
-    left: number;
-    width: number;
-    height: number;
+    topMeters: number;
+    leftMeters: number;
+    widthMeters: number;
+    heightMeters: number;
   };
   section: string;
 }

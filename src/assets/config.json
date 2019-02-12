@@ -1,5 +1,5 @@
 {
   "exportFields": ["Barcode", "Item Description", "Department", "Article Number", "Aisle Number", "Section Number", "Shelf Number", "Facings",
     "Price", "Aisle Name", "Zone", "Section", "Mission Id", "Mission Date Time", "Store Id", "Product Id",
-     "Top", "Left", "X in Meters", "Y in Meters"]
+     "Top", "Left", "Top Meters", "Left Meters"]
 }
