@@ -75,7 +75,7 @@ export class DailyGraphsComponent implements OnInit, OnChanges {
   }
 
   public chartClicked(e: any): void {
-    const index = Number(e.active[0]._chart.canvas.id);
+    const index = Number(e.event.currentTarget.id);
     this.selectedIndex.emit({index: index, date: this.data[index].date});
   }
 
