@@ -6,6 +6,7 @@ import { By } from '@angular/platform-browser';
 import Aisle from '../../aisle.model';
 import Mission from '../../mission.model';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { DatePipe } from '@angular/common';
 
 describe('SelectionAreaComponent', () => {
   let component: SelectionAreaComponent;
@@ -60,9 +61,10 @@ describe('SelectionAreaComponent', () => {
 
   it('has a dropdown of missions', done => {
     fixture.whenStable().then(() => {
+      const pipe = new DatePipe('en');
       fixture.detectChanges();
       expect(missionsDropdownEl.childElementCount).toEqual(2);
-      expect(missionsDropdownEl.children[0].textContent).toEqual(' 1111 ');
+      expect(missionsDropdownEl.children[0].textContent).toEqual(pipe.transform(missions[0].missionDateTime, ' yyyy-MM-dd HH:mm:ss '));
       done();
     });
   });
@@ -94,8 +96,9 @@ describe('SelectionAreaComponent', () => {
 
   it('starts by displaying first mission', done => {
     fixture.whenStable().then(() => {
+      const pipe = new DatePipe('en');
       fixture.detectChanges();
-      expect(missionsButtonEl.textContent).toEqual(' Mission 1111 ');
+      expect(missionsButtonEl.textContent).toEqual(` Mission ${pipe.transform(missions[0].missionDateTime, 'yyyy-MM-dd HH:mm:ss')} `);
       done();
     });
   });
@@ -109,9 +112,10 @@ describe('SelectionAreaComponent', () => {
   });
 
   it('sets mission button based on input', () => {
+    const pipe = new DatePipe('en');
     component.selectedMission  = missions[1];
     fixture.detectChanges();
-    expect(missionsButtonEl.textContent).toEqual(' Mission 2222 ');
+    expect(missionsButtonEl.textContent).toEqual(` Mission ${pipe.transform(missions[1].missionDateTime, 'yyyy-MM-dd HH:mm:ss')} `);
   });
 
   it('sets mission button based on input', () => {

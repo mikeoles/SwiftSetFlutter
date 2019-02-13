@@ -71,11 +71,6 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
     this.showMissions = false;
   }
 
-  missionName(mission: Mission) {
-    const formatted = formatDate(mission.missionDateTime, 'M/d/yyyy', 'en-US');
-    return `${formatted} - ${mission.name}`;
-  }
-
   logoClicked() {
     this.panoSwitch.emit();
   }
