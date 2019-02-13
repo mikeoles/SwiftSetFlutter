@@ -10,6 +10,7 @@ import MissionSummary from './missionSummary.model';
 import Store from './store.model';
 import { formatDate } from '@angular/common';
 import DaySummary from './daySummary.model';
+import CustomField from './customField.model';
 
 @Injectable({
   providedIn: 'root'
@@ -51,7 +52,14 @@ export class ApiService {
         heightMeters: label.Z2M - label.Z1M,
       },
       section: label.Section,
-      customFields: [{name: 'Item Description', value: 'Test Desc'}]
+      customFields: (label.CustomFields || []).map(cf => this.createCustomField(cf)),
+    };
+  }
+
+  createCustomField(customField: any): CustomField {
+    return{
+      name: customField.Name,
+      value: customField.Value
     };
   }
 
