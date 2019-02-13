@@ -3,10 +3,15 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MissionsGridComponent } from './missions-grid.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
+import MissionSummary from 'src/app/missionSummary.model';
 
 describe('MissionsGridComponent', () => {
   let component: MissionsGridComponent;
   let fixture: ComponentFixture<MissionsGridComponent>;
+
+  const missionSummaries: MissionSummary[] = [
+    { missionId: 0, mission: '', storeId: '', missionDateTime: new Date(), outs: 0, labels: 0, spreads: 0, aislesScanned: 0 }
+  ];
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -21,6 +26,7 @@ describe('MissionsGridComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MissionsGridComponent);
     component = fixture.componentInstance;
+    component.missionSummaries = missionSummaries;
     fixture.detectChanges();
   });
 

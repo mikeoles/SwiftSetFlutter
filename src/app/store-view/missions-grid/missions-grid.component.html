@@ -1,6 +1,6 @@
 <div class="gridTitle">Summary For {{missionsDate | date:'MMMM d'}}</div>
 
-<table>
+<table *ngIf="missionSummaries.length > 0">
   <thead>
     <tr>
       <th>Mission ID</th>
@@ -22,3 +22,5 @@
     </tr>
   </tbody>
 </table>
+
+<div class="gridTitle" *ngIf="missionSummaries.length === 0">No Data Available For This Date</div>

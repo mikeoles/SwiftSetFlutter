@@ -48,9 +48,7 @@ describe('DailyGraphsComponent', () => {
     });
 
     component.chartClicked({
-      active: [
-        {_chart: { canvas: { id: 1 }}}
-      ]
+      event: { currentTarget: { id: 1 }}
     });
     expect(called).toBeTruthy();
   });
