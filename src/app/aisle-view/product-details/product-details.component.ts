@@ -13,15 +13,12 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
   showPlugs: Boolean;
   showSuppliers: Boolean;
   showDepartment: Boolean;
-  showZone: Boolean;
   showSection: Boolean;
 
   departmentsList: string[] = [];
-  zonesList: string[] = [];
   sectionsList: string[] = [];
 
   selectedDepts: string[] = [];
-  selectedZones: string[] = [];
   selectedSects: string[] = [];
 
   dropdownSettings = {};
@@ -39,7 +36,6 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
     this.showPlugs = environment.showPlugs;
     this.showSuppliers = environment.showSuppliers;
     this.showDepartment = environment.departments;
-    this.showZone = environment.zones;
     this.showSection = environment.sections;
   }
 
@@ -57,19 +53,13 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
     if (this.labels) {
       const tempSet: Set<string> = new Set<string>();
       this.labels.forEach(label => {
-        tempSet.add(label.department.toString());
+        tempSet.add(label.customFields['department'].toString());
       });
       this.departmentsList = Array.from(tempSet);
 
       tempSet.clear();
       this.labels.forEach(label => {
-        tempSet.add(label.zone.toString());
-      });
-      this.zonesList = Array.from(tempSet);
-
-      tempSet.clear();
-      this.labels.forEach(label => {
-        tempSet.add(label.section.toString());
+        tempSet.add(label.customFields['section'].toString());
       });
       this.sectionsList = Array.from(tempSet);
     }
@@ -80,22 +70,21 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
   }
 
   runFilters() {
-    if (this.selectedDepts.length + this.selectedSects.length + this.selectedZones.length >= 1) {
+    if (this.selectedDepts.length + this.selectedSects.length  >= 1) {
       this.filteredLabels = [];
       this.filteredOuts = [];
 
       const selectedDepts = this.selectedDepts.length > 0 ? new Set<string>(this.selectedDepts) : new Set<string>(this.departmentsList);
-      const selectedZones = this.selectedZones.length > 0 ? new Set<string>(this.selectedZones) : new Set<string>(this.zonesList);
       const selectedSects = this.selectedSects.length > 0 ? new Set<string>(this.selectedSects) : new Set<string>(this.sectionsList);
 
       this.labels.forEach(label => {
-        if (selectedDepts.has(label.department) && selectedZones.has(label.zone) && selectedSects.has(label.section)) {
+        if (selectedDepts.has(label.customFields['department']) && selectedSects.has(label.section)) {
           this.filteredLabels.push(label);
         }
       });
 
       this.outs.forEach(out => {
-        if (selectedDepts.has(out.department) && selectedZones.has(out.zone) && selectedSects.has(out.section)) {
+        if (selectedDepts.has(out.customFields['department']) && selectedSects.has(out.section)) {
           this.filteredLabels.push(out);
         }
       });

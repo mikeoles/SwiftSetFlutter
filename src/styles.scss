@@ -1,5 +1,4 @@
-@import './variables';
-
+@import "./variables";
 
 body {
   margin: 0;
@@ -18,6 +17,82 @@ html,
 body {
   width: 100%;
 }
+
+app-export-modal {
+  /* modals are hidden by default */
+  display: none;
+
+  button{
+    border-radius: 25px !important;
+    background-color: White !important;
+    border: 3px $primary solid !important;
+    color:  $primary !important;
+    margin: 10px 25px !important;
+    width: calc(100% - 50px) !important;
+    height: 55px !important;
+    font-size: 18px !important;
+    font-weight: bold !important;
+    text-align: center !important;
+  }
+
+  .cancel{
+    color: $greyBorder !important;
+    border-color: $greyBorder !important;
+    margin-top: 20px !important;
+  }
+
+  .exportTitle{
+    font-size: 24px;
+    font-weight: 900;
+    margin-bottom: 30px;
+  }
+
+  .modal {
+      /* modal container fixed across whole screen */
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+
+      /* z-index must be higher than .modal-background */
+      z-index: 1000;
+
+      /* enables scrolling for tall modals */
+      overflow: auto;
+
+      .modal-body {
+        padding: 20px;
+        background: #fff;
+        text-align: center;
+        /* margin exposes part of the modal background */
+        margin: 200px 750px;
+        border-radius: 20px;
+      }
+  }
+
+  .modal-background {
+      /* modal background fixed across whole screen */
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+
+      /* semi-transparent black  */
+      background-color: #000;
+      opacity: 0.75;
+
+      /* z-index must be below .modal and above everything else  */
+      z-index: 900;
+  }
+}
+
+body.modal-open {
+  /* body overflow is hidden to hide main scrollbar when modal window is open */
+  overflow: hidden;
+}
+
 
 .dropdown-btn {
   border-radius: 30px !important;

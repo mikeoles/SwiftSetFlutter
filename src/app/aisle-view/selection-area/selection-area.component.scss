@@ -28,11 +28,10 @@ button{
     border: 3px $primary solid;
 }
 
-.resetPanoButton{
+.rightButton{
+  float: right;
   text-align: center;
   width: auto;
-  position: absolute;
-  right: 250px;
 }
 
 .pdfButton{
@@ -40,6 +39,10 @@ button{
   width: auto;
   position: absolute;
   right: 25px;
+  height: 35px;
+  width: 200px;
+  margin: 38px 0px;
+  padding: 1px 20px;
 }
 
 #missionsContainer{
@@ -47,6 +50,18 @@ button{
   button {
     width: 375px;
   }
+}
+
+button > img,
+button > span {
+  vertical-align: middle;
+  padding: 0px 5px;
+  margin: 0px;
+  display: inline-block;
+}
+
+#missionsContainer button {
+  width: 375px;
 }
 
 @media (max-width: 1366px) {

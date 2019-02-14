@@ -10,6 +10,7 @@ import MissionSummary from './missionSummary.model';
 import Store from './store.model';
 import { formatDate } from '@angular/common';
 import DaySummary from './daySummary.model';
+import CustomField from './customField.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,9 +24,10 @@ export class ApiService {
 
   createAisle(aisle: any): Aisle {
     return {
-      id: aisle.Id,
-      name: `${aisle.Zone}${aisle.Aisle}`,
+      aisleId: aisle.Id,
+      aisleName: `${aisle.Zone}${aisle.Aisle}`,
       panoramaUrl: `${aisle.FilePath}`,
+      zone: aisle.Zone,
       labels: (aisle.Labels || []).map(l => this.createLabel(l)),
       outs: (aisle.Outs || []).map(l => this.createLabel(l)),
       spreads: []
@@ -33,13 +35,9 @@ export class ApiService {
   }
 
   createLabel(label: any): Label {
-    const department = Math.random() > .5 ? 'Produce' : 'Frozen';
-    const section = Math.random() > .5 ? 'Section A' : 'Section B';
-    const zone = Math.random() > .5 ? 'Zone 1' : 'Zone 2';
-
     return {
-      id: label.Id,
-      name: label.Product.Description || 'Unknown Product Name',
+      labelId: label.Id,
+      labelName: label.Product.Description || 'Unknown Product Name',
       barcode: label.Product.Barcode || '000000000000',
       productId: label.Product.ItemId || '',
       price: label.Product.Price || 0,
@@ -48,17 +46,27 @@ export class ApiService {
         left: label.X1 - 10,
         width: label.X2 - label.X1,
         height: label.Z2 - label.Z1,
+        topMeters: label.Z1M,
+        leftMeters: label.X1M,
+        widthMeters: label.X2M - label.X1M,
+        heightMeters: label.Z2M - label.Z1M,
       },
-      department: department,
-      zone: zone,
-      section: section
+      section: label.Section,
+      customFields: (label.Product.CustomFields || []).map(cf => this.createCustomField(cf)),
+    };
+  }
+
+  createCustomField(customField: any): CustomField {
+    return{
+      name: customField.Name,
+      value: customField.Value
     };
   }
 
   createMission(mission: any): Mission {
     return {
-      id: mission.Id,
-      name: mission.Mission,
+      missionId: mission.Id,
+      missionName: mission.Mission,
       storeId: mission.StoreId,
       missionDateTime: new Date(mission.MissionDate),
       createDateTime: new Date(mission.CreateDate),
@@ -247,7 +255,7 @@ export class ApiService {
       map<any, Aisle[]>(o => o.value.map(a => this.createAisle(a))),
 
       // Sort by name
-      map(aisles => aisles.sort((a, b) => a.name.localeCompare(b.name))),
+      map(aisles => aisles.sort((a, b) => a.aisleName.localeCompare(b.aisleName))),
     );
   }
 

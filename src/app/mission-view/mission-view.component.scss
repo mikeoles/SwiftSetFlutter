@@ -36,12 +36,24 @@ img{
 .exportButton{
   float: right;
   background-color: $primary;
-  border-radius: 5px;
+  border-radius: 25px;
   color: white;
   font-size: 18px;
   font-weight: bold;
   text-align: left;
-  border: 3px $primary solid
+  border: 3px $primary solid;
+  width: auto;
+  height: 55px;
+  text-align: center;
+  margin-top: -26px;
+  padding: 1px 20px;
+}
+
+button > img,
+button > span {
+  vertical-align: middle;
+  padding: 0px;
+  display: inline-block;
 }
 
 button:focus{
@@ -66,3 +78,5 @@ button:focus{
   border-radius: 25px;
   background: green;
 }
+
+

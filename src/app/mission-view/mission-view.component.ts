@@ -6,6 +6,8 @@ import Aisle from '../aisle.model';
 import Mission from '../mission.model';
 import Label from '../label.model';
 import Store from '../store.model';
+import { ModalService } from '../modal/modal.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-mission-view',
@@ -24,7 +26,7 @@ export class MissionViewComponent implements OnInit {
   currentMission: number;
   service: ApiService;
 
-  constructor(private apiService: ApiService, private activatedRoute: ActivatedRoute) {
+  constructor(private apiService: ApiService, private activatedRoute: ActivatedRoute, private modalService: ModalService) {
 
   }
 
@@ -41,7 +43,7 @@ export class MissionViewComponent implements OnInit {
         this.apiService.getAisles(this.currentMission).subscribe(aisles => {
           this.aisles = aisles;
           for (let i = 0; i < this.aisles.length; i++) {
-            this.apiService.getAisle(this.aisles[i].id).subscribe(aisle => {
+            this.apiService.getAisle(this.aisles[i].aisleId).subscribe(aisle => {
               this.aisles[i] = aisle;
             });
           }
@@ -57,31 +59,52 @@ export class MissionViewComponent implements OnInit {
     this.service = this.apiService;
   }
 
-  exportMission() {
-    const headers = ['Aisle Name',
-      'Barcode',
-      'Product Info',
-      'Out Of Stock',
-      'Location'];
+  openModal(id: string) {
+    this.modalService.open(id);
+  }
+
+  closeModal(id: string) {
+      this.modalService.close(id);
+  }
+
+  exportMission(exportType: string, modalId: string) {
+    const exportFields: string[] = environment.exportFields;
     let csvContent = 'data:text/csv;charset=utf-8,%EF%BB%BF';
-    csvContent += headers.join(',') + '\n';
+    csvContent += exportFields.join(',') + '\n';
+
     for (let i = 0; i < this.aisles.length; i++) {
       const aisle = this.aisles[i];
       const outs: Label[] = aisle.outs;
       const labels: Label[]  = aisle.labels;
-      const outsBarcodes: Set<string> = new Set<string>();
-      for (let j = 0; j < outs.length; j++) {
-        outsBarcodes.add(outs[j].barcode);
+      const exportData: Label[] = exportType === 'labels' ? labels : outs;
+      for (let j = 0; j < exportData.length; j++) {
+        const label: Label = exportData[j];
+        let row = [];
+        for (let k = 0; k < exportFields.length; k++) {
+          const field: string = exportFields[k];
+          let fieldLowercase = field.charAt(0).toLowerCase() + field.slice(1);
+          fieldLowercase = fieldLowercase.replace(/\s/g, '');
+          let cellValue = '';
+          if (label[fieldLowercase]) {
+            cellValue = label[fieldLowercase];
+          } else if (aisle[fieldLowercase]) {
+            cellValue = aisle[fieldLowercase];
+          } else if (this.mission[fieldLowercase]) {
+            cellValue = this.mission[fieldLowercase];
+          } else if (label.bounds[fieldLowercase]) {
+            cellValue = label.bounds[fieldLowercase];
+          } else {
+            for (let l = 0; l < label.customFields.length; l++) {
+              if (label.customFields[l].name === field) {
+                cellValue = label.customFields[l].value;
+              }
+            }
+          }
+          row = row.concat(cellValue);
+        }
+        csvContent += row.join(',') + '\n';
       }
-      for (let j = 0; j < labels.length; j++) {
-        const outOfStock: Boolean = outsBarcodes.has(labels[j].barcode);
-        const row = [aisle.id,
-          '\'' + labels[j].barcode ,
-          'Info' ,
-          outOfStock.toString(),
-          'X: ' + labels[j].bounds.left + ' Y: ' + labels[j].bounds.top].join(',');
-        csvContent += row + '\n';
-      }
+      this.modalService.close(modalId);
     }
 
     // do the download stuff
@@ -89,7 +112,7 @@ export class MissionViewComponent implements OnInit {
     const link = document.createElement('a');
     link.setAttribute('target', '_blank');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', 'Mission-' + this.mission.name + '.csv');
+    link.setAttribute('download', 'Mission-' + this.mission.missionName + '-' + exportType + '.csv');
     document.body.appendChild(link);
     link.click();
     link.remove();
