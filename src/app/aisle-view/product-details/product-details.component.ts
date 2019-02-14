@@ -63,7 +63,7 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
 
       tempSet.clear();
       this.labels.forEach(label => {
-        if(label.section != null) {
+        if (label.section != null) {
           tempSet.add(label.section);
         }
       });
