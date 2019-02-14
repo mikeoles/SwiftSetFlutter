@@ -1,10 +1,7 @@
-<header>
-  <img src="../assets/logo.png"/>
-</header>
 <div *ngIf="mission" class="missionInfo">
-  <div class="missionName">STORE {{mission.storeId}}</div>
-  <div class="missionDate"> Mission: <span> {{mission.missionName}} on {{mission.missionDateTime | date:'MMM d h:ma'}}</span></div>
   <button class="exportButton" (click)="openModal('export-popup')"><img class="exportImage" src="../../assets/export-white.png"> <span>Export</span></button>
+  <div class="missionName">STORE {{mission.storeId}}</div>
+  <div class="missionDate"> Mission: <span> {{mission.missionDateTime | date: 'yyyy-MM-dd HH:mm:ss'}}</span></div>
 </div>
 <div *ngIf="missionSummary" class="statRings">
   <app-stat-ring *ngIf="store" class="left" [title]="'Outs'" [stat]="missionSummary.outs" [current]="missionSummary.outs" [max]="store.totalAverageOuts"></app-stat-ring>

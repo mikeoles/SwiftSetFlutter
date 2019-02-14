@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { KeyboardShortcutsService } from 'ng-keyboard-shortcuts';
+import { LogoService } from './logo.service';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,7 @@ import { KeyboardShortcutsService } from 'ng-keyboard-shortcuts';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private logoService: LogoService) { }
 
   ngOnInit() {
     this.router.events.subscribe((evt) => {
@@ -18,7 +19,10 @@ export class AppComponent implements OnInit {
           return;
       }
       window.scrollTo(0, 0);
-  });
+    });
   }
 
+  logoClicked() {
+    this.logoService.logoClick();
+  }
 }

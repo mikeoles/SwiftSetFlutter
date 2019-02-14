@@ -1,12 +1,6 @@
 @import '../../../variables';
 
-.topBar{
-  background-color: $primary;
-  display: block;
-}
-
-#logo{
-  margin: auto;
+.bottomBar {
   padding: 20px;
 }
 
@@ -45,8 +39,14 @@ button{
   padding: 1px 20px;
 }
 
-#missionsContainer{
+.resetPanoButton, .pdfButton {
+  float: right;
+  margin-right: 20px;
+}
+
+#missionsContainer {
   margin-left: 10px;
+  margin-right: 40px;
   button {
     width: 375px;
   }
@@ -62,6 +62,11 @@ button > span {
 
 #missionsContainer button {
   width: 375px;
+
+#aislesContainer {
+  button {
+    width: 285px;
+  }
 }
 
 @media (max-width: 1366px) {
