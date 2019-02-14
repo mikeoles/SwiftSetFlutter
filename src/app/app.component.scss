@@ -1,0 +1,11 @@
+@import '../variables';
+
+header {
+  background-color: $primary;
+
+  #logo {
+    display: block;
+    margin: auto;
+    padding: 20px;
+  }
+}

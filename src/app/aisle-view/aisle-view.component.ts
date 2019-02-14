@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ApiService } from './../api.service';
 import { KeyboardShortcutsService } from 'ng-keyboard-shortcuts';
 import Mission from './../mission.model';
 import Aisle from './../aisle.model';
 import Label from './../label.model';
 import { ViewEncapsulation } from '@angular/core';
+import { LogoService } from '../logo.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-aisle-view',
@@ -14,7 +16,7 @@ import { ViewEncapsulation } from '@angular/core';
   encapsulation: ViewEncapsulation.None
 })
 
-export class AisleViewComponent implements OnInit {
+export class AisleViewComponent implements OnInit, OnDestroy {
   title = 'aisle';
   outs: Label[];
   labels: Label[];
@@ -29,7 +31,11 @@ export class AisleViewComponent implements OnInit {
   panoTouched: boolean;
   resetPano: boolean;
 
-  constructor(private apiService: ApiService, private keyboard: KeyboardShortcutsService) {
+  private logoSubscription: Subscription;
+
+  constructor(private apiService: ApiService,
+              private keyboard: KeyboardShortcutsService,
+              private logoService: LogoService) {
     this.currentDisplay = 'outs';
     this.panoMode = false;
     this.keyboard.add([
@@ -42,10 +48,16 @@ export class AisleViewComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.logoSubscription = this.logoService.logoClickEvent().subscribe(() => this.changePanoMode());
+
     this.apiService.getMissions().subscribe(missions => {
       this.missions = missions;
       this.setMission(this.missions[0]);
     });
+  }
+
+  ngOnDestroy() {
+    this.logoSubscription.unsubscribe();
   }
 
   changePanoMode() {

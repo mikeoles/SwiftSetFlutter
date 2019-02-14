@@ -1,18 +1,9 @@
 @import '../../../variables';
 
-.topBar{
-  background-color: $primary;
-  display: block;
-}
-
-#logo{
-  margin: auto;
+.bottomBar {
   padding: 20px;
 }
 
-.bottomBar{
-  display: block;
-}
 
 button{
     height: 55px;
