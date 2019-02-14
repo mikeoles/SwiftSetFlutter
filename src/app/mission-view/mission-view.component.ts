@@ -96,7 +96,7 @@ export class MissionViewComponent implements OnInit {
           } else {
             for (let l = 0; l < label.customFields.length; l++) {
               if (label.customFields[l].name === field) {
-                cellValue = label.customFields[0].value;
+                cellValue = label.customFields[l].value;
               }
             }
           }

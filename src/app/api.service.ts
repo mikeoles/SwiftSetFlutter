@@ -52,7 +52,7 @@ export class ApiService {
         heightMeters: label.Z2M - label.Z1M,
       },
       section: label.Section,
-      customFields: (label.CustomFields || []).map(cf => this.createCustomField(cf)),
+      customFields: (label.Product.CustomFields || []).map(cf => this.createCustomField(cf)),
     };
   }
 
