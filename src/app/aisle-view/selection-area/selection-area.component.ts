@@ -96,21 +96,41 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   }
 
   exportAisle(exportType: string, modalId: string) {
-    const headers = ['Barcode',
-      'Location'];
+    const exportFields: string[] = environment.exportFields;
     let csvContent = 'data:text/csv;charset=utf-8,%EF%BB%BF';
-    csvContent += headers.join(',') + '\n';
+    csvContent += exportFields.join(',') + '\n';
 
     const exportData: Label[] = exportType === 'labels' ? this.labels : this.outs;
     for (let j = 0; j < exportData.length; j++) {
-      const row = [
-        '\'' + exportData[j].barcode ,
-        'X: ' + exportData[j].bounds.left + ' Y: ' + exportData[j].bounds.top,
-      ].join(',');
-      csvContent += row + '\n';
+      const label: Label = exportData[j];
+      let row = [];
+      for (let k = 0; k < exportFields.length; k++) {
+        const field: string = exportFields[k];
+        let fieldLowercase = field.charAt(0).toLowerCase() + field.slice(1);
+        fieldLowercase = fieldLowercase.replace(/\s/g, '');
+        let cellValue = '';
+        if (label[fieldLowercase]) {
+          cellValue = label[fieldLowercase];
+        } else if (this.selectedAisle[fieldLowercase]) {
+          cellValue = this.selectedAisle[fieldLowercase];
+        } else if (this.selectedMission[fieldLowercase]) {
+          cellValue = this.selectedMission[fieldLowercase].toString();
+        } else if (label.bounds[fieldLowercase]) {
+          cellValue = label.bounds[fieldLowercase];
+        } else {
+          for (let l = 0; l < label.customFields.length; l++) {
+            if (label.customFields[l].name === field) {
+              cellValue = label.customFields[l].value;
+            }
+          }
+        }
+        row = row.concat(cellValue);
+      }
+      csvContent += row.join(',') + '\n';
     }
+    this.modalService.close(modalId);
 
-    // download the file
+    // do the download stuff
     const encodedUri = csvContent;
     const link = document.createElement('a');
     link.setAttribute('target', '_blank');
@@ -120,7 +140,11 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
     link.click();
     link.remove();
 
-    this.modalService.close(modalId);
+
+
+
+
+
   }
 
   exportPDF() {
