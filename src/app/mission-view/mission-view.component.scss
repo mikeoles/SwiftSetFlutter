@@ -15,13 +15,7 @@
   margin-right: 250px;
 }
 
-img{
-  padding: 10px 40px;
-}
-
 .missionInfo{
-  border: solid black;
-  border-width: 1px 0px;
   padding: 20px 40px;
 }
 
@@ -35,13 +29,6 @@ img{
 
 .exportButton{
   float: right;
-  background-color: $primary;
-  border-radius: 5px;
-  color: white;
-  font-size: 18px;
-  font-weight: bold;
-  text-align: left;
-  border: 3px $primary solid
 }
 
 button:focus{

@@ -1,15 +1,9 @@
 @import '../../../variables';
 
-button{
-    border-radius: 25px;
-    background-color: White;
-    border: 3px $primary solid;
-    color:  $primary;
-    margin: 20px 50px 20px 0px;
-    width: 220px;
-    height: 55px;
-    font-size: 18px;
-    font-weight: bold;
+button {
+  text-align: center;
+  width: 220px;
+  margin-right: 40px;
 }
 
 //Some dropdown specific styles are in styles.scss
@@ -30,7 +24,7 @@ button{
   }
 }
 
-.selectedButton{
+.selectedButton {
     background-color: $primary;
     color:  White;
 }
@@ -41,6 +35,7 @@ button:focus {
 
 #tableSelection{
     margin-left: 60px;
+    padding-top: 20px;
     float: left;
 }
 
