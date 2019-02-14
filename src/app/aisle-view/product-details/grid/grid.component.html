@@ -5,8 +5,8 @@
       <th>Barcode</th>
       <th>Product Id</th>
       <th>Price</th>
-      <th>Department</th>
-      <th>Section</th>
+      <th *ngIf="showDepartment">Department</th>
+      <th *ngIf="showSection">Section</th>
     </tr>
   </thead>
   <tbody>
@@ -17,8 +17,8 @@
       <td>{{product.barcode}}</td>
       <td>{{product.productId}}</td>
       <td>{{product.price | currency}}</td>
-      <td>{{product.customFields['department']}}</td>
-      <td>{{product.section}}</td>
+      <td *ngIf="showDepartment">{{product.department}}</td>
+      <td *ngIf="showSection">{{product.section}}</td>
     </tr>
   </tbody>
 </table>

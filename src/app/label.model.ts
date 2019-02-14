@@ -6,6 +6,7 @@ export default class Label {
   barcode: string;
   productId: string;
   price: number;
+  department: string;
   customFields: Array<CustomField>;
   bounds: {
     top: number;

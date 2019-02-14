@@ -35,12 +35,21 @@ export class ApiService {
   }
 
   createLabel(label: any): Label {
+    let dept = '';
+    for (let i = 0; i < label.Product.CustomFields.length; i++) {
+      const field = label.Product.CustomFields[i];
+      if (field['Name'] === 'Department') {
+        dept = field['Value'];
+      }
+    }
+
     return {
       labelId: label.Id,
       labelName: label.Product.Description || 'Unknown Product Name',
       barcode: label.Product.Barcode || '000000000000',
       productId: label.Product.ItemId || '',
       price: label.Product.Price || 0,
+      department: dept,
       bounds: {
         top: label.Z1 - 10,
         left: label.X1 - 10,

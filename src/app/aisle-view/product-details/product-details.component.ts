@@ -53,13 +53,19 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
     if (this.labels) {
       const tempSet: Set<string> = new Set<string>();
       this.labels.forEach(label => {
-        tempSet.add(label.customFields['department'].toString());
+        label.customFields.forEach(field => {
+          if (field.name === 'Department') {
+            tempSet.add(field.value);
+          }
+        });
       });
       this.departmentsList = Array.from(tempSet);
 
       tempSet.clear();
       this.labels.forEach(label => {
-        tempSet.add(label.customFields['section'].toString());
+        if(label.section != null) {
+          tempSet.add(label.section);
+        }
       });
       this.sectionsList = Array.from(tempSet);
     }
@@ -78,15 +84,23 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
       const selectedSects = this.selectedSects.length > 0 ? new Set<string>(this.selectedSects) : new Set<string>(this.sectionsList);
 
       this.labels.forEach(label => {
-        if (selectedDepts.has(label.customFields['department']) && selectedSects.has(label.section)) {
-          this.filteredLabels.push(label);
-        }
+        label.customFields.forEach(field => {
+          if (field.name === 'Department') {
+            if (selectedDepts.has(field.value) && selectedSects.has(label.section)) {
+              this.filteredLabels.push(label);
+            }
+          }
+        });
       });
 
       this.outs.forEach(out => {
-        if (selectedDepts.has(out.customFields['department']) && selectedSects.has(out.section)) {
-          this.filteredLabels.push(out);
-        }
+        out.customFields.forEach(field => {
+          if (field.name === 'Department') {
+            if (selectedDepts.has(field.value) && selectedSects.has(out.section)) {
+              this.filteredLabels.push(out);
+            }
+          }
+        });
       });
     } else {
       this.filteredLabels = this.labels;

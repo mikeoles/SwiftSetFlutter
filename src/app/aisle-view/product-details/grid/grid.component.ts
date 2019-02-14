@@ -18,6 +18,15 @@ export class GridComponent implements OnInit, AfterViewChecked, OnChanges {
   @Output() gridClicked = new EventEmitter();
   @Input() products: Label[];
   @Input() selectedId: number;
+  showDepartment: Boolean;
+  showSection: Boolean;
+
+
+  constructor() {
+    this.showDepartment = environment.departments;
+    this.showSection = environment.sections;
+  }
+
 
   ngOnInit() {
 
