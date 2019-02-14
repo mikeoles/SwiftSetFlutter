@@ -4,39 +4,22 @@
   padding: 20px;
 }
 
-
-button{
-    height: 55px;
-    width: 285px;
-    padding: 0px 30px;
-    margin: 20px 20px;
-    background-color: white;
-    border-radius: 30px;
-    font-size: 18px;
-    font-weight: bold;
-    text-align: left;
-    color: $primary;
-    border: 3px $primary solid;
+.resetPanoButton, .pdfButton {
+  float: right;
+  margin-right: 20px;
 }
 
-.resetPanoButton{
-  text-align: center;
-  width: auto;
-  position: absolute;
-  right: 250px;
-}
-
-.pdfButton{
-  text-align: center;
-  width: auto;
-  position: absolute;
-  right: 25px;
-}
-
-#missionsContainer{
+#missionsContainer {
   margin-left: 10px;
+  margin-right: 40px;
   button {
     width: 375px;
+  }
+}
+
+#aislesContainer {
+  button {
+    width: 285px;
   }
 }
 

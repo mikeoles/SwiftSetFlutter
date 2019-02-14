@@ -1,4 +1,4 @@
-:host{
+:host {
   font-size: 24px;
   font-weight: bold;
 }
@@ -6,15 +6,16 @@
 .storeInfo {
   padding: 20px 40px;
 }
-.storeAddress span{
+
+.storeAddress span {
   font-weight: normal;
 }
 
-.title{
+.title {
   padding: 40px 40px 0px 40px;
 }
 
-.graphDisplay{
+.graphDisplay {
   margin: 40px 40px 0px 40px;
   &:first-child {
     margin-top: 35px;
