@@ -1,5 +1,4 @@
 import { labelScrollOptions } from 'src/app/labelScrollOptions';
-import config from './../assets/config.json';
 
 export const environment = {
   production: true,
@@ -7,6 +6,7 @@ export const environment = {
   showSuppliers: false,
   departments: true,
   sections: true,
-  exportFields: config.exportFields,
+  exportFields: ['Barcode', 'Price', 'Aisle Name', 'Zone', 'Section',
+  'Mission Id', 'Mission Date Time', 'Store Id', 'Product Id', 'Top', 'Left', 'Top Meters', 'Left Meters'],
   labelScrolling: labelScrollOptions.vertical
 };

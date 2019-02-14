@@ -1,5 +1,4 @@
 import { labelScrollOptions } from 'src/app/labelScrollOptions';
-import config from './../assets/config.json';
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
@@ -10,9 +9,11 @@ export const environment = {
   showPlugs: false,
   showSuppliers: false,
   departments: true,
-  sections: true,
-  exportFields: config.exportFields,
-  labelScrolling: labelScrollOptions.vertical
+  sections: false,
+  exportFields: ['Barcode', 'Price', 'Aisle Name', 'Zone', 'Section',
+  'Mission Id', 'Mission Date Time', 'Store Id', 'Product Id', 'Top', 'Left', 'Top Meters', 'Left Meters'],
+  labelScrolling: labelScrollOptions.vertical,
+
 };
 
 /*

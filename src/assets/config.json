@@ -1,4 +1,2 @@
 {
-  "exportFields": ["Barcode", "Item Description", "CIC", "CSC", "Price", "Aisle Name", "Zone", "Section",
-    "Mission Id", "Mission Date Time", "Store Id", "Product Id", "Top", "Left", "Top Meters", "Left Meters"]
 }
