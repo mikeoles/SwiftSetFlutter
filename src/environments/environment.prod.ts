@@ -4,8 +4,9 @@ export const environment = {
   production: true,
   showPlugs: false,
   showSuppliers: false,
-  departments: true,
-  zones: true,
+  departments: false,
   sections: true,
+  exportFields: ['Barcode', 'Price', 'Aisle Name', 'Zone', 'Section',
+  'Mission Id', 'Mission Date Time', 'Store Id', 'Product Id', 'Top', 'Left', 'Top Meters', 'Left Meters'],
   labelScrolling: labelScrollOptions.vertical
 };

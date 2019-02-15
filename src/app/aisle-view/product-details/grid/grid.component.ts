@@ -18,6 +18,15 @@ export class GridComponent implements OnInit, AfterViewChecked, OnChanges {
   @Output() gridClicked = new EventEmitter();
   @Input() products: Label[];
   @Input() selectedId: number;
+  showDepartment: Boolean;
+  showSection: Boolean;
+
+
+  constructor() {
+    this.showDepartment = environment.departments;
+    this.showSection = environment.sections;
+  }
+
 
   ngOnInit() {
 
@@ -128,12 +137,12 @@ export class GridComponent implements OnInit, AfterViewChecked, OnChanges {
     if (event.keyCode === KEY_CODE.UP && this.selectedId >= 0) {
       const index = this.findIndexById(this.selectedId);
       if (index > 0) {
-        this.gridClicked.emit( this.products[index - 1].id);
+        this.gridClicked.emit( this.products[index - 1].labelId);
       }
     } else if (event.keyCode === KEY_CODE.DOWN && this.selectedId >= 0) {
       const index = this.findIndexById(this.selectedId);
       if (index < (this.products.length - 1)) {
-        this.gridClicked.emit( this.products[index + 1].id );
+        this.gridClicked.emit( this.products[index + 1].labelId );
       }
     }
   }
@@ -141,7 +150,7 @@ export class GridComponent implements OnInit, AfterViewChecked, OnChanges {
   // Return the table index based on a product id
   findIndexById(id: number) {
     for (let i = 0; i < this.products.length; i++) {
-      if (this.products[i].id === id) {
+      if (this.products[i].labelId === id) {
         return i;
       }
     }

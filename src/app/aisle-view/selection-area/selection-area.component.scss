@@ -4,6 +4,41 @@
   padding: 20px;
 }
 
+.bottomBar{
+  display: block;
+}
+
+button{
+    height: 55px;
+    width: 285px;
+    padding: 0px 30px;
+    margin: 20px 20px;
+    background-color: white;
+    border-radius: 30px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: left;
+    color: $primary;
+    border: 3px $primary solid;
+}
+
+.rightButton{
+  float: right;
+  text-align: center;
+  width: auto;
+}
+
+.pdfButton{
+  text-align: center;
+  width: auto;
+  position: absolute;
+  right: 25px;
+  height: 35px;
+  width: 200px;
+  margin: 38px 0px;
+  padding: 1px 20px;
+}
+
 .resetPanoButton, .pdfButton {
   float: right;
   margin-right: 20px;
@@ -15,6 +50,18 @@
   button {
     width: 375px;
   }
+}
+
+button > img,
+button > span {
+  vertical-align: middle;
+  padding: 0px 5px;
+  margin: 0px;
+  display: inline-block;
+}
+
+#missionsContainer button {
+  width: 375px;
 }
 
 #aislesContainer {

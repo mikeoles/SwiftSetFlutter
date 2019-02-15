@@ -70,15 +70,15 @@ export class AisleViewComponent implements OnInit, OnDestroy {
 
   setMission(mission: Mission) {
     this.selectedMission = mission;
-    this.apiService.getAisles(mission.id).subscribe(aisles => {
+    this.apiService.getAisles(mission.missionId).subscribe(aisles => {
       this.aisles = aisles;
       this.setAisle(this.aisles[0]);
     });
   }
 
-  setAisle(aisle) {
+  setAisle(aisle: Aisle) {
     this.selectedAisle = aisle;
-    this.apiService.getAisle(aisle.id).subscribe(fullAisle => {
+    this.apiService.getAisle(aisle.aisleId).subscribe(fullAisle => {
       this.outs = fullAisle.outs;
       this.labels = fullAisle.labels;
       this.panoramaUrl = fullAisle.panoramaUrl;
@@ -87,7 +87,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
     });
   }
 
-  setId(id) {
+  setId(id: number) {
     this.currentId = id;
   }
 

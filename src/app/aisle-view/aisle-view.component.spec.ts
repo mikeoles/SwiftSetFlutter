@@ -14,33 +14,41 @@ import { of } from 'rxjs';
 import Label from '../label.model';
 import { By } from '@angular/platform-browser';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { Component, Input } from '@angular/core';
+import { ModalService } from '../modal/modal.service';
+
+@Component({selector: 'app-export-modal', template: ''})
+class ModalComponent {
+  @Input() id: string;
+}
 
 describe('AisleViewComponent', () => {
   let fixture: ComponentFixture<AisleViewComponent>;
   let component: AisleViewComponent;
   let apiService: jasmine.SpyObj<ApiService>;
+
   const missions: Mission[] = [
-    { id: 1, name: '1111', storeId: '1', createDateTime: new Date('2018-12-12'), missionDateTime: new Date('2018-12-12') },
-    { id: 2, name: '2222', storeId: '1', createDateTime: new Date('2001-01-01'), missionDateTime: new Date('2001-01-01') },
+    { missionId: 1, missionName: '1111', storeId: '1', createDateTime: new Date('2018-12-12'), missionDateTime: new Date('2018-12-12') },
+    { missionId: 2, missionName: '2222', storeId: '1', createDateTime: new Date('2001-01-01'), missionDateTime: new Date('2001-01-01') },
   ];
   const labels: Label[] = [
-    { id: 1, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 },
-    department: '', zone: '', section: '' },
-    { id: 2, name: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 },
-    department: '', zone: '', section: '' },
-    { id: 3, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 },
-    department: '', zone: '', section: '' },
-    { id: 4, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 },
-    department: '', zone: '', section: '' },
-    { id: 5, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 },
-    department: '', zone: '', section: '' },
+    { labelId: 1, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
+      topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 }, department: '', section: '', customFields: [] },
+    { labelId: 2, labelName: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0,
+      height: 0, topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 }, department: '', section: '', customFields: [] },
+    { labelId: 3, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
+      topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 }, department: '', section: '', customFields: [] },
+    { labelId: 4, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
+      topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 }, department: '', section: '', customFields: [] },
+    { labelId: 5, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
+      topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 }, department: '', section: '', customFields: [] },
   ];
   const aisles: Aisle[] = [
-    { id: 1, name: '1111', panoramaUrl: '', labels: labels, outs: labels, spreads: [] },
-    { id: 2, name: '2222', panoramaUrl: '', labels: labels, outs: labels, spreads: [] },
-    { id: 3, name: '3333', panoramaUrl: '', labels: labels, outs: labels, spreads: [] },
-    { id: 4, name: '4444', panoramaUrl: '', labels: labels, outs: labels, spreads: [] },
-    { id: 5, name: '5555', panoramaUrl: '', labels: labels, outs: labels, spreads: [] },
+    { aisleId: 1, aisleName: '1111', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '' },
+    { aisleId: 2, aisleName: '2222', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '' },
+    { aisleId: 3, aisleName: '3333', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '' },
+    { aisleId: 4, aisleName: '4444', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '' },
+    { aisleId: 5, aisleName: '5555', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '' },
   ];
 
 
@@ -60,9 +68,11 @@ describe('AisleViewComponent', () => {
         ProductDetailsComponent,
         GridComponent,
         SelectionAreaComponent,
+        ModalComponent,
       ],
       providers: [
-        { provide: ApiService, useValue: apiServiceSpy }
+        { provide: ApiService, useValue: apiServiceSpy },
+        { provide: ModalService}
       ],
     }).compileComponents();
 

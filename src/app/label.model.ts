@@ -1,16 +1,22 @@
+import CustomField from './customField.model';
+
 export default class Label {
-  id: number;
-  name: string;
+  labelId: number;
+  labelName: string;
   barcode: string;
   productId: string;
   price: number;
+  department: string;
+  customFields: Array<CustomField>;
   bounds: {
     top: number;
     left: number;
     width: number;
     height: number;
+    topMeters: number;
+    leftMeters: number;
+    widthMeters: number;
+    heightMeters: number;
   };
-  department: string;
-  zone: string;
   section: string;
 }

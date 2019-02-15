@@ -22,6 +22,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
 import { EnvironmentService } from './environment.service';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { ModalComponent } from './modal/modal.component';
+import { ModalService } from './modal/modal.service';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     DailyGraphsComponent,
     MissionViewComponent,
     AislesGridComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
@@ -60,7 +63,8 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
       },
       multi: true,
       deps: [EnvironmentService]
-    }
+    },
+    ModalService
   ],
   bootstrap: [AppComponent]
 })
