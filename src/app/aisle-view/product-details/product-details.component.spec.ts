@@ -34,7 +34,7 @@ describe('ProductDetailsComponent', () => {
     { labelId: 9, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
       topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0}, department: '', section: '', customFields: [] },
     { labelId: 10, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0,
-      height: 0,topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0}, department: '', section: '', customFields: [] },
+      height: 0, topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0}, department: '', section: '', customFields: [] },
   ];
 
   beforeEach(async(() => {
