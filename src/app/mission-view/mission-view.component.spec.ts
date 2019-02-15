@@ -8,6 +8,7 @@ import { Component, Input } from '@angular/core';
 import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import Label from '../label.model';
+import { ModalService } from '../modal/modal.service';
 
 @Component({selector: 'app-stat-ring', template: ''})
 class AppStatRingStubComponent {
@@ -20,6 +21,10 @@ class AppAislesGridStubComponent {
   @Input() aisles: string;
   @Input() missionId: string;
 }
+@Component({selector: 'app-export-modal', template: ''})
+class ModalComponent {
+  @Input() id: string;
+}
 
 describe('MissionViewComponent', () => {
   let component: MissionViewComponent;
@@ -29,10 +34,10 @@ describe('MissionViewComponent', () => {
   const labels: Label[] = [
     { labelId: 1, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0,
     bounds: { top: 0, left: 0, width: 0, height: 0, topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 },
-    customFields: [], section: '' },
+    customFields: [], section: '', department: '' },
     { labelId: 2, labelName: 'label name', barcode: '550376332', productId: '12345', price: 0.0,
     bounds: { top: 0, left: 0, width: 0, height: 0, topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 },
-    customFields: [], section: '' },
+    customFields: [], section: '', department: '' },
   ];
   const mission = { id: 1, name: '1111', createDateTime: new Date('2018-12-12'), missionDateTime: new Date('2018-12-12') };
   const missionSummary = {   missionId: 1, mission: '', storeId: '', missionDateTime: new Date('2018-12-12'),
@@ -53,12 +58,14 @@ describe('MissionViewComponent', () => {
         MissionViewComponent,
         AppStatRingStubComponent,
         AppAislesGridStubComponent,
+        ModalComponent
       ],
       providers: [
         { provide: ApiService, useValue: apiServiceSpy },
         { provide: ActivatedRoute, useValue: {
           params: [{ missionId: 1 }],
         }},
+        { provide: ModalService}
       ],
     })
     .compileComponents();

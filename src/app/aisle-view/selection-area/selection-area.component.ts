@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output, HostListener, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
-import { formatDate } from '@angular/common';
 import Mission from '../../mission.model';
 import Aisle from '../../aisle.model';
 import * as jsPDF from 'jspdf';
@@ -129,12 +128,6 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
     document.body.appendChild(link);
     link.click();
     link.remove();
-
-
-
-
-
-
   }
 
   exportPDF() {

@@ -9,16 +9,16 @@ describe('GridComponent', () => {
   let secondRowEl: HTMLElement;
   let gridEl: HTMLElement;
   const labels: Label[] = [
-    { id: 1, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 },
-    department: '', zone: '', section: '' },
-    { id: 2, name: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 },
-    department: '', zone: '', section: '' },
-    { id: 3, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 },
-    department: '', zone: '', section: '' },
-    { id: 4, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 },
-    department: '', zone: '', section: '' },
-    { id: 5, name: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0 },
-    department: '', zone: '', section: '' },
+    { labelId: 1, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
+      topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0}, department: '', section: '', customFields: []},
+    { labelId: 2, labelName: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0,
+      height: 0, topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0}, department: '', section: '', customFields: []},
+    { labelId: 3, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
+      topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0}, department: '', section: '', customFields: []},
+    { labelId: 4, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
+      topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0}, department: '', section: '', customFields: []},
+    { labelId: 5, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
+      topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0}, department: '', section: '', customFields: []},
   ];
 
   beforeEach(async(() => {
@@ -75,7 +75,7 @@ describe('GridComponent', () => {
   });
 
   it('displays correct number of columns', () => {
-    expect(secondRowEl.childElementCount).toEqual(7);
+    expect(secondRowEl.childElementCount).toEqual(5);
   });
 
   it('displays outs data', () => {

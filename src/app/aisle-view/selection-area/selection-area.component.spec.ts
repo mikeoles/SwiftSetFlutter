@@ -7,6 +7,13 @@ import Aisle from '../../aisle.model';
 import Mission from '../../mission.model';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DatePipe } from '@angular/common';
+import { Component, Input } from '@angular/core';
+import { ModalService } from 'src/app/modal/modal.service';
+
+@Component({selector: 'app-export-modal', template: ''})
+class ModalComponent {
+  @Input() id: string;
+}
 
 describe('SelectionAreaComponent', () => {
   let component: SelectionAreaComponent;
@@ -18,21 +25,24 @@ describe('SelectionAreaComponent', () => {
   let missionsListEl: HTMLLIElement;
   let aislesListEl: HTMLLIElement;
   const missions: Mission[] = [
-    { id: 1, name: '1111', storeId: '1', createDateTime: new Date('2018-12-12'), missionDateTime: new Date('2018-12-12') },
-    { id: 2, name: '2222', storeId: '1', createDateTime: new Date('2001-01-01'), missionDateTime: new Date('2001-01-01') },
+    { missionId: 1, missionName: '1111', storeId: '1', createDateTime: new Date('2018-12-12'), missionDateTime: new Date('2018-12-12') },
+    { missionId: 2, missionName: '2222', storeId: '1', createDateTime: new Date('2001-01-01'), missionDateTime: new Date('2001-01-01') },
   ];
   const aisles: Aisle[] = [
-    { id: 1, name: '1111', panoramaUrl: '', labels: [], outs: [], spreads: [] },
-    { id: 2, name: '2222', panoramaUrl: '', labels: [], outs: [], spreads: [] },
-    { id: 3, name: '3333', panoramaUrl: '', labels: [], outs: [], spreads: [] },
-    { id: 4, name: '4444', panoramaUrl: '', labels: [], outs: [], spreads: [] },
-    { id: 5, name: '5555', panoramaUrl: '', labels: [], outs: [], spreads: [] },
+    { aisleId: 1, aisleName: '1111', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '' },
+    { aisleId: 2, aisleName: '2222', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '' },
+    { aisleId: 3, aisleName: '3333', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '' },
+    { aisleId: 4, aisleName: '4444', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '' },
+    { aisleId: 5, aisleName: '5555', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '' },
   ];
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, FontAwesomeModule],
-      declarations: [ SelectionAreaComponent ]
+      declarations: [ SelectionAreaComponent, ModalComponent ],
+      providers: [
+        { provide: ModalService}
+      ]
     })
     .compileComponents();
   }));
