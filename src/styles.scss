@@ -133,3 +133,11 @@ button {
   color: $primary;
   border: 3px $primary solid;
 }
+
+.main-calendar-container, .topbar-container{
+  width: auto !important;
+}
+
+.ngx-datepicker-calendar-container{
+  z-index: 1 !important;
+}
