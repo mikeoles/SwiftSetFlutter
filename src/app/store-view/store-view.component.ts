@@ -23,7 +23,9 @@ export class StoreViewComponent implements OnInit {
     displayFormat: 'MMMM D[,] YYYY',
     barTitleFormat: 'MMMM YYYY',
     dayNamesFormat: 'dd',
-    addStyle: {'border': '2px black solid', 'border-radius': '30px', 'font-weight': 'bold', 'width': 'auto', 'text-align': 'center'}
+    addStyle: {'border': '2px black solid', 'border-radius': '30px',
+    'font-weight': 'bold', 'width': 'auto', 'text-align': 'center', 'cursor': 'pointer'
+  }
   };
 
   constructor(private apiService: ApiService, private activatedRoute: ActivatedRoute) {

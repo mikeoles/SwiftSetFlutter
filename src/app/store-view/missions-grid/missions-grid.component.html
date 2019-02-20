@@ -13,7 +13,11 @@
   </thead>
   <tbody>
     <tr *ngFor="let missionSummary of missionSummaries; let i = index" (click)="viewMission(missionSummary.missionId)">
-      <td>{{missionSummary.missionDateTime | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+      <td>
+        <a [routerLink]="" (click)="viewMission(missionSummary.missionId)">
+          {{missionSummary.missionDateTime | date: 'yyyy-MM-dd HH:mm:ss'}}
+        </a>
+      </td>
       <td>{{missionSummary.missionDateTime | date: 'hh:mm a'}}</td>
       <td>{{missionSummary.outs}}</td>
       <td>{{missionSummary.labels}}</td>
