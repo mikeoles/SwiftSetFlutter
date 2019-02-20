@@ -27,6 +27,10 @@
   display: inline-block;
 }
 
+button{
+  cursor: pointer !important;
+}
+
 .exportButton{
   float: right;
   background-color: $primary;

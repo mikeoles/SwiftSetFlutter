@@ -52,6 +52,10 @@ button{
   }
 }
 
+button{
+  cursor: pointer !important;
+}
+
 button > img,
 button > span {
   vertical-align: middle;
