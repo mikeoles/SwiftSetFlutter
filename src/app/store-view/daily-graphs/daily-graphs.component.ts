@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-daily-graphs',
@@ -50,13 +50,6 @@ export class DailyGraphsComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnInit() {
-    this.data.forEach((data: any) => {
-      this.max = data.dailyAverage > this.max ? data.dailyAverage : this.max;
-    });
-    this.max += 1;
-    for (let i = 0; i < this.data.length; i++) {
-      this.barChartData.push([this.data[i].dailyAverage]);
-    }
     this.barChartOptions.scales.yAxes = [{
       display: false,
       ticks: {
@@ -66,11 +59,30 @@ export class DailyGraphsComponent implements OnInit, OnChanges {
     }];
   }
 
-  ngOnChanges() {
-    if (this.currentIndex) {
-      this.todaysAverage = this.data[this.currentIndex].dailyAverage;
-    } else {
-      this.todaysAverage = null;
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['currentIndex']) {
+      if (this.currentIndex) {
+        this.todaysAverage = this.data[this.currentIndex].dailyAverage;
+      } else {
+        this.todaysAverage = null;
+      }
+    }
+    if (changes['data']) {
+      this.barChartData = [];
+      this.max = 0;
+      this.data.forEach((data: any) => {
+        this.max = data.dailyAverage > this.max ? data.dailyAverage : this.max;
+      });
+      this.barChartOptions.scales.yAxes = [{
+        display: false,
+        ticks: {
+          beginAtZero: true,
+          max : this.max,
+        },
+      }];
+      for (let i = 0; i < this.data.length; i++) {
+        this.barChartData.push([this.data[i].dailyAverage]);
+      }
     }
   }
 

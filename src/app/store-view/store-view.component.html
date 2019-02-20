@@ -3,10 +3,12 @@
   <div class="storeAddress">{{store.storeAddress}}</div>
 </div>
 <div class="title">Daily Stats</div>
+<div class="dateInput">
+  <ng-datepicker [(ngModel)]="graphStartDate" (ngModelChange)="changeGraphDates($event)" [options]="options" [position]="'bottom-right'"></ng-datepicker>
+</div>
 <div *ngIf="store">
   <div class="graphDisplay"><app-daily-graphs [title]="'Outs'" [data]="store.summaryOuts" [overallAverage]="store.totalAverageOuts" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>
   <div class="graphDisplay"><app-daily-graphs [title]="'Labels'" [data]="store.summaryLabels" [overallAverage]="store.totalAverageLabels" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>
   <!-- <div class="graphDisplay"><app-daily-graphs [title]="'Spreads'" [data]="store.summarySpreads" [overallAverage]="store.totalAverageSpreads" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div> -->
 </div>
-
 <app-missions-grid *ngIf="missionSummaries" [missionSummaries]="missionSummaries" [missionsDate]="selectedDate"></app-missions-grid>
