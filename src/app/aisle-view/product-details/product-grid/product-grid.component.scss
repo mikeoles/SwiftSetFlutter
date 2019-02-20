@@ -18,7 +18,7 @@ table tbody
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
-    height: calc(100vh - 111px - 365px - 95px - 48px);
+    height: calc(100vh - 135px - 89px - 365px - 77px - 48px);
 }
 
 th{
@@ -89,7 +89,7 @@ tbody :first-child{
 
   table tbody
   {
-      height: calc(100vh - 111px - 365px - 95px - 48px - 17px);
+      height: calc(100vh - 111px - 365px - 95px - 48px - 17px - 95px);
   }
 }
 
@@ -101,7 +101,7 @@ tbody :first-child{
 
   table tbody
   {
-      height: calc(100vh - 111px - 365px - 95px - 48px - 31px);
+      height: calc(100vh - 111px - 365px - 95px - 48px - 31px - 95px);
   }
 }
 

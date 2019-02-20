@@ -9,7 +9,11 @@
   </thead>
   <tbody>
     <tr *ngFor="let aisle of aisles; let i = index" (click)="viewAisle(aisle.aisleId)">
-      <td>{{aisle.aisleName}}</td>
+      <td>
+        <a [routerLink]="" (click)="viewAisle(aisle.aisleId)">
+          {{aisle.aisleName}}
+        </a>
+        </td>
       <td>{{aisle.outs.length}}</td>
       <td>{{aisle.labels.length}}</td>
       <!-- <td>{{aisle.spreads.length}}</td> -->

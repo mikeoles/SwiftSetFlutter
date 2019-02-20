@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { GridComponent } from './grid.component';
+import { ProductGridComponent } from './product-grid.component';
 import { By } from '@angular/platform-browser';
 import Label from 'src/app/label.model';
 
-describe('GridComponent', () => {
-  let component: GridComponent;
-  let fixture: ComponentFixture<GridComponent>;
+describe('ProductGridComponent', () => {
+  let component: ProductGridComponent;
+  let fixture: ComponentFixture<ProductGridComponent>;
   let secondRowEl: HTMLElement;
   let gridEl: HTMLElement;
   const labels: Label[] = [
@@ -23,13 +23,13 @@ describe('GridComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GridComponent ]
+      declarations: [ ProductGridComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GridComponent);
+    fixture = TestBed.createComponent(ProductGridComponent);
     component = fixture.componentInstance;
     component.products = labels;
     fixture.detectChanges();

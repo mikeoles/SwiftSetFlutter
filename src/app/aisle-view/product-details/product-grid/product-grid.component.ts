@@ -9,11 +9,11 @@ export enum KEY_CODE {
 }
 
 @Component({
-  selector: 'app-grid',
-  templateUrl: './grid.component.html',
-  styleUrls: ['./grid.component.scss']
+  selector: 'app-product-grid',
+  templateUrl: './product-grid.component.html',
+  styleUrls: ['./product-grid.component.scss']
 })
-export class GridComponent implements OnInit, AfterViewChecked, OnChanges {
+export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges {
 
   @Output() gridClicked = new EventEmitter();
   @Input() products: Label[];

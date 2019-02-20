@@ -18,9 +18,9 @@
 
 <div *ngIf='!panoMode'>
   <div [ngSwitch]="currentDisplay">
-    <app-grid [products]="filteredOuts" [selectedId]="currentId" (gridClicked)='productGridSelected($event)' *ngSwitchCase="'outs'"></app-grid>
-    <app-grid [products]="filteredLabels" [selectedId]="currentId" (gridClicked)='productGridSelected($event)' *ngSwitchCase="'labels'"></app-grid>
-    <app-grid [products]="labels" [selectedId]="currentId" (gridClicked)='productGridSelected($event)' *ngSwitchCase="'plugs'"></app-grid>
-    <app-grid [products]="labels" [selectedId]="currentId" (gridClicked)='productGridSelected($event)' *ngSwitchCase="'suppliers'"></app-grid>
+    <app-product-grid [products]="filteredOuts" [selectedId]="currentId" (gridClicked)='productGridSelected($event)' *ngSwitchCase="'outs'"></app-product-grid>
+    <app-product-grid [products]="filteredLabels" [selectedId]="currentId" (gridClicked)='productGridSelected($event)' *ngSwitchCase="'labels'"></app-product-grid>
+    <app-product-grid [products]="labels" [selectedId]="currentId" (gridClicked)='productGridSelected($event)' *ngSwitchCase="'plugs'"></app-product-grid>
+    <app-product-grid [products]="labels" [selectedId]="currentId" (gridClicked)='productGridSelected($event)' *ngSwitchCase="'suppliers'"></app-product-grid>
   </div>
 </div>
