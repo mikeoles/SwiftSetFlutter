@@ -116,9 +116,10 @@ export class ApiService {
     };
   }
 
-  getStore(storeId: string, startDate: Date): Observable<Store[]> {
+  getStore(storeId: string, startDate: Date): Observable<Store> {
+    let stores: Observable<Store[]>;
     // tslint:disable-next-line:max-line-length
-    return this.http.get(`${this.apiUrl}/DemoService/Stores?$filter=SummaryDate eq ${formatDate(startDate, 'yyyy-MM-dd', 'en-US')} and Id eq ${storeId}`).pipe(
+    stores = this.http.get(`${this.apiUrl}/DemoService/Stores?$filter=SummaryDate eq ${formatDate(startDate, 'yyyy-MM-dd', 'en-US')} and Id eq ${storeId}`).pipe(
       // API result
       // {
       //   "Id": 1,
@@ -153,6 +154,7 @@ export class ApiService {
       // Map the result to an MissionSummary object
       map<any, Store[]>(o => o.value.map(m => this.createStore(m))),
     );
+    return stores[0];
   }
 
   getMissionSummaries(date: Date, storeId: string) {

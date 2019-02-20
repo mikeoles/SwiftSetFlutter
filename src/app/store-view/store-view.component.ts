@@ -35,8 +35,8 @@ export class StoreViewComponent implements OnInit {
         this.storeId = params['storeId'];
       }
     });
-    this.apiService.getStore(this.storeId, this.graphStartDate).subscribe(stores => {
-      this.setAllSummaryValues(stores[0]);
+    this.apiService.getStore(this.storeId, this.graphStartDate).subscribe(store => {
+      this.setAllSummaryValues(store);
     });
   }
 
@@ -45,8 +45,8 @@ export class StoreViewComponent implements OnInit {
 
   changeGraphDates(event) {
     this.graphStartDate = new Date(event);
-    this.apiService.getStore(this.storeId, this.graphStartDate).subscribe(stores => {
-      this.setAllSummaryValues(stores[0]);
+    this.apiService.getStore(this.storeId, this.graphStartDate).subscribe(store => {
+      this.setAllSummaryValues(store);
     });
   }
 

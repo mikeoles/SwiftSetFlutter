@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DailyGraphsComponent } from './daily-graphs.component';
 import { ChartsModule } from 'ng2-charts';
+import { SimpleChanges, SimpleChange } from '@angular/core';
 
 describe('DailyGraphsComponent', () => {
   let component: DailyGraphsComponent;
@@ -24,6 +25,10 @@ describe('DailyGraphsComponent', () => {
     fixture = TestBed.createComponent(DailyGraphsComponent);
     component = fixture.componentInstance;
     component.data = data;
+    const changesObj: SimpleChanges = {
+      data: new SimpleChange([], data, false)
+    };
+    component.ngOnChanges(changesObj);
     fixture.detectChanges();
   });
 
