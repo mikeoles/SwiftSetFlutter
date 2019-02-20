@@ -48,11 +48,11 @@ export class MissionViewComponent implements OnInit {
             });
           }
         });
-        this.apiService.getStore(mission.storeId).subscribe(store => {
+        this.apiService.getStore(mission.storeId, new Date()).subscribe(store => {
           this.store = store;
-          this.averageLabels = Math.max(store.totalAverageLabels, this.missionSummary.labels);
-          this.averageOuts = Math.max(store.totalAverageOuts, this.missionSummary.outs);
-          this.averageSpreads = Math.max(store.totalAverageSpreads, this.missionSummary.spreads);
+          this.averageLabels = Math.max(this.store.totalAverageLabels, this.missionSummary.labels);
+          this.averageOuts = Math.max(this.store.totalAverageOuts, this.missionSummary.outs);
+          this.averageSpreads = Math.max(this.store.totalAverageSpreads, this.missionSummary.spreads);
         });
       });
     });

@@ -24,6 +24,8 @@ import { EnvironmentService } from './environment.service';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ModalComponent } from './modal/modal.component';
 import { ModalService } from './modal/modal.service';
+import { NgDatepickerModule } from 'ng2-datepicker';
+
 
 @NgModule({
   declarations: [
@@ -52,7 +54,8 @@ import { ModalService } from './modal/modal.service';
     FormsModule,
     RoundProgressModule,
     AppRoutingModule,
-    NgMultiSelectDropDownModule.forRoot()
+    NgMultiSelectDropDownModule.forRoot(),
+    NgDatepickerModule
   ],
   providers: [
     EnvironmentService,
