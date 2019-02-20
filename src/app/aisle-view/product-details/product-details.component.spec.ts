@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProductDetailsComponent } from './product-details.component';
-import { GridComponent } from './grid/grid.component';
+import { ProductGridComponent } from './product-grid/product-grid.component';
 import { By } from '@angular/platform-browser';
 import Label from '../../label.model';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
@@ -41,7 +41,7 @@ describe('ProductDetailsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         ProductDetailsComponent,
-        GridComponent
+        ProductGridComponent
       ],
       imports: [
         NgMultiSelectDropDownModule.forRoot(),

@@ -3,7 +3,7 @@ import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { ProductDetailsComponent } from './aisle-view/product-details/product-details.component';
-import { GridComponent } from './aisle-view/product-details/grid/grid.component';
+import { ProductGridComponent } from './aisle-view/product-details/product-grid/product-grid.component';
 import { PanoramaComponent } from './aisle-view/panorama/panorama.component';
 import { SelectionAreaComponent } from './aisle-view/selection-area/selection-area.component';
 import { FormsModule } from '@angular/forms';
@@ -31,7 +31,7 @@ import { NgDatepickerModule } from 'ng2-datepicker';
   declarations: [
     AppComponent,
     ProductDetailsComponent,
-    GridComponent,
+    ProductGridComponent,
     PanoramaComponent,
     SelectionAreaComponent,
     StoreViewComponent,

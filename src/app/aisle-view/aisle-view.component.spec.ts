@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AisleViewComponent } from './aisle-view.component';
 import { PanoramaComponent } from './panorama/panorama.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
-import { GridComponent } from './product-details/grid/grid.component';
+import { ProductGridComponent } from './product-details/product-grid/product-grid.component';
 import { SelectionAreaComponent } from './selection-area/selection-area.component';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -66,7 +66,7 @@ describe('AisleViewComponent', () => {
         AisleViewComponent,
         PanoramaComponent,
         ProductDetailsComponent,
-        GridComponent,
+        ProductGridComponent,
         SelectionAreaComponent,
         ModalComponent,
       ],
