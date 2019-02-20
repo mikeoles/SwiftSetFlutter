@@ -97,15 +97,15 @@ export class ApiService {
 
   createStore(store: any): Store {
     return {
-      id: store.Id,
-      storeName: store.StoreName,
-      storeAddress: store.StoreAddress,
-      totalAverageOuts: store.TotalAverageOuts,
-      totalAverageLabels: store.TotalAverageLabels,
-      totalAverageSpreads: store.TotalAverageSpreads,
-      summaryOuts: (store.SummaryOuts || []).map(o => this.createDaySummary(o)),
-      summaryLabels: (store.SummaryLabels || []).map(l => this.createDaySummary(l)),
-      summarySpreads: (store.SummarySpreads || []).map(s => this.createDaySummary(s)),
+      id: store.value[0].Id,
+      storeName: store.value[0].StoreName,
+      storeAddress: store.value[0].StoreAddress,
+      totalAverageOuts: store.value[0].TotalAverageOuts,
+      totalAverageLabels: store.value[0].TotalAverageLabels,
+      totalAverageSpreads: store.value[0].TotalAverageSpreads,
+      summaryOuts: (store.value[0].SummaryOuts || []).map(o => this.createDaySummary(o)),
+      summaryLabels: (store.value[0].SummaryLabels || []).map(l => this.createDaySummary(l)),
+      summarySpreads: (store.value[0].SummarySpreads || []).map(s => this.createDaySummary(s)),
     };
   }
 
@@ -117,9 +117,8 @@ export class ApiService {
   }
 
   getStore(storeId: string, startDate: Date): Observable<Store> {
-    let stores: Observable<Store[]>;
     // tslint:disable-next-line:max-line-length
-    stores = this.http.get(`${this.apiUrl}/DemoService/Stores?$filter=SummaryDate eq ${formatDate(startDate, 'yyyy-MM-dd', 'en-US')} and Id eq ${storeId}`).pipe(
+    return this.http.get(`${this.apiUrl}/DemoService/Stores?$filter=SummaryDate eq ${formatDate(startDate, 'yyyy-MM-dd', 'en-US')} and Id eq ${storeId}`).pipe(
       // API result
       // {
       //   "Id": 1,
@@ -152,9 +151,8 @@ export class ApiService {
       // }
 
       // Map the result to an MissionSummary object
-      map<any, Store[]>(o => o.value.map(m => this.createStore(m))),
+      map<any, Store>(m => this.createStore(m)),
     );
-    return stores[0];
   }
 
   getMissionSummaries(date: Date, storeId: string) {
