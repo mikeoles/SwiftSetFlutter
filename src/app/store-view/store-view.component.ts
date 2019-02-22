@@ -23,7 +23,7 @@ export class StoreViewComponent implements OnInit {
     displayFormat: 'MMMM D[,] YYYY',
     barTitleFormat: 'MMMM YYYY',
     dayNamesFormat: 'dd',
-    addStyle: {'border': '2px black solid', 'border-radius': '30px',
+    addStyle: {'border': '2px #2baae1 solid', 'border-radius': '30px', 'color': '#2baae1', 'font-size' : '18px', 'height' : '45px',
     'font-weight': 'bold', 'width': 'auto', 'text-align': 'center', 'cursor': 'pointer'
   }
   };
