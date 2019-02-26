@@ -4,14 +4,14 @@
       <img [src]="panoramaUrl" *ngIf="panoramaUrl" />
       <ng-container *ngFor="let annotation of annotations()">
           <div class="{{this.currentDisplay}}Annotation annotation"
-          [class.selected]="(this.currentId === annotation.id) && !this.panoMode"
+          [class.selected]="(this.currentId === annotation.labelId) && !this.panoMode"
           [style.left.px]="annotation.bounds.left"
           [style.top.px]="annotation.bounds.top"
           [style.width.px]="annotation.bounds.width"
           [style.height.px]="annotation.bounds.height">
         </div>
         <div class="bigTouch"
-          [class.selected]="(this.currentId === annotation.id) && !this.panoMode"
+          [class.selected]="(this.currentId === annotation.labelId) && !this.panoMode"
           [style.left.px]="annotation.bounds.left-100"
           [style.top.px]="annotation.bounds.top-100"
           [style.width.px]="annotation.bounds.width+200"

@@ -88,7 +88,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
           }
 
           for (i = 0; i < annotations.length; i++) {
-            if (annotations[i].id === this.currentId) {
+            if (annotations[i].labelId === this.currentId) {
               selectedX =
                 annotations[i].bounds.left +
                 annotations[i].bounds.width / 2 -
@@ -155,8 +155,8 @@ export class PanoramaComponent implements OnInit, OnChanges {
 
   annotationClicked(annotation) {
     if (!this.panoMode) {
-      if (this.currentId !== annotation.id) {
-        this.panoramaId.emit(annotation.id);
+      if (this.currentId !== annotation.labelId) {
+        this.panoramaId.emit(annotation.labelId);
       } else {
         this.panoramaId.emit(-1);
       }
