@@ -35,20 +35,26 @@ export class ApiService {
   }
 
   createLabel(label: any): Label {
-    let dept = '';
-    for (let i = 0; i < label.Product.CustomFields.length; i++) {
-      const field = label.Product.CustomFields[i];
-      if (field['Name'] === 'Department') {
-        dept = field['Value'];
+    let dept = '', desc = null, itemId = null, price = null, customFields = null;
+    if (label.Product) {
+      for (let i = 0; i < label.Product.CustomFields.length; i++) {
+        const field = label.Product.CustomFields[i];
+        if (field['Name'] === 'Department') {
+          dept = field['Value'];
+        }
       }
+      desc = label.Product.Description;
+      itemId = label.Product.ItemId;
+      price = label.Product.Price;
+      customFields = label.Product.CustomFields;
     }
 
     return {
       labelId: label.Id,
-      labelName: label.Product.Description || 'Unknown Product Name',
-      barcode: label.Product.Barcode || '000000000000',
-      productId: label.Product.ItemId || '',
-      price: label.Product.Price || 0,
+      labelName: desc || 'Unknown Product Name',
+      barcode: label.Barcode || '000000000000',
+      productId: itemId || '000000',
+      price: price || 0,
       department: dept,
       bounds: {
         top: label.Z1 - 10,
@@ -61,7 +67,7 @@ export class ApiService {
         heightMeters: label.Z2M - label.Z1M,
       },
       section: label.Section,
-      customFields: (label.Product.CustomFields || []).map(cf => this.createCustomField(cf)),
+      customFields: (customFields || []).map(cf => this.createCustomField(cf)),
     };
   }
 

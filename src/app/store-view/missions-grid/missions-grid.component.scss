@@ -35,6 +35,10 @@ td, td a{
   font-size: 18px;
 }
 
+td a{
+  color: $primary;
+}
+
 th, td{
   width: 300px;
 }

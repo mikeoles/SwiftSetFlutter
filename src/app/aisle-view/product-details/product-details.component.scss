@@ -4,6 +4,7 @@ button {
   text-align: center;
   width: 220px;
   margin-right: 40px;
+  cursor: pointer !important;
 }
 
 //Some dropdown specific styles are in styles.scss
@@ -36,6 +37,7 @@ button:focus {
 #tableSelection{
     margin-left: 60px;
     padding-top: 20px;
+    padding-bottom: 20px;
     float: left;
 }
 

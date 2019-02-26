@@ -7,6 +7,8 @@ import Label from './../label.model';
 import { ViewEncapsulation } from '@angular/core';
 import { LogoService } from '../logo.service';
 import { Subscription } from 'rxjs';
+import { ActivatedRoute, Params } from '@angular/router';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-aisle-view',
@@ -35,7 +37,9 @@ export class AisleViewComponent implements OnInit, OnDestroy {
 
   constructor(private apiService: ApiService,
               private keyboard: KeyboardShortcutsService,
-              private logoService: LogoService) {
+              private logoService: LogoService,
+              private activatedRoute: ActivatedRoute,
+              private location: Location) {
     this.currentDisplay = 'outs';
     this.panoMode = false;
     this.keyboard.add([
@@ -50,9 +54,23 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.logoSubscription = this.logoService.logoClickEvent().subscribe(() => this.changePanoMode());
 
+    let missionId: number, aisleId: number;
+    this.activatedRoute.params.forEach((params: Params) => {
+      if (params['missionId'] !== undefined) {
+        missionId = Number(params['missionId']);
+      }
+      if (params['aisleId'] !== undefined) {
+        aisleId = Number(params['aisleId']);
+      }
+    });
+
     this.apiService.getMissions().subscribe(missions => {
       this.missions = missions;
-      this.setMission(this.missions[0]);
+      missions.forEach(mission => {
+        if (mission.missionId === missionId) {
+          this.setMission(mission, aisleId);
+        }
+      });
     });
   }
 
@@ -68,11 +86,21 @@ export class AisleViewComponent implements OnInit, OnDestroy {
     this.resetPano = !this.resetPano;
   }
 
-  setMission(mission: Mission) {
+  changeMission(mission: Mission) {
+    this.apiService.getAisles(mission.missionId).subscribe(aisles => {
+      this.setMission(mission, aisles[0].aisleId);
+    });
+  }
+
+  setMission(mission: Mission, aisleId: number) {
     this.selectedMission = mission;
     this.apiService.getAisles(mission.missionId).subscribe(aisles => {
       this.aisles = aisles;
-      this.setAisle(this.aisles[0]);
+      aisles.forEach(aisle => {
+        if (aisle.aisleId === aisleId) {
+          this.setAisle(aisle);
+        }
+      });
     });
   }
 
@@ -85,6 +113,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
       this.currentDisplay = 'outs';
       this.currentId = null;
     });
+    this.location.replaceState('/mission/' + this.selectedMission.missionId + '/aisle/' + this.selectedAisle.aisleId);
   }
 
   setId(id: number) {

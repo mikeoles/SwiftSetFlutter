@@ -131,11 +131,11 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   }
 
   exportPDF() {
-    const doc = new jsPDF();
+    const doc = new jsPDF('landscape');
 
     const img = new Image();
     img.src = this.panoramaUrl;
-    doc.addImage(img, 'PNG', 5, 10, 200, 76);
+    doc.addImage(img, 'PNG', 5, 50, 285, 80);
 
     const body = [];
     const head = [['Product Name', 'Barcode', 'Product Id', 'Price']];
@@ -144,7 +144,8 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
       body.push(row);
     }
 
-    doc.autoTable({head: head, body: body, startY: 90});
+    doc.addPage();
+    doc.autoTable({head: head, body: body, startY: 5});
     doc.save(this.selectedMission.missionName + '-' + this.selectedAisle.aisleName + '.pdf');
   }
 }
