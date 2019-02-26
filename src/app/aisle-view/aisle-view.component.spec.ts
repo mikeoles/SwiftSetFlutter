@@ -16,13 +16,15 @@ import { By } from '@angular/platform-browser';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { Component, Input } from '@angular/core';
 import { ModalService } from '../modal/modal.service';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({selector: 'app-export-modal', template: ''})
 class ModalComponent {
   @Input() id: string;
 }
 
-describe('AisleViewComponent', () => {
+fdescribe('AisleViewComponent', () => {
   let fixture: ComponentFixture<AisleViewComponent>;
   let component: AisleViewComponent;
   let apiService: jasmine.SpyObj<ApiService>;
@@ -54,13 +56,14 @@ describe('AisleViewComponent', () => {
 
   beforeEach(async(() => {
     const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getMissions', 'getAisles', 'getAisle']);
+    const locationSpy = jasmine.createSpyObj('Location', ['replaceState']);
 
     TestBed.configureTestingModule({
       imports: [
         FormsModule,
         FontAwesomeModule,
         HttpClientModule,
-        NgMultiSelectDropDownModule.forRoot()
+        NgMultiSelectDropDownModule.forRoot(),
       ],
       declarations: [
         AisleViewComponent,
@@ -72,7 +75,14 @@ describe('AisleViewComponent', () => {
       ],
       providers: [
         { provide: ApiService, useValue: apiServiceSpy },
-        { provide: ModalService}
+        { provide: ModalService},
+        { provide: Location, useValue:  locationSpy},
+        { provide: ActivatedRoute, useValue: {
+          params: [{
+            missionId: '1',
+            aisleId: '1'
+          }],
+        }},
       ],
     }).compileComponents();
 

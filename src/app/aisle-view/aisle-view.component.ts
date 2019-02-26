@@ -54,8 +54,15 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.logoSubscription = this.logoService.logoClickEvent().subscribe(() => this.changePanoMode());
 
-    const missionId: number = Number(this.activatedRoute.params._value['missionId']);
-    const aisleId: number = Number(this.activatedRoute.params._value['aisleId']);
+    let missionId: number, aisleId: number;
+    this.activatedRoute.params.forEach((params: Params) => {
+      if (params['missionId'] !== undefined) {
+        missionId = Number(params['missionId']);
+      }
+      if (params['aisleId'] !== undefined) {
+        aisleId = Number(params['aisleId']);
+      }
+    });
 
     this.apiService.getMissions().subscribe(missions => {
       this.missions = missions;
