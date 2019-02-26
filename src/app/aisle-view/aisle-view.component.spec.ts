@@ -24,7 +24,7 @@ class ModalComponent {
   @Input() id: string;
 }
 
-fdescribe('AisleViewComponent', () => {
+describe('AisleViewComponent', () => {
   let fixture: ComponentFixture<AisleViewComponent>;
   let component: AisleViewComponent;
   let apiService: jasmine.SpyObj<ApiService>;
