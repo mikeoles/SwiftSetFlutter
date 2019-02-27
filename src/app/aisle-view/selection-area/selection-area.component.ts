@@ -42,7 +42,21 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
       this.showAisles = false;
       this.showMissions = false;
     }
+    if (changes['missions']) {
+      this.missions.sort(this.missionSort);
+    }
   }
+
+  missionSort(a: Mission, b: Mission) {
+    if (a.missionDateTime < b.missionDateTime) {
+      return 1;
+    }
+    if (a.missionDateTime > b.missionDateTime) {
+      return -1;
+    }
+    return 0;
+  }
+
 
   @HostListener('document:click', ['$event'])
   clickout(event) {
