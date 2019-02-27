@@ -5,16 +5,14 @@ import { labelScrollOptions } from 'src/app/labelScrollOptions';
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:4000/',
+  apiUrl: 'http://localhost:8080/',
   showPlugs: false,
   showSuppliers: false,
-  departments: false,
-  sections: true,
   coveragePercent: true,
   exportFields: ['Barcode', 'Price', 'Aisle Name', 'Zone', 'Section',
   'Mission Id', 'Mission Date Time', 'Store Id', 'Product Id', 'Top', 'Left', 'Top Meters', 'Left Meters'],
   labelScrolling: labelScrollOptions.vertical,
-
+  productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price'],
 };
 
 /*

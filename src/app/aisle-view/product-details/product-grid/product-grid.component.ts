@@ -20,16 +20,15 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
   @Input() selectedId: number;
   showDepartment: Boolean;
   showSection: Boolean;
-
+  columnHeaders: String[];
+  rows: Array<Array<String>> = [];
 
   constructor() {
-    this.showDepartment = environment.departments;
-    this.showSection = environment.sections;
+    this.showDepartment = environment.productGridFields.includes('Department');
+    this.showSection = environment.productGridFields.includes('Section');
   }
 
-
   ngOnInit() {
-
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -41,6 +40,13 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
       return;
     }
 
+    if (changes['products']) {
+      this.sortProductsByLocation();
+      this.getGridData();
+    }
+  }
+
+  sortProductsByLocation() {
     if (environment.labelScrolling === labelScrollOptions.vertical) {
       this.products.sort(this.horizontal);
     } else {
@@ -67,7 +73,6 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
       } else {
         currentRow.push(nextProduct);
       }
-
       currentProduct = nextProduct;
     }
 
@@ -83,6 +88,35 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
 
     sortedProducts = sortedProducts.concat(currentRow);
     this.products = sortedProducts;
+  }
+
+  getGridData() {
+    this.rows = [];
+    this.columnHeaders = environment.productGridFields;
+    for (let i = 0; i < this.products.length; i++) {
+      const product: Label = this.products[i];
+      let row: Array<String> = Array<String>();
+      for (let j = 0; j < this.columnHeaders.length; j++) {
+        const field: String = this.columnHeaders[j];
+        let fieldLowercase = field.charAt(0).toLowerCase() + field.slice(1);
+        fieldLowercase = fieldLowercase.replace(/\s/g, '');
+        let cellValue = '';
+        if (product[fieldLowercase]) {
+          cellValue = product[fieldLowercase];
+        } else if (product.bounds[fieldLowercase]) {
+          cellValue = product.bounds[fieldLowercase];
+        } else {
+          for (let k = 0; k < product.customFields.length; k++) {
+            if (product.customFields[k].name === field) {
+              cellValue = product.customFields[k].value;
+            }
+          }
+        }
+        row = row.concat(cellValue);
+      }
+      this.rows.push(row);
+      row = Array<String>();
+    }
   }
 
   // check if labels are on same row or column
