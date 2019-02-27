@@ -35,8 +35,8 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
   constructor() {
     this.showPlugs = environment.showPlugs;
     this.showSuppliers = environment.showSuppliers;
-    this.showDepartment = environment.departments;
-    this.showSection = environment.sections;
+    this.showDepartment = environment.productGridFields.includes('Department');
+    this.showSection = environment.productGridFields.includes('Section');
   }
 
 

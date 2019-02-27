@@ -7,6 +7,9 @@ fi
 if [[ ! -z "$EXPORT_FIELDS" ]]; then
   echo "  \"exportFields\": [$EXPORT_FIELDS]" >> /usr/share/nginx/html/assets/config.json
 fi
+if [[ ! -z "$PRODUCT_GRID_FIELDS" ]]; then
+  echo "  \"productGridFields\": [$PRODUCT_GRID_FIELDS]" >> /usr/share/nginx/html/assets/config.json
+fi
 echo "}" >> /usr/share/nginx/html/assets/config.json
 
 echo "Using config:"

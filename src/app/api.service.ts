@@ -36,7 +36,7 @@ export class ApiService {
   }
 
   createLabel(label: any): Label {
-    let dept = '', desc = null, itemId = null, price = null, customFields = null;
+    let dept = '', desc = null, itemId = null, price = null, customFields = null, barcode = null;
     if (label.Product) {
       for (let i = 0; i < label.Product.CustomFields.length; i++) {
         const field = label.Product.CustomFields[i];
@@ -44,6 +44,7 @@ export class ApiService {
           dept = field['Value'];
         }
       }
+      barcode = label.Product.Barcode;
       desc = label.Product.Description;
       itemId = label.Product.ItemId;
       price = label.Product.Price;
@@ -53,9 +54,9 @@ export class ApiService {
     return {
       labelId: label.Id,
       labelName: desc || 'Unknown Product Name',
-      barcode: label.Barcode || '000000000000',
+      barcode: label.Barcode || barcode || '000000000000',
       productId: itemId || '000000',
-      price: price || 0,
+      price: price || '0.00',
       department: dept,
       bounds: {
         top: label.Z1 - 10,

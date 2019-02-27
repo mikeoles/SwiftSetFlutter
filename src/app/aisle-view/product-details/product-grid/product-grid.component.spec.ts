@@ -2,6 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProductGridComponent } from './product-grid.component';
 import { By } from '@angular/platform-browser';
 import Label from 'src/app/label.model';
+import { SimpleChanges, SimpleChange } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 describe('ProductGridComponent', () => {
   let component: ProductGridComponent;
@@ -32,6 +34,10 @@ describe('ProductGridComponent', () => {
     fixture = TestBed.createComponent(ProductGridComponent);
     component = fixture.componentInstance;
     component.products = labels;
+    const changesObj: SimpleChanges = {
+      products: new SimpleChange([], labels, false)
+    };
+    component.ngOnChanges(changesObj);
     fixture.detectChanges();
     spyOn(component.gridClicked, 'emit');
     secondRowEl = fixture.debugElement.query(By.css('div > table > tbody > tr:nth-child(2)')).nativeElement;
@@ -75,7 +81,7 @@ describe('ProductGridComponent', () => {
   });
 
   it('displays correct number of columns', () => {
-    expect(secondRowEl.childElementCount).toEqual(5);
+    expect(secondRowEl.childElementCount).toEqual(environment.productGridFields.length);
   });
 
   it('displays outs data', () => {
