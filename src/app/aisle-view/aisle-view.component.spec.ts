@@ -46,11 +46,11 @@ describe('AisleViewComponent', () => {
       topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 }, department: '', section: '', customFields: [] },
   ];
   const aisles: Aisle[] = [
-    { aisleId: 1, aisleName: '1111', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '' },
-    { aisleId: 2, aisleName: '2222', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '' },
-    { aisleId: 3, aisleName: '3333', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '' },
-    { aisleId: 4, aisleName: '4444', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '' },
-    { aisleId: 5, aisleName: '5555', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '' },
+    { aisleId: 1, aisleName: '1111', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '', coveragePercent: 0 },
+    { aisleId: 2, aisleName: '2222', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '', coveragePercent: 0  },
+    { aisleId: 3, aisleName: '3333', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '', coveragePercent: 0  },
+    { aisleId: 4, aisleName: '4444', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '', coveragePercent: 0  },
+    { aisleId: 5, aisleName: '5555', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '', coveragePercent: 0  },
   ];
 
 

@@ -30,7 +30,8 @@ export class ApiService {
       zone: aisle.Zone,
       labels: (aisle.Labels || []).map(l => this.createLabel(l)),
       outs: (aisle.Outs || []).map(l => this.createLabel(l)),
-      spreads: []
+      spreads: [],
+      coveragePercent: aisle.CoveragePercent
     };
   }
 
