@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import Label from '../label.model';
 import { ModalService } from '../modal/modal.service';
 
-@Component({selector: 'app-stat-ring', template: ''})
+@Component({selector: 'app-mission-stats', template: ''})
 class AppStatRingStubComponent {
   @Input() stat: string;
   @Input() current: string;

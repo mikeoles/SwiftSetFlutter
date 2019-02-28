@@ -9,7 +9,7 @@ import { SelectionAreaComponent } from './aisle-view/selection-area/selection-ar
 import { FormsModule } from '@angular/forms';
 import { ChartsModule } from 'ng2-charts';
 import { StoreViewComponent } from './store-view/store-view.component';
-import { StatRingComponent } from './mission-view/stat-ring/stat-ring.component';
+import { StatRingComponent } from './mission-view/mission-stats/mission-stats.component';
 import { MissionsGridComponent } from './store-view/missions-grid/missions-grid.component';
 import { RoundProgressModule } from 'angular-svg-round-progressbar';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';

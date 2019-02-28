@@ -64,7 +64,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
       });
     });
     this.service = this.apiService;
-  }
+}
 
   goBack(): void {
     this.router.navigate(['store/1']);

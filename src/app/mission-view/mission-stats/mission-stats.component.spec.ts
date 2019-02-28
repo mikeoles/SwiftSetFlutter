@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StatRingComponent } from './stat-ring.component';
+import { StatRingComponent } from './mission-stats.component';
 import { Component, Input } from '@angular/core';
 
 // tslint:disable-next-line:component-selector Stubbing existing component
