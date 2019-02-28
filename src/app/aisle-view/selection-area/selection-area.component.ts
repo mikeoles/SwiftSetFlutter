@@ -42,7 +42,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
       this.showAisles = false;
       this.showMissions = false;
     }
-    if (changes['missions']) {
+    if (changes['missions'] && this.missions) {
       this.missions.sort(this.missionSort);
     }
   }
