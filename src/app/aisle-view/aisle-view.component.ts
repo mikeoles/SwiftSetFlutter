@@ -43,7 +43,8 @@ export class AisleViewComponent implements OnInit, OnDestroy {
               private backService: BackService,
               private activatedRoute: ActivatedRoute,
               private location: Location,
-              private router: Router) {
+              private router: Router
+              ) {
     this.currentDisplay = 'outs';
     this.panoMode = false;
     this.keyboard.add([

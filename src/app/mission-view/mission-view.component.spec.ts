@@ -11,10 +11,9 @@ import Label from '../label.model';
 import { ModalService } from '../modal/modal.service';
 
 @Component({selector: 'app-mission-stats', template: ''})
-class AppStatRingStubComponent {
-  @Input() stat: string;
-  @Input() current: string;
-  @Input() max: string;
+class AppMissionStatsStubComponent {
+  @Input() average: string;
+  @Input() total: string;
 }
 @Component({selector: 'app-aisles-grid', template: ''})
 class AppAislesGridStubComponent {
@@ -56,7 +55,7 @@ describe('MissionViewComponent', () => {
       ],
       declarations: [
         MissionViewComponent,
-        AppStatRingStubComponent,
+        AppMissionStatsStubComponent,
         AppAislesGridStubComponent,
         ModalComponent
       ],

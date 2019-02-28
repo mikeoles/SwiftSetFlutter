@@ -5,7 +5,7 @@ import { Component, OnInit, Input } from '@angular/core';
   templateUrl: './mission-stats.component.html',
   styleUrls: ['./mission-stats.component.scss']
 })
-export class StatRingComponent implements OnInit {
+export class MissionStatsComponent implements OnInit {
   @Input() title: string;
   @Input() average: number;
   @Input() total: number;
