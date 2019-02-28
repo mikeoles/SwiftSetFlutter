@@ -16,7 +16,7 @@ import { By } from '@angular/platform-browser';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { Component, Input } from '@angular/core';
 import { ModalService } from '../modal/modal.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 
 @Component({selector: 'app-export-modal', template: ''})
@@ -76,6 +76,7 @@ describe('AisleViewComponent', () => {
       providers: [
         { provide: ApiService, useValue: apiServiceSpy },
         { provide: ModalService},
+        { provide: Router },
         { provide: Location, useValue:  locationSpy},
         { provide: ActivatedRoute, useValue: {
           params: [{

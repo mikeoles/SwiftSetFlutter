@@ -3,14 +3,6 @@
   <div class="missionName">STORE {{mission.storeId}}</div>
   <div class="missionDate"> Mission: <span> {{mission.missionDateTime | date: 'yyyy-MM-dd HH:mm:ss'}}</span></div>
 </div>
-<div *ngIf="missionSummary" class="statRings">
-  <app-stat-ring *ngIf="store" class="left" [title]="'Outs'" [stat]="missionSummary.outs" [current]="missionSummary.outs" [max]="store.totalAverageOuts"></app-stat-ring>
-  <app-stat-ring *ngIf="store" class="right" [title]="'Labels'" [stat]="missionSummary.labels" [current]="missionSummary.labels" [max]="store.totalAverageLabels"></app-stat-ring>
-  <!-- <app-stat-ring class="right" [title]="'Spreads'" [stat]="missionSummary.spreads" [current]="0" [max]="100"></app-stat-ring> -->
-</div>
-<div class="grid">
-  <app-aisles-grid [aisles]="aisles" [missionId]="currentMission"></app-aisles-grid>
-</div>
 <app-export-modal id="export-popup">
   <div class="modal">
       <div class="modal-body">
@@ -22,3 +14,10 @@
   </div>
   <div class="modal-background"></div>
 </app-export-modal>
+<div *ngIf="missionSummary" class="statRings">
+  <app-mission-stats *ngIf="store" class="left" [title]="'Out Of Stocks Detected'" [average]="store.totalAverageOuts" [total]="missionSummary.outs"></app-mission-stats>
+  <app-mission-stats *ngIf="store" class="right" [title]="'Shelf Labels Detected'" [average]="store.totalAverageLabels" [total]="missionSummary.labels"></app-mission-stats>
+</div>
+<div class="grid">
+  <app-aisles-grid [aisles]="aisles" [missionId]="currentMission"></app-aisles-grid>
+</div>
