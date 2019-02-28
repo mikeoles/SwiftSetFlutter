@@ -44,5 +44,5 @@ export class AppComponent implements OnInit {
     } else {
       this.displayBackButton = true;
     }
-  };
+  }
 }
