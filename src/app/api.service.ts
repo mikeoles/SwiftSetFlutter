@@ -56,7 +56,7 @@ export class ApiService {
       labelName: desc || 'Unknown Product Name',
       barcode: label.Barcode || barcode || '000000000000',
       productId: itemId || '000000',
-      price: price || '0.00',
+      price: price || 0.0,
       department: dept,
       bounds: {
         top: label.Z1 - 10,
