@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewChecked, EventEmitter, Output, Input, HostListener, OnChanges, SimpleChanges } from '@angular/core';
-import { environment } from '../../../../environments/environment';
 import Label from 'src/app/label.model';
 import { labelScrollOptions } from 'src/app/labelScrollOptions';
+import { EnvironmentService } from 'src/app/environment.service';
 
 export enum KEY_CODE {
   UP = 38,
@@ -23,9 +23,9 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
   columnHeaders: String[];
   rows: Array<Array<String>> = [];
 
-  constructor() {
-    this.showDepartment = environment.productGridFields.includes('Department');
-    this.showSection = environment.productGridFields.includes('Section');
+  constructor(private environment: EnvironmentService) {
+    this.showDepartment = this.environment.config.productGridFields.includes('Department');
+    this.showSection = this.environment.config.productGridFields.includes('Section');
   }
 
   ngOnInit() {
@@ -47,7 +47,7 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
   }
 
   sortProductsByLocation() {
-    if (environment.labelScrolling === labelScrollOptions.vertical) {
+    if (this.environment.config.labelScrolling === labelScrollOptions.vertical) {
       this.products.sort(this.horizontal);
     } else {
       this.products.sort(this.vertical);
@@ -62,7 +62,7 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
     for (let i = 1; i < this.products.length - 1; i++) {
       nextProduct = this.products[i];
       if (this.isSameLevel(currentProduct, nextProduct)) {
-        if (environment.labelScrolling === labelScrollOptions.vertical) {
+        if (this.environment.config.labelScrolling === labelScrollOptions.vertical) {
           currentRow.sort(this.vertical);
         } else {
           currentRow.sort(this.horizontal);
@@ -80,7 +80,7 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
       currentRow.push(this.products[this.products.length - 1]);
     }
 
-    if (environment.labelScrolling === labelScrollOptions.vertical) {
+    if (this.environment.config.labelScrolling === labelScrollOptions.vertical) {
       currentRow.sort(this.vertical);
     } else {
       currentRow.sort(this.horizontal);
@@ -92,7 +92,7 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
 
   getGridData() {
     this.rows = [];
-    this.columnHeaders = environment.productGridFields;
+    this.columnHeaders = this.environment.config.productGridFields;
     for (let i = 0; i < this.products.length; i++) {
       const product: Label = this.products[i];
       let row: Array<String> = Array<String>();
@@ -121,11 +121,11 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
 
   // check if labels are on same row or column
   isSameLevel(currentProduct: Label, nextProduct: Label) {
-    if (environment.labelScrolling === labelScrollOptions.horizontal
+    if (this.environment.config.labelScrolling === labelScrollOptions.horizontal
       && currentProduct.bounds.top + currentProduct.bounds.height < nextProduct.bounds.top) {
       return true;
     }
-    if (environment.labelScrolling === labelScrollOptions.vertical
+    if (this.environment.config.labelScrolling === labelScrollOptions.vertical
       && currentProduct.bounds.left + currentProduct.bounds.width < nextProduct.bounds.left) {
       return true;
     }

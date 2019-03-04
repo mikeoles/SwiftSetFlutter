@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AislesGridComponent } from './aisles-grid.component';
 import { Router } from '@angular/router';
+import { EnvironmentService } from 'src/app/environment.service';
 
 describe('AislesGridComponent', () => {
   let component: AislesGridComponent;
@@ -12,6 +13,13 @@ describe('AislesGridComponent', () => {
       declarations: [ AislesGridComponent ],
       imports: [
         RouterTestingModule.withRoutes([])
+      ],
+      providers: [
+        { provide: EnvironmentService, useValue: { config: {
+          showPlugs: true,
+          showSuppliers: true,
+          productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price']
+        }}}
       ]
     })
     .compileComponents();

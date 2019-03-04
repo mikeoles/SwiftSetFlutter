@@ -7,9 +7,9 @@ import Mission from '../mission.model';
 import Label from '../label.model';
 import Store from '../store.model';
 import { ModalService } from '../modal/modal.service';
-import { environment } from 'src/environments/environment';
 import { BackService } from '../back.service';
 import { Subscription } from 'rxjs';
+import { EnvironmentService } from '../environment.service';
 
 @Component({
   selector: 'app-mission-view',
@@ -31,7 +31,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
   private backButtonSubscription: Subscription;
 
   constructor(private apiService: ApiService, private activatedRoute: ActivatedRoute, private router: Router,
-    private modalService: ModalService, private backService: BackService) {
+    private modalService: ModalService, private backService: BackService, private environment: EnvironmentService) {
 
   }
 
@@ -82,7 +82,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
   }
 
   exportMission(exportType: string, modalId: string) {
-    const exportFields: string[] = environment.exportFields;
+    const exportFields: string[] = this.environment.config.exportFields;
     let csvContent = 'data:text/csv;charset=utf-8,%EF%BB%BF';
     csvContent += exportFields.join(',') + '\n';
 

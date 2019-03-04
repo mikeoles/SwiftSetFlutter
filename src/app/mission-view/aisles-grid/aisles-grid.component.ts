@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import Aisle from '../../aisle.model';
-import { environment } from '../../../environments/environment';
+import { EnvironmentService } from 'src/app/environment.service';
 
 @Component({
   selector: 'app-aisles-grid',
@@ -14,8 +14,8 @@ export class AislesGridComponent implements OnInit {
   @Input() missionId: number;
   showPercentScanned: boolean;
 
-  constructor( private router: Router) {
-    this.showPercentScanned = environment.coveragePercent;
+  constructor( private router: Router, private environment: EnvironmentService) {
+    this.showPercentScanned = environment.config.coveragePercent;
   }
 
   ngOnInit() {
