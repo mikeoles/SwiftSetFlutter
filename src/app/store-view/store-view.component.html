@@ -5,10 +5,9 @@
     <div class="dateInput">
       <ng-datepicker [(ngModel)]="graphStartDate" (ngModelChange)="changeGraphDates($event)" [options]="options" [position]="'bottom-left'"></ng-datepicker>
     </div>
-<div class="title">Daily Stats</div>
+<div class="title">Daily Statistics (Last 14 days)</div>
 <div *ngIf="store">
-  <div class="graphDisplay"><app-daily-graphs [title]="'Outs'" [data]="store.summaryOuts" [overallAverage]="store.totalAverageOuts" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>
-  <div class="graphDisplay"><app-daily-graphs [title]="'Labels'" [data]="store.summaryLabels" [overallAverage]="store.totalAverageLabels" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>
-  <!-- <div class="graphDisplay"><app-daily-graphs [title]="'Spreads'" [data]="store.summarySpreads" [overallAverage]="store.totalAverageSpreads" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div> -->
+  <div class="graphDisplay"><app-daily-graphs [title]="'Out of Stocks Detected'" [data]="store.summaryOuts" [overallAverage]="store.totalAverageOuts" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>
+  <div class="graphDisplay"><app-daily-graphs [title]="'Shelf Labels Detected'" [data]="store.summaryLabels" [overallAverage]="store.totalAverageLabels" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>
 </div>
 <app-missions-grid *ngIf="missionSummaries" [missionSummaries]="missionSummaries" [missionsDate]="selectedDate"></app-missions-grid>

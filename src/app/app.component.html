@@ -1,4 +1,8 @@
 <header>
+  <div *ngIf="displayBackButton" id="backButton" (click)="backClicked()">
+    <fa-icon class="backIcon" [icon]="faArrowAltCircleLeft"></fa-icon>
+    <div class="backText">Back</div>
+  </div>
   <img id="logo" (click)="logoClicked()" src="../assets/logo.png"/>
 </header>
 <router-outlet></router-outlet>

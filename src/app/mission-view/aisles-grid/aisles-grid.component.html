@@ -2,9 +2,9 @@
   <thead>
     <tr>
       <th>Aisle</th>
+      <th *ngIf="showPercentScanned">Percent Scanned</th>
       <th>Outs</th>
       <th>Labels</th>
-      <th *ngIf="showPercentScanned">Percent Scanned</th>
     </tr>
   </thead>
   <tbody>
@@ -14,9 +14,9 @@
           {{aisle.aisleName}}
         </a>
         </td>
+      <td *ngIf="showPercentScanned">{{aisle.coveragePercent | number : '1.0-2'}}%</td>
       <td>{{aisle.outs.length}}</td>
       <td>{{aisle.labels.length}}</td>
-      <td *ngIf="showPercentScanned">{{aisle.coveragePercent | number : '1.0-2'}}%</td>
     </tr>
   </tbody>
 </table>

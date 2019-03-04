@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StatRingComponent } from './stat-ring.component';
+import { MissionStatsComponent } from './mission-stats.component';
 import { Component, Input } from '@angular/core';
 
 // tslint:disable-next-line:component-selector Stubbing existing component
@@ -14,14 +14,14 @@ class RoundProgressStubComponent {
   @Input() duration: string;
 }
 
-describe('StatRingComponent', () => {
-  let component: StatRingComponent;
-  let fixture: ComponentFixture<StatRingComponent>;
+describe('MissionStatsComponent', () => {
+  let component: MissionStatsComponent;
+  let fixture: ComponentFixture<MissionStatsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        StatRingComponent,
+        MissionStatsComponent,
         RoundProgressStubComponent,
       ]
     })
@@ -29,7 +29,7 @@ describe('StatRingComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(StatRingComponent);
+    fixture = TestBed.createComponent(MissionStatsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

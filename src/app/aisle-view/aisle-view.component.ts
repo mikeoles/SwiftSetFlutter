@@ -7,8 +7,9 @@ import Label from './../label.model';
 import { ViewEncapsulation } from '@angular/core';
 import { LogoService } from '../logo.service';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import {Location} from '@angular/common';
+import { BackService } from '../back.service';
 
 @Component({
   selector: 'app-aisle-view',
@@ -34,12 +35,16 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   resetPano: boolean;
 
   private logoSubscription: Subscription;
+  private backButtonSubscription: Subscription;
 
   constructor(private apiService: ApiService,
               private keyboard: KeyboardShortcutsService,
               private logoService: LogoService,
+              private backService: BackService,
               private activatedRoute: ActivatedRoute,
-              private location: Location) {
+              private location: Location,
+              private router: Router
+              ) {
     this.currentDisplay = 'outs';
     this.panoMode = false;
     this.keyboard.add([
@@ -53,6 +58,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.logoSubscription = this.logoService.logoClickEvent().subscribe(() => this.changePanoMode());
+    this.backButtonSubscription = this.backService.backClickEvent().subscribe(() => this.goBack());
 
     let missionId: number, aisleId: number;
     this.activatedRoute.params.forEach((params: Params) => {
@@ -74,8 +80,13 @@ export class AisleViewComponent implements OnInit, OnDestroy {
     });
   }
 
+  goBack(): void {
+    this.router.navigate(['mission/' + this.selectedMission.missionId]);
+  }
+
   ngOnDestroy() {
     this.logoSubscription.unsubscribe();
+    this.backButtonSubscription.unsubscribe();
   }
 
   changePanoMode() {

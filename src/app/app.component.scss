@@ -3,9 +3,29 @@
 header {
   background-color: $primary;
 
+  #backButton{
+    font-size: 18px;
+    color: white;
+    position: absolute;
+    float: left;
+    padding: 10px;
+    font-weight: 900;
+    cursor: pointer;
+    .backIcon{
+      font-size: 30px;
+      margin-left: 15px;
+      margin-right: 10px;
+    }
+    .backIcon, .backText{
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+
   #logo {
     display: block;
     margin: auto;
     padding: 20px;
+    cursor: pointer;
   }
 }

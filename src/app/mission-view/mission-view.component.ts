@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ApiService } from '../api.service';
-import { Params, ActivatedRoute } from '@angular/router';
+import { Params, ActivatedRoute, Router } from '@angular/router';
 import MissionSummary from '../missionSummary.model';
 import Aisle from '../aisle.model';
 import Mission from '../mission.model';
@@ -8,6 +8,8 @@ import Label from '../label.model';
 import Store from '../store.model';
 import { ModalService } from '../modal/modal.service';
 import { environment } from 'src/environments/environment';
+import { BackService } from '../back.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-mission-view',
@@ -15,7 +17,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./mission-view.component.scss']
 })
 
-export class MissionViewComponent implements OnInit {
+export class MissionViewComponent implements OnInit, OnDestroy {
   missionSummary: MissionSummary;
   mission: Mission;
   store: Store;
@@ -26,11 +28,16 @@ export class MissionViewComponent implements OnInit {
   currentMission: number;
   service: ApiService;
 
-  constructor(private apiService: ApiService, private activatedRoute: ActivatedRoute, private modalService: ModalService) {
+  private backButtonSubscription: Subscription;
+
+  constructor(private apiService: ApiService, private activatedRoute: ActivatedRoute, private router: Router,
+    private modalService: ModalService, private backService: BackService) {
 
   }
 
   ngOnInit() {
+    this.backButtonSubscription = this.backService.backClickEvent().subscribe(() => this.goBack());
+
     this.activatedRoute.params.forEach((params: Params) => {
       if (params['missionId'] !== undefined) {
         this.currentMission = params['missionId'];
@@ -57,8 +64,15 @@ export class MissionViewComponent implements OnInit {
       });
     });
     this.service = this.apiService;
+}
+
+  goBack(): void {
+    this.router.navigate(['store/1']);
   }
 
+  ngOnDestroy() {
+    this.backButtonSubscription.unsubscribe();
+  }
   openModal(id: string) {
     this.modalService.open(id);
   }
