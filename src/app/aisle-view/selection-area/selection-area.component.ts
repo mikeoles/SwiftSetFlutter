@@ -6,7 +6,7 @@ import * as jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import Label from 'src/app/label.model';
 import { ModalService } from '../../modal/modal.service';
-import { environment } from 'src/environments/environment';
+import { EnvironmentService } from 'src/app/environment.service';
 
 @Component({
   selector: 'app-selection-area',
@@ -30,7 +30,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   faAngleDown = faAngleDown;
   faAngleUp = faAngleUp;
 
-  constructor(private eRef: ElementRef, private modalService: ModalService) {
+  constructor(private eRef: ElementRef, private modalService: ModalService, private environment: EnvironmentService) {
   }
 
   ngOnInit() {
@@ -99,7 +99,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   }
 
   exportAisle(exportType: string, modalId: string) {
-    const exportFields: string[] = environment.exportFields;
+    const exportFields: string[] = this.environment.config.exportFields;
     let csvContent = 'data:text/csv;charset=utf-8,%EF%BB%BF';
     csvContent += exportFields.join(',') + '\n';
 

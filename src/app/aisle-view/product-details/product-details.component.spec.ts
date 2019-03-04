@@ -6,6 +6,7 @@ import { By } from '@angular/platform-browser';
 import Label from '../../label.model';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { FormsModule } from '@angular/forms';
+import { EnvironmentService } from 'src/app/environment.service';
 
 describe('ProductDetailsComponent', () => {
   let component: ProductDetailsComponent;
@@ -46,6 +47,13 @@ describe('ProductDetailsComponent', () => {
       imports: [
         NgMultiSelectDropDownModule.forRoot(),
         FormsModule
+      ],
+      providers: [
+        { provide: EnvironmentService, useValue: { config: {
+          showPlugs: true,
+          showSuppliers: true,
+          productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price']
+        }}}
       ]
     })
     .compileComponents();
@@ -54,8 +62,7 @@ describe('ProductDetailsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductDetailsComponent);
     component = fixture.componentInstance;
-    component.showPlugs = true;
-    component.showSuppliers = true;
+
     component.labels = labels;
     component.outs = outs;
     fixture.detectChanges();

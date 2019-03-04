@@ -1,6 +1,6 @@
-import { environment } from '../../../environments/environment';
 import { Component, OnInit, Output, EventEmitter, Input, OnChanges } from '@angular/core';
 import Label from '../../label.model';
+import { EnvironmentService } from 'src/app/environment.service';
 
 @Component({
   selector: 'app-product-details',
@@ -32,11 +32,11 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
   @Input() currentDisplay: string;
   @Input() panoMode: boolean;
 
-  constructor() {
-    this.showPlugs = environment.showPlugs;
-    this.showSuppliers = environment.showSuppliers;
-    this.showDepartment = environment.productGridFields.includes('Department');
-    this.showSection = environment.productGridFields.includes('Section');
+  constructor(private environment: EnvironmentService) {
+    this.showPlugs = environment.config.showPlugs;
+    this.showSuppliers = environment.config.showSuppliers;
+    this.showDepartment = environment.config.productGridFields.includes('Department');
+    this.showSection = environment.config.productGridFields.includes('Section');
   }
 
 

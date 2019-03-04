@@ -18,6 +18,7 @@ import { Component, Input } from '@angular/core';
 import { ModalService } from '../modal/modal.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { EnvironmentService } from '../environment.service';
 
 @Component({selector: 'app-export-modal', template: ''})
 class ModalComponent {
@@ -84,6 +85,11 @@ describe('AisleViewComponent', () => {
             aisleId: '1'
           }],
         }},
+        { provide: EnvironmentService, useValue: { config: {
+          showPlugs: true,
+          showSuppliers: true,
+          productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price']
+        }}}
       ],
     }).compileComponents();
 

@@ -3,7 +3,7 @@ import { ProductGridComponent } from './product-grid.component';
 import { By } from '@angular/platform-browser';
 import Label from 'src/app/label.model';
 import { SimpleChanges, SimpleChange } from '@angular/core';
-import { environment } from 'src/environments/environment';
+import { EnvironmentService } from 'src/app/environment.service';
 
 describe('ProductGridComponent', () => {
   let component: ProductGridComponent;
@@ -25,7 +25,14 @@ describe('ProductGridComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProductGridComponent ]
+      declarations: [ ProductGridComponent ],
+      providers: [
+        { provide: EnvironmentService, useValue: { config: {
+          showPlugs: true,
+          showSuppliers: true,
+          productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price']
+        }}}
+      ]
     })
     .compileComponents();
   }));
@@ -81,7 +88,7 @@ describe('ProductGridComponent', () => {
   });
 
   it('displays correct number of columns', () => {
-    expect(secondRowEl.childElementCount).toEqual(environment.productGridFields.length);
+    expect(secondRowEl.childElementCount).toEqual(4);
   });
 
   it('displays outs data', () => {
