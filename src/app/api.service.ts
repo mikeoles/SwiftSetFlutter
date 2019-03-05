@@ -53,7 +53,7 @@ export class ApiService {
 
     return {
       labelId: label.Id,
-      labelName: desc || 'Unknown Product Name',
+      labelName: desc || 'Missing Product Data',
       barcode: label.Barcode || barcode || '000000000000',
       productId: itemId || '000000',
       price: price || 0.0,
