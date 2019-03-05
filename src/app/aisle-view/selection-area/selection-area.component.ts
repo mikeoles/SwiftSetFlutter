@@ -101,7 +101,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   exportAisle(exportType: string, modalId: string) {
     const exportFields: string[] = this.environment.config.exportFields;
     let csvContent = 'data:text/csv;charset=utf-8,%EF%BB%BF';
-    csvContent += exportFields.join(',') + '\n';
+    csvContent += encodeURIComponent(exportFields.join(',')) + '\n';
 
     const exportData: Label[] = exportType === 'labels' ? this.labels : this.outs;
     for (let j = 0; j < exportData.length; j++) {
@@ -129,15 +129,13 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
         }
         row = row.concat(cellValue);
       }
-      csvContent += row.join(',') + '\n';
+      csvContent += encodeURIComponent(row.join(',')) + '\n';
     }
     this.modalService.close(modalId);
 
-    // do the download stuff
-    const encodedUri = csvContent;
     const link = document.createElement('a');
     link.setAttribute('target', '_blank');
-    link.setAttribute('href', encodedUri);
+    link.setAttribute('href', csvContent);
     link.setAttribute('download', 'Aisle-' + this.selectedAisle.aisleName + '-' + exportType + '.csv');
     document.body.appendChild(link);
     link.click();
