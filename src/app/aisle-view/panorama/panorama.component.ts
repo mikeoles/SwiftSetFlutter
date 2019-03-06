@@ -29,11 +29,11 @@ export class PanoramaComponent implements OnInit, OnChanges {
   panZoomApi: any;
   faPlus = faPlus;
   faMinus = faMinus;
-  startingZoomLevel = .17;
+  startingZoomLevel = .13;
   panoZoomLevel = .25;
   zoomedInLevel = .5;
   panoHeight = 365;
-  yOffset = 750;
+  yOffset = 725;
   currentWidth = 0;
   currentHeight = 0;
   constructor() {}
