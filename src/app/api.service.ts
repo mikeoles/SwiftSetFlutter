@@ -124,9 +124,10 @@ export class ApiService {
     };
   }
 
-  getStore(storeId: string, startDate: Date): Observable<Store> {
+  getStore(storeId: string, startDate: Date, timezone: String): Observable<Store> {
     // tslint:disable-next-line:max-line-length
-    return this.http.get(`${this.apiUrl}/DemoService/Stores?$filter=SummaryDate eq ${formatDate(startDate, 'yyyy-MM-dd', 'en-US')} and Id eq ${storeId}`).pipe(
+    return this.http.get(`${this.apiUrl}/DemoService/Stores?$filter=SummaryDate eq ${formatDate(startDate, 'yyyy-MM-dd', 'en-US')} and Id eq ${storeId} and TimeZone eq '${timezone}'`)
+    .pipe(
       // API result
       // {
       //   "Id": 1,
@@ -163,9 +164,9 @@ export class ApiService {
     );
   }
 
-  getMissionSummaries(date: Date, storeId: string) {
+  getMissionSummaries(date: Date, storeId: string, timezone: string) {
     // tslint:disable-next-line:max-line-length
-    return this.http.get(`${this.apiUrl}/DemoService/MissionSummaries?$filter=MissionDate eq ${formatDate(date, 'yyyy-MM-dd', 'en-US')} and StoreId eq '${storeId}'`)
+    return this.http.get(`${this.apiUrl}/DemoService/MissionSummaries?$filter=MissionDate eq ${formatDate(date, 'yyyy-MM-dd', 'en-US')} and StoreId eq '${storeId}' and TimeZone eq '${timezone}'`)
       .pipe(
       // API result
       // {

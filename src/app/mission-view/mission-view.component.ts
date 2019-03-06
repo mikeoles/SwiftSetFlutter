@@ -59,7 +59,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
         });
         const twoWeeksAgo: Date = new Date();
         twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 13);
-        this.apiService.getStore(mission.storeId, twoWeeksAgo).subscribe(store => {
+        this.apiService.getStore(mission.storeId, twoWeeksAgo, Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe(store => {
           this.store = store;
 
           // If this page was nagivates to from the store view, show the two week average from there, if not show the last two weeks average
