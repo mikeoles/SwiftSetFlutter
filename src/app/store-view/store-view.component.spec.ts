@@ -21,7 +21,8 @@ class AppDailyGraphsStubComponent {
 class AppMissionsGridStubComponent {
   @Input() missionSummaries: any[];
   @Input() missionsDate: any[];
-
+  @Input() averageStoreOuts: number;
+  @Input() averageStoreLabels: number;
 }
 
 describe('StoreViewComponent', () => {

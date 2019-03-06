@@ -10,6 +10,7 @@ import { ModalService } from '../modal/modal.service';
 import { BackService } from '../back.service';
 import { Subscription } from 'rxjs';
 import { EnvironmentService } from '../environment.service';
+import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-mission-view',
@@ -22,16 +23,17 @@ export class MissionViewComponent implements OnInit, OnDestroy {
   mission: Mission;
   store: Store;
   averageLabels: number;
-  averageOuts: number;
-  averageSpreads: number;
   aisles: Aisle[];
+  averageStoreOuts: number;
+  averageStoreLabels: number;
   currentMission: number;
   service: ApiService;
 
   private backButtonSubscription: Subscription;
 
   constructor(private apiService: ApiService, private activatedRoute: ActivatedRoute, private router: Router,
-    private modalService: ModalService, private backService: BackService, private environment: EnvironmentService) {
+    private modalService: ModalService, private backService: BackService, private environment: EnvironmentService,
+    public dataService: DataService) {
 
   }
 
@@ -55,11 +57,16 @@ export class MissionViewComponent implements OnInit, OnDestroy {
             });
           }
         });
-        this.apiService.getStore(mission.storeId, new Date()).subscribe(store => {
+        const twoWeeksAgo: Date = new Date();
+        twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 13);
+        this.apiService.getStore(mission.storeId, twoWeeksAgo, Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe(store => {
           this.store = store;
-          this.averageLabels = Math.max(this.store.totalAverageLabels, this.missionSummary.labels);
-          this.averageOuts = Math.max(this.store.totalAverageOuts, this.missionSummary.outs);
-          this.averageSpreads = Math.max(this.store.totalAverageSpreads, this.missionSummary.spreads);
+
+          // If this page was nagivates to from the store view, show the two week average from there, if not show the last two weeks average
+          this.averageStoreLabels = this.dataService.averageStoreLabels
+            ? this.dataService.averageStoreLabels : this.store.totalAverageLabels;
+          this.averageStoreOuts = this.dataService.averageStoreOuts
+            ? this.dataService.averageStoreOuts : this.store.totalAverageOuts;
         });
       });
     });

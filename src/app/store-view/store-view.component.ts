@@ -37,7 +37,7 @@ export class StoreViewComponent implements OnInit {
         this.storeId = params['storeId'];
       }
     });
-    this.apiService.getStore(this.storeId, this.graphStartDate).subscribe(store => {
+    this.apiService.getStore(this.storeId, this.graphStartDate, Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe(store => {
       this.setAllSummaryValues(store);
     });
   }
@@ -47,7 +47,7 @@ export class StoreViewComponent implements OnInit {
 
   changeGraphDates(event) {
     this.graphStartDate = new Date(event);
-    this.apiService.getStore(this.storeId, this.graphStartDate).subscribe(store => {
+    this.apiService.getStore(this.storeId, this.graphStartDate, Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe(store => {
       this.setAllSummaryValues(store);
     });
   }
@@ -55,7 +55,7 @@ export class StoreViewComponent implements OnInit {
   setIndex(selectedValues) {
     this.selectedIndex = selectedValues.index;
     this.selectedDate = selectedValues.date;
-    this.apiService.getMissionSummaries(this.selectedDate, this.storeId).subscribe(
+    this.apiService.getMissionSummaries(this.selectedDate, this.storeId, Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe(
       missionSummaries => this.missionSummaries = missionSummaries
     );
   }

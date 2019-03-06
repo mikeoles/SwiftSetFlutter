@@ -15,8 +15,8 @@
   <div class="modal-background"></div>
 </app-export-modal>
 <div *ngIf="missionSummary" class="statRings">
-  <app-mission-stats *ngIf="store" class="left" [title]="'Out of Stocks Detected'" [average]="store.totalAverageOuts" [total]="missionSummary.outs"></app-mission-stats>
-  <app-mission-stats *ngIf="store" class="right" [title]="'Shelf Labels Detected'" [average]="store.totalAverageLabels" [total]="missionSummary.labels"></app-mission-stats>
+  <app-mission-stats class="left" [title]="'Out of Stocks Detected'" [average]="averageStoreOuts" [total]="missionSummary.outs"></app-mission-stats>
+  <app-mission-stats class="right" [title]="'Shelf Labels Detected'" [average]="averageStoreLabels" [total]="missionSummary.labels"></app-mission-stats>
 </div>
 <div class="grid">
   <app-aisles-grid [aisles]="aisles" [missionId]="currentMission"></app-aisles-grid>
