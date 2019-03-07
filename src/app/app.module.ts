@@ -25,6 +25,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ModalComponent } from './modal/modal.component';
 import { ModalService } from './modal/modal.service';
 import { NgDatepickerModule } from 'ng2-datepicker';
+import { DataService } from './data.service';
 
 
 @NgModule({
@@ -67,7 +68,8 @@ import { NgDatepickerModule } from 'ng2-datepicker';
       multi: true,
       deps: [EnvironmentService]
     },
-    ModalService
+    ModalService,
+    DataService,
   ],
   bootstrap: [AppComponent]
 })
