@@ -71,12 +71,15 @@ export class AisleViewComponent implements OnInit, OnDestroy {
     });
 
     this.apiService.getMissions().subscribe(missions => {
-      this.missions = missions;
-      missions.forEach(mission => {
-        if (mission.missionId === missionId) {
-          this.setMission(mission, aisleId);
-        }
-      });
+      const mission = missions.find(m => m.missionId === missionId);
+      let date = new Date();
+
+      if (mission) {
+        this.setMission(mission, aisleId);
+        date = mission.missionDateTime;
+      }
+
+      this.missions = missions.filter(m => m.missionDateTime.toDateString() === date.toDateString());
     });
   }
 

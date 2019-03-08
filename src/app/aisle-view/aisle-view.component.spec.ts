@@ -114,7 +114,7 @@ describe('AisleViewComponent', () => {
   });
 
   it('should load the missions', () => {
-    expect(fixture.componentInstance.missions).toEqual(missions);
+    expect(fixture.componentInstance.missions).toEqual([missions[0]]);
   });
 
   it('should load the aisles', () => {
@@ -133,7 +133,7 @@ describe('AisleViewComponent', () => {
 
   it('should set the selection area component', () => {
     const selectionAreaDe = fixture.debugElement.query(By.directive(SelectionAreaComponent));
-    expect(selectionAreaDe.componentInstance.missions).toEqual(missions);
+    expect(selectionAreaDe.componentInstance.missions).toEqual([missions[0]]);
     expect(selectionAreaDe.componentInstance.aisles).toEqual(aisles);
     expect(selectionAreaDe.componentInstance.selectedMission).toEqual(component.selectedMission);
     expect(selectionAreaDe.componentInstance.selectedAisle).toEqual(component.selectedAisle);
