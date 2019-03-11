@@ -99,4 +99,13 @@ describe('StoreViewComponent', () => {
     expect(component.selectedDate).toEqual(index.date);
     expect(component.missionSummaries).toEqual(missions);
   });
+
+  it('should change date on selection', () => {
+    const d: Date = new Date();
+    component.changeGraphDates(d.toString());
+    expect(component.graphStartDate.toString()).toEqual(d.toString());
+    d.setDate(d.getDate() - 13);
+    component.changeGraphDates(d.toString());
+    expect(component.graphStartDate.toString()).toEqual(d.toString());
+  });
 });
