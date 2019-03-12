@@ -33,7 +33,6 @@ export class MissionViewComponent implements OnInit, OnDestroy {
   aisles: Aisle[];
   averageStoreOuts: number;
   averageStoreLabels: number;
-  currentMission: number;
   service: IApiService;
 
   private backButtonSubscription: Subscription;
@@ -46,20 +45,21 @@ export class MissionViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.backButtonSubscription = this.backService.backClickEvent().subscribe(() => this.goBack());
-
+    let missionId: number, storeId: number;
     this.activatedRoute.params.forEach((params: Params) => {
       if (params['missionId'] !== undefined) {
-        this.currentMission = params['missionId'];
+        missionId = Number(params['missionId']);
+        storeId = Number(params['storeId']);
       }
     });
-    this.apiService.getMission(this.currentMission).subscribe(mission => {
+    this.apiService.getMission(storeId, missionId).subscribe(mission => {
       this.mission = mission;
-      this.apiService.getMissionSummary(this.currentMission).subscribe(missionSummary => {
+      this.apiService.getMissionSummary(mission.storeId, this.mission.missionId).subscribe(missionSummary => {
         this.missionSummary = missionSummary;
-        this.apiService.getAisles(this.currentMission).subscribe(aisles => {
+        this.apiService.getAisles(mission.storeId, this.mission.missionId).subscribe(aisles => {
           this.aisles = aisles;
           for (let i = 0; i < this.aisles.length; i++) {
-            this.apiService.getAisle(this.aisles[i].aisleId).subscribe(aisle => {
+            this.apiService.getAisle(mission.storeId, this.mission.missionId, this.aisles[i].aisleId).subscribe(aisle => {
               this.aisles[i] = aisle;
             });
           }
@@ -81,7 +81,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
 }
 
   goBack(): void {
-    this.router.navigate(['store/1']);
+    this.router.navigate(['store/' + this.store.storeId]);
   }
 
   ngOnDestroy() {

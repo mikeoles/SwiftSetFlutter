@@ -21,7 +21,7 @@ import { IApiService } from '../api.service';
 export class StoreViewComponent implements OnInit {
   missionSummaries: MissionSummary[];
   store: Store;
-  storeId: string;
+  storeId: number;
   selectedIndex: string;
   selectedDate: Date;
   graphStartDate: Date;

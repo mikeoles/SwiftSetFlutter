@@ -89,8 +89,8 @@ describe('MissionViewComponent', () => {
   });
 
   it('should set the current mission', () => {
-    expect(component.currentMission).toEqual(1);
     expect(apiService.getMission).toHaveBeenCalledWith(1);
+    expect(component.mission.missionId).toEqual(1);
   });
 
   it('should export data', () => {

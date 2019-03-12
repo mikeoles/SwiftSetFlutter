@@ -32,7 +32,7 @@ describe('StoreViewComponent', () => {
   let apiService: jasmine.SpyObj<IApiService>;
 
   const missions: MissionSummary[] = [
-    { missionId: 1, mission: '', storeId: '', missionDateTime: new Date(), outs: 1, labels: 1, spreads: 1, aislesScanned: 1 },
+    { missionId: 1, mission: '', storeId: 1, missionDateTime: new Date(), outs: 1, labels: 1, spreads: 1, aislesScanned: 1 },
   ];
   const daySummaries: DaySummary[] = [
     {
