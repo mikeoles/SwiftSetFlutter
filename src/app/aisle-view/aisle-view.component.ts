@@ -93,7 +93,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   }
 
   goBack(): void {
-    this.router.navigate(['mission/' + this.selectedMission.missionId]);
+    this.router.navigate(['store/' + this.selectedMission.storeId + '/mission/' + this.selectedMission.missionId]);
   }
 
   ngOnDestroy() {
@@ -136,7 +136,8 @@ export class AisleViewComponent implements OnInit, OnDestroy {
       this.currentDisplay = 'outs';
       this.currentId = null;
     });
-    this.location.replaceState('/mission/' + this.selectedMission.missionId + '/aisle/' + this.selectedAisle.aisleId);
+    this.location.replaceState(
+      '/store/' + this.selectedMission.storeId + '/mission/' + this.selectedMission.missionId + '/aisle/' + this.selectedAisle.aisleId);
   }
 
   setId(id: number) {

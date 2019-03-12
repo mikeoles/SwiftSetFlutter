@@ -6,8 +6,8 @@ import { AisleViewComponent } from './aisle-view/aisle-view.component';
 import { MissionViewComponent } from './mission-view/mission-view.component';
 
 const routes: Routes = [
-  { path: 'mission/:missionId/aisle/:aisleId', component: AisleViewComponent },
-  { path: 'mission/:missionId', component: MissionViewComponent },
+  { path: 'store/:storeId/mission/:missionId/aisle/:aisleId', component: AisleViewComponent },
+  { path: 'store/:storeId/mission/:missionId', component: MissionViewComponent },
   { path: 'store/:storeId', component: StoreViewComponent },
   { path: '',
     redirectTo: '/store/1',

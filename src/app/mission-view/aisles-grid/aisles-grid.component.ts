@@ -12,6 +12,7 @@ export class AislesGridComponent implements OnInit {
 
   @Input() aisles: Aisle[];
   @Input() missionId: number;
+  @Input() storeId: number;
   showPercentScanned: boolean;
 
   constructor( private router: Router, private environment: EnvironmentService) {
@@ -22,7 +23,7 @@ export class AislesGridComponent implements OnInit {
   }
 
   viewAisle(aisleId: string) {
-    this.router.navigate(['mission/' + this.missionId + '/aisle/' + aisleId]);
+    this.router.navigate(['store/' + this.storeId + '/mission/' + this.missionId + '/aisle/' + aisleId]);
   }
 
 }

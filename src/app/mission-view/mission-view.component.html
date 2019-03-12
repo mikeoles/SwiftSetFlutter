@@ -19,5 +19,5 @@
   <app-mission-stats class="right" [title]="'Shelf Labels Detected'" [average]="averageStoreLabels" [total]="missionSummary.labels"></app-mission-stats>
 </div>
 <div class="grid">
-  <app-aisles-grid [aisles]="aisles" [missionId]="mission.missionId"></app-aisles-grid>
+  <app-aisles-grid *ngIf="store" [aisles]="aisles" [missionId]="mission.missionId" [storeId]="store.storeId"></app-aisles-grid>
 </div>

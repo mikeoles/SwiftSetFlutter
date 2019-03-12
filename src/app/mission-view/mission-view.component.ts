@@ -49,6 +49,8 @@ export class MissionViewComponent implements OnInit, OnDestroy {
     this.activatedRoute.params.forEach((params: Params) => {
       if (params['missionId'] !== undefined) {
         missionId = Number(params['missionId']);
+      }
+      if (params['storeId'] !== undefined) {
         storeId = Number(params['storeId']);
       }
     });
