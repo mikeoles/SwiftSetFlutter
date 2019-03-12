@@ -1,4 +1,5 @@
 import { labelScrollOptions } from 'src/app/labelScrollOptions';
+import { ODataApiService } from 'src/app/oDataApi.service';
 
 export const environment = {
   production: true,
@@ -9,4 +10,5 @@ export const environment = {
   'Mission Id', 'Mission Date Time', 'Store Id', 'Product Id', 'Top', 'Left', 'Top Meters', 'Left Meters'],
   labelScrolling: labelScrollOptions.vertical,
   productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price'],
+  apiService: ODataApiService
 };

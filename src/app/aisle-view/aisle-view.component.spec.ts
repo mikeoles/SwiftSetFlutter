@@ -7,7 +7,7 @@ import { SelectionAreaComponent } from './selection-area/selection-area.componen
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HttpClientModule } from '@angular/common/http';
-import { ApiService } from '../api.service';
+import { IApiService } from '../api.service';
 import Mission from '../mission.model';
 import Aisle from '../aisle.model';
 import { of } from 'rxjs';
@@ -19,6 +19,7 @@ import { ModalService } from '../modal/modal.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { EnvironmentService } from '../environment.service';
+import { ODataApiService } from '../oDataApi.service';
 
 @Component({selector: 'app-export-modal', template: ''})
 class ModalComponent {
@@ -28,7 +29,7 @@ class ModalComponent {
 describe('AisleViewComponent', () => {
   let fixture: ComponentFixture<AisleViewComponent>;
   let component: AisleViewComponent;
-  let apiService: jasmine.SpyObj<ApiService>;
+  let apiService: jasmine.SpyObj<IApiService>;
 
   const missions: Mission[] = [
     { missionId: 1, missionName: '1111', storeId: '1', createDateTime: new Date('2018-12-12'), missionDateTime: new Date('2018-12-12') },
@@ -56,7 +57,7 @@ describe('AisleViewComponent', () => {
 
 
   beforeEach(async(() => {
-    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getMissions', 'getAisles', 'getAisle']);
+    const apiServiceSpy = jasmine.createSpyObj('IApiService', ['getMissions', 'getAisles', 'getAisle']);
     const locationSpy = jasmine.createSpyObj('Location', ['replaceState']);
 
     TestBed.configureTestingModule({
@@ -75,7 +76,7 @@ describe('AisleViewComponent', () => {
         ModalComponent,
       ],
       providers: [
-        { provide: ApiService, useValue: apiServiceSpy },
+        { provide: ODataApiService, useValue: apiServiceSpy },
         { provide: ModalService},
         { provide: Router },
         { provide: Location, useValue:  locationSpy},
@@ -93,7 +94,7 @@ describe('AisleViewComponent', () => {
       ],
     }).compileComponents();
 
-    apiService = TestBed.get(ApiService);
+    apiService = TestBed.get(ODataApiService);
     apiService.getMissions.and.returnValue(of(missions));
     apiService.getAisles.and.returnValue(of(aisles));
     apiService.getAisle.and.returnValue(of(aisles[0]));

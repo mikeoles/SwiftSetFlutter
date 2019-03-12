@@ -2,13 +2,14 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MissionViewComponent } from './mission-view.component';
 import { HttpClientModule } from '@angular/common/http';
-import { ApiService } from '../api.service';
+import { IApiService } from '../api.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Component, Input } from '@angular/core';
 import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import Label from '../label.model';
 import { ModalService } from '../modal/modal.service';
+import { ODataApiService } from '../oDataApi.service';
 
 @Component({selector: 'app-mission-stats', template: ''})
 class AppMissionStatsStubComponent {
@@ -28,7 +29,7 @@ class ModalComponent {
 describe('MissionViewComponent', () => {
   let component: MissionViewComponent;
   let fixture: ComponentFixture<MissionViewComponent>;
-  let apiService: jasmine.SpyObj<ApiService>;
+  let apiService: jasmine.SpyObj<IApiService>;
 
   const labels: Label[] = [
     { labelId: 1, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0,
@@ -46,7 +47,7 @@ describe('MissionViewComponent', () => {
   const store = { id: 1 };
 
   beforeEach(async(() => {
-    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getStore', 'getMission', 'getMissionSummary', 'getAisles', 'getAisle']);
+    const apiServiceSpy = jasmine.createSpyObj('IApiService', ['getStore', 'getMission', 'getMissionSummary', 'getAisles', 'getAisle']);
 
     TestBed.configureTestingModule({
       imports: [
@@ -60,7 +61,7 @@ describe('MissionViewComponent', () => {
         ModalComponent
       ],
       providers: [
-        { provide: ApiService, useValue: apiServiceSpy },
+        { provide: ODataApiService, useValue: apiServiceSpy },
         { provide: ActivatedRoute, useValue: {
           params: [{ missionId: 1 }],
         }},
@@ -69,7 +70,7 @@ describe('MissionViewComponent', () => {
     })
     .compileComponents();
 
-    apiService = TestBed.get(ApiService);
+    apiService = TestBed.get(ODataApiService);
     apiService.getMission.and.returnValue(of(mission));
     apiService.getMissionSummary.and.returnValue(of(missionSummary));
     apiService.getAisles.and.returnValue(of(aisles));

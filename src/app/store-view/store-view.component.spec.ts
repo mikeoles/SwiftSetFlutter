@@ -3,13 +3,14 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { StoreViewComponent } from './store-view.component';
 import { Component, Input } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ApiService } from '../api.service';
+import { IApiService } from '../api.service';
 import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import MissionSummary from '../missionSummary.model';
 import DaySummary from '../daySummary.model';
 import Store from '../store.model';
 import { NgDatepickerModule } from 'ng2-datepicker';
+import { ODataApiService } from '../oDataApi.service';
 
 @Component({selector: 'app-daily-graphs', template: ''})
 class AppDailyGraphsStubComponent {
@@ -28,7 +29,7 @@ class AppMissionsGridStubComponent {
 describe('StoreViewComponent', () => {
   let component: StoreViewComponent;
   let fixture: ComponentFixture<StoreViewComponent>;
-  let apiService: jasmine.SpyObj<ApiService>;
+  let apiService: jasmine.SpyObj<IApiService>;
 
   const missions: MissionSummary[] = [
     { missionId: 1, mission: '', storeId: '', missionDateTime: new Date(), outs: 1, labels: 1, spreads: 1, aislesScanned: 1 },
@@ -51,7 +52,7 @@ describe('StoreViewComponent', () => {
   };
 
   beforeEach(async(() => {
-    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getStore', 'getMissionSummaries']);
+    const apiServiceSpy = jasmine.createSpyObj('IApiService', ['getStore', 'getMissionSummaries']);
 
     TestBed.configureTestingModule({
       imports: [
@@ -64,7 +65,7 @@ describe('StoreViewComponent', () => {
         AppMissionsGridStubComponent,
       ],
       providers: [
-        { provide: ApiService, useValue: apiServiceSpy },
+        { provide: ODataApiService, useValue: apiServiceSpy },
         { provide: ActivatedRoute, useValue: {
           params: [{ storeId: '1' }],
         }},
@@ -72,7 +73,7 @@ describe('StoreViewComponent', () => {
     })
     .compileComponents();
 
-    apiService = TestBed.get(ApiService);
+    apiService = TestBed.get(ODataApiService);
     apiService.getMissionSummaries.and.returnValue(of(missions));
     apiService.getStore.and.returnValue(of(store));
   }));

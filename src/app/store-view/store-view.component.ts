@@ -1,15 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../api.service';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Params, ActivatedRoute } from '@angular/router';
 import MissionSummary from '../missionSummary.model';
 import Store from '../store.model';
 import DaySummary from '../daySummary.model';
 import { DatepickerOptions } from 'ng2-datepicker';
+import { environment } from 'src/environments/environment';
+import { IApiService } from '../api.service';
 
 @Component({
   selector: 'app-data-display',
   templateUrl: './store-view.component.html',
   styleUrls: ['./store-view.component.scss'],
+  providers: [
+    {
+      provide: 'IApiService',
+      useClass: environment.apiService
+    }],
 })
 
 export class StoreViewComponent implements OnInit {
@@ -28,7 +34,7 @@ export class StoreViewComponent implements OnInit {
   }
   };
 
-  constructor(private apiService: ApiService, private activatedRoute: ActivatedRoute) {
+  constructor(@Inject('IApiService') private apiService: IApiService, private activatedRoute: ActivatedRoute) {
     this.graphStartDate = new Date();
     this.graphStartDate.setDate(this.graphStartDate.getDate() - 13); // Two weeks ago by default
 

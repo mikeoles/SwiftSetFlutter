@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ApiService } from '../api.service';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
+import { IApiService } from '../api.service';
 import { Params, ActivatedRoute, Router } from '@angular/router';
 import MissionSummary from '../missionSummary.model';
 import Aisle from '../aisle.model';
@@ -11,11 +11,18 @@ import { BackService } from '../back.service';
 import { Subscription } from 'rxjs';
 import { EnvironmentService } from '../environment.service';
 import { DataService } from '../data.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-mission-view',
   templateUrl: './mission-view.component.html',
-  styleUrls: ['./mission-view.component.scss']
+  styleUrls: ['./mission-view.component.scss'],
+  providers: [
+    {
+      provide: 'IApiService',
+      useClass: environment.apiService
+    }
+  ]
 })
 
 export class MissionViewComponent implements OnInit, OnDestroy {
@@ -27,11 +34,11 @@ export class MissionViewComponent implements OnInit, OnDestroy {
   averageStoreOuts: number;
   averageStoreLabels: number;
   currentMission: number;
-  service: ApiService;
+  service: IApiService;
 
   private backButtonSubscription: Subscription;
 
-  constructor(private apiService: ApiService, private activatedRoute: ActivatedRoute, private router: Router,
+  constructor(@Inject('IApiService') private apiService: IApiService, private activatedRoute: ActivatedRoute, private router: Router,
     private modalService: ModalService, private backService: BackService, private environment: EnvironmentService,
     public dataService: DataService) {
 

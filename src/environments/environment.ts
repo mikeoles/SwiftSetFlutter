@@ -1,4 +1,5 @@
 import { labelScrollOptions } from 'src/app/labelScrollOptions';
+import { ODataApiService } from 'src/app/oDataApi.service';
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
@@ -13,6 +14,7 @@ export const environment = {
   'Mission Id', 'Mission Date Time', 'Store Id', 'Product Id', 'Top', 'Left', 'Top Meters', 'Left Meters'],
   labelScrolling: labelScrollOptions.vertical,
   productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price'],
+  apiService: ODataApiService
 };
 
 /*
