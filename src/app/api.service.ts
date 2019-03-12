@@ -105,7 +105,7 @@ export class ApiService {
 
   createStore(store: any): Store {
     return {
-      id: store.value[0].Id,
+      storeId: store.value[0].Id,
       storeName: store.value[0].StoreName,
       storeAddress: store.value[0].StoreAddress,
       totalAverageOuts: store.value[0].TotalAverageOuts,
@@ -217,11 +217,11 @@ export class ApiService {
       //   "@odata.context": "$metadata#Missions",
       //   "value": [
       //     {
-      //       "Id": 1,
-      //       "StoreId": "1851",
-      //       "Mission": "044429UTC",
-      //       "MissionDate": "2018-11-09T02:10:25Z",
-      //       "CreateDate": "2018-11-09T02:10:25Z"
+            // "Id": 1,
+            // "StoreId": "1851",
+            // "Mission": "044429UTC",
+            // "MissionDate": "2018-11-09T02:10:25Z",
+            // "CreateDate": "2018-11-09T02:10:25Z"
       //     }
       //   ]
       // }

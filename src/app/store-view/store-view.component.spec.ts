@@ -39,7 +39,7 @@ describe('StoreViewComponent', () => {
       dailyAverage: 1,
     }
   ];
-  const store: Store = {  id: 1,
+  const store: Store = {  storeId: 1,
     storeName: '',
     storeAddress: '',
     totalAverageOuts: 1,
