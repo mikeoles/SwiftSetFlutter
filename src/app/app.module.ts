@@ -26,6 +26,7 @@ import { ModalComponent } from './modal/modal.component';
 import { ModalService } from './modal/modal.service';
 import { NgDatepickerModule } from 'ng2-datepicker';
 import { DataService } from './data.service';
+import { FleetViewComponent } from './fleet-view/fleet-view.component';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { DataService } from './data.service';
     DailyGraphsComponent,
     MissionViewComponent,
     AislesGridComponent,
-    ModalComponent
+    ModalComponent,
+    FleetViewComponent
   ],
   imports: [
     BrowserModule,

@@ -103,7 +103,7 @@ export class ODataApiService implements IApiService {
     };
   }
 
-  createStore(store: any): Store {
+  createSingleStore(store: any): Store {
     return {
       storeId: store.value[0].Id,
       storeName: store.value[0].StoreName,
@@ -117,6 +117,20 @@ export class ODataApiService implements IApiService {
     };
   }
 
+  createStore(store: any): Store {
+    return {
+      storeId: store.Id,
+      storeName: store.StoreName,
+      storeAddress: store.StoreAddress,
+      totalAverageOuts: store.TotalAverageOuts,
+      totalAverageLabels: store.TotalAverageLabels,
+      totalAverageSpreads: store.TotalAverageSpreads,
+      summaryOuts: (store.SummaryOuts || []).map(o => this.createDaySummary(o)),
+      summaryLabels: (store.SummaryLabels || []).map(l => this.createDaySummary(l)),
+      summarySpreads: (store.SummarySpreads || []).map(s => this.createDaySummary(s)),
+    };
+  }
+
   createDaySummary(daySummary: any): DaySummary {
     return {
       date: daySummary.Date,
@@ -125,7 +139,7 @@ export class ODataApiService implements IApiService {
   }
 
   getStores(): Observable<Store[]> {
-    return new Observable<Store[]>();
+    return this.http.get(`${this.apiUrl}/DemoService/Stores`).pipe(map<any, Store[]>(o => o.value.map(s => this.createStore(s))), );
   }
 
   getStore(storeId: number, startDate: Date, timezone: String): Observable<Store> {
@@ -164,7 +178,7 @@ export class ODataApiService implements IApiService {
       // }
 
       // Map the result to an MissionSummary object
-      map<any, Store>(m => this.createStore(m)),
+      map<any, Store>(m => this.createSingleStore(m)),
     );
   }
 
