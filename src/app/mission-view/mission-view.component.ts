@@ -68,6 +68,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
         });
         const twoWeeksAgo: Date = new Date();
         twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 13);
+        twoWeeksAgo.setHours(0, 0, 0, 0);
         this.apiService.getStore(mission.storeId, twoWeeksAgo, Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe(store => {
           this.store = store;
 

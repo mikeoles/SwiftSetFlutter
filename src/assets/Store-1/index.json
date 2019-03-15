@@ -1,0 +1,31 @@
+{
+  "storeId": 1,
+  "storeName": "Store 0054",
+  "storeAddress": "3201 E Platte Ave, Colorado Springs, CO 80909",
+  "Missions": [
+      {
+          "missionId": 1,
+          "missionName": "044429UTC",
+          "missionDateTime": "2019-03-01T05:10:25Z",
+          "labels": 100,
+          "outs": 1,
+          "coveragePercent": "99"
+      },
+      {
+        "missionId": 3,
+        "missionName": "044429UTC",
+        "missionDateTime": "2019-03-14T05:10:25Z",
+        "labels": 20,
+        "outs": 1,
+        "coveragePercent": "99"
+      },
+      {
+        "missionId": 2,
+        "missionName": "044429UTC",
+        "missionDateTime": "2019-03-01T06:10:25Z",
+        "labels": 50,
+        "outs": 1,
+        "coveragePercent": "99"
+      }
+  ]
+}
