@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
 import { IApiService } from './api.service';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import Store from './store.model';
 import { map } from 'rxjs/internal/operators/map';
 import DaySummary from './daySummary.model';
+import MissionSummary from './missionSummary.model';
+import Mission from './mission.model';
+import Aisle from './aisle.model';
+import Label from './label.model';
+import CustomField from './customField.model';
 
 @Injectable({
   providedIn: 'root'
@@ -33,8 +38,7 @@ export class StaticApiService implements IApiService {
     };
   }
 
-
-  createStore(store: any, startDate: Date, timezone: String): Store {
+  createStore(store: any, startDate: Date): Store {
     const endDate: Date = new Date(startDate.toString());
     endDate.setDate(endDate.getDate() + 14);
     store.Missions.sort(missionDateSort);
@@ -114,34 +118,131 @@ export class StaticApiService implements IApiService {
   }
 
   getStore(storeId: number, startDate: Date, timezone: String): Observable<Store> {
-      return this.http.get('../assets/Store-' + storeId + '/index.json').pipe(
-        map<any, Store>(s => this.createStore(s, startDate, timezone)),
-      );
+    return this.http.get('../assets/Store-' + storeId + '/index.json').pipe(
+      map<any, Store>(storeJson => this.createStore(storeJson, startDate)),
+    );
+  }
+
+  getMissionSummaries(date: Date, storeId: number, timezone: string): Observable<MissionSummary[]> {
+    return this.http.get('../assets/Store-' + storeId + '/index.json').pipe(
+      map<any, MissionSummary[]>(storeJson => this.createMissionSummaries(storeJson, date)),
+    );
+  }
+
+  createMissionSummaries(store: any, date: Date): MissionSummary[] {
+    const summaries: MissionSummary[] = [];
+    for (let i = 0; i < store.Missions.length; i++) {
+      summaries.push({
+        missionId: store.Missions[i].missionId,
+        mission: store.Missions[i].mission,
+        storeId: store.storeId,
+        missionDateTime: new Date(store.Missions[i].missionDateTime),
+        outs: store.Missions[i].outs,
+        labels: store.Missions[i].labels,
+        spreads: 0,
+        aislesScanned: store.Missions[i].coveragePercent
+      });
     }
-
-  getMissionSummaries(date: Date, storeId: number, timezone: string): Observable<any> {
-    return of('');
+    return summaries;
   }
 
-  getMissionSummary(storeId: number, mission: number): Observable<any> {
-    return of('');
+  getMissionSummary(storeId: number, mission: number): Observable<MissionSummary> {
+    return this.http.get('../assets/Store-' + storeId + '/index.json').pipe(
+      map<any, MissionSummary>(storeJson => this.createMissionSummary(storeJson, mission)),
+    );
   }
 
-  getMissions(storeId: number): Observable<any> {
-    return of('');
+  createMissionSummary(store: any, missionId: number): MissionSummary {
+    for (let i = 0; i < store.Missions.length; i++) {
+      if (store.Missions[i].missionId === missionId) {
+        return {
+          missionId: store.Missions[i].missionId,
+          mission: store.Missions[i].mission,
+          storeId: store.storeId,
+          missionDateTime: new Date(store.Missions[i].missionDateTime),
+          outs: store.Missions[i].outs,
+          labels: store.Missions[i].labels,
+          spreads: 0,
+          aislesScanned: store.Missions[i].coveragePercent
+        };
+      }
+    }
   }
 
-  getMission(storeId: number, missionId: number): Observable<any> {
-    return of('');
+  getMissions(storeId: number): Observable<Mission[]> {
+    return this.http.get('../assets/Store-' + storeId + '/index.json').pipe(
+      map<any, Mission[]>(o => o.Missions.map(m => this.createMission(m, storeId))),
+    );
   }
 
-  getAisles(storeId: number, missionId: number): Observable<any> {
-    return of('');
+  getMission(storeId: number, missionId: number): Observable<Mission> {
+    return this.http.get('../assets/Store-' + storeId + '/Mission-' + missionId + '/mission.json').pipe(
+      map<any, Mission>(missionJson => this.createMission(missionJson, storeId)),
+    );
+  }
 
+  createMission(mission: any, storeId: number): Mission {
+    return {
+      missionId: mission.missionId,
+      missionName: mission.missionName,
+      storeId: storeId,
+      missionDateTime: new Date(mission.missionDateTime),
+      createDateTime: new Date(mission.createDateTime)
+    };
+  }
+
+  getAisles(storeId: number, missionId: number): Observable<Aisle[]> {
+    return this.http.get('../assets/Store-' + storeId + '/Mission-' + missionId + '/mission.json').pipe(
+      map<any, Aisle[]>(o => o.Aisles.map(a => this.createAisle(a, storeId, missionId))),
+    );
   }
 
   getAisle(storeId: number, missionId: number, aisleId: number): Observable<any> {
-    return of('');
+    return this.http.get('../assets/Store-' + storeId + '/Mission-' + missionId + '/Aisle-' + aisleId + '/aisle.json').pipe(
+      map<any, Aisle>(aisleJson => this.createAisle(aisleJson, storeId, missionId)),
+    );
+  }
 
+  createAisle(aisle: any, storeId: number, missionId: number): Aisle {
+    return {
+      aisleId: aisle.aisleId,
+      aisleName: aisle.aisleName,
+      panoramaUrl: '../assets/Store-' + storeId + '/Mission-' + missionId + '/Aisle-' + aisle.aisleId + '/pano.jpg',
+      zone: aisle.zone,
+      labels: (aisle.labels || []).map(l => this.createLabel(l)),
+      outs: (aisle.outs || []).map(l => this.createLabel(l)),
+      spreads: [],
+      coveragePercent: aisle.coveragePercent
+    };
+  }
+
+  createLabel(label: any): Label {
+    return {
+      labelId: label.labelId,
+      labelName: label.labelName,
+      barcode: label.barcode,
+      productId: label.productId,
+      price: label.price,
+      department: label.department,
+      bounds: {
+        top: label.top,
+        left: label.left,
+        width: label.width,
+        height: label.height,
+        topMeters: label.topMeters,
+        leftMeters: label.leftMeters,
+        widthMeters: label.widthMeters,
+        heightMeters: label.heightMeters,
+      },
+      section: label.section,
+      customFields: (label.customFields || []).map(cf => this.createCustomField(cf)),
+    };
+  }
+
+  createCustomField(customField: any): CustomField {
+    return{
+      name: customField.name,
+      value: customField.field
+    };
   }
 }

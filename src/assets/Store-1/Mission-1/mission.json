@@ -1,0 +1,14 @@
+{
+  "missionId": 1,
+  "missionName": "044429UTC",
+  "missionDateTime": "2018-11-09T02:10:25Z",
+  "createDateTime": "2018-11-09T02:10:25Z",
+  "outs": 12,
+  "labels": 1000,
+  "Aisles": [
+      {
+          "aisleId": 1,
+          "aisleName": "3A"
+      }
+  ]
+}

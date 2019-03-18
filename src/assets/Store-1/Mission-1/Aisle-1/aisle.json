@@ -1,0 +1,62 @@
+{
+  "aisleId": 1,
+  "aisleName": "3",
+  "panoramaUrl": "Mission-1/Aisle-1/pano.jpg",
+  "zone": "AA",
+  "coveragePercent": "99",
+  "createDate": "2018-11-09T02:10:25Z",
+  "labels": [
+    {
+      "labelId": 1,
+      "labelName": "Sweet Potato",
+      "barcode": "123456789",
+      "productId": "123232",
+      "price": 9.88,
+      "department": "produce",
+      "bounds": {
+          "top": 1.21,
+          "left": 1.22,
+          "width": 1.21,
+          "height": 1.22,
+          "topMeters": 10.1,
+          "leftMeters": 10.2,
+          "widthMeters": 10.1,
+          "heightMeters": 10.2
+      },
+      "section": "4",
+      "customFields": [
+          {
+            "name": "facings",
+            "field": "4"
+          }
+      ]
+    }
+  ],
+  "outs": [
+    {
+      "labelId": 1,
+      "labelName": "Sweet Potato",
+      "barcode": "123456789",
+      "productId": "123232",
+      "price": 9.88,
+      "department": "produce",
+      "bounds": {
+        "top": 1.21,
+        "left": 1.22,
+        "width": 1.21,
+        "height": 1.22,
+        "topMeters": 10.1,
+        "leftMeters": 10.2,
+        "widthMeters": 10.1,
+        "heightMeters": 10.2
+      },
+      "section": "4",
+      "customFields": [
+        {
+          "name": "facings",
+          "field": "4"
+        }
+      ]
+    }
+  ]
+}
