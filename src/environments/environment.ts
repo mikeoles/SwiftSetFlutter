@@ -1,13 +1,12 @@
 import { labelScrollOptions } from 'src/app/labelScrollOptions';
-import { ODataApiService } from 'src/app/oDataApi.service';
-import { StaticApiService } from 'src/app/staticApi.service';
+
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:4000/',
+  apiUrl: 'http://localhost:8080/',
   showPlugs: false,
   showSuppliers: false,
   coveragePercent: true,
@@ -15,7 +14,7 @@ export const environment = {
   'Mission Id', 'Mission Date Time', 'Store Id', 'Product Id', 'Top', 'Left', 'Top Meters', 'Left Meters'],
   labelScrolling: labelScrollOptions.vertical,
   productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price'],
-  apiService: StaticApiService
+  apiType: 'odata' // Options: odata or static
 };
 
 /*

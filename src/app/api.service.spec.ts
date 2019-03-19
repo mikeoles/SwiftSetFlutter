@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { IApiService } from './api.service';
+import { ApiService } from './api.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClient } from '@angular/common/http';
 import { EnvironmentService } from './environment.service';
 import { ODataApiService } from './oDataApi.service';
 
-describe('IApiService', () => {
+describe('ApiService', () => {
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
 
@@ -22,7 +22,7 @@ describe('IApiService', () => {
   });
 
   it('should be created', () => {
-    const service: IApiService = TestBed.get(ODataApiService);
+    const service: ApiService = TestBed.get(ODataApiService);
     expect(service).toBeTruthy();
   });
 });

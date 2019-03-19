@@ -4,8 +4,7 @@ import MissionSummary from '../missionSummary.model';
 import Store from '../store.model';
 import DaySummary from '../daySummary.model';
 import { DatepickerOptions } from 'ng2-datepicker';
-import { environment } from 'src/environments/environment';
-import { IApiService } from '../api.service';
+import { ApiService } from '../api.service';
 import { EnvironmentService } from '../environment.service';
 import { ODataApiService } from '../oDataApi.service';
 import { StaticApiService } from '../staticApi.service';
@@ -14,11 +13,6 @@ import { StaticApiService } from '../staticApi.service';
   selector: 'app-data-display',
   templateUrl: './store-view.component.html',
   styleUrls: ['./store-view.component.scss'],
-  providers: [
-    {
-      provide: 'IApiService',
-      useClass: environment.apiService
-    }],
 })
 
 export class StoreViewComponent implements OnInit {
@@ -37,7 +31,7 @@ export class StoreViewComponent implements OnInit {
   }
   };
 
-  constructor(@Inject('IApiService') private apiService: IApiService, private activatedRoute: ActivatedRoute,
+  constructor(@Inject('ApiService') private apiService: ApiService, private activatedRoute: ActivatedRoute,
   private environmentService: EnvironmentService) {
     this.graphStartDate = new Date();
     this.graphStartDate.setDate(this.graphStartDate.getDate() - 13); // Two weeks ago by default
@@ -84,9 +78,9 @@ export class StoreViewComponent implements OnInit {
 
       let dailyLabelAverage = 0;
       for (let j = 0; j < this.store.summaryLabels.length; j++) {
-        if (this.environmentService.config.apiService === ODataApiService &&
+        if (this.environmentService.config.apiType === 'odata' &&
           this.store.summaryLabels[j].date.toString() === cur.toISOString().substring(0, 10) ||
-          this.environmentService.config.apiService === StaticApiService &&
+          this.environmentService.config.apiType === 'static' &&
           this.store.summaryLabels[j].date.toDateString() === cur.toDateString()) {
             dailyLabelAverage = this.store.summaryLabels[j].dailyAverage;
           }
@@ -94,9 +88,9 @@ export class StoreViewComponent implements OnInit {
 
       let dailyOutAverage = 0;
       for (let j = 0; j < this.store.summaryOuts.length; j++) {
-        if (this.environmentService.config.apiService === ODataApiService &&
+        if (this.environmentService.config.apiType === 'odata' &&
           this.store.summaryOuts[j].date.toString() === cur.toISOString().substring(0, 10) ||
-          this.environmentService.config.apiService === StaticApiService &&
+          this.environmentService.config.apiType === 'static' &&
           this.store.summaryOuts[j].date.toDateString() === cur.toDateString()) {
             dailyOutAverage = this.store.summaryOuts[j].dailyAverage;
         }

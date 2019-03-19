@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IApiService } from './api.service';
+import { ApiService } from './api.service';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import Store from './store.model';
@@ -14,7 +14,7 @@ import CustomField from './customField.model';
 @Injectable({
   providedIn: 'root'
 })
-export class StaticApiService implements IApiService {
+export class StaticApiService implements ApiService {
 
   constructor(private http: HttpClient) {}
 

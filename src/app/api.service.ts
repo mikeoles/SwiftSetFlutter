@@ -3,8 +3,12 @@ import Aisle from './aisle.model';
 import { Observable } from 'rxjs';
 import MissionSummary from './missionSummary.model';
 import Store from './store.model';
+import { EnvironmentService } from './environment.service';
+import { StaticApiService } from './staticApi.service';
+import { ODataApiService } from './oDataApi.service';
+import { HttpClient } from '@angular/common/http';
 
-export interface IApiService {
+export interface ApiService {
   getStores();
   getStore(storeId: number, startDate: Date, timezone: String): Observable<Store>;
   getMissionSummaries(date: Date, storeId: number, timezone: string): Observable<MissionSummary[]>;
@@ -13,4 +17,14 @@ export interface IApiService {
   getMission(storeId: number, missionId: number): Observable<Mission>;
   getAisles(storeId: number, missionId: number): Observable<Aisle[]>;
   getAisle(storeId: number, missionId: number, aisleId: number): Observable<Aisle>;
+
+}
+
+export function apiFactory(environment: EnvironmentService, http: HttpClient) {
+
+  if (environment.config.apiType === 'odata') {
+    return new ODataApiService(http, environment);
+  } else {
+    return new StaticApiService(http);
+  }
 }

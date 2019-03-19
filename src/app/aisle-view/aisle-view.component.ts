@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
-import { IApiService } from './../api.service';
+import { ApiService } from './../api.service';
 import { KeyboardShortcutsService } from 'ng-keyboard-shortcuts';
 import Mission from './../mission.model';
 import Aisle from './../aisle.model';
@@ -10,17 +10,12 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import {Location} from '@angular/common';
 import { BackService } from '../back.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-aisle-view',
   templateUrl: './aisle-view.component.html',
   styleUrls: ['./aisle-view.component.scss'],
   providers: [ KeyboardShortcutsService,
-    {
-      provide: 'IApiService',
-      useClass: environment.apiService
-    }
   ],
   encapsulation: ViewEncapsulation.None
 })
@@ -43,7 +38,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   private logoSubscription: Subscription;
   private backButtonSubscription: Subscription;
 
-  constructor(@Inject('IApiService') private apiService: IApiService,
+  constructor(@Inject('ApiService') private apiService: ApiService,
               private keyboard: KeyboardShortcutsService,
               private logoService: LogoService,
               private backService: BackService,
@@ -93,7 +88,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   }
 
   goBack(): void {
-    this.router.navigate(['store/' + this.selectedMission.storeId + '/mission/' + this.selectedMission.missionId]);
+    this.router.navigate(['/store/' + this.selectedMission.storeId + '/mission/' + this.selectedMission.missionId]);
   }
 
   ngOnDestroy() {
@@ -137,7 +132,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
       this.currentId = null;
     });
     this.location.replaceState(
-      '/store/' + this.selectedMission.storeId + '/mission/' + this.selectedMission.missionId + '/aisle/' + this.selectedAisle.aisleId);
+      'store/' + this.selectedMission.storeId + '/mission/' + this.selectedMission.missionId + '/aisle/' + this.selectedAisle.aisleId);
   }
 
   setId(id: number) {

@@ -10,16 +10,17 @@ import Store from './store.model';
 import { formatDate } from '@angular/common';
 import DaySummary from './daySummary.model';
 import CustomField from './customField.model';
-import { IApiService } from './api.service';
+import { ApiService } from './api.service';
+import { EnvironmentService } from './environment.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ODataApiService implements IApiService {
+export class ODataApiService implements ApiService {
   apiUrl: String;
 
-  constructor(private http: HttpClient) {
-    this.apiUrl = 'http://localhost:8080/';
+  constructor(private http: HttpClient, private environment: EnvironmentService) {
+    this.apiUrl = environment.config.apiUrl;
   }
 
   createAisle(aisle: any): Aisle {
