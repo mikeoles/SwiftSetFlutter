@@ -10,11 +10,7 @@ const routes: Routes = [
   { path: 'store/:storeId/mission/:missionId/aisle/:aisleId', component: AisleViewComponent },
   { path: 'store/:storeId/mission/:missionId', component: MissionViewComponent },
   { path: 'store/:storeId', component: StoreViewComponent },
-  { path: '', component: FleetViewComponent },
-  { path: '',
-    redirectTo: '/',
-    pathMatch: 'full'
-  },
+  { path: '', component: FleetViewComponent, pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];
 
