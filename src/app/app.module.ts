@@ -26,7 +26,6 @@ import { ModalComponent } from './modal/modal.component';
 import { ModalService } from './modal/modal.service';
 import { NgDatepickerModule } from 'ng2-datepicker';
 import { DataService } from './data.service';
-import { FleetViewComponent } from './fleet-view/fleet-view.component';
 import { apiFactory } from './api.service';
 
 
@@ -46,7 +45,6 @@ import { apiFactory } from './api.service';
     MissionViewComponent,
     AislesGridComponent,
     ModalComponent,
-    FleetViewComponent
   ],
   imports: [
     BrowserModule,
