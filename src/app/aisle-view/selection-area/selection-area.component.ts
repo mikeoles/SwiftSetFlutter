@@ -111,6 +111,9 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
         const field: string = exportFields[k];
         let fieldLowercase = field.charAt(0).toLowerCase() + field.slice(1);
         fieldLowercase = fieldLowercase.replace(/\s/g, '');
+        if (fieldLowercase === 'description') {
+          fieldLowercase = 'labelName';
+        }
         let cellValue = '';
         if (label[fieldLowercase]) {
           cellValue = label[fieldLowercase];

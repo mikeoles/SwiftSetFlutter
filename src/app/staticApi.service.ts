@@ -19,7 +19,7 @@ export class StaticApiService implements ApiService {
   constructor(private http: HttpClient) {}
 
   getStores(): Observable<Store[]> {
-    return this.http.get('../assets/stores.json').pipe(
+    return this.http.get('../data/stores.json').pipe(
       map<any, Store[]>(o => o.Stores.map(s => this.createSimpleStore(s))),
     );
   }
@@ -118,13 +118,13 @@ export class StaticApiService implements ApiService {
   }
 
   getStore(storeId: number, startDate: Date, timezone: String): Observable<Store> {
-    return this.http.get('../assets/Store-' + storeId + '/index.json').pipe(
+    return this.http.get('../data/Store-' + storeId + '/index.json').pipe(
       map<any, Store>(storeJson => this.createStore(storeJson, startDate)),
     );
   }
 
   getMissionSummaries(date: Date, storeId: number, timezone: string): Observable<MissionSummary[]> {
-    return this.http.get('../assets/Store-' + storeId + '/index.json').pipe(
+    return this.http.get('../data/Store-' + storeId + '/index.json').pipe(
       map<any, MissionSummary[]>(storeJson => this.createMissionSummaries(storeJson, date)),
     );
   }
@@ -147,7 +147,7 @@ export class StaticApiService implements ApiService {
   }
 
   getMissionSummary(storeId: number, mission: number): Observable<MissionSummary> {
-    return this.http.get('../assets/Store-' + storeId + '/index.json').pipe(
+    return this.http.get('../data/Store-' + storeId + '/index.json').pipe(
       map<any, MissionSummary>(storeJson => this.createMissionSummary(storeJson, mission)),
     );
   }
@@ -170,13 +170,13 @@ export class StaticApiService implements ApiService {
   }
 
   getMissions(storeId: number): Observable<Mission[]> {
-    return this.http.get('../assets/Store-' + storeId + '/index.json').pipe(
+    return this.http.get('../data/Store-' + storeId + '/index.json').pipe(
       map<any, Mission[]>(o => o.Missions.map(m => this.createMission(m, storeId))),
     );
   }
 
   getMission(storeId: number, missionId: number): Observable<Mission> {
-    return this.http.get('../assets/Store-' + storeId + '/Mission-' + missionId + '/mission.json').pipe(
+    return this.http.get('../data/Store-' + storeId + '/Mission-' + missionId + '/mission.json').pipe(
       map<any, Mission>(missionJson => this.createMission(missionJson, storeId)),
     );
   }
@@ -192,13 +192,13 @@ export class StaticApiService implements ApiService {
   }
 
   getAisles(storeId: number, missionId: number): Observable<Aisle[]> {
-    return this.http.get('../assets/Store-' + storeId + '/Mission-' + missionId + '/mission.json').pipe(
+    return this.http.get('../data/Store-' + storeId + '/Mission-' + missionId + '/mission.json').pipe(
       map<any, Aisle[]>(o => o.Aisles.map(a => this.createAisle(a, storeId, missionId))),
     );
   }
 
   getAisle(storeId: number, missionId: number, aisleId: number): Observable<any> {
-    return this.http.get('../assets/Store-' + storeId + '/Mission-' + missionId + '/Aisle-' + aisleId + '/aisle.json').pipe(
+    return this.http.get('../data/Store-' + storeId + '/Mission-' + missionId + '/Aisle-' + aisleId + '/aisle.json').pipe(
       map<any, Aisle>(aisleJson => this.createAisle(aisleJson, storeId, missionId)),
     );
   }
@@ -207,7 +207,7 @@ export class StaticApiService implements ApiService {
     return {
       aisleId: aisle.aisleId,
       aisleName: aisle.aisleName,
-      panoramaUrl: '../assets/Store-' + storeId + '/Mission-' + missionId + '/Aisle-' + aisle.aisleId + '/pano.jpg',
+      panoramaUrl: '../data/Store-' + storeId + '/Mission-' + missionId + '/Aisle-' + aisle.aisleId + '/pano.jpg',
       zone: aisle.zone,
       labels: (aisle.labels || []).map(l => this.createLabel(l)),
       outs: (aisle.outs || []).map(l => this.createLabel(l)),
