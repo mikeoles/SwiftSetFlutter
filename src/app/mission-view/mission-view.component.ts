@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { ApiService } from '../api.service';
 import { Params, ActivatedRoute, Router } from '@angular/router';
 import MissionSummary from '../missionSummary.model';
@@ -15,7 +15,7 @@ import { DataService } from '../data.service';
 @Component({
   selector: 'app-mission-view',
   templateUrl: './mission-view.component.html',
-  styleUrls: ['./mission-view.component.scss']
+  styleUrls: ['./mission-view.component.scss'],
 })
 
 export class MissionViewComponent implements OnInit, OnDestroy {
@@ -26,12 +26,11 @@ export class MissionViewComponent implements OnInit, OnDestroy {
   aisles: Aisle[];
   averageStoreOuts: number;
   averageStoreLabels: number;
-  currentMission: number;
   service: ApiService;
 
   private backButtonSubscription: Subscription;
 
-  constructor(private apiService: ApiService, private activatedRoute: ActivatedRoute, private router: Router,
+  constructor(@Inject('ApiService') private apiService: ApiService, private activatedRoute: ActivatedRoute, private router: Router,
     private modalService: ModalService, private backService: BackService, private environment: EnvironmentService,
     public dataService: DataService) {
 
@@ -39,26 +38,30 @@ export class MissionViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.backButtonSubscription = this.backService.backClickEvent().subscribe(() => this.goBack());
-
+    let missionId: number, storeId: number;
     this.activatedRoute.params.forEach((params: Params) => {
       if (params['missionId'] !== undefined) {
-        this.currentMission = params['missionId'];
+        missionId = Number(params['missionId']);
+      }
+      if (params['storeId'] !== undefined) {
+        storeId = Number(params['storeId']);
       }
     });
-    this.apiService.getMission(this.currentMission).subscribe(mission => {
+    this.apiService.getMission(storeId, missionId).subscribe(mission => {
       this.mission = mission;
-      this.apiService.getMissionSummary(this.currentMission).subscribe(missionSummary => {
+      this.apiService.getMissionSummary(mission.storeId, this.mission.missionId).subscribe(missionSummary => {
         this.missionSummary = missionSummary;
-        this.apiService.getAisles(this.currentMission).subscribe(aisles => {
+        this.apiService.getAisles(mission.storeId, this.mission.missionId).subscribe(aisles => {
           this.aisles = aisles;
           for (let i = 0; i < this.aisles.length; i++) {
-            this.apiService.getAisle(this.aisles[i].aisleId).subscribe(aisle => {
+            this.apiService.getAisle(mission.storeId, this.mission.missionId, this.aisles[i].aisleId).subscribe(aisle => {
               this.aisles[i] = aisle;
             });
           }
         });
         const twoWeeksAgo: Date = new Date();
         twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 13);
+        twoWeeksAgo.setHours(0, 0, 0, 0);
         this.apiService.getStore(mission.storeId, twoWeeksAgo, Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe(store => {
           this.store = store;
 
@@ -74,7 +77,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
 }
 
   goBack(): void {
-    this.router.navigate(['store/1']);
+    this.router.navigate(['/store/' + this.store.storeId]);
   }
 
   ngOnDestroy() {
@@ -105,6 +108,9 @@ export class MissionViewComponent implements OnInit, OnDestroy {
           const field: string = exportFields[k];
           let fieldLowercase = field.charAt(0).toLowerCase() + field.slice(1);
           fieldLowercase = fieldLowercase.replace(/\s/g, '');
+          if (fieldLowercase === 'description') {
+            fieldLowercase = 'labelName';
+          }
           let cellValue = '';
           if (label[fieldLowercase]) {
             cellValue = label[fieldLowercase];

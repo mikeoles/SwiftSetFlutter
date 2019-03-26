@@ -19,6 +19,7 @@ class AppMissionStatsStubComponent {
 class AppAislesGridStubComponent {
   @Input() aisles: string;
   @Input() missionId: string;
+  @Input() storeId: number;
 }
 @Component({selector: 'app-export-modal', template: ''})
 class ModalComponent {
@@ -38,12 +39,12 @@ describe('MissionViewComponent', () => {
     bounds: { top: 0, left: 0, width: 0, height: 0, topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 },
     customFields: [], section: '', department: '' },
   ];
-  const mission = { id: 1, name: '1111', createDateTime: new Date('2018-12-12'), missionDateTime: new Date('2018-12-12') };
+  const mission = { missionId: 1, name: '1111', createDateTime: new Date('2018-12-12'), missionDateTime: new Date('2018-12-12') };
   const missionSummary = {   missionId: 1, mission: '', storeId: '', missionDateTime: new Date('2018-12-12'),
   outs: 1, labels: 1, spreads: 1, aislesScanned: 1};
-  const aisles = [{  id: 1, name: '', panoramaUrl: '', labels: labels, outs: labels, spreads: [] }];
-  const aisle = {  id: 1, name: '', panoramaUrl: '', labels: labels, outs: labels, spreads: [] };
-  const store = { id: 1 };
+  const aisles = [{  aisleId: 1, name: '', panoramaUrl: '', labels: labels, outs: labels, spreads: [] }];
+  const aisle = {  aisleId: 1, name: '', panoramaUrl: '', labels: labels, outs: labels, spreads: [] };
+  const store = { storeId: 1 };
 
   beforeEach(async(() => {
     const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getStore', 'getMission', 'getMissionSummary', 'getAisles', 'getAisle']);
@@ -60,16 +61,16 @@ describe('MissionViewComponent', () => {
         ModalComponent
       ],
       providers: [
-        { provide: ApiService, useValue: apiServiceSpy },
+        { provide: 'ApiService', useValue: apiServiceSpy },
         { provide: ActivatedRoute, useValue: {
-          params: [{ missionId: 1 }],
+          params: [{ missionId: 1 }, { storeId: 1 }],
         }},
         { provide: ModalService}
       ],
     })
     .compileComponents();
 
-    apiService = TestBed.get(ApiService);
+    apiService = TestBed.get('ApiService');
     apiService.getMission.and.returnValue(of(mission));
     apiService.getMissionSummary.and.returnValue(of(missionSummary));
     apiService.getAisles.and.returnValue(of(aisles));
@@ -88,8 +89,8 @@ describe('MissionViewComponent', () => {
   });
 
   it('should set the current mission', () => {
-    expect(component.currentMission).toEqual(1);
-    expect(apiService.getMission).toHaveBeenCalledWith(1);
+    expect(apiService.getMission).toHaveBeenCalledWith(1, 1);
+    expect(component.mission.missionId).toEqual(1);
   });
 
   it('should export data', () => {

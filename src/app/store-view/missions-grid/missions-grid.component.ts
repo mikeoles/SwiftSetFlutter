@@ -13,6 +13,7 @@ export class MissionsGridComponent implements OnInit {
   @Input() missionsDate: number;
   @Input() averageStoreOuts: number;
   @Input() averageStoreLabels: number;
+  @Input() storeId: number;
 
   constructor(private router: Router, public dataService: DataService) { }
 
@@ -20,7 +21,7 @@ export class MissionsGridComponent implements OnInit {
   }
 
   viewMission(missionId: number) {
-    this.router.navigate(['mission/' + missionId]);
+    this.router.navigate(['store/' + this.storeId + '/mission/' + missionId]);
     this.dataService.averageStoreOuts = this.averageStoreOuts;
     this.dataService.averageStoreLabels = this.averageStoreLabels;
   }

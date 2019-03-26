@@ -9,4 +9,5 @@ export const environment = {
   'Mission Id', 'Mission Date Time', 'Store Id', 'Product Id', 'Top', 'Left', 'Top Meters', 'Left Meters'],
   labelScrolling: labelScrollOptions.vertical,
   productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price'],
+  apiType: 'odata' // Options: odata or static
 };

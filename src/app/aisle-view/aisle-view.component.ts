@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { ApiService } from './../api.service';
 import { KeyboardShortcutsService } from 'ng-keyboard-shortcuts';
 import Mission from './../mission.model';
@@ -15,7 +15,8 @@ import { BackService } from '../back.service';
   selector: 'app-aisle-view',
   templateUrl: './aisle-view.component.html',
   styleUrls: ['./aisle-view.component.scss'],
-  providers: [ KeyboardShortcutsService ],
+  providers: [ KeyboardShortcutsService,
+  ],
   encapsulation: ViewEncapsulation.None
 })
 
@@ -37,7 +38,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   private logoSubscription: Subscription;
   private backButtonSubscription: Subscription;
 
-  constructor(private apiService: ApiService,
+  constructor(@Inject('ApiService') private apiService: ApiService,
               private keyboard: KeyboardShortcutsService,
               private logoService: LogoService,
               private backService: BackService,
@@ -60,7 +61,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
     this.logoSubscription = this.logoService.logoClickEvent().subscribe(() => this.changePanoMode());
     this.backButtonSubscription = this.backService.backClickEvent().subscribe(() => this.goBack());
 
-    let missionId: number, aisleId: number;
+    let missionId: number, aisleId: number, storeId: number;
     this.activatedRoute.params.forEach((params: Params) => {
       if (params['missionId'] !== undefined) {
         missionId = Number(params['missionId']);
@@ -68,9 +69,12 @@ export class AisleViewComponent implements OnInit, OnDestroy {
       if (params['aisleId'] !== undefined) {
         aisleId = Number(params['aisleId']);
       }
+      if (params['storeId'] !== undefined) {
+        storeId = Number(params['storeId']);
+      }
     });
 
-    this.apiService.getMissions().subscribe(missions => {
+    this.apiService.getMissions(storeId).subscribe(missions => {
       const mission = missions.find(m => m.missionId === missionId);
       let date = new Date();
 
@@ -84,7 +88,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   }
 
   goBack(): void {
-    this.router.navigate(['mission/' + this.selectedMission.missionId]);
+    this.router.navigate(['/store/' + this.selectedMission.storeId + '/mission/' + this.selectedMission.missionId]);
   }
 
   ngOnDestroy() {
@@ -101,14 +105,14 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   }
 
   changeMission(mission: Mission) {
-    this.apiService.getAisles(mission.missionId).subscribe(aisles => {
+    this.apiService.getAisles(mission.storeId, mission.missionId).subscribe(aisles => {
       this.setMission(mission, aisles[0].aisleId);
     });
   }
 
   setMission(mission: Mission, aisleId: number) {
     this.selectedMission = mission;
-    this.apiService.getAisles(mission.missionId).subscribe(aisles => {
+    this.apiService.getAisles(mission.storeId, mission.missionId).subscribe(aisles => {
       this.aisles = aisles;
       aisles.forEach(aisle => {
         if (aisle.aisleId === aisleId) {
@@ -120,14 +124,15 @@ export class AisleViewComponent implements OnInit, OnDestroy {
 
   setAisle(aisle: Aisle) {
     this.selectedAisle = aisle;
-    this.apiService.getAisle(aisle.aisleId).subscribe(fullAisle => {
+    this.apiService.getAisle(this.selectedMission.storeId, this.selectedMission.missionId, aisle.aisleId).subscribe(fullAisle => {
       this.outs = fullAisle.outs;
       this.labels = fullAisle.labels;
       this.panoramaUrl = fullAisle.panoramaUrl;
       this.currentDisplay = 'outs';
       this.currentId = null;
     });
-    this.location.replaceState('/mission/' + this.selectedMission.missionId + '/aisle/' + this.selectedAisle.aisleId);
+    this.location.replaceState(
+      'store/' + this.selectedMission.storeId + '/mission/' + this.selectedMission.missionId + '/aisle/' + this.selectedAisle.aisleId);
   }
 
   setId(id: number) {

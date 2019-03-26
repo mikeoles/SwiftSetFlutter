@@ -10,7 +10,7 @@ describe('MissionsGridComponent', () => {
   let fixture: ComponentFixture<MissionsGridComponent>;
 
   const missionSummaries: MissionSummary[] = [
-    { missionId: 0, mission: '', storeId: '', missionDateTime: new Date(), outs: 0, labels: 0, spreads: 0, aislesScanned: 0 }
+    { missionId: 0, mission: '', storeId: 0, missionDateTime: new Date(), outs: 0, labels: 0, spreads: 0, aislesScanned: 0 }
   ];
 
   beforeEach(async(() => {
@@ -27,6 +27,7 @@ describe('MissionsGridComponent', () => {
     fixture = TestBed.createComponent(MissionsGridComponent);
     component = fixture.componentInstance;
     component.missionSummaries = missionSummaries;
+    component.storeId = 2;
     fixture.detectChanges();
   });
 
@@ -39,6 +40,6 @@ describe('MissionsGridComponent', () => {
 
     component.viewMission(1);
 
-    expect(navigateSpy).toHaveBeenCalledWith(['mission/1']);
+    expect(navigateSpy).toHaveBeenCalledWith(['store/2/mission/1']);
   });
 });

@@ -25,8 +25,8 @@ describe('SelectionAreaComponent', () => {
   let missionsListEl: HTMLLIElement;
   let aislesListEl: HTMLLIElement;
   const missions: Mission[] = [
-    { missionId: 1, missionName: '1111', storeId: '1', createDateTime: new Date('2018-12-12'), missionDateTime: new Date('2018-12-12') },
-    { missionId: 2, missionName: '2222', storeId: '1', createDateTime: new Date('2001-01-01'), missionDateTime: new Date('2001-01-01') },
+    { missionId: 1, missionName: '1111', storeId: 1, createDateTime: new Date('2018-12-12'), missionDateTime: new Date('2018-12-12') },
+    { missionId: 2, missionName: '2222', storeId: 1, createDateTime: new Date('2001-01-01'), missionDateTime: new Date('2001-01-01') },
   ];
   const aisles: Aisle[] = [
     { aisleId: 1, aisleName: '1111', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '', coveragePercent: 0  },

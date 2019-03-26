@@ -31,8 +31,8 @@ describe('AisleViewComponent', () => {
   let apiService: jasmine.SpyObj<ApiService>;
 
   const missions: Mission[] = [
-    { missionId: 1, missionName: '1111', storeId: '1', createDateTime: new Date('2018-12-12'), missionDateTime: new Date('2018-12-12') },
-    { missionId: 2, missionName: '2222', storeId: '1', createDateTime: new Date('2001-01-01'), missionDateTime: new Date('2001-01-01') },
+    { missionId: 1, missionName: '1111', storeId: 1, createDateTime: new Date('2018-12-12'), missionDateTime: new Date('2018-12-12') },
+    { missionId: 2, missionName: '2222', storeId: 1, createDateTime: new Date('2001-01-01'), missionDateTime: new Date('2001-01-01') },
   ];
   const labels: Label[] = [
     { labelId: 1, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
@@ -75,14 +75,15 @@ describe('AisleViewComponent', () => {
         ModalComponent,
       ],
       providers: [
-        { provide: ApiService, useValue: apiServiceSpy },
+        { provide: 'ApiService', useValue: apiServiceSpy },
         { provide: ModalService},
         { provide: Router },
         { provide: Location, useValue:  locationSpy},
         { provide: ActivatedRoute, useValue: {
           params: [{
             missionId: '1',
-            aisleId: '1'
+            aisleId: '1',
+            storeId: '1',
           }],
         }},
         { provide: EnvironmentService, useValue: { config: {
@@ -93,7 +94,7 @@ describe('AisleViewComponent', () => {
       ],
     }).compileComponents();
 
-    apiService = TestBed.get(ApiService);
+    apiService = TestBed.get('ApiService');
     apiService.getMissions.and.returnValue(of(missions));
     apiService.getAisles.and.returnValue(of(aisles));
     apiService.getAisle.and.returnValue(of(aisles[0]));
