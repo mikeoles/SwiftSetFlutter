@@ -22,6 +22,10 @@ if [[ "$API_TYPE" = "static" ]]; then
   sed -i '/api.*/,+3d'  /etc/nginx/conf.d/default.conf
 fi
 
+if [[ ! -z "$USERNAME" ]] && [[ ! -z "$PASSWORD_HASH" ]]; then
+  echo "$USERNAME:$PASSWORD_HASH" >> /etc/nginx/conf.d/nginx_auth.htpasswd
+fi
+
 echo "Using config:"
 cat /usr/share/nginx/html/assets/config.json
 
