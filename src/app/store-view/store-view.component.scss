@@ -1,0 +1,30 @@
+:host {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.dateInput{
+  margin-right: 20px;
+  margin-top: 20px;
+  float: right;
+}
+
+.storeInfo {
+  padding: 20px 40px;
+  display: inline-block;
+}
+
+.storeAddress span {
+  font-weight: normal;
+}
+
+.title {
+  padding: 40px 40px 0px 40px;
+}
+
+.graphDisplay {
+  margin: 40px 40px 0px 40px;
+  &:first-child {
+    margin-top: 35px;
+  }
+}

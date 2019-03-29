@@ -1,3 +1,5 @@
+@import "./variables";
+
 body {
   margin: 0;
 }
@@ -13,7 +15,135 @@ body {
 
 html,
 body {
-  position: fixed;
-  overflow: hidden;
   width: 100%;
+}
+
+app-export-modal {
+  /* modals are hidden by default */
+  display: none;
+
+  button{
+    border-radius: 25px !important;
+    background-color: White !important;
+    border: 3px $primary solid !important;
+    color:  $primary !important;
+    margin: 10px 25px !important;
+    width: calc(100% - 50px) !important;
+    height: 55px !important;
+    font-size: 18px !important;
+    font-weight: bold !important;
+    text-align: center !important;
+  }
+
+  .cancel{
+    color: $greyBorder !important;
+    border-color: $greyBorder !important;
+    margin-top: 20px !important;
+  }
+
+  .exportTitle{
+    font-size: 24px;
+    font-weight: 900;
+    margin-bottom: 30px;
+  }
+
+  .modal {
+      /* modal container fixed across whole screen */
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+
+      /* z-index must be higher than .modal-background */
+      z-index: 1000;
+
+      /* enables scrolling for tall modals */
+      overflow: auto;
+
+      .modal-body {
+        padding: 20px;
+        background: #fff;
+        text-align: center;
+        /* margin exposes part of the modal background */
+        margin: 200px calc(50vw - 250px);
+        border-radius: 20px;
+      }
+  }
+
+  .modal-background {
+      /* modal background fixed across whole screen */
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+
+      /* semi-transparent black  */
+      background-color: #000;
+      opacity: 0.75;
+
+      /* z-index must be below .modal and above everything else  */
+      z-index: 900;
+  }
+}
+
+body.modal-open {
+  /* body overflow is hidden to hide main scrollbar when modal window is open */
+  overflow: hidden;
+}
+
+
+.dropdown-btn {
+  border-radius: 30px !important;
+  border: 3px $primary solid !important;
+  font-weight: bold !important;
+  height: 37px !important;
+  line-height: 37px !important;
+  font-size: 18px !important;
+}
+
+.selected-item{
+  background-color: $primary !important;
+  border: $primary 1px solid !important;
+  border-radius: 30px !important;
+}
+
+.multiselect-item-checkbox input + div:before{
+  background: #2baae1 !important;
+  border: #2baae1 2px solid !important;
+}
+
+.dropdown-btn:focus {
+  outline:0;
+}
+
+#filterTitle {
+  margin-right: 25px !important;
+}
+
+button {
+  height: 55px;
+  padding: 0px 30px;
+  background-color: white;
+  border-radius: 30px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: left;
+  color: $primary;
+  border: 3px $primary solid;
+}
+
+.main-calendar-container, .topbar-container{
+  width: auto !important;
+}
+
+.ngx-datepicker-calendar-container{
+  z-index: 1 !important;
+  margin-top: 20px !important;
+}
+
+canvas{
+  border-top-left-radius: 5px !important;
+  border-top-right-radius: 5px !important;
 }

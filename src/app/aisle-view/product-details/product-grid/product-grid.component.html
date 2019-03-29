@@ -1,0 +1,13 @@
+<table>
+  <thead>
+    <tr>
+      <th *ngFor="let column of columnHeaders">{{column}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let r of rows; let i = index" id="row-{{this.products[i].labelId}}"
+    (click)="setClickedRow(this.products[i].labelId)" [class.selected]="this.products[i].labelId === selectedId" >
+      <td *ngFor="let data of r">{{data}}</td>
+    </tr>
+  </tbody>
+</table>

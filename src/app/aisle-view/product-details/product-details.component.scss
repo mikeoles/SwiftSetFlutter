@@ -1,0 +1,71 @@
+@import '../../../variables';
+
+button {
+  text-align: center;
+  width: 220px;
+  margin-right: 40px;
+  cursor: pointer !important;
+}
+
+//Some dropdown specific styles are in styles.scss
+
+.dropdown {
+  display: inline-block;
+  width: 167px;
+  color: #2baae1;
+  margin: 10px 60px 10px 0px;
+}
+
+//Ipad Mini and 10.5 pro
+@media screen and (max-width: 1112px) {
+  button {
+    width: 180px !important;
+    height: 48px !important;
+    font-size: 14px !important;
+  }
+}
+
+.selectedButton {
+    background-color: $primary;
+    color:  White;
+}
+
+button:focus {
+    outline:0;
+}
+
+#tableSelection{
+    margin-left: 60px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    float: left;
+}
+
+#filterButtons{
+  margin: 10px 60px;
+  float: right;
+  border: 1px $greyBorder solid;
+  border-radius: 80px;
+  height: auto;
+  padding-left: 30px;
+  button{
+    display: inline-block;
+    margin: 9px 20px;
+    text-align: left;
+    padding: 0px 20px;
+  }
+  div{
+    display: inline-block;
+    color: $greyBorder;
+    font-weight: bold;
+    margin-right: 10px;
+  }
+}
+
+.fa{
+  float: right;
+}
+
+#filterTitle{
+  margin-right: 20px;
+}

@@ -1,0 +1,182 @@
+{
+  "StoreName": "Store 0054",
+  "StoreAddress": "3201 E Platte Ave, Colorado Springs, CO 80909",
+  "AverageOuts": 124,
+  "AverageLabels": 4521,
+  "AverageSpreads": 31,
+  "outs": [
+    {
+      "date":  "2018-11-8",
+      "dailyAverage":   "600"
+    },
+    {
+      "date":  "2018-11-9",
+      "dailyAverage":   "700"
+    },
+    {
+      "date":  "2018-11-10",
+      "dailyAverage":   "800"
+    },
+    {
+      "date":  "2018-11-11",
+      "dailyAverage":   "900"
+    },
+    {
+      "date":  "2018-11-12",
+      "dailyAverage":   "1000"
+    },
+    {
+      "date":  "2018-11-13",
+      "dailyAverage":   "1050"
+    },
+    {
+      "date":  "2018-11-14",
+      "dailyAverage":   "1100"
+    },
+    {
+      "date":  "2018-11-15",
+      "dailyAverage":   "1120"
+    },
+    {
+      "date":  "2018-11-16",
+      "dailyAverage":   "1130"
+    },
+    {
+      "date":  "2018-11-17",
+      "dailyAverage":   "1000"
+    },
+    {
+      "date":  "2018-11-18",
+      "dailyAverage":   "1100"
+    },
+    {
+      "date":  "2018-11-19",
+      "dailyAverage":   "800"
+    },
+    {
+      "date":  "2018-11-20",
+      "dailyAverage":   "1000"
+    },
+    {
+      "date":  "2018-11-21",
+      "dailyAverage":   "1100"
+    }
+  ],
+  "labels": [
+    {
+      "date":  "2018-11-8",
+      "dailyAverage":   "600"
+    },
+    {
+      "date":  "2018-11-9",
+      "dailyAverage":   "700"
+    },
+    {
+      "date":  "2018-11-10",
+      "dailyAverage":   "800"
+    },
+    {
+      "date":  "2018-11-11",
+      "dailyAverage":   "900"
+    },
+    {
+      "date":  "2018-11-12",
+      "dailyAverage":   "1000"
+    },
+    {
+      "date":  "2018-11-13",
+      "dailyAverage":   "1050"
+    },
+    {
+      "date":  "2018-11-14",
+      "dailyAverage":   "1100"
+    },
+    {
+      "date":  "2018-11-15",
+      "dailyAverage":   "1120"
+    },
+    {
+      "date":  "2018-11-16",
+      "dailyAverage":   "1130"
+    },
+    {
+      "date":  "2018-11-17",
+      "dailyAverage":   "1000"
+    },
+    {
+      "date":  "2018-11-18",
+      "dailyAverage":   "1100"
+    },
+    {
+      "date":  "2018-11-19",
+      "dailyAverage":   "800"
+    },
+    {
+      "date":  "2018-11-20",
+      "dailyAverage":   "1000"
+    },
+    {
+      "date":  "2018-11-21",
+      "dailyAverage":   "1100"
+    }
+  ],
+  "spreads": [
+    {
+      "date":  "2018-11-8",
+      "dailyAverage":   "600"
+    },
+    {
+      "date":  "2018-11-9",
+      "dailyAverage":   "700"
+    },
+    {
+      "date":  "2018-11-10",
+      "dailyAverage":   "800"
+    },
+    {
+      "date":  "2018-11-11",
+      "dailyAverage":   "900"
+    },
+    {
+      "date":  "2018-11-12",
+      "dailyAverage":   "1000"
+    },
+    {
+      "date":  "2018-11-13",
+      "dailyAverage":   "1050"
+    },
+    {
+      "date":  "2018-11-14",
+      "dailyAverage":   "1100"
+    },
+    {
+      "date":  "2018-11-15",
+      "dailyAverage":   "1120"
+    },
+    {
+      "date":  "2018-11-16",
+      "dailyAverage":   "1130"
+    },
+    {
+      "date":  "2018-11-17",
+      "dailyAverage":   "1000"
+    },
+    {
+      "date":  "2018-11-18",
+      "dailyAverage":   "1100"
+    },
+    {
+      "date":  "2018-11-19",
+      "dailyAverage":   "800"
+    },
+    {
+      "date":  "2018-11-20",
+      "dailyAverage":   "400"
+    },
+    {
+      "date":  "2018-11-21",
+      "dailyAverage":   "300"
+    }
+  ]
+}
+

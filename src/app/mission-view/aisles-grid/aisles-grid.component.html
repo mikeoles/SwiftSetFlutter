@@ -1,0 +1,22 @@
+<table>
+  <thead>
+    <tr>
+      <th>Aisle</th>
+      <th *ngIf="showPercentScanned">Percent Scanned</th>
+      <th>Outs</th>
+      <th>Labels</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let aisle of aisles; let i = index" (click)="viewAisle(aisle.aisleId)">
+      <td>
+        <a [routerLink]="" (click)="viewAisle(aisle.aisleId)">
+          {{aisle.aisleName}}
+        </a>
+        </td>
+      <td *ngIf="showPercentScanned">{{aisle.coveragePercent | number : '1.0-2'}}%</td>
+      <td>{{aisle.outs.length}}</td>
+      <td>{{aisle.labels.length}}</td>
+    </tr>
+  </tbody>
+</table>

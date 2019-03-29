@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from './api.service';
+import { Router, NavigationEnd } from '@angular/router';
 import { KeyboardShortcutsService } from 'ng-keyboard-shortcuts';
-import Mission from './mission.model';
-import Aisle from './aisle.model';
-import Label from './label.model';
+import { LogoService } from './logo.service';
+import { BackService } from './back.service';
+import { faArrowAltCircleLeft } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -12,70 +12,37 @@ import Label from './label.model';
   providers: [ KeyboardShortcutsService ]
 })
 export class AppComponent implements OnInit {
-  title = 'aisle';
-  outs: Label[];
-  labels: Label[];
-  missions: Mission[];
-  selectedMission: Mission;
-  aisles: Aisle[];
-  selectedAisle: Aisle;
-  currentId: number;
-  currentDisplay: string;
-  panoramaUrl: string;
-  panoMode: boolean;
-  panoTouched: boolean;
 
-  constructor(private apiService: ApiService, private keyboard: KeyboardShortcutsService) {
-    this.currentDisplay = 'outs';
-    this.panoMode = false;
-    this.keyboard.add([
-      {
-        key: 'ctrl o',
-        command: () => this.changePanoMode(),
-        preventDefault: true
-      }
-    ]);
+  displayBackButton: boolean;
+
+  faArrowAltCircleLeft = faArrowAltCircleLeft;
+
+  constructor(private router: Router, private logoService: LogoService, private backService: BackService) {
+    router.events.subscribe( (event) => ( event instanceof NavigationEnd ) && this.handleRouteChange() );
   }
 
   ngOnInit() {
-    this.apiService.getMissions().subscribe(missions => {
-      this.missions = missions;
-      this.setMission(this.missions[0]);
+    this.router.events.subscribe((evt) => {
+      if (!(evt instanceof NavigationEnd)) {
+          return;
+      }
+      window.scrollTo(0, 0);
     });
   }
 
-  changePanoMode(): any {
-    this.panoMode = !this.panoMode;
+  logoClicked() {
+    this.logoService.logoClick();
   }
 
-  setMission(mission: Mission) {
-    this.selectedMission = mission;
-    this.apiService.getAisles(mission.id).subscribe(aisles => {
-      this.aisles = aisles;
-      this.setAisle(this.aisles[0]);
-    });
+  backClicked() {
+    this.backService.backClick();
   }
 
-  setAisle(aisle) {
-    this.selectedAisle = aisle;
-    this.apiService.getAisle(aisle.id).subscribe(fullAisle => {
-      this.outs = fullAisle.outs;
-      this.labels = fullAisle.labels;
-      this.panoramaUrl = fullAisle.panoramaUrl;
-      this.currentDisplay = 'outs';
-      this.currentId = null;
-    });
-  }
-
-  setId(id) {
-    this.currentId = id;
-  }
-
-  hideDropdowns() {
-    this.panoTouched = true;
-  }
-
-  setDisplay(display) {
-    this.currentDisplay = display;
+  handleRouteChange = () => {
+    if (this.router.url.includes('store')) {
+      this.displayBackButton = false;
+    } else {
+      this.displayBackButton = true;
+    }
   }
 }

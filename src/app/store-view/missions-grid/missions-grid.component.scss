@@ -1,0 +1,52 @@
+@import "../../../variables";
+
+:host{
+  display: block;
+  margin-bottom: 40px;
+}
+
+table {
+  border-collapse: collapse;
+  text-align: center;
+  margin: auto 40px;
+  width: calc(100% - 80px);
+  table-layout: fixed;
+}
+
+table tbody, table thead
+{
+  display: block;
+}
+
+.gridTitle{
+  margin: 90px 40px 35px 40px;
+}
+
+th{
+  border: 1px solid $primary;
+  color: $primary;
+  font-size: 12px;
+  height: 44px;
+}
+
+td, td a{
+  height: 53px;
+  font-weight: normal;
+  font-size: 18px;
+}
+
+td a{
+  color: $primary;
+}
+
+th, td{
+  width: 300px;
+}
+
+tr{
+  border: 1px solid $greyBorder;
+}
+
+tbody :first-child{
+  border-top: 0px;
+}

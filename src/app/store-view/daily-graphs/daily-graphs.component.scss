@@ -1,0 +1,49 @@
+@import "../../../variables";
+
+:host{
+  font-size: 18px;
+}
+
+.subTitle, .graphs, .labels{
+  display: block;
+}
+
+.labels div{
+  display: inline;
+  margin-right: 30px;
+  padding-bottom: 5px;
+}
+
+.labels span{
+  color: #A2A2A2;
+}
+
+.dayGraph{
+  background-color: #D9D9D9;
+  display: inline-block;
+  height: 78px;
+  width: 62px;
+  margin: 20px 5px 15px 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  position: relative;
+  text-align: center;
+  cursor: pointer;
+}
+
+.graphs{
+  display: inline-block;
+}
+
+.dateOverlay{
+  position: absolute;
+  font-size: 14px;
+  color: black;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.dateOverlaySelected{
+  color: $primary;
+}

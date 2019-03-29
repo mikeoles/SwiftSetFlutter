@@ -1,12 +1,8 @@
-<app-selection-area [missions]="missions" [aisles]="aisles"
-  [selectedMission]="selectedMission" [selectedAisle]="selectedAisle"
-  (missionSelected)='setMission($event)' (aisleSelected)='setAisle($event)' [panoTouched]=panoTouched (panoSwitch)='changePanoMode()'>
-</app-selection-area>
-<app-panorama [outs]="outs" [labels]="labels" [panoramaUrl]="panoramaUrl"
-  [currentId]="currentId" [currentDisplay]="currentDisplay"
-  (panoramaId)='setId($event)' [panoMode]='panoMode' (panoramaTouched)='hideDropdowns($event)'>
-</app-panorama>
-<app-product-details [outs]="outs" [labels]="labels"
-  (gridId)='setId($event)' (gridDisplay)='setDisplay($event)'
-  [currentId]="currentId" [currentDisplay]="currentDisplay" [panoMode]='panoMode'>
-</app-product-details>
+<header>
+  <div *ngIf="displayBackButton" id="backButton" (click)="backClicked()">
+    <fa-icon class="backIcon" [icon]="faArrowAltCircleLeft"></fa-icon>
+    <div class="backText">Back</div>
+  </div>
+  <img id="logo" (click)="logoClicked()" src="../assets/logo.png"/>
+</header>
+<router-outlet></router-outlet>
