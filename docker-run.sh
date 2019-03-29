@@ -23,7 +23,7 @@ if [[ "$API_TYPE" = "static" ]]; then
 fi
 
 if [[ ! -z "$USERNAME" ]] && [[ ! -z "$PASSWORD_HASH" ]]; then
-  echo "$USERNAME:$PASSWORD_HASH" >> /etc/nginx/conf.d/nginx_auth.htpasswd
+  echo "$USERNAME:'$PASSWORD_HASH'" >> /etc/nginx/conf.d/nginx_auth.htpasswd
 fi
 
 echo "Using config:"
