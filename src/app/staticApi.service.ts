@@ -78,21 +78,23 @@ export class StaticApiService implements ApiService {
       }
     }
 
-    lastDate = new Date(lastMission.missionDateTime);
-    missionCount++;
-    curLabelCount += lastMission.labels;
-    curOutCount += lastMission.outs;
-    daysAdded++;
-    totalLabels += curLabelCount / missionCount;
-    totalOuts += curOutCount / missionCount;
-    labelsSummaries.push({
-      date: lastDate,
-      dailyAverage: curLabelCount / missionCount
-    });
-    outsSummaries.push({
-      date: lastDate,
-      dailyAverage: curOutCount / missionCount
-    });
+    if (lastDate != null) {
+      lastDate = new Date(lastMission.missionDateTime);
+      missionCount++;
+      curLabelCount += lastMission.labels;
+      curOutCount += lastMission.outs;
+      daysAdded++;
+      totalLabels += curLabelCount / missionCount;
+      totalOuts += curOutCount / missionCount;
+      labelsSummaries.push({
+        date: lastDate,
+        dailyAverage: curLabelCount / missionCount
+      });
+      outsSummaries.push({
+        date: lastDate,
+        dailyAverage: curOutCount / missionCount
+      });
+    }
 
     return {
       storeId: store.storeId,
