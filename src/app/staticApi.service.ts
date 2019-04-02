@@ -131,19 +131,24 @@ export class StaticApiService implements ApiService {
     );
   }
 
-  createMissionSummaries(store: any, date: Date): MissionSummary[] {
+  createMissionSummaries(store: any, currentDay: Date): MissionSummary[] {
     const summaries: MissionSummary[] = [];
     for (let i = 0; i < store.Missions.length; i++) {
-      summaries.push({
-        missionId: store.Missions[i].missionId,
-        mission: store.Missions[i].mission,
-        storeId: store.storeId,
-        missionDateTime: new Date(store.Missions[i].missionDateTime),
-        outs: store.Missions[i].outs,
-        labels: store.Missions[i].labels,
-        spreads: 0,
-        aislesScanned: store.Missions[i].coveragePercent
-      });
+      const nextDay: Date = new Date(currentDay.toString());
+      nextDay.setDate(nextDay.getDate() + 1);
+      const missionDate: Date = new Date(store.Missions[i].missionDateTime);
+        if (missionDate >= currentDay && missionDate < nextDay) {
+        summaries.push({
+          missionId: store.Missions[i].missionId,
+          mission: store.Missions[i].mission,
+          storeId: store.storeId,
+          missionDateTime: new Date(store.Missions[i].missionDateTime),
+          outs: store.Missions[i].outs,
+          labels: store.Missions[i].labels,
+          spreads: 0,
+          aislesScanned: store.Missions[i].coveragePercent
+        });
+      }
     }
     return summaries;
   }
