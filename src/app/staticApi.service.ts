@@ -146,7 +146,7 @@ export class StaticApiService implements ApiService {
           outs: store.Missions[i].outs,
           labels: store.Missions[i].labels,
           spreads: 0,
-          aislesScanned: store.Missions[i].coveragePercent
+          aislesScanned: store.Missions[i].aislesScanned
         });
       }
     }
@@ -170,7 +170,7 @@ export class StaticApiService implements ApiService {
           outs: store.Missions[i].outs,
           labels: store.Missions[i].labels,
           spreads: 0,
-          aislesScanned: store.Missions[i].coveragePercent
+          aislesScanned: store.Missions[i].aislesScanned
         };
       }
     }
