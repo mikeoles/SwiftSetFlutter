@@ -1,3 +1,4 @@
 <div *ngFor="let store of stores">
-  <a [routerLink]="" (click)="viewStore(store.storeId)">{{store.storeName}}</a>
+  <a *ngIf="stores.length > 0" [routerLink]="" (click)="viewStore(store.storeId)">{{store.storeName}}</a>
 </div>
+<div *ngIf="stores.length === 0">No Stores Found</div>
