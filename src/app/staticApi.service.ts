@@ -242,7 +242,7 @@ export class StaticApiService implements ApiService {
         heightMeters: label.bounds.heightMeters,
       },
       section: label.section,
-      customFields: (label.customFields || []).map(cf => this.createCustomField(cf)),
+      customFields: (label.custom_fields || []).map(cf => this.createCustomField(cf)),
     };
   }
 
