@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { Params, ActivatedRoute } from '@angular/router';
+import { Params, ActivatedRoute, Router } from '@angular/router';
 import MissionSummary from '../missionSummary.model';
 import Store from '../store.model';
 import DaySummary from '../daySummary.model';
@@ -8,6 +8,8 @@ import { ApiService } from '../api.service';
 import { EnvironmentService } from '../environment.service';
 import { ODataApiService } from '../oDataApi.service';
 import { StaticApiService } from '../staticApi.service';
+import { BackService } from '../back.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-data-display',
@@ -27,12 +29,14 @@ export class StoreViewComponent implements OnInit {
     barTitleFormat: 'MMMM YYYY',
     dayNamesFormat: 'dd',
     addStyle: {'border': '2px #2baae1 solid', 'border-radius': '30px', 'color': '#2baae1', 'font-size' : '18px', 'height' : '45px',
-    'font-weight': 'bold', 'width': 'auto', 'text-align': 'center', 'cursor': 'pointer'
-  }
+      'font-weight': 'bold', 'width': 'auto', 'text-align': 'center', 'cursor': 'pointer'
+    }
   };
 
+  private backButtonSubscription: Subscription;
+
   constructor(@Inject('ApiService') private apiService: ApiService, private activatedRoute: ActivatedRoute,
-  private environmentService: EnvironmentService) {
+  private environmentService: EnvironmentService, private backService: BackService, private router: Router) {
     this.graphStartDate = new Date();
     this.graphStartDate.setDate(this.graphStartDate.getDate() - 13); // Two weeks ago by default
     this.graphStartDate.setHours(0, 0, 0, 0);
@@ -47,10 +51,11 @@ export class StoreViewComponent implements OnInit {
   }
 
   ngOnInit() {
-    const body = document.getElementsByTagName('body')[0];
-    body.setAttribute('style', 'position: relative; overflow: auto;');
-    const html = document.getElementsByTagName('html')[0];
-    html.setAttribute('style', 'position: relative; overflow: auto;');
+    this.backButtonSubscription = this.backService.backClickEvent().subscribe(() => this.goBack());
+  }
+
+  goBack(): void {
+    this.router.navigate(['/']);
   }
 
   changeGraphDates(event) {

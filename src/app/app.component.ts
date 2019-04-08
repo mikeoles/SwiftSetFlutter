@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
   }
 
   handleRouteChange = () => {
-    if (this.router.url.includes('mission') || this.router.url.includes('aisle')) {
+    if (this.router.url.includes('store')) {
       this.displayBackButton = true;
     } else {
       this.displayBackButton = false;
