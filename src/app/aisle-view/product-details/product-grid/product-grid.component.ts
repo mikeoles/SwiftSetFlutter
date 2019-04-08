@@ -104,7 +104,7 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
           fieldLowercase = 'labelName';
         }
         let cellValue: any = '';
-        if (fieldLowercase === 'price' && product.price) {
+        if (fieldLowercase === 'price' && (product.price === 0 || product.price)) {
           cellValue = `$${product.price.toFixed(2)}`;
         } else if (product[fieldLowercase]) {
           cellValue = product[fieldLowercase];

@@ -52,6 +52,7 @@ export class StaticApiService implements ApiService {
       if (missionDate >= startDate && missionDate < endDate) {
         if (lastMission === null) {
           lastMission = store.Missions[i];
+          lastDate = new Date(lastMission.missionDateTime);
         } else {
           lastDate = new Date(lastMission.missionDateTime);
           missionCount++;
@@ -146,7 +147,7 @@ export class StaticApiService implements ApiService {
           outs: store.Missions[i].outs,
           labels: store.Missions[i].labels,
           spreads: 0,
-          aislesScanned: store.Missions[i].coveragePercent
+          aislesScanned: store.Missions[i].aislesScanned
         });
       }
     }
@@ -170,7 +171,7 @@ export class StaticApiService implements ApiService {
           outs: store.Missions[i].outs,
           labels: store.Missions[i].labels,
           spreads: 0,
-          aislesScanned: store.Missions[i].coveragePercent
+          aislesScanned: store.Missions[i].aislesScanned
         };
       }
     }
@@ -183,7 +184,7 @@ export class StaticApiService implements ApiService {
   }
 
   getMission(storeId: number, missionId: number): Observable<Mission> {
-    return this.http.get('../data/Store-' + storeId + '/Mission-' + missionId + '/mission.json').pipe(
+    return this.http.get('../data/Store-' + storeId + '/Mission-' + missionId + '/mission-' + missionId + '.json').pipe(
       map<any, Mission>(missionJson => this.createMission(missionJson, storeId)),
     );
   }
@@ -199,13 +200,13 @@ export class StaticApiService implements ApiService {
   }
 
   getAisles(storeId: number, missionId: number): Observable<Aisle[]> {
-    return this.http.get('../data/Store-' + storeId + '/Mission-' + missionId + '/mission.json').pipe(
+    return this.http.get('../data/Store-' + storeId + '/Mission-' + missionId + '/mission-' + missionId + '.json').pipe(
       map<any, Aisle[]>(o => o.Aisles.map(a => this.createAisle(a, storeId, missionId))),
     );
   }
 
   getAisle(storeId: number, missionId: number, aisleId: number): Observable<any> {
-    return this.http.get('../data/Store-' + storeId + '/Mission-' + missionId + '/Aisle-' + aisleId + '/aisle.json').pipe(
+    return this.http.get('../data/Store-' + storeId + '/Mission-' + missionId + '/Aisle-' + aisleId + '/aisle-' + aisleId + '.json').pipe(
       map<any, Aisle>(aisleJson => this.createAisle(aisleJson, storeId, missionId)),
     );
   }
@@ -214,7 +215,7 @@ export class StaticApiService implements ApiService {
     return {
       aisleId: aisle.aisleId,
       aisleName: aisle.aisleName,
-      panoramaUrl: '../data/Store-' + storeId + '/Mission-' + missionId + '/Aisle-' + aisle.aisleId + '/pano.jpg',
+      panoramaUrl: '../data/Store-' + storeId + '/' + aisle.panoramaUrl,
       zone: aisle.zone,
       labels: (aisle.labels || []).map(l => this.createLabel(l)),
       outs: (aisle.outs || []).map(l => this.createLabel(l)),
@@ -232,17 +233,17 @@ export class StaticApiService implements ApiService {
       price: label.price,
       department: label.department,
       bounds: {
-        top: label.top,
-        left: label.left,
-        width: label.width,
-        height: label.height,
-        topMeters: label.topMeters,
-        leftMeters: label.leftMeters,
-        widthMeters: label.widthMeters,
-        heightMeters: label.heightMeters,
+        top: label.bounds.top,
+        left: label.bounds.left,
+        width: label.bounds.width,
+        height: label.bounds.height,
+        topMeters: label.bounds.topMeters,
+        leftMeters: label.bounds.leftMeters,
+        widthMeters: label.bounds.widthMeters,
+        heightMeters: label.bounds.heightMeters,
       },
       section: label.section,
-      customFields: (label.customFields || []).map(cf => this.createCustomField(cf)),
+      customFields: (label.custom_fields || []).map(cf => this.createCustomField(cf)),
     };
   }
 
