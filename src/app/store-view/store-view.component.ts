@@ -47,6 +47,10 @@ export class StoreViewComponent implements OnInit {
   }
 
   ngOnInit() {
+    const body = document.getElementsByTagName('body')[0];
+    body.setAttribute('style', 'position: relative; overflow: auto;');
+    const html = document.getElementsByTagName('html')[0];
+    html.setAttribute('style', 'position: relative; overflow: auto;');
   }
 
   changeGraphDates(event) {
