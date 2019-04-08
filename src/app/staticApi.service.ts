@@ -52,6 +52,7 @@ export class StaticApiService implements ApiService {
       if (missionDate >= startDate && missionDate < endDate) {
         if (lastMission === null) {
           lastMission = store.Missions[i];
+          lastDate = new Date(lastMission.missionDateTime);
         } else {
           lastDate = new Date(lastMission.missionDateTime);
           missionCount++;
