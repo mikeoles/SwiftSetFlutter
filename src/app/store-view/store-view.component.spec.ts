@@ -11,6 +11,7 @@ import DaySummary from '../daySummary.model';
 import Store from '../store.model';
 import { NgDatepickerModule } from 'ng2-datepicker';
 import { EnvironmentService } from '../environment.service';
+import { RouterTestingModule } from '@angular/router/testing';
 
 @Component({selector: 'app-daily-graphs', template: ''})
 class AppDailyGraphsStubComponent {
@@ -58,7 +59,8 @@ describe('StoreViewComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
-        NgDatepickerModule
+        NgDatepickerModule,
+        RouterTestingModule.withRoutes([]),
       ],
       declarations: [
         StoreViewComponent,

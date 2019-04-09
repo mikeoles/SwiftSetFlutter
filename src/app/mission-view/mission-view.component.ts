@@ -37,6 +37,10 @@ export class MissionViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    const body = document.getElementsByTagName('body')[0];
+    body.setAttribute('style', 'position: relative; overflow: auto;');
+    const html = document.getElementsByTagName('html')[0];
+    html.setAttribute('style', 'position: relative; overflow: auto;');
     this.backButtonSubscription = this.backService.backClickEvent().subscribe(() => this.goBack());
     let missionId: number, storeId: number;
     this.activatedRoute.params.forEach((params: Params) => {
