@@ -20,11 +20,11 @@
   border-bottom: 1px solid black;
 }
 
-.missionDate span{
+.headerInfo span{
   font-weight: normal;
 }
 
-.exportButton, .missionDate{
+.exportButton{
   display: inline-block;
 }
 
@@ -33,25 +33,15 @@ button{
 }
 
 .exportButton{
+  margin-top: 20px;
   float: right;
-  background-color: white;
   border-radius: 25px;
-  color: $primary;
-  font-size: 18px;
-  font-weight: bold;
-  text-align: left;
-  border: 3px $primary solid;
-  width: auto;
-  height: 55px;
-  text-align: center;
   padding: 1px 20px;
 }
 
 button > img,
 button > span {
   vertical-align: middle;
-  padding: 0px;
-  display: inline-block;
 }
 
 button:focus{
