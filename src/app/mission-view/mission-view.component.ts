@@ -57,11 +57,6 @@ export class MissionViewComponent implements OnInit, OnDestroy {
         this.missionSummary = missionSummary;
         this.apiService.getAisles(mission.storeId, this.mission.missionId).subscribe(aisles => {
           this.aisles = aisles;
-          for (let i = 0; i < this.aisles.length; i++) {
-            this.apiService.getAisle(mission.storeId, this.mission.missionId, this.aisles[i].aisleId).subscribe(aisle => {
-              this.aisles[i] = aisle;
-            });
-          }
         });
         const twoWeeksAgo: Date = new Date();
         twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 13);
