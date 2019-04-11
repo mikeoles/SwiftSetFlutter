@@ -94,8 +94,14 @@ export class MissionViewComponent implements OnInit, OnDestroy {
     const exportFields: string[] = this.environment.config.exportFields;
     let csvContent = 'data:text/csv;charset=utf-8,%EF%BB%BF';
     csvContent += encodeURIComponent(exportFields.join(',')) + '\n';
+    this.addAisles(0, exportType, exportFields, modalId, csvContent);
+  }
 
-    for (let i = 0; i < this.aisles.length; i++) {
+  addAisles(i: number, exportType: string, exportFields: string[], modalId: string, csvContent: string) {
+    if (i === this.aisles.length) {
+      this.exportFile(exportType, csvContent);
+      this.modalService.close(modalId);
+    } else {
       this.apiService.getAisle(this.mission.storeId, this.mission.missionId, this.aisles[i].aisleId).subscribe(aisle => {
         const outs: Label[] = aisle.outs;
         const labels: Label[]  = aisle.labels;
@@ -130,10 +136,12 @@ export class MissionViewComponent implements OnInit, OnDestroy {
           }
           csvContent += encodeURIComponent(row.join(',')) + '\n';
         }
-        this.modalService.close(modalId);
+        this.addAisles(i + 1, exportType, exportFields, modalId, csvContent);
       });
     }
+  }
 
+  exportFile(exportType: string, csvContent: string) {
     const link = document.createElement('a');
     link.setAttribute('target', '_blank');
     link.setAttribute('href', csvContent);
