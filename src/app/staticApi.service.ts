@@ -202,6 +202,7 @@ export class StaticApiService implements ApiService {
   getAisles(storeId: number, missionId: number): Observable<Aisle[]> {
     return this.http.get('../assets/data/Store-' + storeId + '/Mission-' + missionId + '/mission-' + missionId + '.json').pipe(
       map<any, Aisle[]>(o => o.Aisles.map(a => this.createAisle(a, storeId, missionId))),
+      map(aisles => aisles.sort((a, b) => a.aisleName.localeCompare(b.aisleName))),
     );
   }
 
