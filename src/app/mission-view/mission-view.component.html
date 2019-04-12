@@ -2,7 +2,7 @@
   <button class="exportButton" (click)="openModal('export-popup')"><img class="exportImage" src="../../assets/export-blue.png"> <span>Export</span></button>
   <div *ngIf="store" class="missionName">{{store.storeName}}</div>
   <div class="headerInfo"> Mission: <span> {{mission.missionDateTime | date: 'yyyy-MM-dd HH:mm:ss'}}</span></div>
-  <div *ngIf="missionSummary" class="headerInfo"> AislesScanned: <span> {{missionSummary.aislesScanned }}</span></div>
+  <div *ngIf="missionSummary" class="headerInfo"> Aisles Scanned: <span> {{missionSummary.aislesScanned }}</span></div>
 
 </div>
 <app-export-modal id="export-popup">
