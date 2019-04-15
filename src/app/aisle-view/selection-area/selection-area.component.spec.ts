@@ -29,11 +29,16 @@ describe('SelectionAreaComponent', () => {
     { missionId: 2, missionName: '2222', storeId: 1, createDateTime: new Date('2001-01-01'), missionDateTime: new Date('2001-01-01') },
   ];
   const aisles: Aisle[] = [
-    { aisleId: 1, aisleName: '1111', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '', coveragePercent: 0  },
-    { aisleId: 2, aisleName: '2222', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '', coveragePercent: 0  },
-    { aisleId: 3, aisleName: '3333', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '', coveragePercent: 0  },
-    { aisleId: 4, aisleName: '4444', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '', coveragePercent: 0  },
-    { aisleId: 5, aisleName: '5555', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '', coveragePercent: 0  },
+    { aisleId: 1, aisleName: '1111', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '',
+    coveragePercent: 0, outsCount: 0, labelsCount: 0  },
+    { aisleId: 2, aisleName: '2222', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '',
+    coveragePercent: 0, outsCount: 0, labelsCount: 0  },
+    { aisleId: 3, aisleName: '3333', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '',
+    coveragePercent: 0, outsCount: 0, labelsCount: 0  },
+    { aisleId: 4, aisleName: '4444', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '',
+    coveragePercent: 0, outsCount: 0, labelsCount: 0  },
+    { aisleId: 5, aisleName: '5555', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '',
+    coveragePercent: 0, outsCount: 0, labelsCount: 0  },
   ];
 
   beforeEach(async(() => {

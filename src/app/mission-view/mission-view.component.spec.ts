@@ -30,6 +30,7 @@ describe('MissionViewComponent', () => {
   let component: MissionViewComponent;
   let fixture: ComponentFixture<MissionViewComponent>;
   let apiService: jasmine.SpyObj<ApiService>;
+  let originalTimeout;
 
   const labels: Label[] = [
     { labelId: 1, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0,
@@ -79,9 +80,15 @@ describe('MissionViewComponent', () => {
   }));
 
   beforeEach(() => {
+    originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
     fixture = TestBed.createComponent(MissionViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
   });
 
   it('should create', () => {

@@ -218,7 +218,9 @@ export class StaticApiService implements ApiService {
       aisleName: aisle.aisleName,
       panoramaUrl: '../data/Store-' + storeId + '/' + aisle.panoramaUrl,
       zone: aisle.zone,
+      labelsCount: aisle.labelsCount,
       labels: (aisle.labels || []).map(l => this.createLabel(l)),
+      outsCount: aisle.outsCount,
       outs: (aisle.outs || []).map(l => this.createLabel(l)),
       spreads: [],
       coveragePercent: aisle.coveragePercent

@@ -29,7 +29,9 @@ export class ODataApiService implements ApiService {
       aisleName: `${aisle.Zone}${aisle.Aisle}`,
       panoramaUrl: `${aisle.FilePath}`,
       zone: aisle.Zone,
+      labelsCount: aisle.LabelsCount,
       labels: (aisle.Labels || []).map(l => this.createLabel(l)),
+      outsCount: aisle.OutsCount,
       outs: (aisle.Outs || []).map(l => this.createLabel(l)),
       spreads: [],
       coveragePercent: aisle.CoveragePercent
