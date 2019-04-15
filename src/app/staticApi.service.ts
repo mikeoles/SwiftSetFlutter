@@ -233,6 +233,7 @@ export class StaticApiService implements ApiService {
       productId: label.productId,
       price: label.price,
       department: label.department,
+      onHand: label.onHand,
       bounds: {
         top: label.bounds.top,
         left: label.bounds.left,

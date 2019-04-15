@@ -7,6 +7,7 @@ export default class Label {
   productId: string;
   price: number;
   department: string;
+  onHand: number;
   customFields: Array<CustomField>;
   bounds: {
     top: number;

@@ -107,6 +107,9 @@ export class MissionViewComponent implements OnInit, OnDestroy {
       const exportData: Label[] = exportType === 'labels' ? labels : outs;
       for (let j = 0; j < exportData.length; j++) {
         const label: Label = exportData[j];
+        if (exportType === 'onhand' && label.onHand < 1) {
+          continue;
+        }
         let row = [];
         for (let k = 0; k < exportFields.length; k++) {
           const field: string = exportFields[k];
