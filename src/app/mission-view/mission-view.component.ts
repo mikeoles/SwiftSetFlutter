@@ -27,13 +27,14 @@ export class MissionViewComponent implements OnInit, OnDestroy {
   averageStoreOuts: number;
   averageStoreLabels: number;
   service: ApiService;
+  exportOnHand = false;
 
   private backButtonSubscription: Subscription;
 
   constructor(@Inject('ApiService') private apiService: ApiService, private activatedRoute: ActivatedRoute, private router: Router,
     private modalService: ModalService, private backService: BackService, private environment: EnvironmentService,
     public dataService: DataService) {
-
+      this.exportOnHand = environment.config.onHand;
   }
 
   ngOnInit() {
@@ -108,6 +109,9 @@ export class MissionViewComponent implements OnInit, OnDestroy {
         const exportData: Label[] = exportType === 'labels' ? labels : outs;
         for (let j = 0; j < exportData.length; j++) {
           const label: Label = exportData[j];
+          if (exportType === 'onhand' && (label.onHand === null || label.onHand < 1)) {
+            continue;
+          }
           let row = [];
           for (let k = 0; k < exportFields.length; k++) {
             const field: string = exportFields[k];

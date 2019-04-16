@@ -46,7 +46,7 @@
       <div class="modal-body">
           <div class="exportTitle">Select File To Export</div>
           <button (click)="exportAisle('outs','export-popup')">Outs</button>
-          <button (click)="exportAisle('onhand','export-popup')">On Hand</button>
+          <button *ngIf="exportOnHand" (click)="exportAisle('onhand','export-popup')">On Hand</button>
           <button (click)="exportAisle('labels','export-popup')">Labels</button>
           <button class="cancel" (click)="closeModal('export-popup');">Cancel</button>
       </div>
