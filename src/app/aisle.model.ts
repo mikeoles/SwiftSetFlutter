@@ -7,6 +7,8 @@ export default class Aisle {
   coveragePercent: number;
   zone: string;
   labels: Label[];
+  labelsCount: number;
   outs: Label[];
+  outsCount: number;
   spreads: Label[];
 }

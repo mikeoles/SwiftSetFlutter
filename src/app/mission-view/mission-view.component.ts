@@ -57,11 +57,6 @@ export class MissionViewComponent implements OnInit, OnDestroy {
         this.missionSummary = missionSummary;
         this.apiService.getAisles(mission.storeId, this.mission.missionId).subscribe(aisles => {
           this.aisles = aisles;
-          for (let i = 0; i < this.aisles.length; i++) {
-            this.apiService.getAisle(mission.storeId, this.mission.missionId, this.aisles[i].aisleId).subscribe(aisle => {
-              this.aisles[i] = aisle;
-            });
-          }
         });
         const twoWeeksAgo: Date = new Date();
         twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 13);
@@ -99,48 +94,54 @@ export class MissionViewComponent implements OnInit, OnDestroy {
     const exportFields: string[] = this.environment.config.exportFields;
     let csvContent = 'data:text/csv;charset=utf-8,%EF%BB%BF';
     csvContent += encodeURIComponent(exportFields.join(',')) + '\n';
+    this.addAisles(0, exportType, exportFields, modalId, csvContent);
+  }
 
-    for (let i = 0; i < this.aisles.length; i++) {
-      const aisle = this.aisles[i];
-      const outs: Label[] = aisle.outs;
-      const labels: Label[]  = aisle.labels;
-      const exportData: Label[] = exportType === 'labels' ? labels : outs;
-      for (let j = 0; j < exportData.length; j++) {
-        const label: Label = exportData[j];
-        if (exportType === 'onhand' && label.onHand < 1) {
-          continue;
-        }
-        let row = [];
-        for (let k = 0; k < exportFields.length; k++) {
-          const field: string = exportFields[k];
-          let fieldLowercase = field.charAt(0).toLowerCase() + field.slice(1);
-          fieldLowercase = fieldLowercase.replace(/\s/g, '');
-          if (fieldLowercase === 'description') {
-            fieldLowercase = 'labelName';
-          }
-          let cellValue = '';
-          if (label[fieldLowercase]) {
-            cellValue = label[fieldLowercase];
-          } else if (aisle[fieldLowercase]) {
-            cellValue = aisle[fieldLowercase];
-          } else if (this.mission[fieldLowercase]) {
-            cellValue = this.mission[fieldLowercase];
-          } else if (label.bounds[fieldLowercase]) {
-            cellValue = label.bounds[fieldLowercase];
-          } else {
-            for (let l = 0; l < label.customFields.length; l++) {
-              if (label.customFields[l].name === field) {
-                cellValue = label.customFields[l].value;
+  addAisles(i: number, exportType: string, exportFields: string[], modalId: string, csvContent: string) {
+    if (i === this.aisles.length) {
+      this.exportFile(exportType, csvContent);
+      this.modalService.close(modalId);
+    } else {
+      this.apiService.getAisle(this.mission.storeId, this.mission.missionId, this.aisles[i].aisleId).subscribe(aisle => {
+        const outs: Label[] = aisle.outs;
+        const labels: Label[]  = aisle.labels;
+        const exportData: Label[] = exportType === 'labels' ? labels : outs;
+        for (let j = 0; j < exportData.length; j++) {
+          const label: Label = exportData[j];
+          let row = [];
+          for (let k = 0; k < exportFields.length; k++) {
+            const field: string = exportFields[k];
+            let fieldLowercase = field.charAt(0).toLowerCase() + field.slice(1);
+            fieldLowercase = fieldLowercase.replace(/\s/g, '');
+            if (fieldLowercase === 'description') {
+              fieldLowercase = 'labelName';
+            }
+            let cellValue = '';
+            if (label[fieldLowercase]) {
+              cellValue = label[fieldLowercase];
+            } else if (aisle[fieldLowercase]) {
+              cellValue = aisle[fieldLowercase];
+            } else if (this.mission[fieldLowercase]) {
+              cellValue = this.mission[fieldLowercase];
+            } else if (label.bounds[fieldLowercase]) {
+              cellValue = label.bounds[fieldLowercase];
+            } else {
+              for (let l = 0; l < label.customFields.length; l++) {
+                if (label.customFields[l].name === field) {
+                  cellValue = label.customFields[l].value;
+                }
               }
             }
+            row = row.concat(cellValue);
           }
-          row = row.concat(cellValue);
+          csvContent += encodeURIComponent(row.join(',')) + '\n';
         }
-        csvContent += encodeURIComponent(row.join(',')) + '\n';
-      }
-      this.modalService.close(modalId);
+        this.addAisles(i + 1, exportType, exportFields, modalId, csvContent);
+      });
     }
+  }
 
+  exportFile(exportType: string, csvContent: string) {
     const link = document.createElement('a');
     link.setAttribute('target', '_blank');
     link.setAttribute('href', csvContent);
