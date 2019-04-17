@@ -9,6 +9,7 @@ import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import Label from '../label.model';
 import { ModalService } from '../modal/modal.service';
+import { EnvironmentService } from '../environment.service';
 
 @Component({selector: 'app-mission-stats', template: ''})
 class AppMissionStatsStubComponent {
@@ -66,7 +67,10 @@ describe('MissionViewComponent', () => {
         { provide: ActivatedRoute, useValue: {
           params: [{ missionId: 1 }, { storeId: 1 }],
         }},
-        { provide: ModalService}
+        { provide: ModalService},
+        { provide: EnvironmentService, useValue: { config: {
+          onHand: true,
+        }}}
       ],
     })
     .compileComponents();
@@ -84,6 +88,7 @@ describe('MissionViewComponent', () => {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
     fixture = TestBed.createComponent(MissionViewComponent);
     component = fixture.componentInstance;
+    component.exportOnHand = false;
     fixture.detectChanges();
   });
 
