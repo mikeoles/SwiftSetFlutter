@@ -9,6 +9,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DatePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { ModalService } from 'src/app/modal/modal.service';
+import { EnvironmentService } from 'src/app/environment.service';
 
 @Component({selector: 'app-export-modal', template: ''})
 class ModalComponent {
@@ -29,11 +30,16 @@ describe('SelectionAreaComponent', () => {
     { missionId: 2, missionName: '2222', storeId: 1, createDateTime: new Date('2001-01-01'), missionDateTime: new Date('2001-01-01') },
   ];
   const aisles: Aisle[] = [
-    { aisleId: 1, aisleName: '1111', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '', coveragePercent: 0  },
-    { aisleId: 2, aisleName: '2222', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '', coveragePercent: 0  },
-    { aisleId: 3, aisleName: '3333', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '', coveragePercent: 0  },
-    { aisleId: 4, aisleName: '4444', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '', coveragePercent: 0  },
-    { aisleId: 5, aisleName: '5555', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '', coveragePercent: 0  },
+    { aisleId: 1, aisleName: '1111', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '',
+    coveragePercent: 0, outsCount: 0, labelsCount: 0  },
+    { aisleId: 2, aisleName: '2222', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '',
+    coveragePercent: 0, outsCount: 0, labelsCount: 0  },
+    { aisleId: 3, aisleName: '3333', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '',
+    coveragePercent: 0, outsCount: 0, labelsCount: 0  },
+    { aisleId: 4, aisleName: '4444', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '',
+    coveragePercent: 0, outsCount: 0, labelsCount: 0  },
+    { aisleId: 5, aisleName: '5555', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '',
+    coveragePercent: 0, outsCount: 0, labelsCount: 0  },
   ];
 
   beforeEach(async(() => {
@@ -41,7 +47,10 @@ describe('SelectionAreaComponent', () => {
       imports: [FormsModule, FontAwesomeModule],
       declarations: [ SelectionAreaComponent, ModalComponent ],
       providers: [
-        { provide: ModalService}
+        { provide: ModalService},
+        { provide: EnvironmentService, useValue: { config: {
+          onHand: true,
+        }}}
       ]
     })
     .compileComponents();
@@ -51,6 +60,7 @@ describe('SelectionAreaComponent', () => {
     component = fixture.componentInstance;
     component.showAisles = true;
     component.showMissions = true;
+    component.exportOnHand = false;
     component.missions = missions;
     component.aisles = aisles;
     component.selectedMission = missions[0];

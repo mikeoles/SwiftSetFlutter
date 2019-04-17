@@ -29,7 +29,9 @@ export class ODataApiService implements ApiService {
       aisleName: `${aisle.Zone}${aisle.Aisle}`,
       panoramaUrl: `${aisle.FilePath}`,
       zone: aisle.Zone,
+      labelsCount: aisle.LabelsCount,
       labels: (aisle.Labels || []).map(l => this.createLabel(l)),
+      outsCount: aisle.OutsCount,
       outs: (aisle.Outs || []).map(l => this.createLabel(l)),
       spreads: [],
       coveragePercent: aisle.CoveragePercent
@@ -37,7 +39,7 @@ export class ODataApiService implements ApiService {
   }
 
   createLabel(label: any): Label {
-    let dept = '', desc = null, itemId = null, price = null, customFields = null, barcode = null;
+    let dept = '', desc = null, itemId = null, price = null, customFields = null, barcode = null, onHand = null;
     if (label.Product) {
       for (let i = 0; i < label.Product.CustomFields.length; i++) {
         const field = label.Product.CustomFields[i];
@@ -49,6 +51,7 @@ export class ODataApiService implements ApiService {
       desc = label.Product.Description;
       itemId = label.Product.ItemId;
       price = label.Product.Price;
+      onHand = label.Product.OnHand;
       customFields = label.Product.CustomFields;
     }
 
@@ -59,6 +62,7 @@ export class ODataApiService implements ApiService {
       productId: itemId || '000000',
       price: price || 0.0,
       department: dept,
+      onHand: onHand,
       bounds: {
         top: label.Z1 - 10,
         left: label.X1 - 10,
