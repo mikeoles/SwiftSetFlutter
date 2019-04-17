@@ -16,6 +16,7 @@ import { EnvironmentService } from 'src/app/environment.service';
 export class SelectionAreaComponent implements OnInit, OnChanges {
   showMissions = false;
   showAisles = false;
+  exportOnHand = false;
   @Input() missions: Mission[];
   @Input() aisles: Aisle[];
   @Input() selectedMission: Mission;
@@ -31,6 +32,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   faAngleUp = faAngleUp;
 
   constructor(private eRef: ElementRef, private modalService: ModalService, private environment: EnvironmentService) {
+    this.exportOnHand = environment.config.onHand;
   }
 
   ngOnInit() {
@@ -106,6 +108,9 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
     const exportData: Label[] = exportType === 'labels' ? this.labels : this.outs;
     for (let j = 0; j < exportData.length; j++) {
       const label: Label = exportData[j];
+      if (exportType === 'onhand' && (label.onHand === null || label.onHand < 1)) {
+        continue;
+      }
       let row = [];
       for (let k = 0; k < exportFields.length; k++) {
         const field: string = exportFields[k];

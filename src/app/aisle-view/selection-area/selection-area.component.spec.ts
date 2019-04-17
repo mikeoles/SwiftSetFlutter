@@ -9,6 +9,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DatePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { ModalService } from 'src/app/modal/modal.service';
+import { EnvironmentService } from 'src/app/environment.service';
 
 @Component({selector: 'app-export-modal', template: ''})
 class ModalComponent {
@@ -46,7 +47,10 @@ describe('SelectionAreaComponent', () => {
       imports: [FormsModule, FontAwesomeModule],
       declarations: [ SelectionAreaComponent, ModalComponent ],
       providers: [
-        { provide: ModalService}
+        { provide: ModalService},
+        { provide: EnvironmentService, useValue: { config: {
+          onHand: true,
+        }}}
       ]
     })
     .compileComponents();
@@ -56,6 +60,7 @@ describe('SelectionAreaComponent', () => {
     component = fixture.componentInstance;
     component.showAisles = true;
     component.showMissions = true;
+    component.exportOnHand = false;
     component.missions = missions;
     component.aisles = aisles;
     component.selectedMission = missions[0];
