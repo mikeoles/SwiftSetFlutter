@@ -93,8 +93,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
 
   exportMission(exportType: string, modalId: string) {
     const exportFields: string[] = this.environment.config.exportFields;
-    let csvContent = 'data:text/csv;charset=utf-8,%EF%BB%BF';
-    csvContent += encodeURIComponent(exportFields.join(',')) + '\n';
+    const csvContent = exportFields.join(',') + '\n';
     this.addAisles(0, exportType, exportFields, modalId, csvContent);
   }
 
@@ -138,7 +137,9 @@ export class MissionViewComponent implements OnInit, OnDestroy {
             }
             row = row.concat(cellValue);
           }
-          csvContent += encodeURIComponent(row.join(',')) + '\n';
+          for (let m = 0; m < 40000; m++) {
+            csvContent += row.join(',') + '\n';
+          }
         }
         this.addAisles(i + 1, exportType, exportFields, modalId, csvContent);
       });
@@ -146,9 +147,11 @@ export class MissionViewComponent implements OnInit, OnDestroy {
   }
 
   exportFile(exportType: string, csvContent: string) {
+    const csvData = new Blob([csvContent], { type: 'text/csv;charset=utf-8,%EF%BB%BF' });
+    const csvUrl = URL.createObjectURL(csvData);
     const link = document.createElement('a');
     link.setAttribute('target', '_blank');
-    link.setAttribute('href', csvContent);
+    link.setAttribute('href', csvUrl);
     link.setAttribute('download', 'Mission-' + this.mission.missionName + '-' + exportType + '.csv');
     document.body.appendChild(link);
     link.click();
