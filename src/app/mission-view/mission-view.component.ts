@@ -137,9 +137,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
             }
             row = row.concat(cellValue);
           }
-          for (let m = 0; m < 40000; m++) {
-            csvContent += row.join(',') + '\n';
-          }
+          csvContent += row.join(',') + '\n';
         }
         this.addAisles(i + 1, exportType, exportFields, modalId, csvContent);
       });
