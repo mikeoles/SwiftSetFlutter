@@ -30,6 +30,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   @Output() resetPano = new EventEmitter();
   faAngleDown = faAngleDown;
   faAngleUp = faAngleUp;
+  currentlyExporting = false;
 
   constructor(private eRef: ElementRef, private modalService: ModalService, private environment: EnvironmentService) {
     this.exportOnHand = environment.config.onHand;
@@ -101,6 +102,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   }
 
   exportAisle(exportType: string, modalId: string) {
+    this.currentlyExporting = true;
     const exportFields: string[] = this.environment.config.exportFields;
     let csvContent = exportFields.join(',') + '\n';
 
@@ -149,9 +151,11 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
     document.body.appendChild(link);
     link.click();
     link.remove();
+    this.currentlyExporting = false;
   }
 
   exportPDF() {
+    this.currentlyExporting = true;
     const doc = new jsPDF('landscape');
 
     const img = new Image();
@@ -168,5 +172,6 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
     doc.addPage();
     doc.autoTable({head: head, body: body, startY: 5});
     doc.save(this.selectedMission.missionName + '-' + this.selectedAisle.aisleName + '.pdf');
+    this.currentlyExporting = false;
   }
 }

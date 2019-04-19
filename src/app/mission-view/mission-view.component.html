@@ -3,15 +3,14 @@
   <div *ngIf="store" class="missionName">{{store.storeName}}</div>
   <div class="headerInfo"> Mission: <span> {{mission.missionDateTime | date: 'yyyy-MM-dd HH:mm:ss'}}</span></div>
   <div *ngIf="missionSummary" class="headerInfo"> Aisles Scanned: <span> {{missionSummary.aislesScanned }}</span></div>
-
 </div>
 <app-export-modal id="export-popup">
   <div class="modal">
-      <div class="modal-body">
+      <div class="modal-body" [ngClass]="{'disabled': currentlyExporting}">
           <div class="exportTitle">Select File To Export</div>
-          <button (click)="exportMission('outs','export-popup')">Outs</button>
-          <button *ngIf="exportOnHand" (click)="exportMission('onhand','export-popup')">On Hand</button>
-          <button (click)="exportMission('labels','export-popup')">Labels</button>
+          <button [disabled]="currentlyExporting" (click)="exportMission('outs','export-popup')">Outs</button>
+          <button *ngIf="exportOnHand" [disabled]="currentlyExporting" (click)="exportMission('onhand','export-popup')">On Hand</button>
+          <button [disabled]="currentlyExporting" (click)="exportMission('labels','export-popup')">Labels</button>
           <button class="cancel" (click)="closeModal('export-popup');">Cancel</button>
       </div>
   </div>
