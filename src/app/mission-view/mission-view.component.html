@@ -11,7 +11,7 @@
           <button [disabled]="currentlyExporting" (click)="exportMission('outs','export-popup')">Outs</button>
           <button *ngIf="exportOnHand" [disabled]="currentlyExporting" (click)="exportMission('onhand','export-popup')">On Hand</button>
           <button [disabled]="currentlyExporting" (click)="exportMission('labels','export-popup')">Labels</button>
-          <button class="cancel" (click)="closeModal('export-popup');">Cancel</button>
+          <button class="cancel" (click)="closeModal('export-popup');">Close</button>
       </div>
   </div>
   <div class="modal-background"></div>
