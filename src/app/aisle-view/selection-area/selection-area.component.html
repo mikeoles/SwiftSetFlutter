@@ -43,11 +43,11 @@
 </div>
 <app-export-modal id="export-popup">
   <div class="modal">
-      <div class="modal-body">
+      <div class="modal-body" [ngClass]="{'disabled': currentlyExporting}">
           <div class="exportTitle">Select File To Export</div>
-          <button (click)="exportAisle('outs','export-popup')">Outs</button>
-          <button *ngIf="exportOnHand" (click)="exportAisle('onhand','export-popup')">On Hand</button>
-          <button (click)="exportAisle('labels','export-popup')">Labels</button>
+          <button [disabled]="currentlyExporting" (click)="exportAisle('outs','export-popup')">Outs</button>
+          <button *ngIf="exportOnHand" [disabled]="currentlyExporting" (click)="exportAisle('onhand','export-popup')">On Hand</button>
+          <button [disabled]="currentlyExporting" (click)="exportAisle('labels','export-popup')">Labels</button>
           <button class="cancel" (click)="closeModal('export-popup');">Cancel</button>
       </div>
   </div>

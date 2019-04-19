@@ -22,6 +22,18 @@ button{
     border: 3px $primary solid;
 }
 
+.disabled {
+  button{
+    color: $greyBorder !important;
+    border: 3px $greyBorder solid !important;
+    cursor: progress !important;
+  }
+  .cancel{
+    cursor: pointer !important;
+  }
+  cursor: progress !important;
+}
+
 .rightButton{
   float: right;
   text-align: center;

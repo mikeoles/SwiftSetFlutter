@@ -28,6 +28,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
   averageStoreLabels: number;
   service: ApiService;
   exportOnHand = false;
+  currentlyExporting = false;
 
   private backButtonSubscription: Subscription;
 
@@ -92,6 +93,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
   }
 
   exportMission(exportType: string, modalId: string) {
+    this.currentlyExporting = true;
     const exportFields: string[] = this.environment.config.exportFields;
     const csvContent = exportFields.join(',') + '\n';
     this.addAisles(0, exportType, exportFields, modalId, csvContent);
@@ -154,5 +156,6 @@ export class MissionViewComponent implements OnInit, OnDestroy {
     document.body.appendChild(link);
     link.click();
     link.remove();
+    this.currentlyExporting = false;
   }
 }

@@ -57,3 +57,15 @@ button:focus{
   margin-left: 40px;
   margin-right: 40px;
 }
+
+.disabled {
+  button{
+    color: $greyBorder !important;
+    border: 3px $greyBorder solid !important;
+    cursor: progress !important;
+  }
+  .cancel{
+    cursor: pointer !important;
+  }
+  cursor: progress !important;
+}
