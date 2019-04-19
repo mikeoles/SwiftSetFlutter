@@ -31,27 +31,32 @@ describe('AisleViewComponent', () => {
   let apiService: jasmine.SpyObj<ApiService>;
 
   const missions: Mission[] = [
-    { missionId: 1, missionName: '1111', storeId: '1', createDateTime: new Date('2018-12-12'), missionDateTime: new Date('2018-12-12') },
-    { missionId: 2, missionName: '2222', storeId: '1', createDateTime: new Date('2001-01-01'), missionDateTime: new Date('2001-01-01') },
+    { missionId: 1, missionName: '1111', storeId: 1, createDateTime: new Date('2018-12-12'), missionDateTime: new Date('2018-12-12') },
+    { missionId: 2, missionName: '2222', storeId: 1, createDateTime: new Date('2001-01-01'), missionDateTime: new Date('2001-01-01') },
   ];
   const labels: Label[] = [
     { labelId: 1, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 }, department: '', section: '', customFields: [] },
+      topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 }, department: '', section: '', customFields: [], onHand: 0 },
     { labelId: 2, labelName: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0,
-      height: 0, topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 }, department: '', section: '', customFields: [] },
+      height: 0, topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 }, department: '', section: '', customFields: [], onHand: 0 },
     { labelId: 3, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 }, department: '', section: '', customFields: [] },
+      topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 }, department: '', section: '', customFields: [], onHand: 0 },
     { labelId: 4, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 }, department: '', section: '', customFields: [] },
+      topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 }, department: '', section: '', customFields: [], onHand: 0 },
     { labelId: 5, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 }, department: '', section: '', customFields: [] },
+      topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 }, department: '', section: '', customFields: [], onHand: 0 },
   ];
   const aisles: Aisle[] = [
-    { aisleId: 1, aisleName: '1111', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '', coveragePercent: 0 },
-    { aisleId: 2, aisleName: '2222', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '', coveragePercent: 0  },
-    { aisleId: 3, aisleName: '3333', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '', coveragePercent: 0  },
-    { aisleId: 4, aisleName: '4444', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '', coveragePercent: 0  },
-    { aisleId: 5, aisleName: '5555', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '', coveragePercent: 0  },
+    { aisleId: 1, aisleName: '1111', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '',
+      coveragePercent: 0, outsCount: 0, labelsCount: 0 },
+    { aisleId: 2, aisleName: '2222', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '',
+      coveragePercent: 0, outsCount: 0, labelsCount: 0  },
+    { aisleId: 3, aisleName: '3333', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '',
+      coveragePercent: 0, outsCount: 0, labelsCount: 0  },
+    { aisleId: 4, aisleName: '4444', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '',
+      coveragePercent: 0, outsCount: 0, labelsCount: 0  },
+    { aisleId: 5, aisleName: '5555', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '',
+      coveragePercent: 0, outsCount: 0, labelsCount: 0  },
   ];
 
 
@@ -75,14 +80,15 @@ describe('AisleViewComponent', () => {
         ModalComponent,
       ],
       providers: [
-        { provide: ApiService, useValue: apiServiceSpy },
+        { provide: 'ApiService', useValue: apiServiceSpy },
         { provide: ModalService},
         { provide: Router },
         { provide: Location, useValue:  locationSpy},
         { provide: ActivatedRoute, useValue: {
           params: [{
             missionId: '1',
-            aisleId: '1'
+            aisleId: '1',
+            storeId: '1',
           }],
         }},
         { provide: EnvironmentService, useValue: { config: {
@@ -93,7 +99,7 @@ describe('AisleViewComponent', () => {
       ],
     }).compileComponents();
 
-    apiService = TestBed.get(ApiService);
+    apiService = TestBed.get('ApiService');
     apiService.getMissions.and.returnValue(of(missions));
     apiService.getAisles.and.returnValue(of(aisles));
     apiService.getAisle.and.returnValue(of(aisles[0]));
@@ -114,7 +120,7 @@ describe('AisleViewComponent', () => {
   });
 
   it('should load the missions', () => {
-    expect(fixture.componentInstance.missions).toEqual(missions);
+    expect(fixture.componentInstance.missions).toEqual([missions[0]]);
   });
 
   it('should load the aisles', () => {
@@ -133,7 +139,7 @@ describe('AisleViewComponent', () => {
 
   it('should set the selection area component', () => {
     const selectionAreaDe = fixture.debugElement.query(By.directive(SelectionAreaComponent));
-    expect(selectionAreaDe.componentInstance.missions).toEqual(missions);
+    expect(selectionAreaDe.componentInstance.missions).toEqual([missions[0]]);
     expect(selectionAreaDe.componentInstance.aisles).toEqual(aisles);
     expect(selectionAreaDe.componentInstance.selectedMission).toEqual(component.selectedMission);
     expect(selectionAreaDe.componentInstance.selectedAisle).toEqual(component.selectedAisle);

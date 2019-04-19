@@ -1,13 +1,16 @@
 <div *ngIf="mission" class="missionInfo">
   <button class="exportButton" (click)="openModal('export-popup')"><img class="exportImage" src="../../assets/export-blue.png"> <span>Export</span></button>
-  <div class="missionName">STORE {{mission.storeId}}</div>
-  <div class="missionDate"> Mission: <span> {{mission.missionDateTime | date: 'yyyy-MM-dd HH:mm:ss'}}</span></div>
+  <div *ngIf="store" class="missionName">{{store.storeName}}</div>
+  <div class="headerInfo"> Mission: <span> {{mission.missionDateTime | date: 'yyyy-MM-dd HH:mm:ss'}}</span></div>
+  <div *ngIf="missionSummary" class="headerInfo"> Aisles Scanned: <span> {{missionSummary.aislesScanned }}</span></div>
+
 </div>
 <app-export-modal id="export-popup">
   <div class="modal">
       <div class="modal-body">
           <div class="exportTitle">Select File To Export</div>
           <button (click)="exportMission('outs','export-popup')">Outs</button>
+          <button *ngIf="exportOnHand" (click)="exportMission('onhand','export-popup')">On Hand</button>
           <button (click)="exportMission('labels','export-popup')">Labels</button>
           <button class="cancel" (click)="closeModal('export-popup');">Cancel</button>
       </div>
@@ -19,5 +22,5 @@
   <app-mission-stats class="right" [title]="'Shelf Labels Detected'" [average]="averageStoreLabels" [total]="missionSummary.labels"></app-mission-stats>
 </div>
 <div class="grid">
-  <app-aisles-grid [aisles]="aisles" [missionId]="currentMission"></app-aisles-grid>
+  <app-aisles-grid *ngIf="store" [aisles]="aisles" [missionId]="mission.missionId" [storeId]="store.storeId"></app-aisles-grid>
 </div>

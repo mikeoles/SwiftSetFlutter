@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { ApiService } from '../api.service';
 import { Params, ActivatedRoute, Router } from '@angular/router';
 import MissionSummary from '../missionSummary.model';
@@ -15,7 +15,7 @@ import { DataService } from '../data.service';
 @Component({
   selector: 'app-mission-view',
   templateUrl: './mission-view.component.html',
-  styleUrls: ['./mission-view.component.scss']
+  styleUrls: ['./mission-view.component.scss'],
 })
 
 export class MissionViewComponent implements OnInit, OnDestroy {
@@ -26,39 +26,42 @@ export class MissionViewComponent implements OnInit, OnDestroy {
   aisles: Aisle[];
   averageStoreOuts: number;
   averageStoreLabels: number;
-  currentMission: number;
   service: ApiService;
+  exportOnHand = false;
 
   private backButtonSubscription: Subscription;
 
-  constructor(private apiService: ApiService, private activatedRoute: ActivatedRoute, private router: Router,
+  constructor(@Inject('ApiService') private apiService: ApiService, private activatedRoute: ActivatedRoute, private router: Router,
     private modalService: ModalService, private backService: BackService, private environment: EnvironmentService,
     public dataService: DataService) {
-
+      this.exportOnHand = environment.config.onHand;
   }
 
   ngOnInit() {
+    const body = document.getElementsByTagName('body')[0];
+    body.setAttribute('style', 'position: relative; overflow: auto;');
+    const html = document.getElementsByTagName('html')[0];
+    html.setAttribute('style', 'position: relative; overflow: auto;');
     this.backButtonSubscription = this.backService.backClickEvent().subscribe(() => this.goBack());
-
+    let missionId: number, storeId: number;
     this.activatedRoute.params.forEach((params: Params) => {
       if (params['missionId'] !== undefined) {
-        this.currentMission = params['missionId'];
+        missionId = Number(params['missionId']);
+      }
+      if (params['storeId'] !== undefined) {
+        storeId = Number(params['storeId']);
       }
     });
-    this.apiService.getMission(this.currentMission).subscribe(mission => {
+    this.apiService.getMission(storeId, missionId).subscribe(mission => {
       this.mission = mission;
-      this.apiService.getMissionSummary(this.currentMission).subscribe(missionSummary => {
+      this.apiService.getMissionSummary(mission.storeId, this.mission.missionId).subscribe(missionSummary => {
         this.missionSummary = missionSummary;
-        this.apiService.getAisles(this.currentMission).subscribe(aisles => {
+        this.apiService.getAisles(mission.storeId, this.mission.missionId).subscribe(aisles => {
           this.aisles = aisles;
-          for (let i = 0; i < this.aisles.length; i++) {
-            this.apiService.getAisle(this.aisles[i].aisleId).subscribe(aisle => {
-              this.aisles[i] = aisle;
-            });
-          }
         });
         const twoWeeksAgo: Date = new Date();
         twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 13);
+        twoWeeksAgo.setHours(0, 0, 0, 0);
         this.apiService.getStore(mission.storeId, twoWeeksAgo, Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe(store => {
           this.store = store;
 
@@ -74,7 +77,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
 }
 
   goBack(): void {
-    this.router.navigate(['store/1']);
+    this.router.navigate(['/store/' + this.store.storeId]);
   }
 
   ngOnDestroy() {
@@ -90,47 +93,63 @@ export class MissionViewComponent implements OnInit, OnDestroy {
 
   exportMission(exportType: string, modalId: string) {
     const exportFields: string[] = this.environment.config.exportFields;
-    let csvContent = 'data:text/csv;charset=utf-8,%EF%BB%BF';
-    csvContent += encodeURIComponent(exportFields.join(',')) + '\n';
+    const csvContent = exportFields.join(',') + '\n';
+    this.addAisles(0, exportType, exportFields, modalId, csvContent);
+  }
 
-    for (let i = 0; i < this.aisles.length; i++) {
-      const aisle = this.aisles[i];
-      const outs: Label[] = aisle.outs;
-      const labels: Label[]  = aisle.labels;
-      const exportData: Label[] = exportType === 'labels' ? labels : outs;
-      for (let j = 0; j < exportData.length; j++) {
-        const label: Label = exportData[j];
-        let row = [];
-        for (let k = 0; k < exportFields.length; k++) {
-          const field: string = exportFields[k];
-          let fieldLowercase = field.charAt(0).toLowerCase() + field.slice(1);
-          fieldLowercase = fieldLowercase.replace(/\s/g, '');
-          let cellValue = '';
-          if (label[fieldLowercase]) {
-            cellValue = label[fieldLowercase];
-          } else if (aisle[fieldLowercase]) {
-            cellValue = aisle[fieldLowercase];
-          } else if (this.mission[fieldLowercase]) {
-            cellValue = this.mission[fieldLowercase];
-          } else if (label.bounds[fieldLowercase]) {
-            cellValue = label.bounds[fieldLowercase];
-          } else {
-            for (let l = 0; l < label.customFields.length; l++) {
-              if (label.customFields[l].name === field) {
-                cellValue = label.customFields[l].value;
+  addAisles(i: number, exportType: string, exportFields: string[], modalId: string, csvContent: string) {
+    if (i === this.aisles.length) {
+      this.exportFile(exportType, csvContent);
+      this.modalService.close(modalId);
+    } else {
+      this.apiService.getAisle(this.mission.storeId, this.mission.missionId, this.aisles[i].aisleId).subscribe(aisle => {
+        const outs: Label[] = aisle.outs;
+        const labels: Label[]  = aisle.labels;
+        const exportData: Label[] = exportType === 'labels' ? labels : outs;
+        for (let j = 0; j < exportData.length; j++) {
+          const label: Label = exportData[j];
+          if (exportType === 'onhand' && (label.onHand === null || label.onHand < 1)) {
+            continue;
+          }
+          let row = [];
+          for (let k = 0; k < exportFields.length; k++) {
+            const field: string = exportFields[k];
+            let fieldLowercase = field.charAt(0).toLowerCase() + field.slice(1);
+            fieldLowercase = fieldLowercase.replace(/\s/g, '');
+            if (fieldLowercase === 'description') {
+              fieldLowercase = 'labelName';
+            }
+            let cellValue = '';
+            if (label[fieldLowercase]) {
+              cellValue = label[fieldLowercase];
+            } else if (aisle[fieldLowercase]) {
+              cellValue = aisle[fieldLowercase];
+            } else if (this.mission[fieldLowercase]) {
+              cellValue = this.mission[fieldLowercase];
+            } else if (label.bounds[fieldLowercase]) {
+              cellValue = label.bounds[fieldLowercase];
+            } else {
+              for (let l = 0; l < label.customFields.length; l++) {
+                if (label.customFields[l].name === field) {
+                  cellValue = label.customFields[l].value;
+                }
               }
             }
+            row = row.concat(cellValue);
           }
-          row = row.concat(cellValue);
+          csvContent += row.join(',') + '\n';
         }
-        csvContent += encodeURIComponent(row.join(',')) + '\n';
-      }
-      this.modalService.close(modalId);
+        this.addAisles(i + 1, exportType, exportFields, modalId, csvContent);
+      });
     }
+  }
 
+  exportFile(exportType: string, csvContent: string) {
+    const csvData = new Blob([csvContent], { type: 'text/csv;charset=utf-8,%EF%BB%BF' });
+    const csvUrl = URL.createObjectURL(csvData);
     const link = document.createElement('a');
     link.setAttribute('target', '_blank');
-    link.setAttribute('href', csvContent);
+    link.setAttribute('href', csvUrl);
     link.setAttribute('download', 'Mission-' + this.mission.missionName + '-' + exportType + '.csv');
     document.body.appendChild(link);
     link.click();

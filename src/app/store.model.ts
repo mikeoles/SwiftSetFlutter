@@ -1,7 +1,7 @@
 import DaySummary from './daySummary.model';
 
 export default class Store {
-  id: number;
+  storeId: number;
   storeName: string;
   storeAddress: string;
   totalAverageOuts: number;

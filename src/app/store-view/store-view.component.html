@@ -1,5 +1,5 @@
 <div *ngIf="store" class="storeInfo">
-  <div class="storeName">Store: {{store.storeName}}</div>
+  <div class="storeName">{{store.storeName}}</div>
   <div class="storeAddress">{{store.storeAddress}}</div>
 </div>
     <div class="dateInput">
@@ -11,4 +11,4 @@
   <div class="graphDisplay"><app-daily-graphs [title]="'Shelf Labels Detected'" [data]="store.summaryLabels" [overallAverage]="store.totalAverageLabels" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>
 </div>
 <app-missions-grid *ngIf="missionSummaries" [averageStoreOuts]="store.totalAverageOuts" [averageStoreLabels]="store.totalAverageLabels"
-[missionSummaries]="missionSummaries" [missionsDate]="selectedDate"></app-missions-grid>
+[missionSummaries]="missionSummaries" [missionsDate]="selectedDate" [storeId]="storeId"></app-missions-grid>

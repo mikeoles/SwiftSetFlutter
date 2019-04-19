@@ -16,6 +16,7 @@ import { EnvironmentService } from 'src/app/environment.service';
 export class SelectionAreaComponent implements OnInit, OnChanges {
   showMissions = false;
   showAisles = false;
+  exportOnHand = false;
   @Input() missions: Mission[];
   @Input() aisles: Aisle[];
   @Input() selectedMission: Mission;
@@ -31,6 +32,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   faAngleUp = faAngleUp;
 
   constructor(private eRef: ElementRef, private modalService: ModalService, private environment: EnvironmentService) {
+    this.exportOnHand = environment.config.onHand;
   }
 
   ngOnInit() {
@@ -100,17 +102,22 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
 
   exportAisle(exportType: string, modalId: string) {
     const exportFields: string[] = this.environment.config.exportFields;
-    let csvContent = 'data:text/csv;charset=utf-8,%EF%BB%BF';
-    csvContent += encodeURIComponent(exportFields.join(',')) + '\n';
+    let csvContent = exportFields.join(',') + '\n';
 
     const exportData: Label[] = exportType === 'labels' ? this.labels : this.outs;
     for (let j = 0; j < exportData.length; j++) {
       const label: Label = exportData[j];
+      if (exportType === 'onhand' && (label.onHand === null || label.onHand < 1)) {
+        continue;
+      }
       let row = [];
       for (let k = 0; k < exportFields.length; k++) {
         const field: string = exportFields[k];
         let fieldLowercase = field.charAt(0).toLowerCase() + field.slice(1);
         fieldLowercase = fieldLowercase.replace(/\s/g, '');
+        if (fieldLowercase === 'description') {
+          fieldLowercase = 'labelName';
+        }
         let cellValue = '';
         if (label[fieldLowercase]) {
           cellValue = label[fieldLowercase];
@@ -129,13 +136,15 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
         }
         row = row.concat(cellValue);
       }
-      csvContent += encodeURIComponent(row.join(',')) + '\n';
+      csvContent += row.join(',') + '\n';
     }
     this.modalService.close(modalId);
 
+    const csvData = new Blob([csvContent], { type: 'text/csv;charset=utf-8,%EF%BB%BF' });
+    const csvUrl = URL.createObjectURL(csvData);
     const link = document.createElement('a');
     link.setAttribute('target', '_blank');
-    link.setAttribute('href', csvContent);
+    link.setAttribute('href', csvUrl);
     link.setAttribute('download', 'Aisle-' + this.selectedAisle.aisleName + '-' + exportType + '.csv');
     document.body.appendChild(link);
     link.click();

@@ -29,6 +29,7 @@ describe('AislesGridComponent', () => {
     fixture = TestBed.createComponent(AislesGridComponent);
     component = fixture.componentInstance;
     component.missionId = 1;
+    component.storeId = 3;
     fixture.detectChanges();
   });
 
@@ -41,6 +42,6 @@ describe('AislesGridComponent', () => {
 
     component.viewAisle('2');
 
-    expect(navigateSpy).toHaveBeenCalledWith(['mission/1/aisle/2']);
+    expect(navigateSpy).toHaveBeenCalledWith(['store/3/mission/1/aisle/2']);
   });
 });

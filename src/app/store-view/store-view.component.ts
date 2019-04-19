@@ -1,10 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../api.service';
-import { Params, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, Inject } from '@angular/core';
+import { Params, ActivatedRoute, Router } from '@angular/router';
 import MissionSummary from '../missionSummary.model';
 import Store from '../store.model';
 import DaySummary from '../daySummary.model';
 import { DatepickerOptions } from 'ng2-datepicker';
+import { ApiService } from '../api.service';
+import { EnvironmentService } from '../environment.service';
+import { ODataApiService } from '../oDataApi.service';
+import { StaticApiService } from '../staticApi.service';
+import { BackService } from '../back.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-data-display',
@@ -15,7 +20,7 @@ import { DatepickerOptions } from 'ng2-datepicker';
 export class StoreViewComponent implements OnInit {
   missionSummaries: MissionSummary[];
   store: Store;
-  storeId: string;
+  storeId: number;
   selectedIndex: string;
   selectedDate: Date;
   graphStartDate: Date;
@@ -24,14 +29,17 @@ export class StoreViewComponent implements OnInit {
     barTitleFormat: 'MMMM YYYY',
     dayNamesFormat: 'dd',
     addStyle: {'border': '2px #2baae1 solid', 'border-radius': '30px', 'color': '#2baae1', 'font-size' : '18px', 'height' : '45px',
-    'font-weight': 'bold', 'width': 'auto', 'text-align': 'center', 'cursor': 'pointer'
-  }
+      'font-weight': 'bold', 'width': 'auto', 'text-align': 'center', 'cursor': 'pointer'
+    }
   };
 
-  constructor(private apiService: ApiService, private activatedRoute: ActivatedRoute) {
+  private backButtonSubscription: Subscription;
+
+  constructor(@Inject('ApiService') private apiService: ApiService, private activatedRoute: ActivatedRoute,
+  private environmentService: EnvironmentService, private backService: BackService, private router: Router) {
     this.graphStartDate = new Date();
     this.graphStartDate.setDate(this.graphStartDate.getDate() - 13); // Two weeks ago by default
-
+    this.graphStartDate.setHours(0, 0, 0, 0);
     this.activatedRoute.params.forEach((params: Params) => {
       if (params['storeId'] !== undefined) {
         this.storeId = params['storeId'];
@@ -43,10 +51,16 @@ export class StoreViewComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.backButtonSubscription = this.backService.backClickEvent().subscribe(() => this.goBack());
+  }
+
+  goBack(): void {
+    this.router.navigate(['/']);
   }
 
   changeGraphDates(event) {
     this.graphStartDate = new Date(event);
+    this.graphStartDate.setHours(0, 0, 0, 0);
     this.apiService.getStore(this.storeId, this.graphStartDate, Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe(store => {
       this.setAllSummaryValues(store);
     });
@@ -65,7 +79,7 @@ export class StoreViewComponent implements OnInit {
     this.store = store;
     const allSummaryOuts: Array<DaySummary> = [];
     const allSummaryLabels: Array<DaySummary> = [];
-    const d = this.graphStartDate;
+    const d = new Date(this.graphStartDate.toDateString());
 
     for (let i = 0; i < 14; i++) {
       const cur: Date = new Date(d.toDateString());
@@ -73,15 +87,21 @@ export class StoreViewComponent implements OnInit {
 
       let dailyLabelAverage = 0;
       for (let j = 0; j < this.store.summaryLabels.length; j++) {
-        if (this.store.summaryLabels[j].date.toString() === cur.toISOString().substring(0, 10)) {
+        if (this.environmentService.config.apiType === 'odata' &&
+          this.store.summaryLabels[j].date.toString() === cur.toISOString().substring(0, 10) ||
+          this.environmentService.config.apiType === 'static' &&
+          this.store.summaryLabels[j].date.toDateString() === cur.toDateString()) {
             dailyLabelAverage = this.store.summaryLabels[j].dailyAverage;
           }
         }
 
       let dailyOutAverage = 0;
       for (let j = 0; j < this.store.summaryOuts.length; j++) {
-        if (this.store.summaryOuts[j].date.toString() === cur.toISOString().substring(0, 10)) {
-          dailyOutAverage = this.store.summaryOuts[j].dailyAverage;
+        if (this.environmentService.config.apiType === 'odata' &&
+          this.store.summaryOuts[j].date.toString() === cur.toISOString().substring(0, 10) ||
+          this.environmentService.config.apiType === 'static' &&
+          this.store.summaryOuts[j].date.toDateString() === cur.toDateString()) {
+            dailyOutAverage = this.store.summaryOuts[j].dailyAverage;
         }
       }
 

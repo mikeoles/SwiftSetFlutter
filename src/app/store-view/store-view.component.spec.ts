@@ -10,6 +10,8 @@ import MissionSummary from '../missionSummary.model';
 import DaySummary from '../daySummary.model';
 import Store from '../store.model';
 import { NgDatepickerModule } from 'ng2-datepicker';
+import { EnvironmentService } from '../environment.service';
+import { RouterTestingModule } from '@angular/router/testing';
 
 @Component({selector: 'app-daily-graphs', template: ''})
 class AppDailyGraphsStubComponent {
@@ -23,6 +25,7 @@ class AppMissionsGridStubComponent {
   @Input() missionsDate: any[];
   @Input() averageStoreOuts: number;
   @Input() averageStoreLabels: number;
+  @Input() storeId: number;
 }
 
 describe('StoreViewComponent', () => {
@@ -31,7 +34,7 @@ describe('StoreViewComponent', () => {
   let apiService: jasmine.SpyObj<ApiService>;
 
   const missions: MissionSummary[] = [
-    { missionId: 1, mission: '', storeId: '', missionDateTime: new Date(), outs: 1, labels: 1, spreads: 1, aislesScanned: 1 },
+    { missionId: 1, mission: '', storeId: 1, missionDateTime: new Date(), outs: 1, labels: 1, spreads: 1, aislesScanned: 1 },
   ];
   const daySummaries: DaySummary[] = [
     {
@@ -39,7 +42,7 @@ describe('StoreViewComponent', () => {
       dailyAverage: 1,
     }
   ];
-  const store: Store = {  id: 1,
+  const store: Store = {  storeId: 1,
     storeName: '',
     storeAddress: '',
     totalAverageOuts: 1,
@@ -56,7 +59,8 @@ describe('StoreViewComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
-        NgDatepickerModule
+        NgDatepickerModule,
+        RouterTestingModule.withRoutes([]),
       ],
       declarations: [
         StoreViewComponent,
@@ -64,15 +68,18 @@ describe('StoreViewComponent', () => {
         AppMissionsGridStubComponent,
       ],
       providers: [
-        { provide: ApiService, useValue: apiServiceSpy },
+        { provide: 'ApiService', useValue: apiServiceSpy },
         { provide: ActivatedRoute, useValue: {
-          params: [{ storeId: '1' }],
+          params: [{ storeId: 1 }],
         }},
+        { provide: EnvironmentService, useValue: { config: {
+          apiType: 'odata',
+        }}}
       ],
     })
     .compileComponents();
 
-    apiService = TestBed.get(ApiService);
+    apiService = TestBed.get('ApiService');
     apiService.getMissionSummaries.and.returnValue(of(missions));
     apiService.getStore.and.returnValue(of(store));
   }));
@@ -88,15 +95,28 @@ describe('StoreViewComponent', () => {
   });
 
   it('should set the store id', () => {
-    expect(component.storeId).toEqual('1');
+    expect(component.storeId).toEqual(1);
     expect(component.store).toEqual(store);
   });
 
   it('should change index', () => {
-    const index = { index: '2', date: new Date() };
+    const currentDate: Date = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+    const index = { index: '2', date: currentDate };
     component.setIndex(index);
     expect(component.selectedIndex).toEqual(index.index);
     expect(component.selectedDate).toEqual(index.date);
     expect(component.missionSummaries).toEqual(missions);
+  });
+
+  it('should change date on selection', () => {
+    const d: Date = new Date();
+    d.setHours(0 , 0, 0, 0);
+    component.changeGraphDates(d.toString());
+    expect(component.graphStartDate.toString()).toEqual(d.toString());
+    d.setDate(d.getDate() - 13);
+    d.setHours(0 , 0, 0, 0);
+    component.changeGraphDates(d.toString());
+    expect(component.graphStartDate.toString()).toEqual(d.toString());
   });
 });
