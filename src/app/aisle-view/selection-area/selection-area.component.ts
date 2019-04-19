@@ -17,6 +17,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   showMissions = false;
   showAisles = false;
   exportOnHand = false;
+  exportingPDF = false;
   @Input() missions: Mission[];
   @Input() aisles: Aisle[];
   @Input() selectedMission: Mission;
@@ -33,6 +34,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
 
   constructor(private eRef: ElementRef, private modalService: ModalService, private environment: EnvironmentService) {
     this.exportOnHand = environment.config.onHand;
+    this.exportingPDF = environment.config.exportingPDF;
   }
 
   ngOnInit() {
@@ -151,12 +153,8 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
     link.remove();
   }
 
-  exportPDF() {
-    const doc = new jsPDF('landscape');
-
-    const img = new Image();
-    img.src = this.panoramaUrl;
-    doc.addImage(img, 'PNG', 5, 50, 285, 80);
+  exportPDF(modalId: string) {
+    const doc = new jsPDF();
 
     const body = [];
     const head = [['Product Name', 'Barcode', 'Product Id', 'Price']];
@@ -165,8 +163,8 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
       body.push(row);
     }
 
-    doc.addPage();
     doc.autoTable({head: head, body: body, startY: 5});
     doc.save(this.selectedMission.missionName + '-' + this.selectedAisle.aisleName + '.pdf');
+    this.modalService.close(modalId);
   }
 }

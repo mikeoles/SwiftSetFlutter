@@ -48,6 +48,7 @@
           <button (click)="exportAisle('outs','export-popup')">Outs</button>
           <button *ngIf="exportOnHand" (click)="exportAisle('onhand','export-popup')">On Hand</button>
           <button (click)="exportAisle('labels','export-popup')">Labels</button>
+          <button *ngIf="exportingPDF" (click)="exportPDF('export-popup')">Pick List PDF</button>
           <button class="cancel" (click)="closeModal('export-popup');">Cancel</button>
       </div>
   </div>
