@@ -46,9 +46,10 @@
       <div class="modal-body" [ngClass]="{'disabled': currentlyExporting}">
           <div class="exportTitle">Select File To Export</div>
           <button [disabled]="currentlyExporting" (click)="exportAisle('outs','export-popup')">Outs</button>
-          <button *ngIf="exportOnHand" [disabled]="currentlyExporting" (click)="exportAisle('onhand','export-popup')">On Hand</button>
           <button [disabled]="currentlyExporting" (click)="exportAisle('labels','export-popup')">Labels</button>
-          <button class="cancel" (click)="closeModal('export-popup');">Cancel</button>
+          <button *ngIf="exportOnHand" [disabled]="currentlyExporting" (click)="exportAisle('onhand','export-popup')">On Hand</button>
+          <button *ngIf="exportingPDF" [disabled]="currentlyExporting" (click)="exportPDF('export-popup')">On Hand PDF</button>
+          <button class="cancel" (click)="closeModal('export-popup');">Close</button>
       </div>
   </div>
   <div class="modal-background"></div>
