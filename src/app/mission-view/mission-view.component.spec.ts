@@ -70,6 +70,7 @@ describe('MissionViewComponent', () => {
         { provide: ModalService},
         { provide: EnvironmentService, useValue: { config: {
           onHand: true,
+          exportingPDF: true,
         }}}
       ],
     })

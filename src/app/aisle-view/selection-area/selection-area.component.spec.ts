@@ -10,6 +10,8 @@ import { DatePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { ModalService } from 'src/app/modal/modal.service';
 import { EnvironmentService } from 'src/app/environment.service';
+import { ApiService } from 'src/app/api.service';
+import { of } from 'rxjs';
 
 @Component({selector: 'app-export-modal', template: ''})
 class ModalComponent {
@@ -19,6 +21,7 @@ class ModalComponent {
 describe('SelectionAreaComponent', () => {
   let component: SelectionAreaComponent;
   let fixture: ComponentFixture<SelectionAreaComponent>;
+  let apiService: jasmine.SpyObj<ApiService>;
   let missionsButtonEl: HTMLButtonElement;
   let aislesButtonEl: HTMLButtonElement;
   let missionsDropdownEl: HTMLElement;
@@ -41,19 +44,27 @@ describe('SelectionAreaComponent', () => {
     { aisleId: 5, aisleName: '5555', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '',
     coveragePercent: 0, outsCount: 0, labelsCount: 0  },
   ];
+  const store = { storeId: 1 };
 
   beforeEach(async(() => {
+    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getStore', 'getMission', 'getMissionSummary', 'getAisles', 'getAisle']);
+
     TestBed.configureTestingModule({
       imports: [FormsModule, FontAwesomeModule],
       declarations: [ SelectionAreaComponent, ModalComponent ],
       providers: [
+        { provide: 'ApiService', useValue: apiServiceSpy },
         { provide: ModalService},
         { provide: EnvironmentService, useValue: { config: {
           onHand: true,
+          exportingPDF: true
         }}}
       ]
     })
     .compileComponents();
+
+    apiService = TestBed.get('ApiService');
+    apiService.getStore.and.returnValue(of(store));
   }));
   beforeEach(() => {
     fixture = TestBed.createComponent(SelectionAreaComponent);
