@@ -162,12 +162,12 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
 
   exportPDF(modalId: string) {
     this.currentlyExporting = true;
+    const day: Date = new Date();
     this.apiService.getStore(this.selectedMission.storeId, day, Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe(store => {
       const doc = new jsPDF('landscape');
       const exportFields: string[] = this.environment.config.exportFields;
       const head = [this.environment.config.exportFields];
       const body = [];
-    const day: Date = new Date();
 
       const exportData: Label[] = this.outs;
       for (let j = 0; j < exportData.length; j++) {

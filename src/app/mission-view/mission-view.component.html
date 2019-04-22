@@ -8,9 +8,10 @@
   <div class="modal">
       <div class="modal-body" [ngClass]="{'disabled': currentlyExporting}">
           <div class="exportTitle">Select File To Export</div>
-          <button [disabled]="currentlyExporting" (click)="exportMission('outs','export-popup')">Outs</button>
-          <button *ngIf="exportOnHand" [disabled]="currentlyExporting" (click)="exportMission('onhand','export-popup')">On Hand</button>
-          <button [disabled]="currentlyExporting" (click)="exportMission('labels','export-popup')">Labels</button>
+          <button [disabled]="currentlyExporting" (click)="exportMission('outs','export-popup','csv')">Outs</button>
+          <button [disabled]="currentlyExporting" (click)="exportMission('labels','export-popup','csv')">Labels</button>
+          <button *ngIf="exportOnHand" [disabled]="currentlyExporting" (click)="exportMission('onhand','export-popup','csv')">On Hand</button>
+          <button *ngIf="exportingPDF" [disabled]="currentlyExporting" (click)="exportMission('onhand','export-popup','pdf')">On Hand PDF</button>
           <button class="cancel" (click)="closeModal('export-popup');">Close</button>
       </div>
   </div>
