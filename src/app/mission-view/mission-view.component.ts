@@ -11,6 +11,7 @@ import { BackService } from '../back.service';
 import { Subscription } from 'rxjs';
 import { EnvironmentService } from '../environment.service';
 import { DataService } from '../data.service';
+import * as jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-mission-view',
@@ -28,6 +29,8 @@ export class MissionViewComponent implements OnInit, OnDestroy {
   averageStoreLabels: number;
   service: ApiService;
   exportOnHand = false;
+  currentlyExporting = false;
+  exportingPDF = false;
 
   private backButtonSubscription: Subscription;
 
@@ -35,6 +38,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
     private modalService: ModalService, private backService: BackService, private environment: EnvironmentService,
     public dataService: DataService) {
       this.exportOnHand = environment.config.onHand;
+      this.exportingPDF = environment.config.exportingPDF;
   }
 
   ngOnInit() {
@@ -91,15 +95,20 @@ export class MissionViewComponent implements OnInit, OnDestroy {
       this.modalService.close(id);
   }
 
-  exportMission(exportType: string, modalId: string) {
+  exportMission(exportType: string, modalId: string, fileType: string) {
+    this.currentlyExporting = true;
     const exportFields: string[] = this.environment.config.exportFields;
-    const csvContent = exportFields.join(',') + '\n';
-    this.addAisles(0, exportType, exportFields, modalId, csvContent);
+    const body = [];
+    this.addAisles(0, exportType, exportFields, modalId, body, fileType);
   }
 
-  addAisles(i: number, exportType: string, exportFields: string[], modalId: string, csvContent: string) {
+  addAisles(i: number, exportType: string, exportFields: string[], modalId: string, body: any[], fileType: string) {
     if (i === this.aisles.length) {
-      this.exportFile(exportType, csvContent);
+      if (fileType === 'pdf') {
+        this.exportPDF(body);
+      } else {
+        this.exportFile(exportType, body, exportFields);
+      }
       this.modalService.close(modalId);
     } else {
       this.apiService.getAisle(this.mission.storeId, this.mission.missionId, this.aisles[i].aisleId).subscribe(aisle => {
@@ -137,17 +146,19 @@ export class MissionViewComponent implements OnInit, OnDestroy {
             }
             row = row.concat(cellValue);
           }
-          for (let m = 0; m < 40000; m++) {
-            csvContent += row.join(',') + '\n';
-          }
+          body.push(row);
         }
-        this.addAisles(i + 1, exportType, exportFields, modalId, csvContent);
+        this.addAisles(i + 1, exportType, exportFields, modalId, body, fileType);
       });
     }
   }
 
-  exportFile(exportType: string, csvContent: string) {
-    const csvData = new Blob([csvContent], { type: 'text/csv;charset=utf-8,%EF%BB%BF' });
+  exportFile(exportType: string, body: any[], exportFields: string[]) {
+    let csvString = exportFields.join(',') + '\n';
+    for (let j = 0; j < body.length; j++) {
+      csvString += body[j].join(',') + '\n';
+    }
+    const csvData = new Blob([csvString], { type: 'text/csv;charset=utf-8,%EF%BB%BF' });
     const csvUrl = URL.createObjectURL(csvData);
     const link = document.createElement('a');
     link.setAttribute('target', '_blank');
@@ -156,5 +167,24 @@ export class MissionViewComponent implements OnInit, OnDestroy {
     document.body.appendChild(link);
     link.click();
     link.remove();
+    this.currentlyExporting = false;
+  }
+
+  exportPDF(body: any[]) {
+    this.currentlyExporting = true;
+    const doc = new jsPDF('landscape');
+    const head = [this.environment.config.exportFields];
+    const middleText = 'On Hand';
+    const middleWidth = doc.getStringUnitWidth(middleText) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+    const middleOffset = (doc.internal.pageSize.width - middleWidth) / 2;
+    const rightText =  this.mission.missionDateTime.toLocaleString();
+    const rightWidth = doc.getStringUnitWidth(rightText.toString()) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+    const rightOffset = (doc.internal.pageSize.width - rightWidth) - 20;
+    doc.text(middleOffset, 10, middleText);
+    doc.text(rightOffset, 10, rightText);
+    doc.text(20, 10, this.store.storeName);
+    doc.autoTable({head: head, body: body, startY: 15, styles: {cellPadding: 0.5, fontSize: 9}});
+    doc.save(this.mission.missionName + '.pdf');
+    this.currentlyExporting = false;
   }
 }
