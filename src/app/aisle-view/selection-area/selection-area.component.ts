@@ -20,6 +20,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   showAisles = false;
   exportOnHand = false;
   exportingPDF = false;
+  displayExclusionButton = false;
   @Input() missions: Mission[];
   @Input() aisles: Aisle[];
   @Input() selectedMission: Mission;
@@ -31,6 +32,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   @Output() missionSelected = new EventEmitter();
   @Output() aisleSelected = new EventEmitter();
   @Output() resetPano = new EventEmitter();
+  @Output() toggleExclusionZone = new EventEmitter();
   store: Store;
   faAngleDown = faAngleDown;
   faAngleUp = faAngleUp;
@@ -40,6 +42,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
     @Inject('ApiService') private apiService: ApiService) {
     this.exportOnHand = environment.config.onHand;
     this.exportingPDF = environment.config.exportingPDF;
+    this.displayExclusionButton = environment.config.exclusionZones;
   }
 
   ngOnInit() {
@@ -220,5 +223,9 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
       this.modalService.close(modalId);
     });
     this.currentlyExporting = false;
+  }
+
+  toggleExclusionZones() {
+    this.toggleExclusionZone.emit();
   }
 }
