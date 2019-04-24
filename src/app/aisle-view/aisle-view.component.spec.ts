@@ -19,6 +19,7 @@ import { ModalService } from '../modal/modal.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { EnvironmentService } from '../environment.service';
+import ExclusionZone from '../exclusionZone.model';
 
 @Component({selector: 'app-export-modal', template: ''})
 class ModalComponent {
@@ -46,17 +47,20 @@ describe('AisleViewComponent', () => {
     { labelId: 5, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
       topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 }, department: '', section: '', customFields: [], onHand: 0 },
   ];
+  const exclusionZones: ExclusionZone[] = [
+    { exclusionZoneId: 1, bounds: { top: 0, left: 0, width: 0, height: 0}}
+  ];
   const aisles: Aisle[] = [
     { aisleId: 1, aisleName: '1111', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '',
-      coveragePercent: 0, outsCount: 0, labelsCount: 0 },
+      coveragePercent: 0, outsCount: 0, labelsCount: 0, exclusionZones: exclusionZones},
     { aisleId: 2, aisleName: '2222', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '',
-      coveragePercent: 0, outsCount: 0, labelsCount: 0  },
+      coveragePercent: 0, outsCount: 0, labelsCount: 0, exclusionZones: exclusionZones},
     { aisleId: 3, aisleName: '3333', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '',
-      coveragePercent: 0, outsCount: 0, labelsCount: 0  },
+      coveragePercent: 0, outsCount: 0, labelsCount: 0, exclusionZones: exclusionZones},
     { aisleId: 4, aisleName: '4444', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '',
-      coveragePercent: 0, outsCount: 0, labelsCount: 0  },
+      coveragePercent: 0, outsCount: 0, labelsCount: 0, exclusionZones: exclusionZones},
     { aisleId: 5, aisleName: '5555', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '',
-      coveragePercent: 0, outsCount: 0, labelsCount: 0  },
+      coveragePercent: 0, outsCount: 0, labelsCount: 0, exclusionZones: exclusionZones},
   ];
 
 
