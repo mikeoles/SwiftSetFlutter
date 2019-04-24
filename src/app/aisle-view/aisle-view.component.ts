@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import {Location} from '@angular/common';
 import { BackService } from '../back.service';
+import ExclusionZone from '../exclusionZone.model';
 
 @Component({
   selector: 'app-aisle-view',
@@ -24,6 +25,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   title = 'aisle';
   outs: Label[];
   labels: Label[];
+  exclusionZones: ExclusionZone[];
   missions: Mission[];
   selectedMission: Mission;
   aisles: Aisle[];
@@ -34,7 +36,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   panoMode: boolean;
   panoTouched: boolean;
   resetPano: boolean;
-
+  showExclusionZones = false;
   private logoSubscription: Subscription;
   private backButtonSubscription: Subscription;
 
@@ -127,6 +129,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
     this.apiService.getAisle(this.selectedMission.storeId, this.selectedMission.missionId, aisle.aisleId).subscribe(fullAisle => {
       this.outs = fullAisle.outs;
       this.labels = fullAisle.labels;
+      this.exclusionZones = fullAisle.exclusionZones;
       this.panoramaUrl = fullAisle.panoramaUrl;
       this.currentDisplay = 'outs';
       this.currentId = null;
@@ -145,5 +148,9 @@ export class AisleViewComponent implements OnInit, OnDestroy {
 
   setDisplay(display) {
     this.currentDisplay = display;
+  }
+
+  toggleExclusionZone() {
+    this.showExclusionZones = !this.showExclusionZones;
   }
 }

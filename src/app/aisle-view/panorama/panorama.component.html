@@ -12,6 +12,14 @@
           (click)="annotationClicked(annotation)">
         </div>
       </ng-container>
+      <ng-container *ngFor="let annotation of this.exclusionZones">
+        <div *ngIf="this.showExclusionZones" class="exclusionZoneAnnotation annotation"
+        [style.left.px]="annotation.bounds.left"
+        [style.top.px]="annotation.bounds.top"
+        [style.width.px]="annotation.bounds.width"
+        [style.height.px]="annotation.bounds.height">
+      </div>
+    </ng-container>
     </div>
   </div>
   <div id="zoom">
