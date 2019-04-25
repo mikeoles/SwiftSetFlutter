@@ -12,6 +12,7 @@ export const environment = {
   coveragePercent: true,
   onHand: true,
   exportingPDF: true,
+  exclusionZones: false,
   exportFields: ['Barcode', 'Product Id', 'Description', 'Department', 'On Hand', 'Layout', 'S. Loc', 'Size', 'SRQ', 'PR', 'Status',
   'Last Recvd', 'DNO'],
   productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price', 'On Hand'],

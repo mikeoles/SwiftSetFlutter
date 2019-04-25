@@ -10,6 +10,7 @@ import Mission from './mission.model';
 import Aisle from './aisle.model';
 import Label from './label.model';
 import CustomField from './customField.model';
+import ExclusionZone from './exclusionZone.model';
 
 @Injectable({
   providedIn: 'root'
@@ -223,7 +224,20 @@ export class StaticApiService implements ApiService {
       outsCount: aisle.outsCount,
       outs: (aisle.outs || []).map(l => this.createLabel(l)),
       spreads: [],
-      coveragePercent: aisle.coveragePercent
+      coveragePercent: aisle.coveragePercent,
+      exclusionZones: (aisle.exclusionZones || []).map(l => this.createExclusionZone(l)),
+    };
+  }
+
+  createExclusionZone(exclusionZone: any): ExclusionZone {
+    return{
+      exclusionZoneId: exclusionZone.exclusionZoneId,
+      bounds: {
+        top: exclusionZone.bounds.top,
+        left: exclusionZone.bounds.left,
+        width: exclusionZone.bounds.width,
+        height: exclusionZone.bounds.height,
+      }
     };
   }
 
