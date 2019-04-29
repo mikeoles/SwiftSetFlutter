@@ -156,7 +156,16 @@ export class MissionViewComponent implements OnInit, OnDestroy {
   exportFile(exportType: string, body: any[], exportFields: string[]) {
     let csvString = exportFields.join(',') + '\n';
     for (let j = 0; j < body.length; j++) {
-      csvString += body[j].join(',') + '\n';
+      const row = [...body[j]];
+      for (let i = 0; i < row.length; i++) {
+        if (typeof row[i] === 'string') {
+          row[i] = row[i].replace('"', '""');
+          if (row[i].includes('\n') || row[i].includes(',') || row[i].includes('"')) {
+            row[i] = '"' + row[i] + '"';
+          }
+        }
+      }
+      csvString += row.join(',') + '\n';
     }
     const csvData = new Blob([csvString], { type: 'text/csv;charset=utf-8,%EF%BB%BF' });
     const csvUrl = URL.createObjectURL(csvData);

@@ -147,6 +147,14 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
         }
         row = row.concat(cellValue);
       }
+      for (let i = 0; i < row.length; i++) {
+        if (typeof row[i] === 'string') {
+          row[i] = row[i].replace('"', '""');
+          if (row[i].includes('\n') || row[i].includes(',') || row[i].includes('"')) {
+            row[i] = '"' + row[i] + '"';
+          }
+        }
+      }
       csvContent += row.join(',') + '\n';
     }
     this.modalService.close(modalId);
