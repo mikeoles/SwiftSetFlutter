@@ -36,6 +36,7 @@ export class ODataApiService implements ApiService {
       outs: (aisle.Outs || []).map(l => this.createLabel(l)),
       spreads: [],
       coveragePercent: aisle.CoveragePercent,
+      exclusionsCount: aisle.ExclusionsCount,
       exclusionZones: (aisle.ExclusionZones || []).map(ez => this.createExclusionZones(ez))
     };
   }

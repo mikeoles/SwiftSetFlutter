@@ -15,6 +15,15 @@ if [[ ! -z "$API_TYPE" ]]; then
 else
   echo "  \"apiType\": odata" >> /usr/share/nginx/html/assets/config.json
 fi
+if [[ ! -z "$ON_HAND" ]]; then
+  echo "  \"onHand\": \"$ON_HAND\"," >> /usr/share/nginx/html/assets/config.json
+else
+if [[ ! -z "$EXPORTING_PDF" ]]; then
+  echo "  \"exportingPDF\": \"$EXPORTING_PDF\"," >> /usr/share/nginx/html/assets/config.json
+else
+if [[ ! -z "$EXCLUSION_ZONES" ]]; then
+  echo "  \"exclusionZones\": \"$EXCLUSION_ZONES\"," >> /usr/share/nginx/html/assets/config.json
+else
 echo "  \"production\": true" >> /usr/share/nginx/html/assets/config.json
 echo "}" >> /usr/share/nginx/html/assets/config.json
 
