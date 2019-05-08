@@ -17,13 +17,13 @@ else
 fi
 if [[ ! -z "$ON_HAND" ]]; then
   echo "  \"onHand\": \"$ON_HAND\"," >> /usr/share/nginx/html/assets/config.json
-else
+fi
 if [[ ! -z "$EXPORTING_PDF" ]]; then
   echo "  \"exportingPDF\": \"$EXPORTING_PDF\"," >> /usr/share/nginx/html/assets/config.json
-else
+fi
 if [[ ! -z "$EXCLUSION_ZONES" ]]; then
   echo "  \"exclusionZones\": \"$EXCLUSION_ZONES\"," >> /usr/share/nginx/html/assets/config.json
-else
+fi
 echo "  \"production\": true" >> /usr/share/nginx/html/assets/config.json
 echo "}" >> /usr/share/nginx/html/assets/config.json
 
