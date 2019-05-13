@@ -225,7 +225,7 @@ export class StaticApiService implements ApiService {
       outs: (aisle.outs || []).map(l => this.createLabel(l)),
       spreads: [],
       coveragePercent: aisle.coveragePercent,
-      exclusionsCount: aisle.ExclusionsCount,
+      exclusionsCount: aisle.exclusionsCount,
       exclusionZones: (aisle.exclusionZones || []).map(l => this.createExclusionZone(l)),
     };
   }
