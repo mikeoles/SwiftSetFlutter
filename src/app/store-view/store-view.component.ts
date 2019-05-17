@@ -149,7 +149,7 @@ export class StoreViewComponent implements OnInit {
   saveCSV(body: any[]) {
     const columnNames = ['Mision Date', 'Customer - Store', 'Total Aisles Scanned', 'Total # Of Labels', 'Total # Unread Labels',
     'Percemtage Unread Labels', 'Percentage Read Labels', '# Read Labels With Matching Product', '# Read Labels Missing Product',
-    'TOTAL # OOS'];
+    'Total # OOS'];
     let csvString = columnNames.join(',') + '\n';
     for (let j = 0; j < body.length; j++) {
       csvString += body[j].join(',') + '\n';

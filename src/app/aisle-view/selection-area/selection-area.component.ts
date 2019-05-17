@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output, HostListener, ElementRef, OnChanges, SimpleChanges, Inject } from '@angular/core';
-import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faAngleUp, faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import Mission from '../../mission.model';
 import Aisle from '../../aisle.model';
 import * as jsPDF from 'jspdf';
@@ -37,6 +37,8 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   store: Store;
   faAngleDown = faAngleDown;
   faAngleUp = faAngleUp;
+  faArrowRight = faArrowRight;
+  faArrowLeft = faArrowLeft;
   currentlyExporting = false;
 
   constructor(private eRef: ElementRef, private modalService: ModalService, private environment: EnvironmentService,
@@ -228,5 +230,29 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
 
   toggleExclusionZones() {
     this.toggleExclusionZone.emit();
+  }
+
+  nextPano() {
+    const index: number = this.findAisleIndex();
+    if (index >= 0 && index < this.aisles.length - 1) {
+      this.aisleSelected.emit(this.aisles[index + 1]);
+    }
+  }
+
+  previousPano() {
+    const index: number = this.findAisleIndex();
+    if (index > 0) {
+      this.aisleSelected.emit(this.aisles[index - 1]);
+    }
+  }
+
+  findAisleIndex() {
+    let index = -1;
+    this.aisles.forEach((aisle, i) => {
+      if (aisle.aisleId === this.selectedAisle.aisleId) {
+        index = i;
+      }
+    });
+    return index;
   }
 }

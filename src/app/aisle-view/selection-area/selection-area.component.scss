@@ -40,6 +40,12 @@ button{
   width: auto;
 }
 
+.panoChangeButton{
+  margin: 20px 5px;
+  text-align: center;
+  width: auto;
+}
+
 .pdfButton{
   text-align: center;
   width: auto;
@@ -142,7 +148,7 @@ button:focus{
 }
 
 #missionsContainer,#aislesContainer{
-  display: inline-block;
+  float: left;
   width: auto;
 }
 
