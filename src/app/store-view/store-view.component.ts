@@ -28,7 +28,7 @@ export class StoreViewComponent implements OnInit {
     displayFormat: 'MMMM D[,] YYYY',
     barTitleFormat: 'MMMM YYYY',
     dayNamesFormat: 'dd',
-    addStyle: {'border': '2px #2baae1 solid', 'border-radius': '30px', 'color': '#2baae1', 'font-size' : '18px', 'height' : '45px',
+    addStyle: {'border': '3px #2baae1 solid', 'border-radius': '30px', 'color': '#2baae1', 'font-size' : '18px', 'height' : '38px',
       'font-weight': 'bold', 'width': 'auto', 'text-align': 'center', 'cursor': 'pointer'
     }
   };
@@ -118,6 +118,51 @@ export class StoreViewComponent implements OnInit {
     }
     this.store.summaryOuts = allSummaryOuts;
     this.store.summaryLabels = allSummaryLabels;
+  }
+
+  exportPerformanceData() {
+    const endDate: Date = new Date(this.graphStartDate.toString());
+    endDate.setDate(endDate.getDate() + 13);
+  this.apiService.getRangeMissionSummaries(this.graphStartDate, endDate, this.storeId,
+      Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe(
+      missionSummaries => {
+        const body = [];
+        missionSummaries.forEach( missionSummary => {
+          let row = [];
+          row = row.concat(missionSummary.missionDateTime.toLocaleString().replace(',', ''));
+          row = row.concat(this.store.storeName);
+          row = row.concat(missionSummary.aislesScanned);
+          row = row.concat(missionSummary.labels);
+          row = row.concat(missionSummary.unreadLabels);
+          row = row.concat(missionSummary.percentageUnread);
+          row = row.concat(missionSummary.percentageRead);
+          row = row.concat(missionSummary.readLabelsMatchingProduct);
+          row = row.concat(missionSummary.readLabelsMissingProduct);
+          row = row.concat(missionSummary.outs);
+          body.push(row);
+        });
+        this.saveCSV(body);
+      }
+    );
+  }
+
+  saveCSV(body: any[]) {
+    const columnNames = ['Mision Date', 'Customer - Store', 'Total Aisles Scanned', 'Total # Of Labels', 'Total # Unread Labels',
+    'Percemtage Unread Labels', 'Percentage Read Labels', '# Read Labels With Matching Product', '# Read Labels Missing Product',
+    'Total # OOS'];
+    let csvString = columnNames.join(',') + '\n';
+    for (let j = 0; j < body.length; j++) {
+      csvString += body[j].join(',') + '\n';
+    }
+    const csvData = new Blob([csvString], { type: 'text/csv;charset=utf-8,%EF%BB%BF' });
+    const csvUrl = URL.createObjectURL(csvData);
+    const link = document.createElement('a');
+    link.setAttribute('target', '_blank');
+    link.setAttribute('href', csvUrl);
+    link.setAttribute('download', 'PerformanceData-' + this.graphStartDate.toDateString() + '.csv');
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
   }
 
 }

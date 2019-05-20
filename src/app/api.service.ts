@@ -11,6 +11,7 @@ import { HttpClient } from '@angular/common/http';
 export interface ApiService {
   getStores();
   getStore(storeId: number, startDate: Date, timezone: String): Observable<Store>;
+  getRangeMissionSummaries(startDate: Date, endDate: Date, storeId: number, timezone: string): Observable<MissionSummary[]>;
   getMissionSummaries(date: Date, storeId: number, timezone: string): Observable<MissionSummary[]>;
   getMissionSummary(storeId: number, mission: number): Observable<MissionSummary>;
   getMissions(storeId: number): Observable<Mission[]> ;
