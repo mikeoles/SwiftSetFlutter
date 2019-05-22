@@ -24,6 +24,15 @@
   }
 }
 
+@media (max-width: 768px) {
+  .right {
+    margin-right: 0px !important;
+  }
+  .left {
+    margin-left: 0px !important;
+  }
+}
+
 .missionInfo{
   padding: 20px 40px;
   border-bottom: 1px solid black;

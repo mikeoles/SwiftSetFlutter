@@ -125,7 +125,27 @@ button > span {
   }
 }
 
-@media (max-width: 1048px) {
+@media (min-width: 769px) {
+  #collapsedContainer{
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .rightButton {
+    display: none;
+  }
+  #collapsedContainer ul {
+    width: 160px !important;
+  }
+  ul{
+    margin-left: 0px !important;
+    margin-top: 15px !important;
+  }
+  .pointer{
+    margin-top: 0px !important;
+    margin-left: 50px !important;
+  }
 }
 
 button:focus{
@@ -139,6 +159,14 @@ button:focus{
 #missionsContainer,#aislesContainer{
   float: left;
   width: auto;
+}
+
+#collapsedContainer{
+  float: right;
+  width: auto;
+  button {
+    width: 175px;
+  }
 }
 
 ul{

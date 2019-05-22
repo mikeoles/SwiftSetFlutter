@@ -12,6 +12,12 @@
   float: right;
 }
 
+@media (max-width: 768px) {
+  .storeButton {
+    margin-right: 5px !important;
+  }
+}
+
 .storeInfo {
   padding: 20px 40px;
   display: inline-block;
