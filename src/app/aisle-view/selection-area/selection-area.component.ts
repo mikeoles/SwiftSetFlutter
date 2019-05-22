@@ -17,6 +17,7 @@ import Store from 'src/app/store.model';
 })
 export class SelectionAreaComponent implements OnInit, OnChanges {
   showMissions = false;
+  showOptions = false;
   showAisles = false;
   exportOnHand = false;
   exportingPDF = false;
@@ -102,10 +103,18 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   selectMissionsDropdown() {
     this.showMissions = !this.showMissions;
     this.showAisles = false;
+    this.showOptions = false;
   }
 
   selectAislesDropdown() {
     this.showAisles = !this.showAisles;
+    this.showMissions = false;
+    this.showOptions = false;
+  }
+
+  selectOptionsDropdown() {
+    this.showOptions = !this.showOptions;
+    this.showAisles = false;
     this.showMissions = false;
   }
 

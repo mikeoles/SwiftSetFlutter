@@ -18,7 +18,7 @@ table tbody
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
-    height: calc(100vh - 135px - 89px - 365px - 77px - 48px);
+    height: calc(100vh - 67px - 135px - 365px - 95px - 48px)
 }
 
 th{
@@ -81,59 +81,17 @@ tbody :first-child{
     background-clip: content-box;
 }
 
-//Ipad Pro Landscape
-@media (max-width: 1366px)  and (orientation: landscape){
-  th, td{
-    width: 311px !important;
-  }
-
-  table tbody
-  {
-      height: calc(100vh - 111px - 365px - 95px - 48px - 17px - 95px);
+@media (max-width: 1700px) {
+  tbody{
+    height: calc(100vh - 67px - 115px - 365px - 95px - 48px) !important;
   }
 }
 
-//Ipad Pro Landscape
-@media (max-width: 1366px) and (orientation: portrait) {
-  th, td{
-    width: 311px !important;
+@media (max-width: 1500px) {
+  tbody  {
+    height: calc(100vh - 67px - 93px - 320px - 88px - 33px) !important;
   }
 
-  table tbody
-  {
-      height: calc(100vh - 111px - 365px - 95px - 48px - 31px - 95px);
-  }
-}
-
-
-
-//Ipad Mini and 10.5 pro Lanscape
-@media (max-width: 1112px) and (orientation: landscape){
-  table tbody{
-    height: calc(100vh - 655px) !important;
-  }
-  margin: auto 50px !important;
-  width: calc(100% - 100px) !important;
-  th{
-    height: 33px !important;
-  }
-
-  td{
-    height: 48px !important;
-  }
-
-  tr{
-    font-size: 12px !important;
-  }
-}
-
-//Ipad Mini and 10.5 pro Portrait
-@media (max-width: 834px) and (orientation: portrait) {
-  table tbody{
-    height: calc(100vh - 675px) !important;
-  }
-  margin: auto 50px !important;
-  width: calc(100% - 100px) !important;
   th{
     height: 33px !important;
   }
