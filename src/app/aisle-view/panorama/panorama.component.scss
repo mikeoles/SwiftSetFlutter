@@ -79,9 +79,9 @@
   }
 }
 
-@media screen and (orientation: portrait) {
+@media (max-width: 1500px) {
   .image-owner {
-    height: 385px !important;
+    height: 320px !important;
   }
 }
 

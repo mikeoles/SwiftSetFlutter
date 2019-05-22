@@ -15,6 +15,15 @@
   margin-right: 250px;
 }
 
+@media (max-width: 1500px) {
+  .right {
+    margin-right: 100px !important;
+  }
+  .left {
+    margin-left: 100px !important;
+  }
+}
+
 .missionInfo{
   padding: 20px 40px;
   border-bottom: 1px solid black;

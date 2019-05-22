@@ -31,6 +31,12 @@
   cursor: pointer;
 }
 
+@media (max-width: 1500px) {
+  .dayGraph {
+    width: 55px !important;
+  }
+}
+
 .graphs{
   display: inline-block;
 }
