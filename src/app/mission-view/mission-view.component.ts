@@ -107,7 +107,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
       if (fileType === 'pdf') {
         this.exportPDF(body);
       } else {
-        this.exportFile(exportType, body, exportFields);
+        this.exportCSV(exportType, body, exportFields);
       }
       this.modalService.close(modalId);
     } else {
@@ -115,6 +115,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
         const outs: Label[] = aisle.outs;
         const labels: Label[]  = aisle.labels;
         const exportData: Label[] = exportType === 'labels' ? labels : outs;
+        exportData.sort(this.labelLocationSort);
         for (let j = 0; j < exportData.length; j++) {
           const label: Label = exportData[j];
           if (exportType === 'onhand' && (label.onHand === null || label.onHand < 1)) {
@@ -153,7 +154,17 @@ export class MissionViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  exportFile(exportType: string, body: any[], exportFields: string[]) {
+  labelLocationSort(a: Label, b: Label) {
+    if (a.bounds.left > b.bounds.left) {
+      return 1;
+    }
+    if (a.bounds.left < b.bounds.left) {
+      return -1;
+    }
+    return 0;
+  }
+
+  exportCSV(exportType: string, body: any[], exportFields: string[]) {
     let csvString = exportFields.join(',') + '\n';
     for (let j = 0; j < body.length; j++) {
       csvString += body[j].join(',') + '\n';
