@@ -3,7 +3,7 @@
   <div class="storeAddress">{{store.storeAddress}}</div>
 </div>
 <div class="storeButton">
-  <ng-datepicker [(ngModel)]="graphStartDate" (ngModelChange)="changeGraphDates($event)" [options]="options" [position]="'bottom-left'"></ng-datepicker>
+  <ng-datepicker [(ngModel)]="graphEndDate" (ngModelChange)="changeGraphDates($event)" [options]="options" [position]="'bottom-left'"></ng-datepicker>
 </div>
 <button class="storeButton" (click)="exportPerformanceData()">Performance Data</button>
 <div class="title">Daily Statistics (Last 14 days)</div>
