@@ -23,6 +23,7 @@ export class StoreViewComponent implements OnInit {
   storeId: number;
   selectedIndex: string;
   selectedDate: Date;
+  graphEndDate: Date;
   graphStartDate: Date;
   options: DatepickerOptions = {
     displayFormat: 'MMMM D[,] YYYY',
@@ -37,8 +38,11 @@ export class StoreViewComponent implements OnInit {
 
   constructor(@Inject('ApiService') private apiService: ApiService, private activatedRoute: ActivatedRoute,
   private environmentService: EnvironmentService, private backService: BackService, private router: Router) {
+    this.graphEndDate = new Date();
+    this.graphEndDate.setDate(this.graphEndDate.getDate()); // Two weeks ago by default
+    this.graphEndDate.setHours(0, 0, 0, 0);
     this.graphStartDate = new Date();
-    this.graphStartDate.setDate(this.graphStartDate.getDate() - 13); // Two weeks ago by default
+    this.graphStartDate.setDate(this.graphEndDate.getDate() - 13); // Two weeks ago by default
     this.graphStartDate.setHours(0, 0, 0, 0);
     this.activatedRoute.params.forEach((params: Params) => {
       if (params['storeId'] !== undefined) {
@@ -59,8 +63,11 @@ export class StoreViewComponent implements OnInit {
   }
 
   changeGraphDates(event) {
+    this.graphEndDate = new Date(event);
     this.graphStartDate = new Date(event);
-    this.graphStartDate.setHours(0, 0, 0, 0);
+    this.graphStartDate.setDate(this.graphStartDate.getDate() - 13); // Two weeks ago by default
+    this.graphEndDate.setHours(0, 0, 0 , 0);
+    this.graphStartDate.setHours(0, 0, 0 , 0);
     this.apiService.getStore(this.storeId, this.graphStartDate, Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe(store => {
       this.setAllSummaryValues(store);
     });
