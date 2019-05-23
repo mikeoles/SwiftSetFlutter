@@ -128,6 +128,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
     let csvContent = exportFields.join(',') + '\n';
 
     const exportData: Label[] = exportType === 'labels' ? this.labels : this.outs;
+    exportData.sort(this.labelLocationSort);
     for (let j = 0; j < exportData.length; j++) {
       const label: Label = exportData[j];
       if (exportType === 'onhand' && (label.onHand === null || label.onHand < 1)) {
@@ -193,6 +194,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
       const body = [];
 
       const exportData: Label[] = this.outs;
+      exportData.sort(this.labelLocationSort);
       for (let j = 0; j < exportData.length; j++) {
         const label: Label = exportData[j];
         if (label.onHand === null || label.onHand < 1) {
@@ -271,5 +273,15 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
       }
     });
     return index;
+  }
+
+  labelLocationSort(a: Label, b: Label) {
+    if (a.bounds.left > b.bounds.left) {
+      return 1;
+    }
+    if (a.bounds.left < b.bounds.left) {
+      return -1;
+    }
+    return 0;
   }
 }
