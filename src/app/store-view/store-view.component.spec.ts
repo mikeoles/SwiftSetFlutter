@@ -114,10 +114,10 @@ describe('StoreViewComponent', () => {
     const d: Date = new Date();
     d.setHours(0 , 0, 0, 0);
     component.changeGraphDates(d.toString());
-    expect(component.graphStartDate.toString()).toEqual(d.toString());
+    expect(component.graphEndDate.toString()).toEqual(d.toString());
     d.setDate(d.getDate() - 13);
     d.setHours(0 , 0, 0, 0);
     component.changeGraphDates(d.toString());
-    expect(component.graphStartDate.toString()).toEqual(d.toString());
+    expect(component.graphEndDate.toString()).toEqual(d.toString());
   });
 });
