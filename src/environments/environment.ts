@@ -13,8 +13,7 @@ export const environment = {
   onHand: true,
   exportingPDF: true,
   exclusionZones: true,
-  exportFields: ['Barcode', 'Product Id', 'Description', 'Department', 'On Hand', 'Layout', 'S. Loc', 'Size', 'SRQ', 'PR', 'Status',
-  'Last Recvd', 'DNO'],
+  exportFields: ['Barcode', 'Product Id', 'Description', 'Department', 'Left'],
   productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price', 'On Hand'],
   labelScrolling: labelScrollOptions.vertical,
   apiType: 'odata' // Options: odata or static
