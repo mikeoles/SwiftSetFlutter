@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output, HostListener, ElementRef, OnChanges, SimpleChanges, Inject } from '@angular/core';
-import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faAngleUp, faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import Mission from '../../mission.model';
 import Aisle from '../../aisle.model';
 import * as jsPDF from 'jspdf';
@@ -17,6 +17,7 @@ import Store from 'src/app/store.model';
 })
 export class SelectionAreaComponent implements OnInit, OnChanges {
   showMissions = false;
+  showOptions = false;
   showAisles = false;
   exportOnHand = false;
   exportingPDF = false;
@@ -37,6 +38,8 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   store: Store;
   faAngleDown = faAngleDown;
   faAngleUp = faAngleUp;
+  faArrowRight = faArrowRight;
+  faArrowLeft = faArrowLeft;
   currentlyExporting = false;
 
   constructor(private eRef: ElementRef, private modalService: ModalService, private environment: EnvironmentService,
@@ -100,10 +103,18 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   selectMissionsDropdown() {
     this.showMissions = !this.showMissions;
     this.showAisles = false;
+    this.showOptions = false;
   }
 
   selectAislesDropdown() {
     this.showAisles = !this.showAisles;
+    this.showMissions = false;
+    this.showOptions = false;
+  }
+
+  selectOptionsDropdown() {
+    this.showOptions = !this.showOptions;
+    this.showAisles = false;
     this.showMissions = false;
   }
 
@@ -117,6 +128,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
     let csvContent = exportFields.join(',') + '\n';
 
     const exportData: Label[] = exportType === 'labels' ? this.labels : this.outs;
+    exportData.sort(this.labelLocationSort);
     for (let j = 0; j < exportData.length; j++) {
       const label: Label = exportData[j];
       if (exportType === 'onhand' && (label.onHand === null || label.onHand < 1)) {
@@ -182,6 +194,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
       const body = [];
 
       const exportData: Label[] = this.outs;
+      exportData.sort(this.labelLocationSort);
       for (let j = 0; j < exportData.length; j++) {
         const label: Label = exportData[j];
         if (label.onHand === null || label.onHand < 1) {
@@ -236,5 +249,39 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
 
   toggleExclusionZones() {
     this.toggleExclusionZone.emit();
+  }
+
+  nextPano() {
+    const index: number = this.findAisleIndex();
+    if (index >= 0 && index < this.aisles.length - 1) {
+      this.aisleSelected.emit(this.aisles[index + 1]);
+    }
+  }
+
+  previousPano() {
+    const index: number = this.findAisleIndex();
+    if (index > 0) {
+      this.aisleSelected.emit(this.aisles[index - 1]);
+    }
+  }
+
+  findAisleIndex() {
+    let index = -1;
+    this.aisles.forEach((aisle, i) => {
+      if (aisle.aisleId === this.selectedAisle.aisleId) {
+        index = i;
+      }
+    });
+    return index;
+  }
+
+  labelLocationSort(a: Label, b: Label) {
+    if (a.bounds.left > b.bounds.left) {
+      return 1;
+    }
+    if (a.bounds.left < b.bounds.left) {
+      return -1;
+    }
+    return 0;
   }
 }

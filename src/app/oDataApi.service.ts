@@ -119,7 +119,12 @@ export class ODataApiService implements ApiService {
       outs: missionSummary.Outs,
       labels: missionSummary.Labels,
       spreads: missionSummary.Spreads,
-      aislesScanned: missionSummary.AislesScanned
+      aislesScanned: missionSummary.AislesScanned,
+      percentageRead: missionSummary.PercentageReadLabels,
+      percentageUnread: missionSummary.PercentageUnreadLabels,
+      unreadLabels: missionSummary.UnreadLabels,
+      readLabelsMatchingProduct: missionSummary.ReadLabelsMatchingProduct,
+      readLabelsMissingProduct: missionSummary.ReadLabelsMissingProduct
     };
   }
 
@@ -205,6 +210,30 @@ export class ODataApiService implements ApiService {
   getMissionSummaries(date: Date, storeId: number, timezone: string): Observable<MissionSummary[]> {
     // tslint:disable-next-line:max-line-length
     return this.http.get(`${this.apiUrl}/DemoService/MissionSummaries?$filter=MissionDate eq ${formatDate(date, 'yyyy-MM-dd', 'en-US')} and StoreId eq '${storeId}' and TimeZone eq '${timezone}'`)
+      .pipe(
+      // API result
+      // {
+      //   "@odata.context": "$metadata#MissionSummaries",
+      //   "value": [
+      //     {
+      //        "Mission": "044429UTC",
+      //        "StoreId": "1851"
+      //        "MissionDate": 2018-11-10T01:00:04-05:00,
+      //        "Outs": 60,
+      //        "Labels": 725,
+      //        "AislesScanned": 50
+      //     }
+      //   ]
+      // }
+
+      // Map the result to an array of MissionSummary objects
+      map<any, MissionSummary[]>(o => o.value.map(m => this.createMissionSummary(m))),
+    );
+  }
+
+  getRangeMissionSummaries(startDate: Date, endDate: Date, storeId: number, timezone: string): Observable<MissionSummary[]> {
+    // tslint:disable-next-line:max-line-length
+    return this.http.get(`${this.apiUrl}/DemoService/MissionSummaries?$filter=MissionDate eq ${formatDate(startDate, 'yyyy-MM-dd', 'en-US')} and StoreId eq '${storeId}' and TimeZone eq '${timezone}' and EndDate eq ${formatDate(endDate, 'yyyy-MM-dd', 'en-US')}`)
       .pipe(
       // API result
       // {

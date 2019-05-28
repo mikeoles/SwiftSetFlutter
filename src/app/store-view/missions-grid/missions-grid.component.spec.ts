@@ -10,7 +10,8 @@ describe('MissionsGridComponent', () => {
   let fixture: ComponentFixture<MissionsGridComponent>;
 
   const missionSummaries: MissionSummary[] = [
-    { missionId: 0, mission: '', storeId: 0, missionDateTime: new Date(), outs: 0, labels: 0, spreads: 0, aislesScanned: 0 }
+    { missionId: 0, mission: '', storeId: 0, missionDateTime: new Date(), outs: 0, labels: 0, spreads: 0,
+    aislesScanned: 0, percentageRead: 1, percentageUnread: 1, unreadLabels: 1, readLabelsMissingProduct: 1, readLabelsMatchingProduct: 1}
   ];
 
   beforeEach(async(() => {

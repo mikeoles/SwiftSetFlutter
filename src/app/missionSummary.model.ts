@@ -7,4 +7,9 @@ export default class MissionSummary {
   labels: number;
   spreads: number;
   aislesScanned: number;
+  percentageRead: number;
+  percentageUnread: number;
+  unreadLabels: number;
+  readLabelsMissingProduct: number;
+  readLabelsMatchingProduct: number;
 }

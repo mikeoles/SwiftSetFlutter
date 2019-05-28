@@ -2,9 +2,10 @@
   <div class="storeName">{{store.storeName}}</div>
   <div class="storeAddress">{{store.storeAddress}}</div>
 </div>
-    <div class="dateInput">
-      <ng-datepicker [(ngModel)]="graphStartDate" (ngModelChange)="changeGraphDates($event)" [options]="options" [position]="'bottom-left'"></ng-datepicker>
-    </div>
+<div class="storeButton">
+  <ng-datepicker [(ngModel)]="graphEndDate" (ngModelChange)="changeGraphDates($event)" [options]="options" [position]="'bottom-left'"></ng-datepicker>
+</div>
+<button class="storeButton" (click)="exportPerformanceData()">Performance Data</button>
 <div class="title">Daily Statistics (Last 14 days)</div>
 <div *ngIf="store">
   <div class="graphDisplay"><app-daily-graphs [title]="'Out of Stocks Detected'" [data]="store.summaryOuts" [overallAverage]="store.totalAverageOuts" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>

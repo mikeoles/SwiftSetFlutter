@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import Label from '../label.model';
 import { ModalService } from '../modal/modal.service';
 import { EnvironmentService } from '../environment.service';
+import MissionSummary from '../missionSummary.model';
 
 @Component({selector: 'app-mission-stats', template: ''})
 class AppMissionStatsStubComponent {
@@ -42,8 +43,9 @@ describe('MissionViewComponent', () => {
     customFields: [], section: '', department: '', onHand: 0 },
   ];
   const mission = { missionId: 1, name: '1111', createDateTime: new Date('2018-12-12'), missionDateTime: new Date('2018-12-12') };
-  const missionSummary = {   missionId: 1, mission: '', storeId: '', missionDateTime: new Date('2018-12-12'),
-  outs: 1, labels: 1, spreads: 1, aislesScanned: 1};
+  const missionSummary: MissionSummary = {   missionId: 1, mission: '', storeId: 1, missionDateTime: new Date('2018-12-12'),
+  outs: 1, labels: 1, spreads: 1, aislesScanned: 1,
+  percentageRead: 0, percentageUnread: 0, unreadLabels: 0, readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0 };
   const aisles = [{  aisleId: 1, name: '', panoramaUrl: '', labels: labels, outs: labels, spreads: [] }];
   const aisle = {  aisleId: 1, name: '', panoramaUrl: '', labels: labels, outs: labels, spreads: [] };
   const store = { storeId: 1 };

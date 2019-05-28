@@ -1,17 +1,34 @@
+@import "../../variables";
+
+
 :host {
   font-size: 24px;
   font-weight: bold;
 }
 
-.dateInput{
+.storeButton{
   margin-right: 20px;
   margin-top: 20px;
   float: right;
 }
 
+@media (max-width: 768px) {
+  .storeButton {
+    margin-right: 5px !important;
+  }
+}
+
 .storeInfo {
   padding: 20px 40px;
   display: inline-block;
+}
+
+button {
+  margin-right: 50px !important;
+}
+
+button:focus {
+  outline:0;
 }
 
 .storeAddress span {

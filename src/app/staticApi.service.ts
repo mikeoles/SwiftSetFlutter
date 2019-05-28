@@ -148,11 +148,47 @@ export class StaticApiService implements ApiService {
           outs: store.Missions[i].outs,
           labels: store.Missions[i].labels,
           spreads: 0,
-          aislesScanned: store.Missions[i].aislesScanned
+          aislesScanned: store.Missions[i].aislesScanned,
+          percentageRead: store.Missions[i].percentageRead,
+          percentageUnread: store.Missions[i].percentageUnread,
+          unreadLabels: store.Missions[i].unreadLabels || 0,
+          readLabelsMatchingProduct: store.Missions[i].readLabelsMatchingProduct || 0,
+          readLabelsMissingProduct: store.Missions[i].readLabelsMissingProduct || 0
         });
       }
     }
     return summaries;
+  }
+
+  createMissionSummariesRange(store: any, startDate: Date, endDate: Date): MissionSummary[] {
+    const summaries: MissionSummary[] = [];
+    for (let i = 0; i < store.Missions.length; i++) {
+      const missionDate: Date = new Date(store.Missions[i].missionDateTime);
+        if (missionDate >= startDate && missionDate < endDate) {
+        summaries.push({
+          missionId: store.Missions[i].missionId,
+          mission: store.Missions[i].mission,
+          storeId: store.storeId,
+          missionDateTime: new Date(store.Missions[i].missionDateTime),
+          outs: store.Missions[i].outs,
+          labels: store.Missions[i].labels,
+          spreads: 0,
+          aislesScanned: store.Missions[i].aislesScanned,
+          percentageRead: store.Missions[i].percentageRead,
+          percentageUnread: store.Missions[i].percentageUnread,
+          unreadLabels: store.Missions[i].unreadLabels || 0,
+          readLabelsMatchingProduct: store.Missions[i].readLabelsMatchingProduct || 0,
+          readLabelsMissingProduct: store.Missions[i].readLabelsMissingProduct || 0
+        });
+      }
+    }
+    return summaries;
+  }
+
+  getRangeMissionSummaries(startDate: Date, endDate: Date, storeId: number, timezone: string): Observable<MissionSummary[]> {
+    return this.http.get('../data/Store-' + storeId + '/index.json').pipe(
+      map<any, MissionSummary[]>(storeJson => this.createMissionSummariesRange(storeJson, startDate, endDate)),
+    );
   }
 
   getMissionSummary(storeId: number, mission: number): Observable<MissionSummary> {
@@ -172,7 +208,12 @@ export class StaticApiService implements ApiService {
           outs: store.Missions[i].outs,
           labels: store.Missions[i].labels,
           spreads: 0,
-          aislesScanned: store.Missions[i].aislesScanned
+          aislesScanned: store.Missions[i].aislesScanned,
+          percentageRead: store.Missions[i].PercentageReadLabels,
+          percentageUnread: store.Missions[i].PercentageUnreadLabels,
+          unreadLabels: store.Missions[i].UnreadLabels,
+          readLabelsMatchingProduct: store.Missions[i].ReadLabelsMatchingProduct,
+          readLabelsMissingProduct: store.Missions[i].ReadLabelsMissingProduct
         };
       }
     }
@@ -225,7 +266,7 @@ export class StaticApiService implements ApiService {
       outs: (aisle.outs || []).map(l => this.createLabel(l)),
       spreads: [],
       coveragePercent: aisle.coveragePercent,
-      exclusionsCount: aisle.ExclusionsCount,
+      exclusionsCount: aisle.exclusionsCount,
       exclusionZones: (aisle.exclusionZones || []).map(l => this.createExclusionZone(l)),
     };
   }
