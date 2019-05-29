@@ -164,7 +164,7 @@ export class StaticApiService implements ApiService {
     const summaries: MissionSummary[] = [];
     for (let i = 0; i < store.Missions.length; i++) {
       const missionDate: Date = new Date(store.Missions[i].missionDateTime);
-        if (missionDate >= startDate && missionDate < endDate) {
+        if (missionDate >= startDate && missionDate <= endDate) {
         summaries.push({
           missionId: store.Missions[i].missionId,
           mission: store.Missions[i].mission,
