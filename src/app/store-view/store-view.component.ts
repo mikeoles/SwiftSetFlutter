@@ -129,7 +129,7 @@ export class StoreViewComponent implements OnInit {
 
   exportPerformanceData() {
     const endDate: Date = new Date(this.graphStartDate.toString());
-    endDate.setDate(endDate.getDate() + 13);
+    endDate.setDate(endDate.getDate() + 14);
   this.apiService.getRangeMissionSummaries(this.graphStartDate, endDate, this.storeId,
       Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe(
       missionSummaries => {
