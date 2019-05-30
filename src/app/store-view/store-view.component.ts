@@ -128,10 +128,12 @@ export class StoreViewComponent implements OnInit {
   }
 
   exportPerformanceData() {
-    const endDate: Date = new Date(this.graphStartDate.toString());
-    endDate.setDate(endDate.getDate() + 14);
-  this.apiService.getRangeMissionSummaries(this.graphStartDate, endDate, this.storeId,
-      Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe(
+    const columnNames = ['Mission Date', 'Customer - Store', 'Total Aisles Scanned', 'Total # Of Labels', 'Total # Unread Labels',
+    'Percentage Unread Labels', 'Percentage Read Labels', '# Read Labels With Matching Product', '# Read Labels Missing Product',
+    'Total # OOS'];
+    this.apiService.getRangeMissionSummaries(this.graphStartDate, this.graphEndDate, this.storeId, 
+      Intl.DateTimeFormat().resolvedOptions().timeZone)
+    .subscribe(
       missionSummaries => {
         const body = [];
         missionSummaries.forEach( missionSummary => {
@@ -148,15 +150,56 @@ export class StoreViewComponent implements OnInit {
           row = row.concat(missionSummary.outs);
           body.push(row);
         });
-        this.saveCSV(body);
+        const filename = 'PerformanceData_' + this.graphStartDate.toDateString() + '-' +
+          this.graphEndDate.toDateString() + '.csv';
+        this.saveCSV(body, columnNames, filename);
       }
     );
   }
 
-  saveCSV(body: any[]) {
-    const columnNames = ['Mission Date', 'Customer - Store', 'Total Aisles Scanned', 'Total # Of Labels', 'Total # Unread Labels',
-    'Percentage Unread Labels', 'Percentage Read Labels', '# Read Labels With Matching Product', '# Read Labels Missing Product',
-    'Total # OOS'];
+  exportAisleScanData() {
+    const columnNames = ['Date Span', 'Aisle', '# Of Scans', 'Average Aisle Coverage'];
+    this.apiService.getRangeAisles(this.graphStartDate, this.graphEndDate, this.storeId, Intl.DateTimeFormat().resolvedOptions().timeZone)
+    .subscribe(
+      aisles => {
+        const coveragePercentages = new Map<string, number>();
+        const scanCounts = new Map<string, number>();
+        aisles.forEach( aisle => {
+          let coveragePercent = aisle.coveragePercent;
+          let scanCount = 1;
+          if (coveragePercentages.has(aisle.aisleName)) {
+            coveragePercent += coveragePercentages.get(aisle.aisleName);
+          }
+          if (scanCounts.has(aisle.aisleName)) {
+            scanCount += scanCounts.get(aisle.aisleName);
+          }
+          coveragePercentages.set(aisle.aisleName, coveragePercent);
+          scanCounts.set(aisle.aisleName, scanCount);
+        });
+        const body = [];
+        coveragePercentages.forEach((value: number, key: string) => {
+          let row = [];
+          row = row.concat(this.graphStartDate.toDateString() + '-' + this.graphEndDate.toDateString());
+          row = row.concat(key);
+          row = row.concat(scanCounts.get(key));
+          const coveragePercent = value / scanCounts.get(key);
+          let avgAisleCoverage = 'Low';
+          if (coveragePercent >= 70) {
+            avgAisleCoverage = 'High';
+          } else if (coveragePercent >= 40) {
+            avgAisleCoverage = 'Medium';
+          }
+          row = row.concat(avgAisleCoverage);
+          body.push(row);
+        });
+        const filename = 'ScanData_' + this.graphStartDate.toDateString() + '-' +
+          this.graphEndDate.toDateString() + '.csv';
+        this.saveCSV(body, columnNames, filename);
+      }
+    );
+  }
+
+  saveCSV(body: any[], columnNames, filename) {
     let csvString = columnNames.join(',') + '\n';
     for (let j = 0; j < body.length; j++) {
       csvString += body[j].join(',') + '\n';
@@ -166,7 +209,7 @@ export class StoreViewComponent implements OnInit {
     const link = document.createElement('a');
     link.setAttribute('target', '_blank');
     link.setAttribute('href', csvUrl);
-    link.setAttribute('download', 'PerformanceData-' + this.graphStartDate.toDateString() + '.csv');
+    link.setAttribute('download', filename);
     document.body.appendChild(link);
     link.click();
     link.remove();
