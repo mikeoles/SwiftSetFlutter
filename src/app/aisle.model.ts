@@ -6,6 +6,7 @@ export default class Aisle {
   aisleName: string;
   panoramaUrl: string;
   coveragePercent: number;
+  aisleCoverage: string;
   zone: string;
   labels: Label[];
   labelsCount: number;

@@ -2,7 +2,7 @@
   <thead>
     <tr>
       <th>Aisle</th>
-      <th *ngIf="showPercentScanned">Percent Scanned</th>
+      <th *ngIf="showAisleCoverage">Aisle Coverage</th>
       <th>Outs</th>
       <th>Labels</th>
       <th>Exclusion Zones</th>
@@ -15,7 +15,7 @@
           {{aisle.aisleName}}
         </a>
         </td>
-      <td *ngIf="showPercentScanned">{{aisle.coveragePercent | number : '1.0-2'}}%</td>
+      <td *ngIf="showAisleCoverage">{{aisle.aisleCoverage}}</td>
       <td>{{aisle.outsCount}}</td>
       <td>{{aisle.labelsCount}}</td>
       <td>{{aisle.exclusionsCount}}</td>

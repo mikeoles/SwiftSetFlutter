@@ -25,6 +25,13 @@ export class ODataApiService implements ApiService {
   }
 
   createAisle(aisle: any): Aisle {
+    let aisleCoverage = 'Low';
+    if (aisle.CoveragePercent >= 70) {
+      aisleCoverage = 'High';
+    } else if (aisle.CoveragePercent >= 40) {
+      aisleCoverage = 'Medium';
+    }
+
     return {
       aisleId: aisle.Id,
       aisleName: `${aisle.Zone}${aisle.Aisle}`,
@@ -36,6 +43,7 @@ export class ODataApiService implements ApiService {
       outs: (aisle.Outs || []).map(l => this.createLabel(l)),
       spreads: [],
       coveragePercent: aisle.CoveragePercent,
+      aisleCoverage: aisleCoverage,
       exclusionsCount: aisle.ExclusionsCount,
       exclusionZones: (aisle.ExclusionZones || []).map(ez => this.createExclusionZones(ez))
     };
@@ -252,6 +260,31 @@ export class ODataApiService implements ApiService {
 
       // Map the result to an array of MissionSummary objects
       map<any, MissionSummary[]>(o => o.value.map(m => this.createMissionSummary(m))),
+    );
+  }
+
+  getRangeAisles(startDate: Date, endDate: Date, storeId: number, timezone: string): Observable<Aisle[]> {
+    // tslint:disable-next-line:max-line-length
+    return this.http.get(`${this.apiUrl}/DemoService/Panos?$filter=StartDate eq ${formatDate(startDate, 'yyyy-MM-dd', 'en-US')} and StoreId eq '${storeId}' and TimeZone eq '${timezone}' and EndDate eq ${formatDate(endDate, 'yyyy-MM-dd', 'en-US')}`).pipe(
+      // API result
+      // {
+      //   "@odata.context": "$metadata#Panos",
+      //   "value": [
+      //     {
+      //       "Id": 4,
+      //       "Zone": "AA",
+      //       "Aisle": "3",
+      //       "FilePath": "165839UTC/AA/3/AA03_color_panorama.jpg",
+      //       "CreateDate": "2018-11-09T02:10:25Z"
+      //     }
+      //   ]
+      // }
+
+      // Map the result to an array of Aisle objects
+      map<any, Aisle[]>(o => o.value.map(a => this.createAisle(a))),
+
+      // Sort by name
+      map(aisles => aisles.sort((a, b) => a.aisleName.localeCompare(b.aisleName))),
     );
   }
 

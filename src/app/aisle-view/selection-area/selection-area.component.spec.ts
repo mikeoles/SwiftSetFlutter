@@ -38,15 +38,20 @@ describe('SelectionAreaComponent', () => {
   ];
   const aisles: Aisle[] = [
     { aisleId: 1, aisleName: '1111', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '',
-    coveragePercent: 0, outsCount: 0, labelsCount: 0, exclusionZones: exclusionZones, exclusionsCount: 0  },
+    coveragePercent: 0, outsCount: 0, labelsCount: 0, exclusionZones: exclusionZones, exclusionsCount: 0,
+    aisleCoverage: ''},
     { aisleId: 2, aisleName: '2222', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '',
-    coveragePercent: 0, outsCount: 0, labelsCount: 0, exclusionZones: exclusionZones, exclusionsCount: 0   },
+    coveragePercent: 0, outsCount: 0, labelsCount: 0, exclusionZones: exclusionZones, exclusionsCount: 0,
+    aisleCoverage: ''},
     { aisleId: 3, aisleName: '3333', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '',
-    coveragePercent: 0, outsCount: 0, labelsCount: 0, exclusionZones: exclusionZones, exclusionsCount: 0   },
+    coveragePercent: 0, outsCount: 0, labelsCount: 0, exclusionZones: exclusionZones, exclusionsCount: 0,
+    aisleCoverage: ''},
     { aisleId: 4, aisleName: '4444', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '',
-    coveragePercent: 0, outsCount: 0, labelsCount: 0, exclusionZones: exclusionZones, exclusionsCount: 0   },
+    coveragePercent: 0, outsCount: 0, labelsCount: 0, exclusionZones: exclusionZones, exclusionsCount: 0,
+    aisleCoverage: ''},
     { aisleId: 5, aisleName: '5555', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '',
-    coveragePercent: 0, outsCount: 0, labelsCount: 0, exclusionZones: exclusionZones, exclusionsCount: 0   },
+    coveragePercent: 0, outsCount: 0, labelsCount: 0, exclusionZones: exclusionZones, exclusionsCount: 0,
+    aisleCoverage: '' },
   ];
   const store = { storeId: 1 };
 
