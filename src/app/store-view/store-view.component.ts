@@ -131,7 +131,7 @@ export class StoreViewComponent implements OnInit {
     const columnNames = ['Mission Date', 'Customer - Store', 'Total Aisles Scanned', 'Total # Of Labels', 'Total # Unread Labels',
     'Percentage Unread Labels', 'Percentage Read Labels', '# Read Labels With Matching Product', '# Read Labels Missing Product',
     'Total # OOS'];
-    this.apiService.getRangeMissionSummaries(this.graphStartDate, this.graphEndDate, this.storeId, 
+    this.apiService.getRangeMissionSummaries(this.graphStartDate, this.graphEndDate, this.storeId,
       Intl.DateTimeFormat().resolvedOptions().timeZone)
     .subscribe(
       missionSummaries => {
