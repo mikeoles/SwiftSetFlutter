@@ -258,9 +258,9 @@ export class StaticApiService implements ApiService {
 
   createAisle(aisle: any, storeId: number, missionId: number): Aisle {
     let aisleCoverage = 'Low';
-    if (aisle.CoveragePercent >= 70) {
+    if (aisle.coveragePercent >= 70) {
       aisleCoverage = 'High';
-    } else if (aisle.CoveragePercent >= 40) {
+    } else if (aisle.coveragePercent >= 40) {
       aisleCoverage = 'Medium';
     }
 
