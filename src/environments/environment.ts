@@ -16,7 +16,12 @@ export const environment = {
   exportFields: ['Barcode', 'Product Id', 'Description', 'Department', 'Left'],
   productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price', 'On Hand'],
   labelScrolling: labelScrollOptions.vertical,
-  apiType: 'odata' // Options: odata or static
+  apiType: 'odata', // Options: odata or static
+  adalConfig: {
+    tenant: 'caad7702-bb38-4deb-a052-d0d48724c18e',
+    clientId: 'ed4f00e4-3da8-4d2e-a6ce-327373ddc307',
+    redirectUri: 'http://localhost:4200',
+  }
 };
 
 /*

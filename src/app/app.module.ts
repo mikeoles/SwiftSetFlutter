@@ -28,7 +28,8 @@ import { NgDatepickerModule } from 'ng2-datepicker';
 import { DataService } from './data.service';
 import { apiFactory } from './api.service';
 import { FleetViewComponent } from './fleet-view/fleet-view.component';
-
+import { AdalService, AdalGuard } from 'adal-angular4';
+import { AuthGuard } from './auth-guard';
 
 @NgModule({
   declarations: [
@@ -78,7 +79,10 @@ import { FleetViewComponent } from './fleet-view/fleet-view.component';
         provide: 'ApiService',
         useFactory: apiFactory,
         deps: [EnvironmentService, HttpClient]
-      }
+    },
+    AdalService,
+    AdalGuard,
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })
