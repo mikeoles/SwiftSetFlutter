@@ -6,6 +6,7 @@
   <ng-datepicker [(ngModel)]="graphEndDate" (ngModelChange)="changeGraphDates($event)" [options]="options" [position]="'bottom-left'"></ng-datepicker>
 </div>
 <button class="storeButton" (click)="exportPerformanceData()">Performance Data</button>
+<button class="storeButton" (click)="exportAisleScanData()">Aisle Scan Data</button>
 <div class="title">Daily Statistics (Last 14 days)</div>
 <div *ngIf="store">
   <div class="graphDisplay"><app-daily-graphs [title]="'Out of Stocks Detected'" [data]="store.summaryOuts" [overallAverage]="store.totalAverageOuts" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>

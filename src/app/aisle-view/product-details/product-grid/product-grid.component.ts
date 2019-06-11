@@ -32,16 +32,14 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!this.products) {
-      return;
-    }
-
-    if (!changes['products'] || this.products.length < 1) {
+    if (!this.products || !changes['products']) {
       return;
     }
 
     if (changes['products']) {
-      this.sortProductsByLocation();
+      if (this.products.length < 0) {
+        this.sortProductsByLocation();
+      }
       this.getGridData();
     }
   }

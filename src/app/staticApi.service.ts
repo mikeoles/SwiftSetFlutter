@@ -186,8 +186,10 @@ export class StaticApiService implements ApiService {
   }
 
   getRangeMissionSummaries(startDate: Date, endDate: Date, storeId: number, timezone: string): Observable<MissionSummary[]> {
+    const afterEndDate: Date = new Date(startDate.toString());
+    afterEndDate.setDate(endDate.getDate() + 1);
     return this.http.get('../data/Store-' + storeId + '/index.json').pipe(
-      map<any, MissionSummary[]>(storeJson => this.createMissionSummariesRange(storeJson, startDate, endDate)),
+      map<any, MissionSummary[]>(storeJson => this.createMissionSummariesRange(storeJson, startDate, afterEndDate)),
     );
   }
 
@@ -255,6 +257,13 @@ export class StaticApiService implements ApiService {
   }
 
   createAisle(aisle: any, storeId: number, missionId: number): Aisle {
+    let aisleCoverage = 'Low';
+    if (aisle.coveragePercent >= 70) {
+      aisleCoverage = 'High';
+    } else if (aisle.coveragePercent >= 40) {
+      aisleCoverage = 'Medium';
+    }
+
     return {
       aisleId: aisle.aisleId,
       aisleName: aisle.aisleName,
@@ -266,6 +275,7 @@ export class StaticApiService implements ApiService {
       outs: (aisle.outs || []).map(l => this.createLabel(l)),
       spreads: [],
       coveragePercent: aisle.coveragePercent,
+      aisleCoverage: aisleCoverage,
       exclusionsCount: aisle.exclusionsCount,
       exclusionZones: (aisle.exclusionZones || []).map(l => this.createExclusionZone(l)),
     };
@@ -313,4 +323,44 @@ export class StaticApiService implements ApiService {
       value: customField.field
     };
   }
+
+  getRangeAisles(startDate: Date, endDate: Date, storeId: number, timezone: string): Observable<Aisle[]> {
+    const afterEndDate: Date = new Date(startDate.toString());
+    afterEndDate.setDate(endDate.getDate() + 1);
+    return this.http.get('../data/Store-' + storeId + '/index.json').pipe(
+      map<any, Aisle[]>(storeJson => this.createAislesRange(storeJson, startDate, afterEndDate)),
+    );
+  }
+
+  createAislesRange(store: any, startDate: Date, endDate: Date): Aisle[] {
+    const aisles: Aisle[] = [];
+    for (let i = 0; i < store.Aisles.length; i++) {
+      const aisleDate: Date = new Date(store.Aisles[i].aisleScannedDate);
+      let aisleCoverage = 'Low';
+      if (store.Aisles[i].CoveragePercent >= 70) {
+        aisleCoverage = 'High';
+      } else if (store.Aisles[i].CoveragePercent >= 70) {
+        aisleCoverage = 'Medium';
+      }
+      if (aisleDate >= startDate && aisleDate <= endDate) {
+        aisles.push({
+          aisleId: store.Aisles[i].aisleId,
+          aisleName: store.Aisles[i].aisleName,
+          panoramaUrl: '../data/Store-' + store.storeId + '/' + store.Aisles[i].panoramaUrl,
+          zone: store.Aisles[i].zone,
+          labelsCount: store.Aisles[i].labelsCount,
+          labels: [],
+          outsCount: store.Aisles[i].outsCount,
+          outs: [],
+          spreads: [],
+          coveragePercent: store.Aisles[i].coveragePercent,
+          aisleCoverage: aisleCoverage,
+          exclusionsCount: store.Aisles[i].exclusionsCount,
+          exclusionZones: [],
+        });
+      }
+    }
+    return aisles;
+  }
+
 }

@@ -13,10 +13,10 @@ export class AislesGridComponent implements OnInit {
   @Input() aisles: Aisle[];
   @Input() missionId: number;
   @Input() storeId: number;
-  showPercentScanned: boolean;
+  showAisleCoverage: boolean;
 
   constructor( private router: Router, private environment: EnvironmentService) {
-    this.showPercentScanned = environment.config.coveragePercent;
+    this.showAisleCoverage = environment.config.coveragePercent;
   }
 
   ngOnInit() {
