@@ -186,7 +186,7 @@ export class StaticApiService implements ApiService {
   }
 
   getRangeMissionSummaries(startDate: Date, endDate: Date, storeId: number, timezone: string): Observable<MissionSummary[]> {
-    const afterEndDate: Date = new Date(startDate.toString());
+    const afterEndDate: Date = new Date();
     afterEndDate.setDate(endDate.getDate() + 1);
     return this.http.get('../data/Store-' + storeId + '/index.json').pipe(
       map<any, MissionSummary[]>(storeJson => this.createMissionSummariesRange(storeJson, startDate, afterEndDate)),
@@ -251,6 +251,7 @@ export class StaticApiService implements ApiService {
   }
 
   getAisle(storeId: number, missionId: number, aisleId: number): Observable<any> {
+    // tslint:disable-next-line:max-line-length
     return this.http.get('../data/Store-' + storeId + '/Mission-' + missionId + '/Aisle-' + aisleId + '/aisle-' + aisleId + '.json').pipe(
       map<any, Aisle>(aisleJson => this.createAisle(aisleJson, storeId, missionId)),
     );
@@ -325,7 +326,7 @@ export class StaticApiService implements ApiService {
   }
 
   getRangeAisles(startDate: Date, endDate: Date, storeId: number, timezone: string): Observable<Aisle[]> {
-    const afterEndDate: Date = new Date(startDate.toString());
+    const afterEndDate: Date = new Date();
     afterEndDate.setDate(endDate.getDate() + 1);
     return this.http.get('../data/Store-' + storeId + '/index.json').pipe(
       map<any, Aisle[]>(storeJson => this.createAislesRange(storeJson, startDate, afterEndDate)),
