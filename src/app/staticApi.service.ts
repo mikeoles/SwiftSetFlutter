@@ -186,7 +186,7 @@ export class StaticApiService implements ApiService {
   }
 
   getRangeMissionSummaries(startDate: Date, endDate: Date, storeId: number, timezone: string): Observable<MissionSummary[]> {
-    const afterEndDate: Date = new Date(startDate.toString());
+    const afterEndDate: Date = new Date();
     afterEndDate.setDate(endDate.getDate() + 1);
     return this.http.get('../data/Store-' + storeId + '/index.json').pipe(
       map<any, MissionSummary[]>(storeJson => this.createMissionSummariesRange(storeJson, startDate, afterEndDate)),
