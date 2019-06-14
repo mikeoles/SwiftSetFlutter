@@ -11,7 +11,7 @@ import Aisle from './aisle.model';
 import Label from './label.model';
 import CustomField from './customField.model';
 import ExclusionZone from './exclusionZone.model';
-import { mergeAll, tap } from 'rxjs/operators';
+import { mergeAll, tap, concatMap, switchMap, concatAll } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -327,20 +327,18 @@ export class StaticApiService implements ApiService {
   }
 
   getRangeAisles(startDate: Date, endDate: Date, storeId: number, timezone: string): Observable<Aisle[]> {
-    const afterEndDate: Date = new Date();
-    afterEndDate.setDate(endDate.getDate() + 1);
-    const aisles = [];
-    this.http.get('../data/Store-' + storeId + '/index.json').pipe(
-      map<any, MissionSummary[]>(storeJson => this.createMissionSummariesRange(storeJson, startDate, afterEndDate)),
-    ).subscribe( missionSummaries => {
-      missionSummaries.forEach( missionSummary => {
-        // tslint:disable-next-line:max-line-length
-        aisles.push(this.http.get('../data/Store-' + storeId + '/Mission-' + missionSummary.missionId + '/mission-' + missionSummary.missionId  + '.json').pipe(
-          map<any, Aisle[]>(o => o.Aisles.map(a => this.createAisle(a, storeId, 0))),
-        ));
-        forkJoin(aisles).pipe(tap(items => console.log(items)), mergeAll());
-      });
-    });
-    return of([]);
+    return this.http.get('../data/Store-' + storeId + '/index.json').pipe(
+      map<any, MissionSummary[]>(storeJson => this.createMissionSummariesRange(storeJson, startDate, endDate)),
+      map<MissionSummary[], Observable<any>[]>(missionSummaries =>
+        missionSummaries.map(missionSummary =>
+          this.http.get('../data/Store-' + storeId + '/Mission-' + missionSummary.missionId +
+                        '/mission-' + missionSummary.missionId  + '.json').pipe(
+            map<any, Aisle[]>(o => o.Aisles.map(a => this.createAisle(a, storeId, 0)))
+          )
+        )
+      ),
+      switchMap<Observable<any>[], Aisle[][]>(aisleRequests => forkJoin(aisleRequests)),
+      map(as => [].concat.apply([], as))
+    );
   }
 }
