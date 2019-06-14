@@ -3,6 +3,8 @@ def config = [
 ]
 
 def releaseBranch = 'master'
+def developmentBranch = 'devel'
+def validDockerPushBranches = [releaseBranch, developmentBranch]
 def registry = 'bossanova-cloud-container.jfrog.io'
 def imageName = 'demo-images/demo-ui'
 def artifactoryCredential = 'jenkins_build_jumpcloud'
@@ -27,8 +29,12 @@ build(config) {
   }
 
   stage('Push') {
-    docker.withRegistry("https://${registry}", artifactoryCredential) {
-      sh("docker push ${fullImageTag}")
+    if(validDockerPushBranches.contains(env.BRANCH_NAME)) {
+      docker.withRegistry("https://${registry}", artifactoryCredential) {
+        sh("docker push ${fullImageTag}")
+      }
+    } else {
+      echo "Docker image is not being pushed due to ${env.BRANCH_NAME} not being an accepted branch for pushing."
     }
   }
 }
