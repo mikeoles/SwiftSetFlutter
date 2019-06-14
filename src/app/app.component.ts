@@ -40,7 +40,9 @@ export class AppComponent implements OnInit {
        this.adalSvc.login();
        localStorage.setItem('previousLocation', this.location.path());
     } else if (this.adalSvc.userInfo.authenticated) {
-      localStorage.setItem('token', this.adalSvc.userInfo.token);
+      this.adalSvc.acquireToken('https://graph.microsoft.com').subscribe(act => {
+        localStorage.setItem('token', act);
+      });
       this.router.navigate([localStorage.getItem('previousLocation')]);
     }
   }
