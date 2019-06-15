@@ -37,7 +37,7 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
     }
 
     if (changes['products']) {
-      if (this.products.length < 0) {
+      if (this.products.length > 0) {
         this.sortProductsByLocation();
       }
       this.getGridData();
