@@ -1,4 +1,5 @@
 export enum labelScrollOptions {
     horizontal = 'horizontal',
-    vertical = 'vertical'
+    vertical = 'vertical',
+    horizontalRows = 'horizontalRows'
 }
