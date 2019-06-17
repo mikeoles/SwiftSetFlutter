@@ -37,7 +37,7 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
     }
 
     if (changes['products']) {
-      if (this.products.length < 0) {
+      if (this.products.length > 0) {
         this.sortProductsByLocation();
       }
       this.getGridData();
@@ -45,6 +45,10 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
   }
 
   sortProductsByLocation() {
+    if (this.environment.config.labelScrolling === labelScrollOptions.horizontal) {
+      this.products.sort(this.horizontal);
+      return;
+    }
     if (this.environment.config.labelScrolling === labelScrollOptions.vertical) {
       this.products.sort(this.horizontal);
     } else {
