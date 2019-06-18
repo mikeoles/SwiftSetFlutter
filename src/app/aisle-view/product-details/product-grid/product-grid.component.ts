@@ -99,6 +99,7 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
       const product: Label = this.products[i];
       let row: Array<String> = Array<String>();
       for (let j = 0; j < this.columnHeaders.length; j++) {
+        this.columnHeaders[j] = this.columnHeaders[j].replace(/(^")|("$)/g, '');
         const field: String = this.columnHeaders[j];
         let fieldLowercase = field.charAt(0).toLowerCase() + field.slice(1);
         fieldLowercase = fieldLowercase.replace(/\s/g, '');
@@ -114,7 +115,7 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
           cellValue = product.bounds[fieldLowercase];
         } else {
           for (let k = 0; k < product.customFields.length; k++) {
-            if (product.customFields[k].name === field) {
+            if (product.customFields[k].name === field || product.customFields[k].name === '"' + field + '"') {
               cellValue = product.customFields[k].value;
             }
           }
