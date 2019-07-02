@@ -1,11 +1,12 @@
 <app-selection-area [missions]="missions" [aisles]="aisles"
   [selectedMission]="selectedMission" [selectedAisle]="selectedAisle" [panoramaUrl]="panoramaUrl" [outs]="outs" [labels]="labels"
   (missionSelected)='changeMission($event)' (aisleSelected)='setAisle($event)' [panoTouched]=panoTouched [showExclusionZones]="showExclusionZones"
-  (panoSwitch)='changePanoMode()' (resetPano)='resetPanoClicked()' (toggleExclusionZone)='toggleExclusionZone()'>
+  (panoSwitch)='changePanoMode()' (resetPano)='resetPanoClicked()' (resetPanoAfterExport)='resetPanoAfterExportClicked()' 
+  (toggleExclusionZone)='toggleExclusionZone()'>
 </app-selection-area>
 <app-panorama [outs]="outs" [labels]="labels" [exclusionZones]="exclusionZones" [panoramaUrl]="panoramaUrl"
   [currentId]="currentId" [currentDisplay]="currentDisplay" [showExclusionZones]="showExclusionZones"
-  (panoramaId)='setId($event)' [panoMode]='panoMode' (panoramaTouched)='hideDropdowns()' [resetPano]='resetPano'>
+  (panoramaId)='setId($event)' [panoMode]='panoMode' (panoramaTouched)='hideDropdowns()' [resetPano]='resetPano' [resetPanoAfterExport]='resetPanoAfterExport'>
 </app-panorama>
 <app-product-details [outs]="outs" [labels]="labels"
   (gridId)='setId($event)' (gridDisplay)='setDisplay($event)'

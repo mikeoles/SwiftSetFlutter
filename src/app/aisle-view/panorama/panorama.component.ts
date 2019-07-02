@@ -25,6 +25,8 @@ export class PanoramaComponent implements OnInit, OnChanges {
   @Input() panoramaUrl: string;
   @Input() panoMode: boolean;
   @Input() resetPano = false;
+  @Input() resetPanoAfterExport = false;
+  @Input() downloadPano = false;
   @Output() panoramaId = new EventEmitter();
   @Output() panoramaTouched = new EventEmitter();
   selectedIdWithPano = false;
@@ -50,6 +52,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
       minZoom: 0.12,
     });
 
+    // Check if image is moved off screen and center it
     owner.addEventListener('touchend', (e: TouchEvent) => {
       if (
         (this.panZoomApi.getTransform().x > window.screen.width) ||
@@ -61,6 +64,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
       }
     });
 
+    // Click on annotations with touch
     element.addEventListener('touchend', (e: TouchEvent) => {
       this.panoramaTouched.emit(true);
       if (e.target instanceof HTMLElement) {
@@ -79,6 +83,17 @@ export class PanoramaComponent implements OnInit, OnChanges {
         this.centerImage(element.offsetWidth, element.offsetHeight);
       } else if (changes['resetPano'] !== undefined) {
         this.resetZoom();
+      } else if (changes['resetPanoAfterExport'] !== undefined) {
+        const element = document.getElementById('pano-image');
+        const a = this;
+        this.panZoomApi = panzoom(element, {
+          maxZoom: 10,
+          minZoom: .12,
+        });
+        setTimeout(() => {
+          a.resetZoom();
+        },
+        100);
       } else {
         if (this.currentId && this.currentId !== -1 && !this.selectedIdWithPano) {
 

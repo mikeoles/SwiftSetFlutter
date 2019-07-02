@@ -9,6 +9,10 @@ import { ModalService } from '../../modal/modal.service';
 import { EnvironmentService } from 'src/app/environment.service';
 import { ApiService } from 'src/app/api.service';
 import Store from 'src/app/store.model';
+import panzoom from 'panzoom';
+import htmlToImage from 'html-to-image';
+import { saveAs } from 'file-saver';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-selection-area',
@@ -34,6 +38,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   @Output() missionSelected = new EventEmitter();
   @Output() aisleSelected = new EventEmitter();
   @Output() resetPano = new EventEmitter();
+  @Output() resetPanoAfterExport = new EventEmitter();
   @Output() toggleExclusionZone = new EventEmitter();
   store: Store;
   faAngleDown = faAngleDown;
@@ -43,7 +48,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   currentlyExporting = false;
 
   constructor(private eRef: ElementRef, private modalService: ModalService, private environment: EnvironmentService,
-    @Inject('ApiService') private apiService: ApiService) {
+    @Inject('ApiService') private apiService: ApiService, private router: Router) {
     this.exportOnHand = environment.config.onHand;
     this.exportingPDF = environment.config.exportingPDF;
     this.displayExclusionButton = environment.config.exclusionZones;
@@ -72,7 +77,6 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
     }
     return 0;
   }
-
 
   @HostListener('document:click', ['$event'])
   clickout(event) {
@@ -245,6 +249,26 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
       this.modalService.close(modalId);
     });
     this.currentlyExporting = false;
+  }
+
+  exportPano(modalId: string) {
+    const element = document.getElementById('pano-image');
+    this.currentlyExporting = true;
+    const context = this;
+    panzoom(element, {
+      maxZoom: 1,
+      minZoom: 1,
+    });
+    setTimeout(() => {
+      htmlToImage.toBlob(document.getElementById('pano-image'))
+      .then(function (blob) {
+        saveAs(blob, 'pano.jpg');
+        context.currentlyExporting = false;
+        context.modalService.close(modalId);
+        context.resetPanoAfterExport.emit();
+      });
+    },
+    1000);
   }
 
   toggleExclusionZones() {

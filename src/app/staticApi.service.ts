@@ -11,7 +11,7 @@ import Aisle from './aisle.model';
 import Label from './label.model';
 import CustomField from './customField.model';
 import ExclusionZone from './exclusionZone.model';
-import { mergeAll, tap, concatMap, switchMap, concatAll } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'

@@ -36,6 +36,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   panoMode: boolean;
   panoTouched: boolean;
   resetPano: boolean;
+  resetPanoAfterExport: boolean;
   showExclusionZones = false;
   private logoSubscription: Subscription;
   private backButtonSubscription: Subscription;
@@ -104,6 +105,10 @@ export class AisleViewComponent implements OnInit, OnDestroy {
 
   resetPanoClicked() {
     this.resetPano = !this.resetPano;
+  }
+
+  resetPanoAfterExportClicked() {
+    this.resetPanoAfterExport = !this.resetPanoAfterExport;
   }
 
   changeMission(mission: Mission) {
