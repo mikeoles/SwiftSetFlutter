@@ -24,6 +24,9 @@ fi
 if [[ ! -z "$EXCLUSION_ZONES" ]]; then
   echo "  \"exclusionZones\": \"$EXCLUSION_ZONES\"," >> /usr/share/nginx/html/assets/config.json
 fi
+if [[ ! -z "$SHOW_COVERAGE_AS_PERCENT" ]]; then
+  echo "  \"showCoverageAsPercent\": \"$SHOW_COVERAGE_AS_PERCENT\"," >> /usr/share/nginx/html/assets/config.json
+fi
 echo "  \"production\": true" >> /usr/share/nginx/html/assets/config.json
 echo "}" >> /usr/share/nginx/html/assets/config.json
 
