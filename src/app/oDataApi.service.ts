@@ -19,9 +19,11 @@ import ExclusionZone from './exclusionZone.model';
 })
 export class ODataApiService implements ApiService {
   apiUrl: String;
+  showCoverageAsPercent = false;
 
   constructor(private http: HttpClient, private environment: EnvironmentService) {
     this.apiUrl = environment.config.apiUrl;
+    this.showCoverageAsPercent = environment.config.showCoverageAsPercent;
   }
 
   createAisle(aisle: any): Aisle {
@@ -30,6 +32,10 @@ export class ODataApiService implements ApiService {
       aisleCoverage = 'High';
     } else if (aisle.CoveragePercent >= 40) {
       aisleCoverage = 'Medium';
+    }
+
+    if (this.showCoverageAsPercent) {
+      aisleCoverage = aisle.coveragePercent;
     }
 
     return {
