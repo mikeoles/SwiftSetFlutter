@@ -10,11 +10,12 @@ export const environment = {
   showPlugs: false,
   showSuppliers: false,
   coveragePercent: true,
+  showCoverageAsPercent: true,
   onHand: true,
   exportingPDF: true,
   exclusionZones: true,
-  exportFields: ['Barcode', 'Product Id', 'Description', 'Department', 'Left'],
-  productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price', 'On Hand'],
+  exportFields: ['Barcode', '"MIN"', '"ITEM_DESCRIPTION"', '"BASE_PRICE"', '"PROMO_PRICE"', 'top', 'left', 'width', 'height'],
+  productGridFields: ['Barcode', '"MIN"', '"ITEM_DESCRIPTION"', '"BASE_PRICE"', '"PROMO_PRICE"', 'top', 'left', 'width', 'height'],
   labelScrolling: labelScrollOptions.vertical,
   apiType: 'odata' // Options: odata or static
 };

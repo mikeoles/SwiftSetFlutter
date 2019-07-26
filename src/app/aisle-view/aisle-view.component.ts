@@ -64,7 +64,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
     this.logoSubscription = this.logoService.logoClickEvent().subscribe(() => this.changePanoMode());
     this.backButtonSubscription = this.backService.backClickEvent().subscribe(() => this.goBack());
 
-    let missionId: number, aisleId: number, storeId: number;
+    let missionId: number, aisleId: number, storeId: string;
     this.activatedRoute.params.forEach((params: Params) => {
       if (params['missionId'] !== undefined) {
         missionId = Number(params['missionId']);
@@ -73,7 +73,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
         aisleId = Number(params['aisleId']);
       }
       if (params['storeId'] !== undefined) {
-        storeId = Number(params['storeId']);
+        storeId = params['storeId'];
       }
     });
 

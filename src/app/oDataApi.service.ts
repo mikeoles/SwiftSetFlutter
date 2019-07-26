@@ -144,9 +144,10 @@ export class ODataApiService implements ApiService {
 
   createSingleStore(store: any): Store {
     return {
-      storeId: store.value[0].Id,
-      storeName: store.value[0].StoreName,
-      storeAddress: store.value[0].StoreAddress,
+      storeId: store.value[0].id,
+      storeNumber: store.value[0].number,
+      storeName: store.value[0].name,
+      storeAddress: store.value[0].address,
       totalAverageOuts: store.value[0].TotalAverageOuts,
       totalAverageLabels: store.value[0].TotalAverageLabels,
       totalAverageSpreads: store.value[0].TotalAverageSpreads,
@@ -158,9 +159,10 @@ export class ODataApiService implements ApiService {
 
   createStore(store: any): Store {
     return {
-      storeId: store.Id,
-      storeName: store.StoreName,
-      storeAddress: store.StoreAddress,
+      storeId: store.id,
+      storeNumber: store.number,
+      storeName: store.name,
+      storeAddress: store.address,
       totalAverageOuts: store.TotalAverageOuts,
       totalAverageLabels: store.TotalAverageLabels,
       totalAverageSpreads: store.TotalAverageSpreads,
@@ -178,10 +180,10 @@ export class ODataApiService implements ApiService {
   }
 
   getStores(): Observable<Store[]> {
-    return this.http.get(`${this.apiUrl}/DemoService/Stores`).pipe(map<any, Store[]>(o => o.value.map(s => this.createStore(s))), );
+    return this.http.get('../assets/mock/stores.json').pipe(map<any, Store[]>(o => o.map(s => this.createStore(s))), );
   }
 
-  getStore(storeId: number, startDate: Date, timezone: String): Observable<Store> {
+  getStore(storeId: string, startDate: Date, timezone: String): Observable<Store> {
     // tslint:disable-next-line:max-line-length
     return this.http.get(`${this.apiUrl}/DemoService/Stores?$filter=SummaryDate eq ${formatDate(startDate, 'yyyy-MM-dd', 'en-US')} and Id eq ${storeId} and TimeZone eq '${timezone}'`)
     .pipe(
@@ -221,7 +223,7 @@ export class ODataApiService implements ApiService {
     );
   }
 
-  getMissionSummaries(date: Date, storeId: number, timezone: string): Observable<MissionSummary[]> {
+  getMissionSummaries(date: Date, storeId: string, timezone: string): Observable<MissionSummary[]> {
     // tslint:disable-next-line:max-line-length
     return this.http.get(`${this.apiUrl}/DemoService/MissionSummaries?$filter=MissionDate eq ${formatDate(date, 'yyyy-MM-dd', 'en-US')} and StoreId eq '${storeId}' and TimeZone eq '${timezone}'`)
       .pipe(
@@ -245,7 +247,7 @@ export class ODataApiService implements ApiService {
     );
   }
 
-  getRangeMissionSummaries(startDate: Date, endDate: Date, storeId: number, timezone: string): Observable<MissionSummary[]> {
+  getRangeMissionSummaries(startDate: Date, endDate: Date, storeId: string, timezone: string): Observable<MissionSummary[]> {
     // tslint:disable-next-line:max-line-length
     return this.http.get(`${this.apiUrl}/DemoService/MissionSummaries?$filter=MissionDate eq ${formatDate(startDate, 'yyyy-MM-dd', 'en-US')} and StoreId eq '${storeId}' and TimeZone eq '${timezone}' and EndDate eq ${formatDate(endDate, 'yyyy-MM-dd', 'en-US')}`)
       .pipe(
@@ -269,7 +271,7 @@ export class ODataApiService implements ApiService {
     );
   }
 
-  getRangeAisles(startDate: Date, endDate: Date, storeId: number, timezone: string): Observable<Aisle[]> {
+  getRangeAisles(startDate: Date, endDate: Date, storeId: string, timezone: string): Observable<Aisle[]> {
     // tslint:disable-next-line:max-line-length
     return this.http.get(`${this.apiUrl}/DemoService/Panos?$filter=StartDate eq ${formatDate(startDate, 'yyyy-MM-dd', 'en-US')} and StoreId eq '${storeId}' and TimeZone eq '${timezone}' and EndDate eq ${formatDate(endDate, 'yyyy-MM-dd', 'en-US')}`).pipe(
       // API result
@@ -294,7 +296,7 @@ export class ODataApiService implements ApiService {
     );
   }
 
-  getMissionSummary(storeId: number, mission: number): Observable<MissionSummary> {
+  getMissionSummary(storeId: string, mission: number): Observable<MissionSummary> {
     return this.http.get(`${this.apiUrl}/DemoService/MissionSummaries(${mission})`).pipe(
       // API result
       // {
@@ -316,7 +318,7 @@ export class ODataApiService implements ApiService {
     );
   }
 
-  getMissions(storeId: number): Observable<Mission[]> {
+  getMissions(storeId: string): Observable<Mission[]> {
     return this.http.get(`${this.apiUrl}/DemoService/Missions`).pipe(
       // API result
       // {
@@ -340,7 +342,7 @@ export class ODataApiService implements ApiService {
     );
   }
 
-  getMission(storeId: number, missionId: number): Observable<Mission> {
+  getMission(storeId: string, missionId: number): Observable<Mission> {
     return this.http.get(`${this.apiUrl}/DemoService/Missions(${missionId})`).pipe(
       // API result
       // {
@@ -360,7 +362,7 @@ export class ODataApiService implements ApiService {
     );
   }
 
-  getAisles(storeId: number, missionId: number): Observable<Aisle[]> {
+  getAisles(storeId: string, missionId: number): Observable<Aisle[]> {
     return this.http.get(`${this.apiUrl}/DemoService/Missions(${missionId})/Panos`).pipe(
       // API result
       // {
@@ -384,7 +386,7 @@ export class ODataApiService implements ApiService {
     );
   }
 
-  getAisle(storeId: number, missionId: number, aisleId: number): Observable<Aisle> {
+  getAisle(storeId: string, missionId: number, aisleId: number): Observable<Aisle> {
     return this.http.get(`${this.apiUrl}/DemoService/Panos(${aisleId})?$expand=Labels,Outs,ExclusionZones`).pipe(
       // API result
       // {

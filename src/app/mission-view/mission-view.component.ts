@@ -47,13 +47,13 @@ export class MissionViewComponent implements OnInit, OnDestroy {
     const html = document.getElementsByTagName('html')[0];
     html.setAttribute('style', 'position: relative; overflow: auto;');
     this.backButtonSubscription = this.backService.backClickEvent().subscribe(() => this.goBack());
-    let missionId: number, storeId: number;
+    let missionId: number, storeId: string;
     this.activatedRoute.params.forEach((params: Params) => {
       if (params['missionId'] !== undefined) {
         missionId = Number(params['missionId']);
       }
       if (params['storeId'] !== undefined) {
-        storeId = Number(params['storeId']);
+        storeId = params['storeId'];
       }
     });
     this.apiService.getMission(storeId, missionId).subscribe(mission => {

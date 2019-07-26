@@ -12,7 +12,6 @@ import Label from './label.model';
 import CustomField from './customField.model';
 import ExclusionZone from './exclusionZone.model';
 import { switchMap } from 'rxjs/operators';
-import { mergeAll, tap, concatMap, switchMap, concatAll } from 'rxjs/operators';
 import { EnvironmentService } from './environment.service';
 
 @Injectable({
@@ -34,9 +33,10 @@ export class StaticApiService implements ApiService {
 
   createSimpleStore(store: any): Store {
     return {
-      storeId: store.storeId,
-      storeName: store.storeName,
-      storeAddress: store.storeAddress,
+      storeId: store.id,
+      storeNumber: store.number,
+      storeName: store.name,
+      storeAddress: store.address,
       totalAverageOuts: 0,
       totalAverageLabels: 0,
       totalAverageSpreads: 0,
@@ -106,9 +106,10 @@ export class StaticApiService implements ApiService {
     }
 
     return {
-      storeId: store.storeId,
-      storeName: store.storeName,
-      storeAddress: store.storeAddress,
+      storeId: store.id,
+      storeNumber: store.number,
+      storeName: store.name,
+      storeAddress: store.address,
       totalAverageOuts: totalOuts / daysAdded,
       totalAverageLabels: totalLabels / daysAdded,
       totalAverageSpreads: 0,
@@ -128,13 +129,13 @@ export class StaticApiService implements ApiService {
     }
   }
 
-  getStore(storeId: number, startDate: Date, timezone: String): Observable<Store> {
+  getStore(storeId: string, startDate: Date, timezone: String): Observable<Store> {
     return this.http.get('../data/Store-' + storeId + '/index.json').pipe(
       map<any, Store>(storeJson => this.createStore(storeJson, startDate)),
     );
   }
 
-  getMissionSummaries(date: Date, storeId: number, timezone: string): Observable<MissionSummary[]> {
+  getMissionSummaries(date: Date, storeId: string, timezone: string): Observable<MissionSummary[]> {
     return this.http.get('../data/Store-' + storeId + '/index.json').pipe(
       map<any, MissionSummary[]>(storeJson => this.createMissionSummaries(storeJson, date)),
     );
@@ -192,7 +193,7 @@ export class StaticApiService implements ApiService {
     return summaries;
   }
 
-  getRangeMissionSummaries(startDate: Date, endDate: Date, storeId: number, timezone: string): Observable<MissionSummary[]> {
+  getRangeMissionSummaries(startDate: Date, endDate: Date, storeId: string, timezone: string): Observable<MissionSummary[]> {
     const afterEndDate: Date = new Date();
     afterEndDate.setDate(endDate.getDate() + 1);
     return this.http.get('../data/Store-' + storeId + '/index.json').pipe(
@@ -200,7 +201,7 @@ export class StaticApiService implements ApiService {
     );
   }
 
-  getMissionSummary(storeId: number, mission: number): Observable<MissionSummary> {
+  getMissionSummary(storeId: string, mission: number): Observable<MissionSummary> {
     return this.http.get('../data/Store-' + storeId + '/index.json').pipe(
       map<any, MissionSummary>(storeJson => this.createMissionSummary(storeJson, mission)),
     );
@@ -228,19 +229,19 @@ export class StaticApiService implements ApiService {
     }
   }
 
-  getMissions(storeId: number): Observable<Mission[]> {
+  getMissions(storeId: string): Observable<Mission[]> {
     return this.http.get('../data/Store-' + storeId + '/index.json').pipe(
       map<any, Mission[]>(o => o.Missions.map(m => this.createMission(m, storeId))),
     );
   }
 
-  getMission(storeId: number, missionId: number): Observable<Mission> {
+  getMission(storeId: string, missionId: number): Observable<Mission> {
     return this.http.get('../data/Store-' + storeId + '/Mission-' + missionId + '/mission-' + missionId + '.json').pipe(
       map<any, Mission>(missionJson => this.createMission(missionJson, storeId)),
     );
   }
 
-  createMission(mission: any, storeId: number): Mission {
+  createMission(mission: any, storeId: string): Mission {
     return {
       missionId: mission.missionId,
       missionName: mission.missionName,
@@ -250,21 +251,21 @@ export class StaticApiService implements ApiService {
     };
   }
 
-  getAisles(storeId: number, missionId: number): Observable<Aisle[]> {
+  getAisles(storeId: string, missionId: number): Observable<Aisle[]> {
     return this.http.get('../data/Store-' + storeId + '/Mission-' + missionId + '/mission-' + missionId + '.json').pipe(
       map<any, Aisle[]>(o => o.Aisles.map(a => this.createAisle(a, storeId, missionId))),
       map(aisles => aisles.sort((a, b) => a.aisleName.localeCompare(b.aisleName))),
     );
   }
 
-  getAisle(storeId: number, missionId: number, aisleId: number): Observable<any> {
+  getAisle(storeId: string, missionId: number, aisleId: number): Observable<any> {
     // tslint:disable-next-line:max-line-length
     return this.http.get('../data/Store-' + storeId + '/Mission-' + missionId + '/Aisle-' + aisleId + '/aisle-' + aisleId + '.json').pipe(
       map<any, Aisle>(aisleJson => this.createAisle(aisleJson, storeId, missionId)),
     );
   }
 
-  createAisle(aisle: any, storeId: number, missionId: number): Aisle {
+  createAisle(aisle: any, storeId: string, missionId: number): Aisle {
     let aisleCoverage = 'Low';
     if (aisle.coveragePercent >= 70) {
       aisleCoverage = 'High';
@@ -336,7 +337,7 @@ export class StaticApiService implements ApiService {
     };
   }
 
-  getRangeAisles(startDate: Date, endDate: Date, storeId: number, timezone: string): Observable<Aisle[]> {
+  getRangeAisles(startDate: Date, endDate: Date, storeId: string, timezone: string): Observable<Aisle[]> {
     return this.http.get('../data/Store-' + storeId + '/index.json').pipe(
       map<any, MissionSummary[]>(storeJson => this.createMissionSummariesRange(storeJson, startDate, endDate)),
       map<MissionSummary[], Observable<any>[]>(missionSummaries =>

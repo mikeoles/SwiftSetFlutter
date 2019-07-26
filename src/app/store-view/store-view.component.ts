@@ -20,7 +20,7 @@ import { Subscription } from 'rxjs';
 export class StoreViewComponent implements OnInit {
   missionSummaries: MissionSummary[];
   store: Store;
-  storeId: number;
+  storeId: string;
   selectedIndex: string;
   selectedDate: Date;
   graphEndDate: Date;

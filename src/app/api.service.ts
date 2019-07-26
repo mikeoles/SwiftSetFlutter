@@ -10,15 +10,20 @@ import { HttpClient } from '@angular/common/http';
 
 export interface ApiService {
   getStores();
-  getStore(storeId: number, startDate: Date, timezone: String): Observable<Store>;
-  getRangeMissionSummaries(startDate: Date, endDate: Date, storeId: number, timezone: string): Observable<MissionSummary[]>;
-  getRangeAisles(startDate: Date, endDate: Date, storeId: number, timezone: string): Observable<Aisle[]>;
-  getMissionSummaries(date: Date, storeId: number, timezone: string): Observable<MissionSummary[]>;
-  getMissionSummary(storeId: number, mission: number): Observable<MissionSummary>;
-  getMissions(storeId: number): Observable<Mission[]> ;
-  getMission(storeId: number, missionId: number): Observable<Mission>;
-  getAisles(storeId: number, missionId: number): Observable<Aisle[]>;
-  getAisle(storeId: number, missionId: number, aisleId: number): Observable<Aisle>;
+  getStore(storeId: string, startDate: Date, timezone: String): Observable<Store>;
+  // Replaced by getMissions which takes in a range of dates and returns all the data from mission summaries as missions
+  getRangeMissionSummaries(startDate: Date, endDate: Date, storeId: string, timezone: string): Observable<MissionSummary[]>;
+  // Replaced by getMission which has a list of aisles in it and can be filtered by a start and end date
+  getRangeAisles(startDate: Date, endDate: Date, storeId: string, timezone: string): Observable<Aisle[]>;
+  // Replaced by getMissions which takes in a range of dates and returns all the data from mission summaries as missions
+  getMissionSummaries(date: Date, storeId: string, timezone: string): Observable<MissionSummary[]>;
+  // Replaced by get Missions because missions have the data of missionSummaries
+  getMissionSummary(storeId: string, mission: number): Observable<MissionSummary>;
+  getMissions(storeId: string): Observable<Mission[]> ;
+  getMission(storeId: string, missionId: number): Observable<Mission>;
+  // Replaced by getMission which has a list of aisles in it
+  getAisles(storeId: string, missionId: number): Observable<Aisle[]>;
+  getAisle(storeId: string, missionId: number, aisleId: number): Observable<Aisle>;
 
 }
 
