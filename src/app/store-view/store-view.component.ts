@@ -33,11 +33,13 @@ export class StoreViewComponent implements OnInit {
       'font-weight': 'bold', 'width': 'auto', 'text-align': 'center', 'cursor': 'pointer'
     }
   };
+  showCoverageAsPercent = false;
 
   private backButtonSubscription: Subscription;
 
   constructor(@Inject('ApiService') private apiService: ApiService, private activatedRoute: ActivatedRoute,
   private environmentService: EnvironmentService, private backService: BackService, private router: Router) {
+    this.showCoverageAsPercent = environmentService.config.showCoverageAsPercent;
     this.graphEndDate = new Date();
     this.graphEndDate.setDate(this.graphEndDate.getDate()); // Two weeks ago by default
     this.graphEndDate.setHours(0, 0, 0, 0);
@@ -188,6 +190,9 @@ export class StoreViewComponent implements OnInit {
             avgAisleCoverage = 'High';
           } else if (coveragePercent >= 40) {
             avgAisleCoverage = 'Medium';
+          }
+          if (this.showCoverageAsPercent) {
+            avgAisleCoverage = coveragePercent.toString();
           }
           row = row.concat(avgAisleCoverage);
           body.push(row);

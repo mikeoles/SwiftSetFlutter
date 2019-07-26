@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
-import { Observable } from 'rxjs';
+import { Observable, of, forkJoin } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import Store from './store.model';
 import { map } from 'rxjs/internal/operators/map';
@@ -11,13 +11,19 @@ import Aisle from './aisle.model';
 import Label from './label.model';
 import CustomField from './customField.model';
 import ExclusionZone from './exclusionZone.model';
+import { mergeAll, tap, concatMap, switchMap, concatAll } from 'rxjs/operators';
+import { EnvironmentService } from './environment.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StaticApiService implements ApiService {
 
-  constructor(private http: HttpClient) {}
+  showCoverageAsPercent = false;
+
+  constructor(private http: HttpClient, private environment: EnvironmentService) {
+    this.showCoverageAsPercent = environment.config.showCoverageAsPercent;
+  }
 
   getStores(): Observable<Store[]> {
     return this.http.get('../data/stores.json').pipe(
@@ -186,7 +192,7 @@ export class StaticApiService implements ApiService {
   }
 
   getRangeMissionSummaries(startDate: Date, endDate: Date, storeId: number, timezone: string): Observable<MissionSummary[]> {
-    const afterEndDate: Date = new Date(startDate.toString());
+    const afterEndDate: Date = new Date();
     afterEndDate.setDate(endDate.getDate() + 1);
     return this.http.get('../data/Store-' + storeId + '/index.json').pipe(
       map<any, MissionSummary[]>(storeJson => this.createMissionSummariesRange(storeJson, startDate, afterEndDate)),
@@ -251,6 +257,7 @@ export class StaticApiService implements ApiService {
   }
 
   getAisle(storeId: number, missionId: number, aisleId: number): Observable<any> {
+    // tslint:disable-next-line:max-line-length
     return this.http.get('../data/Store-' + storeId + '/Mission-' + missionId + '/Aisle-' + aisleId + '/aisle-' + aisleId + '.json').pipe(
       map<any, Aisle>(aisleJson => this.createAisle(aisleJson, storeId, missionId)),
     );
@@ -262,6 +269,10 @@ export class StaticApiService implements ApiService {
       aisleCoverage = 'High';
     } else if (aisle.coveragePercent >= 40) {
       aisleCoverage = 'Medium';
+    }
+
+    if (this.showCoverageAsPercent) {
+      aisleCoverage = aisle.coveragePercent;
     }
 
     return {
@@ -325,42 +336,18 @@ export class StaticApiService implements ApiService {
   }
 
   getRangeAisles(startDate: Date, endDate: Date, storeId: number, timezone: string): Observable<Aisle[]> {
-    const afterEndDate: Date = new Date(startDate.toString());
-    afterEndDate.setDate(endDate.getDate() + 1);
     return this.http.get('../data/Store-' + storeId + '/index.json').pipe(
-      map<any, Aisle[]>(storeJson => this.createAislesRange(storeJson, startDate, afterEndDate)),
+      map<any, MissionSummary[]>(storeJson => this.createMissionSummariesRange(storeJson, startDate, endDate)),
+      map<MissionSummary[], Observable<any>[]>(missionSummaries =>
+        missionSummaries.map(missionSummary =>
+          this.http.get('../data/Store-' + storeId + '/Mission-' + missionSummary.missionId +
+                        '/mission-' + missionSummary.missionId  + '.json').pipe(
+            map<any, Aisle[]>(o => o.Aisles.map(a => this.createAisle(a, storeId, 0)))
+          )
+        )
+      ),
+      switchMap<Observable<any>[], Aisle[][]>(aisleRequests => forkJoin(aisleRequests)),
+      map(as => [].concat.apply([], as))
     );
   }
-
-  createAislesRange(store: any, startDate: Date, endDate: Date): Aisle[] {
-    const aisles: Aisle[] = [];
-    for (let i = 0; i < store.Aisles.length; i++) {
-      const aisleDate: Date = new Date(store.Aisles[i].aisleScannedDate);
-      let aisleCoverage = 'Low';
-      if (store.Aisles[i].CoveragePercent >= 70) {
-        aisleCoverage = 'High';
-      } else if (store.Aisles[i].CoveragePercent >= 70) {
-        aisleCoverage = 'Medium';
-      }
-      if (aisleDate >= startDate && aisleDate <= endDate) {
-        aisles.push({
-          aisleId: store.Aisles[i].aisleId,
-          aisleName: store.Aisles[i].aisleName,
-          panoramaUrl: '../data/Store-' + store.storeId + '/' + store.Aisles[i].panoramaUrl,
-          zone: store.Aisles[i].zone,
-          labelsCount: store.Aisles[i].labelsCount,
-          labels: [],
-          outsCount: store.Aisles[i].outsCount,
-          outs: [],
-          spreads: [],
-          coveragePercent: store.Aisles[i].coveragePercent,
-          aisleCoverage: aisleCoverage,
-          exclusionsCount: store.Aisles[i].exclusionsCount,
-          exclusionZones: [],
-        });
-      }
-    }
-    return aisles;
-  }
-
 }

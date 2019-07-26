@@ -13,7 +13,7 @@ describe('ApiService', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
-        { provide: EnvironmentService, useValue: { config: { apiUrl: 'http://example.com' }}}
+        { provide: EnvironmentService, useValue: { config: { apiUrl: 'http://example.com', showCoverageAsPercent: false }}}
       ]
     });
 
