@@ -1,6 +1,6 @@
 {
   "name": "single-store",
-  "version": "1.1.19",
+  "version": "1.1.21",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

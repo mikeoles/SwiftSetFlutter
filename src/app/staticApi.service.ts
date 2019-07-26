@@ -12,13 +12,19 @@ import Label from './label.model';
 import CustomField from './customField.model';
 import ExclusionZone from './exclusionZone.model';
 import { switchMap } from 'rxjs/operators';
+import { mergeAll, tap, concatMap, switchMap, concatAll } from 'rxjs/operators';
+import { EnvironmentService } from './environment.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StaticApiService implements ApiService {
 
-  constructor(private http: HttpClient) {}
+  showCoverageAsPercent = false;
+
+  constructor(private http: HttpClient, private environment: EnvironmentService) {
+    this.showCoverageAsPercent = environment.config.showCoverageAsPercent;
+  }
 
   getStores(): Observable<Store[]> {
     return this.http.get('../data/stores.json').pipe(
@@ -264,6 +270,10 @@ export class StaticApiService implements ApiService {
       aisleCoverage = 'High';
     } else if (aisle.coveragePercent >= 40) {
       aisleCoverage = 'Medium';
+    }
+
+    if (this.showCoverageAsPercent) {
+      aisleCoverage = aisle.coveragePercent;
     }
 
     return {

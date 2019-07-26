@@ -75,6 +75,7 @@ describe('StoreViewComponent', () => {
         }},
         { provide: EnvironmentService, useValue: { config: {
           apiType: 'odata',
+          showCoverageAsPercent: false
         }}}
       ],
     })

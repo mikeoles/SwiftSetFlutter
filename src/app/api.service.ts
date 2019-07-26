@@ -27,6 +27,6 @@ export function apiFactory(environment: EnvironmentService, http: HttpClient) {
   if (environment.config.apiType === 'odata') {
     return new ODataApiService(http, environment);
   } else {
-    return new StaticApiService(http);
+    return new StaticApiService(http, environment);
   }
 }
