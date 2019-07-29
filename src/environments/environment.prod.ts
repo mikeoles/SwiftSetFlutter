@@ -3,7 +3,6 @@ import { labelScrollOptions } from 'src/app/labelScrollOptions';
 export const environment = {
   production: true,
   showPlugs: false,
-  showSuppliers: false,
   coveragePercent: true,
   onHand: true,
   pdfExport: true,

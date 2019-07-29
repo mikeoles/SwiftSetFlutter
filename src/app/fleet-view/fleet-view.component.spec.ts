@@ -24,10 +24,8 @@
 //     storeAddress: '',
 //     totalAverageOuts: 1,
 //     totalAverageLabels: 1,
-//     totalAverageSpreads: 1,
 //     summaryOuts: daySummaries,
 //     summaryLabels: daySummaries,
-//     summarySpreads: daySummaries
 //   }];
 
 //   beforeEach(async(() => {

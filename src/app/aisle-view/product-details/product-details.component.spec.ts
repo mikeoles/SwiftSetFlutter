@@ -51,7 +51,6 @@ describe('ProductDetailsComponent', () => {
       providers: [
         { provide: EnvironmentService, useValue: { config: {
           showPlugs: true,
-          showSuppliers: true,
           productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price']
         }}}
       ]
@@ -116,8 +115,7 @@ describe('ProductDetailsComponent', () => {
     expect(buttonsEl.childElementCount).toEqual(4);
     expect(buttons[0].textContent).toContain('Outs');
     expect(buttons[1].textContent).toContain('Shelf Labels');
-    expect(buttons[2].textContent).toContain('Spreads');
-    expect(buttons[3].textContent).toContain('Suppliers');
+
   });
 
   it('displays counts on buttons', () => {
@@ -130,23 +128,6 @@ describe('ProductDetailsComponent', () => {
     fixture.detectChanges();
     buttons = buttonsEl.children;
     expect(buttonsEl.childElementCount).toEqual(3);
-    expect(buttons[2].textContent).toEqual('Suppliers');
-  });
-
-  it('can hide suppliers', () => {
-    component.showSuppliers = false;
-    fixture.detectChanges();
-    buttons = buttonsEl.children;
-    expect(buttonsEl.childElementCount).toEqual(3);
-    expect(buttons[2].textContent).toEqual('Spreads');
-  });
-
-  it('can hide plugs and suppliers', () => {
-    component.showPlugs = false;
-    component.showSuppliers = false;
-    fixture.detectChanges();
-    buttons = buttonsEl.children;
-    expect(buttonsEl.childElementCount).toEqual(2);
   });
 
   it('button can be selected', () => {

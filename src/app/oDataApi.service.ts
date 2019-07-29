@@ -47,7 +47,6 @@ export class ODataApiService implements ApiService {
       labels: (aisle.Labels || []).map(l => this.createLabel(l)),
       outsCount: aisle.OutsCount,
       outs: (aisle.Outs || []).map(l => this.createLabel(l)),
-      spreads: [],
       coveragePercent: aisle.CoveragePercent,
       aisleCoverage: aisleCoverage,
       exclusionsCount: aisle.ExclusionsCount,
@@ -132,7 +131,6 @@ export class ODataApiService implements ApiService {
       missionDateTime: new Date(missionSummary.MissionDateTime),
       outs: missionSummary.Outs,
       labels: missionSummary.Labels,
-      spreads: missionSummary.Spreads,
       aislesScanned: missionSummary.AislesScanned,
       percentageRead: missionSummary.PercentageReadLabels,
       percentageUnread: missionSummary.PercentageUnreadLabels,
@@ -150,10 +148,8 @@ export class ODataApiService implements ApiService {
       storeAddress: store.value[0].address,
       totalAverageOuts: store.value[0].TotalAverageOuts,
       totalAverageLabels: store.value[0].TotalAverageLabels,
-      totalAverageSpreads: store.value[0].TotalAverageSpreads,
       summaryOuts: (store.value[0].SummaryOuts || []).map(o => this.createDaySummary(o)),
       summaryLabels: (store.value[0].SummaryLabels || []).map(l => this.createDaySummary(l)),
-      summarySpreads: (store.value[0].SummarySpreads || []).map(s => this.createDaySummary(s)),
     };
   }
 
@@ -165,10 +161,8 @@ export class ODataApiService implements ApiService {
       storeAddress: store.address,
       totalAverageOuts: store.TotalAverageOuts,
       totalAverageLabels: store.TotalAverageLabels,
-      totalAverageSpreads: store.TotalAverageSpreads,
       summaryOuts: (store.SummaryOuts || []).map(o => this.createDaySummary(o)),
       summaryLabels: (store.SummaryLabels || []).map(l => this.createDaySummary(l)),
-      summarySpreads: (store.SummarySpreads || []).map(s => this.createDaySummary(s)),
     };
   }
 
@@ -194,7 +188,6 @@ export class ODataApiService implements ApiService {
       //   "StoreAddress": "3201 E Platte Ave, Colorado Springs, CO 80909",
       //   "TotalAverageOuts": 124,
       //   "TotalAverageLabels": 4521,
-      //   "TotalAverageSpreads": 31,
       //   "SummaryOuts":
       //     [
       //       {
@@ -209,14 +202,6 @@ export class ODataApiService implements ApiService {
       //         "DailyAverage": "4600"
       //       }
       //     ]
-      //   "SummarySpreads":
-      //     [
-      //       {
-      //         "Date": "2018-11-8",
-      //         "DailyAverage": "33"
-      //       }
-      //     ]
-      // }
 
       // Map the result to an MissionSummary object
       map<any, Store>(m => this.createSingleStore(m)),

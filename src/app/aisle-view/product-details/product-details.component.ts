@@ -11,7 +11,6 @@ import { EnvironmentService } from 'src/app/environment.service';
 export class ProductDetailsComponent implements OnInit, OnChanges {
 
   showPlugs: Boolean;
-  showSuppliers: Boolean;
   showDepartment: Boolean;
   showSection: Boolean;
 
@@ -34,7 +33,6 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
 
   constructor(private environment: EnvironmentService) {
     this.showPlugs = environment.config.showPlugs;
-    this.showSuppliers = environment.config.showSuppliers;
     this.showDepartment = environment.config.productGridFields.includes('Department');
     this.showSection = environment.config.productGridFields.includes('Section');
   }

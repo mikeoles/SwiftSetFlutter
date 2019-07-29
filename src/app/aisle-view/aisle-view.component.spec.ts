@@ -51,15 +51,15 @@ describe('AisleViewComponent', () => {
     { exclusionZoneId: 1, bounds: { top: 0, left: 0, width: 0, height: 0}}
   ];
   const aisles: Aisle[] = [
-    { aisleId: 1, aisleName: '1111', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '',
+    { aisleId: 1, aisleName: '1111', panoramaUrl: '', labels: labels, outs: labels, zone: '',
       coveragePercent: 0, outsCount: 0, labelsCount: 0, exclusionZones: exclusionZones, exclusionsCount: 0, aisleCoverage: ''},
-    { aisleId: 2, aisleName: '2222', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '',
+    { aisleId: 2, aisleName: '2222', panoramaUrl: '', labels: labels, outs: labels, zone: '',
       coveragePercent: 0, outsCount: 0, labelsCount: 0, exclusionZones: exclusionZones, exclusionsCount: 0, aisleCoverage: ''},
-    { aisleId: 3, aisleName: '3333', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '',
+    { aisleId: 3, aisleName: '3333', panoramaUrl: '', labels: labels, outs: labels, zone: '',
       coveragePercent: 0, outsCount: 0, labelsCount: 0, exclusionZones: exclusionZones, exclusionsCount: 0, aisleCoverage: ''},
-    { aisleId: 4, aisleName: '4444', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '',
+    { aisleId: 4, aisleName: '4444', panoramaUrl: '', labels: labels, outs: labels, zone: '',
       coveragePercent: 0, outsCount: 0, labelsCount: 0, exclusionZones: exclusionZones, exclusionsCount: 0, aisleCoverage: ''},
-    { aisleId: 5, aisleName: '5555', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '',
+    { aisleId: 5, aisleName: '5555', panoramaUrl: '', labels: labels, outs: labels, zone: '',
       coveragePercent: 0, outsCount: 0, labelsCount: 0, exclusionZones: exclusionZones, exclusionsCount: 0, aisleCoverage: ''},
   ];
 
@@ -97,7 +97,6 @@ describe('AisleViewComponent', () => {
         }},
         { provide: EnvironmentService, useValue: { config: {
           showPlugs: true,
-          showSuppliers: true,
           productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price']
         }}}
       ],

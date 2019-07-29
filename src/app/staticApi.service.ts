@@ -39,10 +39,8 @@ export class StaticApiService implements ApiService {
       storeAddress: store.address,
       totalAverageOuts: 0,
       totalAverageLabels: 0,
-      totalAverageSpreads: 0,
       summaryOuts: [],
       summaryLabels: [],
-      summarySpreads: [],
     };
   }
 
@@ -51,7 +49,7 @@ export class StaticApiService implements ApiService {
     endDate.setDate(endDate.getDate() + 14);
     store.Missions.sort(missionDateSort);
 
-    const outsSummaries: DaySummary[] = [], labelsSummaries: DaySummary[] = [], spreadsSummaries: DaySummary[] = [];
+    const outsSummaries: DaySummary[] = [], labelsSummaries: DaySummary[] = [];
     let lastMission = null, curLabelCount = 0, curOutCount = 0, missionCount = 0, lastDate: Date = null,
       daysAdded = 0, totalOuts = 0, totalLabels = 0;
 
@@ -112,10 +110,8 @@ export class StaticApiService implements ApiService {
       storeAddress: store.address,
       totalAverageOuts: totalOuts / daysAdded,
       totalAverageLabels: totalLabels / daysAdded,
-      totalAverageSpreads: 0,
       summaryOuts: outsSummaries,
       summaryLabels: labelsSummaries,
-      summarySpreads: spreadsSummaries,
     };
 
     function missionDateSort(a, b) {
@@ -155,7 +151,6 @@ export class StaticApiService implements ApiService {
           missionDateTime: new Date(store.Missions[i].missionDateTime),
           outs: store.Missions[i].outs,
           labels: store.Missions[i].labels,
-          spreads: 0,
           aislesScanned: store.Missions[i].aislesScanned,
           percentageRead: store.Missions[i].percentageRead,
           percentageUnread: store.Missions[i].percentageUnread,
@@ -180,7 +175,6 @@ export class StaticApiService implements ApiService {
           missionDateTime: new Date(store.Missions[i].missionDateTime),
           outs: store.Missions[i].outs,
           labels: store.Missions[i].labels,
-          spreads: 0,
           aislesScanned: store.Missions[i].aislesScanned,
           percentageRead: store.Missions[i].percentageRead,
           percentageUnread: store.Missions[i].percentageUnread,
@@ -217,7 +211,6 @@ export class StaticApiService implements ApiService {
           missionDateTime: new Date(store.Missions[i].missionDateTime),
           outs: store.Missions[i].outs,
           labels: store.Missions[i].labels,
-          spreads: 0,
           aislesScanned: store.Missions[i].aislesScanned,
           percentageRead: store.Missions[i].PercentageReadLabels,
           percentageUnread: store.Missions[i].PercentageUnreadLabels,
@@ -286,7 +279,6 @@ export class StaticApiService implements ApiService {
       labels: (aisle.labels || []).map(l => this.createLabel(l)),
       outsCount: aisle.outsCount,
       outs: (aisle.outs || []).map(l => this.createLabel(l)),
-      spreads: [],
       coveragePercent: aisle.coveragePercent,
       aisleCoverage: aisleCoverage,
       exclusionsCount: aisle.exclusionsCount,

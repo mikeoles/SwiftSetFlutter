@@ -17,7 +17,6 @@ describe('AislesGridComponent', () => {
       providers: [
         { provide: EnvironmentService, useValue: { config: {
           showPlugs: true,
-          showSuppliers: true,
           productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price']
         }}}
       ]

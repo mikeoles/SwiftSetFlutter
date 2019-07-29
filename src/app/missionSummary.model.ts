@@ -5,7 +5,6 @@ export default class MissionSummary {
   missionDateTime: Date;
   outs: number;
   labels: number;
-  spreads: number;
   aislesScanned: number;
   percentageRead: number;
   percentageUnread: number;

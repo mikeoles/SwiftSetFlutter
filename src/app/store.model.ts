@@ -7,8 +7,6 @@ export default class Store {
   storeAddress: string;
   totalAverageOuts: number;
   totalAverageLabels: number;
-  totalAverageSpreads: number;
   summaryOuts: Array<DaySummary>;
   summaryLabels: Array<DaySummary>;
-  summarySpreads: Array<DaySummary>;
 }

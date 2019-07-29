@@ -8,7 +8,6 @@ export const environment = {
   production: false,
   apiUrl: 'http://localhost:8080/',
   showPlugs: false,
-  showSuppliers: false,
   coveragePercent: true,
   showCoverageAsPercent: true,
   onHand: true,

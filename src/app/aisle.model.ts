@@ -12,7 +12,6 @@ export default class Aisle {
   labelsCount: number;
   outs: Label[];
   outsCount: number;
-  spreads: Label[];
   exclusionZones: ExclusionZone[];
   exclusionsCount: number;
 }
