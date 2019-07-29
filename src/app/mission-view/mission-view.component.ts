@@ -63,10 +63,11 @@ export class MissionViewComponent implements OnInit, OnDestroy {
         this.apiService.getAisles(mission.storeId, this.mission.missionId).subscribe(aisles => {
           this.aisles = aisles;
         });
-        const twoWeeksAgo: Date = new Date();
-        twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 13);
-        twoWeeksAgo.setHours(0, 0, 0, 0);
-        this.apiService.getStore(mission.storeId, twoWeeksAgo, Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe(store => {
+        const storeEndDate: Date = new Date();
+        const storeStartDate: Date = new Date();
+        storeStartDate.setDate(storeStartDate.getDate() - 13);
+        storeStartDate.setHours(0, 0, 0, 0);
+        this.apiService.getStore(mission.storeId, storeStartDate, storeEndDate).subscribe(store => {
           this.store = store;
 
           // If this page was nagivates to from the store view, show the two week average from there, if not show the last two weeks average

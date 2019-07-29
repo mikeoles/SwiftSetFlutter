@@ -177,33 +177,10 @@ export class ODataApiService implements ApiService {
     return this.http.get('../assets/mock/stores.json').pipe(map<any, Store[]>(o => o.map(s => this.createStore(s))), );
   }
 
-  getStore(storeId: string, startDate: Date, timezone: String): Observable<Store> {
+  getStore(storeId: string, startDate: Date, endDate: Date): Observable<Store> {
     // tslint:disable-next-line:max-line-length
-    return this.http.get(`${this.apiUrl}/DemoService/Stores?$filter=SummaryDate eq ${formatDate(startDate, 'yyyy-MM-dd', 'en-US')} and Id eq ${storeId} and TimeZone eq '${timezone}'`)
+    return this.http.get(`../assets/mock/store.json`)
     .pipe(
-      // API result
-      // {
-      //   "Id": 1,
-      //   "StoreName": "Store 0054",
-      //   "StoreAddress": "3201 E Platte Ave, Colorado Springs, CO 80909",
-      //   "TotalAverageOuts": 124,
-      //   "TotalAverageLabels": 4521,
-      //   "SummaryOuts":
-      //     [
-      //       {
-      //         "Date": "2018-11-8",
-      //         "DailyAverage": "190"
-      //       }
-      //     ]
-      //   "SummaryLabels":
-      //     [
-      //       {
-      //         "Date": "2018-11-8",
-      //         "DailyAverage": "4600"
-      //       }
-      //     ]
-
-      // Map the result to an MissionSummary object
       map<any, Store>(m => this.createSingleStore(m)),
     );
   }

@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 
 export interface ApiService {
   getStores();
-  getStore(storeId: string, startDate: Date, timezone: String): Observable<Store>;
+  getStore(storeId: string, startDate: Date, endDate: Date): Observable<Store>;
   // Replaced by getMissions which takes in a range of dates and returns all the data from mission summaries as missions
   getRangeMissionSummaries(startDate: Date, endDate: Date, storeId: string, timezone: string): Observable<MissionSummary[]>;
   // Replaced by getMission which has a list of aisles in it and can be filtered by a start and end date

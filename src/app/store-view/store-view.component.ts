@@ -51,7 +51,7 @@ export class StoreViewComponent implements OnInit {
         this.storeId = params['storeId'];
       }
     });
-    this.apiService.getStore(this.storeId, this.graphStartDate, Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe(store => {
+    this.apiService.getStore(this.storeId, this.graphStartDate, this.graphEndDate).subscribe(store => {
       this.setAllSummaryValues(store);
     });
   }
@@ -70,7 +70,7 @@ export class StoreViewComponent implements OnInit {
     this.graphStartDate.setDate(this.graphStartDate.getDate() - 13); // Two weeks ago by default
     this.graphEndDate.setHours(0, 0, 0 , 0);
     this.graphStartDate.setHours(0, 0, 0 , 0);
-    this.apiService.getStore(this.storeId, this.graphStartDate, Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe(store => {
+    this.apiService.getStore(this.storeId, this.graphStartDate, this.graphEndDate).subscribe(store => {
       this.setAllSummaryValues(store);
     });
   }

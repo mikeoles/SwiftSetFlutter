@@ -125,7 +125,7 @@ export class StaticApiService implements ApiService {
     }
   }
 
-  getStore(storeId: string, startDate: Date, timezone: String): Observable<Store> {
+  getStore(storeId: string, startDate: Date, endDate: Date): Observable<Store> {
     return this.http.get('../data/Store-' + storeId + '/index.json').pipe(
       map<any, Store>(storeJson => this.createStore(storeJson, startDate)),
     );
