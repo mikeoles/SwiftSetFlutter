@@ -37,29 +37,29 @@ describe('AisleViewComponent', () => {
   ];
   const labels: Label[] = [
     { labelId: 1, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 }, department: '', section: '', customFields: [], onHand: 0 },
+      }, department: '', section: '', customFields: [], onHand: 0 },
     { labelId: 2, labelName: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0,
-      height: 0, topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 }, department: '', section: '', customFields: [], onHand: 0 },
+      height: 0, }, department: '', section: '', customFields: [], onHand: 0 },
     { labelId: 3, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 }, department: '', section: '', customFields: [], onHand: 0 },
+      }, department: '', section: '', customFields: [], onHand: 0 },
     { labelId: 4, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 }, department: '', section: '', customFields: [], onHand: 0 },
+      }, department: '', section: '', customFields: [], onHand: 0 },
     { labelId: 5, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 }, department: '', section: '', customFields: [], onHand: 0 },
+      }, department: '', section: '', customFields: [], onHand: 0 },
   ];
   const exclusionZones: ExclusionZone[] = [
     { exclusionZoneId: 1, bounds: { top: 0, left: 0, width: 0, height: 0}}
   ];
   const aisles: Aisle[] = [
-    { aisleId: 1, aisleName: '1111', panoramaUrl: '', labels: labels, outs: labels, zone: '',
+    { aisleId: 1, aisleName: '1111', panoramaUrl: '', labels: labels, outs: labels, createDateTime: new Date(),
       coveragePercent: 0, outsCount: 0, labelsCount: 0, exclusionZones: exclusionZones, exclusionsCount: 0, aisleCoverage: ''},
-    { aisleId: 2, aisleName: '2222', panoramaUrl: '', labels: labels, outs: labels, zone: '',
+    { aisleId: 2, aisleName: '2222', panoramaUrl: '', labels: labels, outs: labels, createDateTime: new Date(),
       coveragePercent: 0, outsCount: 0, labelsCount: 0, exclusionZones: exclusionZones, exclusionsCount: 0, aisleCoverage: ''},
-    { aisleId: 3, aisleName: '3333', panoramaUrl: '', labels: labels, outs: labels, zone: '',
+    { aisleId: 3, aisleName: '3333', panoramaUrl: '', labels: labels, outs: labels, createDateTime: new Date(),
       coveragePercent: 0, outsCount: 0, labelsCount: 0, exclusionZones: exclusionZones, exclusionsCount: 0, aisleCoverage: ''},
-    { aisleId: 4, aisleName: '4444', panoramaUrl: '', labels: labels, outs: labels, zone: '',
+    { aisleId: 4, aisleName: '4444', panoramaUrl: '', labels: labels, outs: labels, createDateTime: new Date(),
       coveragePercent: 0, outsCount: 0, labelsCount: 0, exclusionZones: exclusionZones, exclusionsCount: 0, aisleCoverage: ''},
-    { aisleId: 5, aisleName: '5555', panoramaUrl: '', labels: labels, outs: labels, zone: '',
+    { aisleId: 5, aisleName: '5555', panoramaUrl: '', labels: labels, outs: labels, createDateTime: new Date(),
       coveragePercent: 0, outsCount: 0, labelsCount: 0, exclusionZones: exclusionZones, exclusionsCount: 0, aisleCoverage: ''},
   ];
 

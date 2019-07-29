@@ -8,16 +8,12 @@ export default class Label {
   price: number;
   department: string;
   onHand: number;
-  customFields: Array<CustomField>;
+  section: string;
   bounds: {
     top: number;
     left: number;
     width: number;
     height: number;
-    topMeters: number;
-    leftMeters: number;
-    widthMeters: number;
-    heightMeters: number;
   };
-  section: string;
+  customFields: Array<CustomField>;
 }

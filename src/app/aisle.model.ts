@@ -4,14 +4,14 @@ import ExclusionZone from './exclusionZone.model';
 export default class Aisle {
   aisleId: number;
   aisleName: string;
-  panoramaUrl: string;
   coveragePercent: number;
-  aisleCoverage: string;
-  zone: string;
-  labels: Label[];
+  panoramaUrl: string;
+  createDateTime: Date;
   labelsCount: number;
-  outs: Label[];
   outsCount: number;
+  aisleCoverage: string;
+  labels: Label[];
+  outs: Label[];
   exclusionZones: ExclusionZone[];
   exclusionsCount: number;
 }
