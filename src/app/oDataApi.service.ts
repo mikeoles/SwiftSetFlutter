@@ -27,9 +27,9 @@ export class ODataApiService implements ApiService {
 
   createAisle(aisle: any): Aisle {
     let aisleCoverage = 'Low';
-    if (aisle.CoveragePercent >= 70) {
+    if (aisle.coveragePercent >= 70) {
       aisleCoverage = 'High';
-    } else if (aisle.CoveragePercent >= 40) {
+    } else if (aisle.coveragePercent >= 40) {
       aisleCoverage = 'Medium';
     }
 
@@ -38,59 +38,54 @@ export class ODataApiService implements ApiService {
     }
 
     return {
-      aisleId: aisle.Id,
-      aisleName: `${aisle.Zone}${aisle.Aisle}`,
-      panoramaUrl: `${aisle.FilePath}`,
-      createDateTime: aisle.createDateTime,
-      labelsCount: aisle.LabelsCount,
-      labels: (aisle.Labels || []).map(l => this.createLabel(l)),
-      outsCount: aisle.OutsCount,
-      outs: (aisle.Outs || []).map(l => this.createLabel(l)),
-      coveragePercent: aisle.CoveragePercent,
+      aisleId: aisle.aisleId,
+      aisleName: aisle.name,
+      panoramaUrl: aisle.panoramaUrl,
+      createDateTime: aisle.createDate,
+      labelsCount: aisle.labelsCount,
+      labels: (aisle.labels || []).map(l => this.createLabel(l)),
+      outsCount: aisle.outsCount,
+      outs: (aisle.outs || []).map(l => this.createLabel(l)),
+      coveragePercent: aisle.coveragePercent,
       aisleCoverage: aisleCoverage,
     };
   }
 
   createLabel(label: any): Label {
-    let dept = '', desc = null, itemId = null, price = null, customFields = null, barcode = null, onHand = null;
-    if (label.Product) {
-      for (let i = 0; i < label.Product.CustomFields.length; i++) {
-        const field = label.Product.CustomFields[i];
-        if (field['Name'] === 'Department') {
-          dept = field['Value'];
-        }
+    const customFields = [];
+    Object.entries(label.custom_fields).forEach(
+      ([key, value]) => {
+        const customField = {
+          name: key,
+          value: value
+        };
+        customFields.push(customField);
       }
-      barcode = label.Product.Barcode;
-      desc = label.Product.Description;
-      itemId = label.Product.ItemId;
-      price = label.Product.Price;
-      onHand = label.Product.OnHand;
-      customFields = label.Product.CustomFields;
-    }
+    );
 
     return {
-      labelId: label.Id,
-      labelName: desc || 'Missing Product Data',
-      barcode: label.Barcode || barcode || '000000000000',
-      productId: itemId || '000000',
-      price: price || 0.0,
-      department: dept,
-      onHand: onHand,
+      labelId: 0,
+      labelName: label.labelName || 'Missing Product Data',
+      barcode: label.barcode || '000000000000',
+      productId: label.productId || '000000',
+      price: label.price || 0.0,
+      department: '',
+      onHand: label.onHand,
       bounds: {
-        top: label.Z1 - 10,
-        left: label.X1 - 10,
-        width: label.X2 - label.X1,
-        height: label.Z2 - label.Z1,
+        top: label.bounds.top,
+        left: label.bounds.left,
+        width: label.bounds.width,
+        height: label.bounds.height,
       },
-      section: label.Section,
+      section: label.section,
       customFields: (customFields || []).map(cf => this.createCustomField(cf)),
     };
   }
 
   createCustomField(customField: any): CustomField {
     return{
-      name: customField.Name,
-      value: customField.Value
+      name: customField.name,
+      value: customField.value
     };
   }
 
@@ -330,32 +325,7 @@ export class ODataApiService implements ApiService {
   }
 
   getAisle(storeId: string, missionId: number, aisleId: number): Observable<Aisle> {
-    return this.http.get(`${this.apiUrl}/DemoService/Panos(${aisleId})?$expand=Labels,Outs`).pipe(
-      // API result
-      // {
-      //   "@odata.context": "$metadata#Panos(Labels(),Outs())/$entity",
-      //   "Id": 1,
-      //   "Aisle": "3",
-      //   "FilePath": "04429UTC/AA/3/AA03_color_panorama.jpg",
-      //   "CreateDate": "2018-11-09T02:10:25Z",
-      //   "Labels": [
-      //     {
-      //       "Id": 3,
-      //       "AisleId": "AA.3",
-      //       "LabelType": "PRODUCT",
-      //       "Barcode": "681131026420",
-      //       "Aisle": "3",
-      //       "Section": null,
-      //       "X1": 0.3073472083,
-      //       "Z1": 2.074207783,
-      //       "X2": 0.3073472083,
-      //       "Z2": 2.074207783,
-      //       "CreateDate": "2018-11-09T02:10:25Z",
-      //     }
-      //   ],
-      //   "Outs": []
-      // }
-
+    return this.http.get(`../assets/mock/aisle.json`).pipe(
       // Map the result to an Aisle object
       map<any, Aisle>(a => this.createAisle(a)),
     );

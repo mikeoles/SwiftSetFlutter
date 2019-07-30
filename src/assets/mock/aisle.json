@@ -11,7 +11,7 @@
       "missionName": "BNR-albertsons_0199-20190628_185455UTC-atlaskermit28-official_run_chaperone",
       "startDateTime": "2019-06-28T18:54:55+00:00",
       "endDateTime": "2019-06-28T18:54:55+00:00",
-      "createDateTime": "2019-06-28T20:12:38+00:00",
+      "createDateTime": "2019-06-28T20:12:38+00:00"
     },
     "store": {
       "id": "0a0ba5df-3f0e-4329-8266-deb3f0b4caed",
@@ -21,25 +21,44 @@
     },
     "labels": [
     {
-      labelName: "Lipton Tea",
-      barcode: "011259906432",
-      productId: "12345",
-      price: 2.99,
-      onHand: null,
-      section: 2,
-      bounds: {
-        top: 2688,
-        left: 5396,
-        width: 53,
-        height: 29,
+      "labelName": "Lipton Tea",
+      "barcode": "011259906432",
+      "productId": "12345",
+      "price": 2.99,
+      "onHand": null,
+      "section": 2,
+      "bounds": {
+        "top": 2688,
+        "left": 5396,
+        "width": 53,
+        "height": 29
       },
-      custom_fields: {
+      "custom_fields": {
         "supplier": "Lipton",
         "UPC": "1234567890",
         "Stock Number": "a1234"
       }
     }
-    ].
+    ],
     "outs": [
-    ]
+      {
+        "labelName": "Arnold Palmer",
+        "barcode": "011259906432",
+        "productId": "12345",
+        "price": 2.99,
+        "onHand": null,
+        "section": 2,
+        "bounds": {
+          "top": 2688,
+          "left": 5396,
+          "width": 53,
+          "height": 29
+        },
+        "custom_fields": {
+          "supplier": "Lipton",
+          "UPC": "1234567890",
+          "Stock Number": "a1234"
+        }
+      }
+      ]
   }
