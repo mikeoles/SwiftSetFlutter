@@ -12,7 +12,6 @@ export const environment = {
   showCoverageAsPercent: true,
   onHand: true,
   exportingPDF: true,
-  exclusionZones: true,
   exportFields: ['Barcode', '"MIN"', '"ITEM_DESCRIPTION"', '"BASE_PRICE"', '"PROMO_PRICE"', 'top', 'left', 'width', 'height'],
   productGridFields: ['Barcode', '"MIN"', '"ITEM_DESCRIPTION"', '"BASE_PRICE"', '"PROMO_PRICE"', 'top', 'left', 'width', 'height'],
   labelScrolling: labelScrollOptions.vertical,

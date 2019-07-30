@@ -7,7 +7,6 @@ export const environment = {
   onHand: true,
   pdfExport: true,
   exportingPDF: true,
-  exclusionZones: true,
   exportFields: ['Barcode', 'Product Id', 'Description', 'Department', 'On Hand', 'Layout', 'S. Loc', 'Size', 'SRQ', 'PR', 'Status',
   'Last Recvd', 'DNO'],
   labelScrolling: labelScrollOptions.vertical,

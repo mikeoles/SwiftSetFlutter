@@ -1,5 +1,4 @@
 import Label from './label.model';
-import ExclusionZone from './exclusionZone.model';
 
 export default class Aisle {
   aisleId: number;
@@ -12,6 +11,4 @@ export default class Aisle {
   aisleCoverage: string;
   labels: Label[];
   outs: Label[];
-  exclusionZones: ExclusionZone[];
-  exclusionsCount: number;
 }

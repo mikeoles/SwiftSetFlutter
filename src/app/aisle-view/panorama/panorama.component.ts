@@ -18,8 +18,6 @@ import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 export class PanoramaComponent implements OnInit, OnChanges {
   @Input() outs: any[];
   @Input() labels: any[];
-  @Input() exclusionZones: any[];
-  @Input() showExclusionZones: boolean;
   @Input() currentId: number;
   @Input() currentDisplay: string;
   @Input() panoramaUrl: string;

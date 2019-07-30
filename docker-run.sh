@@ -21,9 +21,6 @@ fi
 if [[ ! -z "$EXPORTING_PDF" ]]; then
   echo "  \"exportingPDF\": \"$EXPORTING_PDF\"," >> /usr/share/nginx/html/assets/config.json
 fi
-if [[ ! -z "$EXCLUSION_ZONES" ]]; then
-  echo "  \"exclusionZones\": \"$EXCLUSION_ZONES\"," >> /usr/share/nginx/html/assets/config.json
-fi
 if [[ ! -z "$SHOW_COVERAGE_AS_PERCENT" ]]; then
   echo "  \"showCoverageAsPercent\": \"$SHOW_COVERAGE_AS_PERCENT\"," >> /usr/share/nginx/html/assets/config.json
 fi
