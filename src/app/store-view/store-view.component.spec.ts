@@ -33,9 +33,9 @@ describe('StoreViewComponent', () => {
   let apiService: jasmine.SpyObj<ApiService>;
 
   const missions: Mission[] = [
-    { missionId: 1, missionName: '', storeId: '1', startDateTime: new Date(), outs: 1, labels: 1, aisleCount: 1, endDateTime: new Date(),
+    { missionId: '1', missionName: '', storeId: '1', startDateTime: new Date(), outs: 1, labels: 1, aisleCount: 1, endDateTime: new Date(),
       percentageRead: 1, percentageUnread: 1, unreadLabels: 1, readLabelsMissingProduct: 1, readLabelsMatchingProduct: 1,
-      createDateTime: new Date() },
+      createDateTime: new Date(), aisles: [] },
   ];
   const daySummaries: DaySummary[] = [
     {
@@ -73,7 +73,7 @@ describe('StoreViewComponent', () => {
           params: [{ storeId: 1 }],
         }},
         { provide: EnvironmentService, useValue: { config: {
-          apiType: 'odata',
+          apiType: 'cloud',
           showCoverageAsPercent: false
         }}}
       ],

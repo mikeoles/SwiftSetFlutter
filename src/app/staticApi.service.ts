@@ -9,7 +9,6 @@ import Mission from './mission.model';
 import Aisle from './aisle.model';
 import Label from './label.model';
 import CustomField from './customField.model';
-import { switchMap } from 'rxjs/operators';
 import { EnvironmentService } from './environment.service';
 
 @Injectable({
@@ -135,7 +134,7 @@ export class StaticApiService implements ApiService {
     );
   }
 
-  getMission(storeId: string, missionId: number): Observable<Mission> {
+  getMission(storeId: string, missionId: string): Observable<Mission> {
     return this.http.get('../data/Store-' + storeId + '/Mission-' + missionId + '/mission-' + missionId + '.json').pipe(
       map<any, Mission>(missionJson => this.createMission(missionJson, storeId)),
     );
@@ -157,24 +156,17 @@ export class StaticApiService implements ApiService {
       unreadLabels: 0,
       percentageUnread: 0,
       percentageRead: 0,
+      aisles: null,
     };
   }
 
-  getAisles(storeId: string, missionId: number): Observable<Aisle[]> {
-    return this.http.get('../data/Store-' + storeId + '/Mission-' + missionId + '/mission-' + missionId + '.json').pipe(
-      map<any, Aisle[]>(o => o.Aisles.map(a => this.createAisle(a, storeId, missionId))),
-      map(aisles => aisles.sort((a, b) => a.aisleName.localeCompare(b.aisleName))),
-    );
-  }
-
-  getAisle(storeId: string, missionId: number, aisleId: number): Observable<any> {
-    // tslint:disable-next-line:max-line-length
+  getAisle(storeId: string, missionId: string, aisleId: string): Observable<any> {
     return this.http.get('../data/Store-' + storeId + '/Mission-' + missionId + '/Aisle-' + aisleId + '/aisle-' + aisleId + '.json').pipe(
       map<any, Aisle>(aisleJson => this.createAisle(aisleJson, storeId, missionId)),
     );
   }
 
-  createAisle(aisle: any, storeId: string, missionId: number): Aisle {
+  createAisle(aisle: any, storeId: string, missionId: string): Aisle {
     let aisleCoverage = 'Low';
     if (aisle.coveragePercent >= 70) {
       aisleCoverage = 'High';
@@ -226,11 +218,5 @@ export class StaticApiService implements ApiService {
       name: customField.name,
       value: customField.field
     };
-  }
-
-  getRangeAisles(startDate: Date, endDate: Date, storeId: string, timezone: string): Observable<Aisle[]> {
-    return this.http.get('../assets/mock/aisle.json').pipe(
-      map<any, Aisle[]>(o => o.Missions.map(m => this.createAisle(m, storeId, 0))),
-    );
   }
 }

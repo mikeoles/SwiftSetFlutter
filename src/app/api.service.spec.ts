@@ -3,7 +3,7 @@ import { ApiService } from './api.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClient } from '@angular/common/http';
 import { EnvironmentService } from './environment.service';
-import { ODataApiService } from './oDataApi.service';
+import { CloudApiService } from './cloudApi.service';
 
 describe('ApiService', () => {
   let httpClient: HttpClient;
@@ -22,7 +22,7 @@ describe('ApiService', () => {
   });
 
   it('should be created', () => {
-    const service: ApiService = TestBed.get(ODataApiService);
+    const service: ApiService = TestBed.get(CloudApiService);
     expect(service).toBeTruthy();
   });
 });

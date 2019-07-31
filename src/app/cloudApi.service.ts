@@ -6,7 +6,6 @@ import Aisle from './aisle.model';
 import Label from './label.model';
 import { Observable, forkJoin } from 'rxjs';
 import Store from './store.model';
-import { formatDate } from '@angular/common';
 import DaySummary from './daySummary.model';
 import CustomField from './customField.model';
 import { ApiService } from './api.service';
@@ -15,7 +14,7 @@ import { EnvironmentService } from './environment.service';
 @Injectable({
   providedIn: 'root'
 })
-export class ODataApiService implements ApiService {
+export class CloudApiService implements ApiService {
   apiUrl: String;
   showCoverageAsPercent = false;
 
@@ -104,6 +103,7 @@ export class ODataApiService implements ApiService {
       unreadLabels: mission.unreadLabels,
       percentageUnread: mission.percentageUnread,
       percentageRead: mission.percentageRead,
+      aisles: (mission.aisles || []).map(a => this.createAisle(a)),
     };
   }
 
@@ -222,74 +222,21 @@ export class ODataApiService implements ApiService {
     );
   }
 
-  getRangeAisles(startDate: Date, endDate: Date, storeId: string, timezone: string): Observable<Aisle[]> {
-    // tslint:disable-next-line:max-line-length
-    return this.http.get(`${this.apiUrl}/DemoService/Panos?$filter=StartDate eq ${formatDate(startDate, 'yyyy-MM-dd', 'en-US')} and StoreId eq '${storeId}' and TimeZone eq '${timezone}' and EndDate eq ${formatDate(endDate, 'yyyy-MM-dd', 'en-US')}`).pipe(
-      // API result
-      // {
-      //   "@odata.context": "$metadata#Panos",
-      //   "value": [
-      //     {
-      //       "Id": 4,
-      //       "Zone": "AA",
-      //       "Aisle": "3",
-      //       "FilePath": "165839UTC/AA/3/AA03_color_panorama.jpg",
-      //       "CreateDate": "2018-11-09T02:10:25Z"
-      //     }
-      //   ]
-      // }
-
-      // Map the result to an array of Aisle objects
-      map<any, Aisle[]>(o => o.value.map(a => this.createAisle(a))),
-
-      // Sort by name
-      map(aisles => aisles.sort((a, b) => a.aisleName.localeCompare(b.aisleName))),
-    );
-  }
-
   getMissions(storeId: string, startDate: Date, endDate: Date): Observable<Mission[]> {
     return this.http.get(`../assets/mock/missions.json`).pipe(
-
-      // Map the result to an array of Mission objects
-      map<any, Mission[]>(o => o.map(m => this.createMission(m))),
-
-      // Sort by create date time
-      map(missions => missions.sort((a, b) => (b.createDateTime.getTime() - a.createDateTime.getTime()))),
+      map<any, Mission[]>(o => o.map(m => this.createMission(m))), // Map the result to an array of Mission objects
+      map(missions => missions.sort((a, b) => (b.createDateTime.getTime() - a.createDateTime.getTime()))), // Sort by create date time
     );
   }
 
-  getMission(storeId: string, missionId: number): Observable<Mission> {
+  getMission(storeId: string, missionId: string): Observable<Mission> {
     return this.http.get(`../assets/mock/mission.json`).pipe(
       // Map the result to a Mission object
       map<any, Mission>(m => this.createMission(m)),
     );
   }
 
-  getAisles(storeId: string, missionId: number): Observable<Aisle[]> {
-    return this.http.get(`${this.apiUrl}/DemoService/Missions(${missionId})/Panos`).pipe(
-      // API result
-      // {
-      //   "@odata.context": "$metadata#Panos",
-      //   "value": [
-      //     {
-      //       "Id": 4,
-      //       "Zone": "AA",
-      //       "Aisle": "3",
-      //       "FilePath": "165839UTC/AA/3/AA03_color_panorama.jpg",
-      //       "CreateDate": "2018-11-09T02:10:25Z"
-      //     }
-      //   ]
-      // }
-
-      // Map the result to an array of Aisle objects
-      map<any, Aisle[]>(o => o.value.map(a => this.createAisle(a))),
-
-      // Sort by name
-      map(aisles => aisles.sort((a, b) => a.aisleName.localeCompare(b.aisleName))),
-    );
-  }
-
-  getAisle(storeId: string, missionId: number, aisleId: number): Observable<Aisle> {
+  getAisle(storeId: string, missionId: string, aisleId: string): Observable<Aisle> {
     return this.http.get(`../assets/mock/aisle.json`).pipe(
       // Map the result to an Aisle object
       map<any, Aisle>(a => this.createAisle(a)),

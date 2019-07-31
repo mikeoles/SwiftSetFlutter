@@ -13,7 +13,7 @@ fi
 if [[ ! -z "$API_TYPE" ]]; then
   echo "  \"apiType\": \"$API_TYPE\"," >> /usr/share/nginx/html/assets/config.json
 else
-  echo "  \"apiType\": odata" >> /usr/share/nginx/html/assets/config.json
+  echo "  \"apiType\": cloud" >> /usr/share/nginx/html/assets/config.json
 fi
 if [[ ! -z "$ON_HAND" ]]; then
   echo "  \"onHand\": \"$ON_HAND\"," >> /usr/share/nginx/html/assets/config.json

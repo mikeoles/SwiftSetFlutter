@@ -22,7 +22,6 @@ export class MissionViewComponent implements OnInit, OnDestroy {
   mission: Mission;
   store: Store;
   averageLabels: number;
-  aisles: Aisle[];
   averageStoreOuts: number;
   averageStoreLabels: number;
   service: ApiService;
@@ -45,10 +44,10 @@ export class MissionViewComponent implements OnInit, OnDestroy {
     const html = document.getElementsByTagName('html')[0];
     html.setAttribute('style', 'position: relative; overflow: auto;');
     this.backButtonSubscription = this.backService.backClickEvent().subscribe(() => this.goBack());
-    let missionId: number, storeId: string;
+    let missionId: string, storeId: string;
     this.activatedRoute.params.forEach((params: Params) => {
       if (params['missionId'] !== undefined) {
-        missionId = Number(params['missionId']);
+        missionId = params['missionId'];
       }
       if (params['storeId'] !== undefined) {
         storeId = params['storeId'];
@@ -56,14 +55,8 @@ export class MissionViewComponent implements OnInit, OnDestroy {
     });
     this.apiService.getMission(storeId, missionId).subscribe(mission => {
       this.mission = mission;
-      this.apiService.getAisles(mission.storeId, this.mission.missionId).subscribe(aisles => {
-        this.aisles = aisles;
-      });
-      const storeEndDate: Date = new Date();
-      const storeStartDate: Date = new Date();
-      storeStartDate.setDate(storeStartDate.getDate() - 13);
-      storeStartDate.setHours(0, 0, 0, 0);
-      this.apiService.getStore(mission.storeId, storeStartDate, storeEndDate).subscribe(store => {
+      // TODO
+      this.apiService.getStore(mission.storeId, new Date(), new Date()).subscribe(store => {
         this.store = store;
 
         // If this page was nagivates to from the store view, show the two week average from there, if not show the last two weeks average
@@ -99,7 +92,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
   }
 
   addAisles(i: number, exportType: string, exportFields: string[], modalId: string, body: any[], fileType: string) {
-    if (i === this.aisles.length) {
+    if (i === this.mission.aisles.length) {
       if (fileType === 'pdf') {
         this.exportPDF(body);
       } else {
@@ -107,7 +100,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
       }
       this.modalService.close(modalId);
     } else {
-      this.apiService.getAisle(this.mission.storeId, this.mission.missionId, this.aisles[i].aisleId).subscribe(aisle => {
+      this.apiService.getAisle(this.mission.storeId, this.mission.missionId, this.mission.aisles[i].aisleId).subscribe(aisle => {
         const outs: Label[] = aisle.outs;
         const labels: Label[]  = aisle.labels;
         const exportData: Label[] = exportType === 'labels' ? labels : outs;

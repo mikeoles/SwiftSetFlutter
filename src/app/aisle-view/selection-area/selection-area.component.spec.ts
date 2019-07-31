@@ -28,14 +28,6 @@ describe('SelectionAreaComponent', () => {
   let aislesDropdownEl: HTMLElement;
   let missionsListEl: HTMLLIElement;
   let aislesListEl: HTMLLIElement;
-  const missions: Mission[] = [
-    { missionId: 1, missionName: '1111', storeId: '1', createDateTime: new Date('2018-12-12'), startDateTime: new Date('2018-12-12'),
-      endDateTime: new Date('2018-12-12'), aisleCount: 0, outs: 0, labels: 0, readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0,
-      unreadLabels: 0, percentageRead: 0, percentageUnread: 0  },
-    { missionId: 2, missionName: '2222', storeId: '1', createDateTime: new Date('2001-01-01'), startDateTime: new Date('2001-01-01'),
-      endDateTime: new Date('2001-01-01'), aisleCount: 0, outs: 0, labels: 0, readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0,
-      unreadLabels: 0, percentageRead: 0, percentageUnread: 0  },
-  ];
   const aisles: Aisle[] = [
     { aisleId: 1, aisleName: '1111', panoramaUrl: '', labels: [], outs: [], createDateTime: new Date(),
     coveragePercent: 0, outsCount: 0, labelsCount: 0,
@@ -53,6 +45,15 @@ describe('SelectionAreaComponent', () => {
     coveragePercent: 0, outsCount: 0, labelsCount: 0,
     aisleCoverage: '' },
   ];
+  const missions: Mission[] = [
+    { missionId: 1, missionName: '1111', storeId: '1', createDateTime: new Date('2018-12-12'), startDateTime: new Date('2018-12-12'),
+      endDateTime: new Date('2018-12-12'), aisleCount: 0, outs: 0, labels: 0, readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0,
+      unreadLabels: 0, percentageRead: 0, percentageUnread: 0, aisles: aisles  },
+    { missionId: 2, missionName: '2222', storeId: '1', createDateTime: new Date('2001-01-01'), startDateTime: new Date('2001-01-01'),
+      endDateTime: new Date('2001-01-01'), aisleCount: 0, outs: 0, labels: 0, readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0,
+      unreadLabels: 0, percentageRead: 0, percentageUnread: 0 , aisles: aisles },
+  ];
+  const mission: Mission = missions[0];
   const store = { storeId: 1 };
 
   beforeEach(async(() => {
@@ -82,9 +83,8 @@ describe('SelectionAreaComponent', () => {
     component.showMissions = true;
     component.exportOnHand = false;
     component.missions = missions;
-    component.aisles = aisles;
     component.selectedMission = missions[0];
-    component.selectedAisle = aisles[0];
+    component.selectedAisle = mission.aisles[0];
     fixture.detectChanges();
     missionsButtonEl = fixture.debugElement.query(By.css('#missionsContainer > button')).nativeElement;
     aislesButtonEl = fixture.debugElement.query(By.css('#aislesContainer > button')).nativeElement;

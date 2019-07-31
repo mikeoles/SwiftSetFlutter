@@ -5,11 +5,10 @@ import DaySummary from '../daySummary.model';
 import { DatepickerOptions } from 'ng2-datepicker';
 import { ApiService } from '../api.service';
 import { EnvironmentService } from '../environment.service';
-import { ODataApiService } from '../oDataApi.service';
-import { StaticApiService } from '../staticApi.service';
 import { BackService } from '../back.service';
 import { Subscription } from 'rxjs';
 import Mission from '../mission.model';
+import Aisle from '../aisle.model';
 
 @Component({
   selector: 'app-data-display',
@@ -154,9 +153,13 @@ export class StoreViewComponent implements OnInit {
 
   exportAisleScanData() {
     const columnNames = ['Date Span', 'Aisle', '# Of Scans', 'Average Aisle Coverage'];
-    this.apiService.getRangeAisles(this.graphStartDate, this.graphEndDate, this.storeId, Intl.DateTimeFormat().resolvedOptions().timeZone)
+    this.apiService.getMissions(this.storeId, this.graphStartDate, this.graphEndDate)
     .subscribe(
-      aisles => {
+      missions => {
+        let aisles: Aisle[] = [];
+        missions.forEach( mission => {
+          aisles = aisles.concat(mission.aisles);
+        });
         const coveragePercentages = new Map<string, number>();
         const scanCounts = new Map<string, number>();
         aisles.forEach( aisle => {

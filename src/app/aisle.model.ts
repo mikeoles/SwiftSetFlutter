@@ -1,7 +1,7 @@
 import Label from './label.model';
 
 export default class Aisle {
-  aisleId: number;
+  aisleId: string;
   aisleName: string;
   coveragePercent: number;
   panoramaUrl: string;

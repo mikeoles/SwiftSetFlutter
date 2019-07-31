@@ -26,7 +26,6 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   labels: Label[];
   missions: Mission[];
   selectedMission: Mission;
-  aisles: Aisle[];
   selectedAisle: Aisle;
   currentId: number;
   currentDisplay: string;
@@ -61,13 +60,13 @@ export class AisleViewComponent implements OnInit, OnDestroy {
     this.logoSubscription = this.logoService.logoClickEvent().subscribe(() => this.changePanoMode());
     this.backButtonSubscription = this.backService.backClickEvent().subscribe(() => this.goBack());
 
-    let missionId: number, aisleId: number, storeId: string;
+    let missionId: string, aisleId: string, storeId: string;
     this.activatedRoute.params.forEach((params: Params) => {
       if (params['missionId'] !== undefined) {
-        missionId = Number(params['missionId']);
+        missionId = params['missionId'];
       }
       if (params['aisleId'] !== undefined) {
-        aisleId = Number(params['aisleId']);
+        aisleId = params['aisleId'];
       }
       if (params['storeId'] !== undefined) {
         storeId = params['storeId'];
@@ -110,20 +109,15 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   }
 
   changeMission(mission: Mission) {
-    this.apiService.getAisles(mission.storeId, mission.missionId).subscribe(aisles => {
-      this.setMission(mission, aisles[0].aisleId);
-    });
+    this.setMission(mission, mission.aisles[0].aisleId);
   }
 
-  setMission(mission: Mission, aisleId: number) {
+  setMission(mission: Mission, aisleId: string) {
     this.selectedMission = mission;
-    this.apiService.getAisles(mission.storeId, mission.missionId).subscribe(aisles => {
-      this.aisles = aisles;
-      aisles.forEach(aisle => {
-        if (aisle.aisleId === aisleId) {
-          this.setAisle(aisle);
-        }
-      });
+    mission.aisles.forEach(aisle => {
+      if (aisle.aisleId === aisleId) {
+        this.setAisle(aisle);
+      }
     });
   }
 

@@ -1,5 +1,7 @@
+import Aisle from './aisle.model';
+
 export default class Mission {
-  missionId: number;
+  missionId: string;
   missionName: string;
   storeId: string;
   startDateTime: Date;
@@ -13,4 +15,5 @@ export default class Mission {
   unreadLabels: number;
   percentageUnread: number;
   percentageRead: number;
+  aisles: Aisle[];
 }

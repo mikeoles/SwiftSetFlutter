@@ -11,5 +11,5 @@ export const environment = {
   'Last Recvd', 'DNO'],
   labelScrolling: labelScrollOptions.vertical,
   productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price', 'On Hand'],
-  apiType: 'odata' // Options: odata or static
+  apiType: 'cloud' // Options: cloud or static
 };

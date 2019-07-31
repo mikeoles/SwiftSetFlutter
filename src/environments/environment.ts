@@ -15,7 +15,7 @@ export const environment = {
   exportFields: ['Barcode', '"MIN"', '"ITEM_DESCRIPTION"', '"BASE_PRICE"', '"PROMO_PRICE"', 'top', 'left', 'width', 'height'],
   productGridFields: ['Barcode', '"MIN"', '"ITEM_DESCRIPTION"', '"BASE_PRICE"', '"PROMO_PRICE"', 'top', 'left', 'width', 'height'],
   labelScrolling: labelScrollOptions.vertical,
-  apiType: 'odata' // Options: odata or static
+  apiType: 'cloud' // Options: cloud or static
 };
 
 /*
