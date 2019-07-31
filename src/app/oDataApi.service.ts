@@ -5,7 +5,6 @@ import Mission from './mission.model';
 import Aisle from './aisle.model';
 import Label from './label.model';
 import { Observable, forkJoin } from 'rxjs';
-import MissionSummary from './missionSummary.model';
 import Store from './store.model';
 import { formatDate } from '@angular/common';
 import DaySummary from './daySummary.model';
@@ -91,28 +90,20 @@ export class ODataApiService implements ApiService {
 
   createMission(mission: any): Mission {
     return {
-      missionId: mission.Id,
-      missionName: mission.Mission,
-      storeId: mission.StoreId,
-      missionDateTime: new Date(mission.MissionDate),
-      createDateTime: new Date(mission.CreateDate),
-    };
-  }
-
-  createMissionSummary(missionSummary: any): MissionSummary {
-    return {
-      missionId: missionSummary.MissionId,
-      mission: missionSummary.Mission,
-      storeId: missionSummary.StoreId,
-      missionDateTime: new Date(missionSummary.MissionDateTime),
-      outs: missionSummary.Outs,
-      labels: missionSummary.Labels,
-      aislesScanned: missionSummary.AislesScanned,
-      percentageRead: missionSummary.PercentageReadLabels,
-      percentageUnread: missionSummary.PercentageUnreadLabels,
-      unreadLabels: missionSummary.UnreadLabels,
-      readLabelsMatchingProduct: missionSummary.ReadLabelsMatchingProduct,
-      readLabelsMissingProduct: missionSummary.ReadLabelsMissingProduct
+      missionId: mission.id,
+      missionName: mission.missionName,
+      storeId: mission.store.id,
+      startDateTime: new Date(mission.startDateTime),
+      endDateTime: new Date(mission.endDateTime),
+      createDateTime: new Date(mission.createDateTime),
+      aisleCount: mission.aisleCount,
+      labels: mission.labels,
+      outs: mission.outs,
+      readLabelsMatchingProduct: mission.readLabelsMatchingProduct,
+      readLabelsMissingProduct: mission.readLabelsMissingProduct,
+      unreadLabels: mission.unreadLabels,
+      percentageUnread: mission.percentageUnread,
+      percentageRead: mission.percentageRead,
     };
   }
 
@@ -231,54 +222,6 @@ export class ODataApiService implements ApiService {
     );
   }
 
-  getMissionSummaries(date: Date, storeId: string, timezone: string): Observable<MissionSummary[]> {
-    // tslint:disable-next-line:max-line-length
-    return this.http.get(`${this.apiUrl}/DemoService/MissionSummaries?$filter=MissionDate eq ${formatDate(date, 'yyyy-MM-dd', 'en-US')} and StoreId eq '${storeId}' and TimeZone eq '${timezone}'`)
-      .pipe(
-      // API result
-      // {
-      //   "@odata.context": "$metadata#MissionSummaries",
-      //   "value": [
-      //     {
-      //        "Mission": "044429UTC",
-      //        "StoreId": "1851"
-      //        "MissionDate": 2018-11-10T01:00:04-05:00,
-      //        "Outs": 60,
-      //        "Labels": 725,
-      //        "AislesScanned": 50
-      //     }
-      //   ]
-      // }
-
-      // Map the result to an array of MissionSummary objects
-      map<any, MissionSummary[]>(o => o.value.map(m => this.createMissionSummary(m))),
-    );
-  }
-
-  getRangeMissionSummaries(startDate: Date, endDate: Date, storeId: string, timezone: string): Observable<MissionSummary[]> {
-    // tslint:disable-next-line:max-line-length
-    return this.http.get(`${this.apiUrl}/DemoService/MissionSummaries?$filter=MissionDate eq ${formatDate(startDate, 'yyyy-MM-dd', 'en-US')} and StoreId eq '${storeId}' and TimeZone eq '${timezone}' and EndDate eq ${formatDate(endDate, 'yyyy-MM-dd', 'en-US')}`)
-      .pipe(
-      // API result
-      // {
-      //   "@odata.context": "$metadata#MissionSummaries",
-      //   "value": [
-      //     {
-      //        "Mission": "044429UTC",
-      //        "StoreId": "1851"
-      //        "MissionDate": 2018-11-10T01:00:04-05:00,
-      //        "Outs": 60,
-      //        "Labels": 725,
-      //        "AislesScanned": 50
-      //     }
-      //   ]
-      // }
-
-      // Map the result to an array of MissionSummary objects
-      map<any, MissionSummary[]>(o => o.value.map(m => this.createMissionSummary(m))),
-    );
-  }
-
   getRangeAisles(startDate: Date, endDate: Date, storeId: string, timezone: string): Observable<Aisle[]> {
     // tslint:disable-next-line:max-line-length
     return this.http.get(`${this.apiUrl}/DemoService/Panos?$filter=StartDate eq ${formatDate(startDate, 'yyyy-MM-dd', 'en-US')} and StoreId eq '${storeId}' and TimeZone eq '${timezone}' and EndDate eq ${formatDate(endDate, 'yyyy-MM-dd', 'en-US')}`).pipe(
@@ -304,46 +247,11 @@ export class ODataApiService implements ApiService {
     );
   }
 
-  getMissionSummary(storeId: string, mission: number): Observable<MissionSummary> {
-    return this.http.get(`${this.apiUrl}/DemoService/MissionSummaries(${mission})`).pipe(
-      // API result
-      // {
-      //   "@odata.context": "$metadata#MissionSummaries",
-      //   "value": [
-      //     {
-      //        "Mission": "044429UTC",
-      //        "StoreId": "1851"
-      //        "MissionDate": 2018-11-10T01:00:04-05:00,
-      //        "Outs": 60,
-      //        "Labels": 725,
-      //        "AislesScanned": 50
-      //     }
-      //   ]
-      // }
-
-      // Map the result to an MissionSummary object
-      map<any, MissionSummary>(a => this.createMissionSummary(a)),
-    );
-  }
-
-  getMissions(storeId: string): Observable<Mission[]> {
-    return this.http.get(`${this.apiUrl}/DemoService/Missions`).pipe(
-      // API result
-      // {
-      //   "@odata.context": "$metadata#Missions",
-      //   "value": [
-      //     {
-            // "Id": 1,
-            // "StoreId": "1851",
-            // "Mission": "044429UTC",
-            // "MissionDate": "2018-11-09T02:10:25Z",
-            // "CreateDate": "2018-11-09T02:10:25Z"
-      //     }
-      //   ]
-      // }
+  getMissions(storeId: string, startDate: Date, endDate: Date): Observable<Mission[]> {
+    return this.http.get(`../assets/mock/missions.json`).pipe(
 
       // Map the result to an array of Mission objects
-      map<any, Mission[]>(o => o.value.map(m => this.createMission(m))),
+      map<any, Mission[]>(o => o.map(m => this.createMission(m))),
 
       // Sort by create date time
       map(missions => missions.sort((a, b) => (b.createDateTime.getTime() - a.createDateTime.getTime()))),
@@ -351,20 +259,7 @@ export class ODataApiService implements ApiService {
   }
 
   getMission(storeId: string, missionId: number): Observable<Mission> {
-    return this.http.get(`${this.apiUrl}/DemoService/Missions(${missionId})`).pipe(
-      // API result
-      // {
-      //   "@odata.context": "$metadata#Missions",
-      //   "value":
-      //     {
-      //       "Id": 1,
-      //       "StoreId": "1851",
-      //       "Mission": "044429UTC",
-      //       "MissionDate": "2018-11-09T02:10:25Z",
-      //       "CreateDate": "2018-11-09T02:10:25Z"
-      //     }
-      // }
-
+    return this.http.get(`../assets/mock/mission.json`).pipe(
       // Map the result to a Mission object
       map<any, Mission>(m => this.createMission(m)),
     );

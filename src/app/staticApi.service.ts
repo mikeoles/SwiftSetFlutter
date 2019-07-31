@@ -5,7 +5,6 @@ import { HttpClient } from '@angular/common/http';
 import Store from './store.model';
 import { map } from 'rxjs/internal/operators/map';
 import DaySummary from './daySummary.model';
-import MissionSummary from './missionSummary.model';
 import Mission from './mission.model';
 import Aisle from './aisle.model';
 import Label from './label.model';
@@ -53,13 +52,13 @@ export class StaticApiService implements ApiService {
       daysAdded = 0, totalOuts = 0, totalLabels = 0;
 
     for (let i = 0; i < store.Missions.length; i++) {
-      const missionDate: Date = new Date(store.Missions[i].missionDateTime);
+      const missionDate: Date = new Date(store.Missions[i].startDateTime);
       if (missionDate >= startDate && missionDate < endDate) {
         if (lastMission === null) {
           lastMission = store.Missions[i];
-          lastDate = new Date(lastMission.missionDateTime);
+          lastDate = new Date(lastMission.startDateTime);
         } else {
-          lastDate = new Date(lastMission.missionDateTime);
+          lastDate = new Date(lastMission.startDateTime);
           missionCount++;
           curLabelCount += lastMission.labels;
           curOutCount += lastMission.outs;
@@ -85,7 +84,7 @@ export class StaticApiService implements ApiService {
     }
 
     if (lastDate != null) {
-      lastDate = new Date(lastMission.missionDateTime);
+      lastDate = new Date(lastMission.startDateTime);
       missionCount++;
       curLabelCount += lastMission.labels;
       curOutCount += lastMission.outs;
@@ -114,7 +113,7 @@ export class StaticApiService implements ApiService {
     };
 
     function missionDateSort(a, b) {
-      if (a.missionDateTime < b.missionDateTime) {
+      if (a.startDateTime < b.startDateTime) {
         return -1;
       } else if (a.last_nom > b.last_nom) {
         return 1;
@@ -130,98 +129,7 @@ export class StaticApiService implements ApiService {
     );
   }
 
-  getMissionSummaries(date: Date, storeId: string, timezone: string): Observable<MissionSummary[]> {
-    return this.http.get('../data/Store-' + storeId + '/index.json').pipe(
-      map<any, MissionSummary[]>(storeJson => this.createMissionSummaries(storeJson, date)),
-    );
-  }
-
-  createMissionSummaries(store: any, currentDay: Date): MissionSummary[] {
-    const summaries: MissionSummary[] = [];
-    for (let i = 0; i < store.Missions.length; i++) {
-      const nextDay: Date = new Date(currentDay.toString());
-      nextDay.setDate(nextDay.getDate() + 1);
-      const missionDate: Date = new Date(store.Missions[i].missionDateTime);
-        if (missionDate >= currentDay && missionDate < nextDay) {
-        summaries.push({
-          missionId: store.Missions[i].missionId,
-          mission: store.Missions[i].mission,
-          storeId: store.storeId,
-          missionDateTime: new Date(store.Missions[i].missionDateTime),
-          outs: store.Missions[i].outs,
-          labels: store.Missions[i].labels,
-          aislesScanned: store.Missions[i].aislesScanned,
-          percentageRead: store.Missions[i].percentageRead,
-          percentageUnread: store.Missions[i].percentageUnread,
-          unreadLabels: store.Missions[i].unreadLabels || 0,
-          readLabelsMatchingProduct: store.Missions[i].readLabelsMatchingProduct || 0,
-          readLabelsMissingProduct: store.Missions[i].readLabelsMissingProduct || 0
-        });
-      }
-    }
-    return summaries;
-  }
-
-  createMissionSummariesRange(store: any, startDate: Date, endDate: Date): MissionSummary[] {
-    const summaries: MissionSummary[] = [];
-    for (let i = 0; i < store.Missions.length; i++) {
-      const missionDate: Date = new Date(store.Missions[i].missionDateTime);
-        if (missionDate >= startDate && missionDate <= endDate) {
-        summaries.push({
-          missionId: store.Missions[i].missionId,
-          mission: store.Missions[i].mission,
-          storeId: store.storeId,
-          missionDateTime: new Date(store.Missions[i].missionDateTime),
-          outs: store.Missions[i].outs,
-          labels: store.Missions[i].labels,
-          aislesScanned: store.Missions[i].aislesScanned,
-          percentageRead: store.Missions[i].percentageRead,
-          percentageUnread: store.Missions[i].percentageUnread,
-          unreadLabels: store.Missions[i].unreadLabels || 0,
-          readLabelsMatchingProduct: store.Missions[i].readLabelsMatchingProduct || 0,
-          readLabelsMissingProduct: store.Missions[i].readLabelsMissingProduct || 0
-        });
-      }
-    }
-    return summaries;
-  }
-
-  getRangeMissionSummaries(startDate: Date, endDate: Date, storeId: string, timezone: string): Observable<MissionSummary[]> {
-    const afterEndDate: Date = new Date();
-    afterEndDate.setDate(endDate.getDate() + 1);
-    return this.http.get('../data/Store-' + storeId + '/index.json').pipe(
-      map<any, MissionSummary[]>(storeJson => this.createMissionSummariesRange(storeJson, startDate, afterEndDate)),
-    );
-  }
-
-  getMissionSummary(storeId: string, mission: number): Observable<MissionSummary> {
-    return this.http.get('../data/Store-' + storeId + '/index.json').pipe(
-      map<any, MissionSummary>(storeJson => this.createMissionSummary(storeJson, mission)),
-    );
-  }
-
-  createMissionSummary(store: any, missionId: number): MissionSummary {
-    for (let i = 0; i < store.Missions.length; i++) {
-      if (store.Missions[i].missionId === missionId) {
-        return {
-          missionId: store.Missions[i].missionId,
-          mission: store.Missions[i].mission,
-          storeId: store.storeId,
-          missionDateTime: new Date(store.Missions[i].missionDateTime),
-          outs: store.Missions[i].outs,
-          labels: store.Missions[i].labels,
-          aislesScanned: store.Missions[i].aislesScanned,
-          percentageRead: store.Missions[i].PercentageReadLabels,
-          percentageUnread: store.Missions[i].PercentageUnreadLabels,
-          unreadLabels: store.Missions[i].UnreadLabels,
-          readLabelsMatchingProduct: store.Missions[i].ReadLabelsMatchingProduct,
-          readLabelsMissingProduct: store.Missions[i].ReadLabelsMissingProduct
-        };
-      }
-    }
-  }
-
-  getMissions(storeId: string): Observable<Mission[]> {
+  getMissions(storeId: string, startDate: Date, endDate: Date): Observable<Mission[]> {
     return this.http.get('../data/Store-' + storeId + '/index.json').pipe(
       map<any, Mission[]>(o => o.Missions.map(m => this.createMission(m, storeId))),
     );
@@ -238,8 +146,17 @@ export class StaticApiService implements ApiService {
       missionId: mission.missionId,
       missionName: mission.missionName,
       storeId: storeId,
-      missionDateTime: new Date(mission.missionDateTime),
-      createDateTime: new Date(mission.createDateTime)
+      startDateTime: new Date(mission.startDateTime),
+      endDateTime: new Date(mission.endDateTime),
+      createDateTime: new Date(mission.createDateTime),
+      aisleCount: 0,
+      labels: 0,
+      outs: 0,
+      readLabelsMatchingProduct: 0,
+      readLabelsMissingProduct: 0,
+      unreadLabels: 0,
+      percentageUnread: 0,
+      percentageRead: 0,
     };
   }
 
@@ -312,18 +229,8 @@ export class StaticApiService implements ApiService {
   }
 
   getRangeAisles(startDate: Date, endDate: Date, storeId: string, timezone: string): Observable<Aisle[]> {
-    return this.http.get('../data/Store-' + storeId + '/index.json').pipe(
-      map<any, MissionSummary[]>(storeJson => this.createMissionSummariesRange(storeJson, startDate, endDate)),
-      map<MissionSummary[], Observable<any>[]>(missionSummaries =>
-        missionSummaries.map(missionSummary =>
-          this.http.get('../data/Store-' + storeId + '/Mission-' + missionSummary.missionId +
-                        '/mission-' + missionSummary.missionId  + '.json').pipe(
-            map<any, Aisle[]>(o => o.Aisles.map(a => this.createAisle(a, storeId, 0)))
-          )
-        )
-      ),
-      switchMap<Observable<any>[], Aisle[][]>(aisleRequests => forkJoin(aisleRequests)),
-      map(as => [].concat.apply([], as))
+    return this.http.get('../assets/mock/aisle.json').pipe(
+      map<any, Aisle[]>(o => o.Missions.map(m => this.createAisle(m, storeId, 0))),
     );
   }
 }

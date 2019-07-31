@@ -1,8 +1,8 @@
 <div *ngIf="mission" class="missionInfo">
   <button class="exportButton" (click)="openModal('export-popup')"><img class="exportImage" src="../../assets/export-blue.png"> <span>Export</span></button>
   <div *ngIf="store" class="missionName">{{store.storeName}}</div>
-  <div class="headerInfo"> Mission: <span> {{mission.missionDateTime | date: 'yyyy-MM-dd HH:mm:ss'}}</span></div>
-  <div *ngIf="missionSummary" class="headerInfo"> Aisles Scanned: <span> {{missionSummary.aislesScanned }}</span></div>
+  <div class="headerInfo"> Mission: <span> {{mission.startDateTime | date: 'yyyy-MM-dd HH:mm:ss'}}</span></div>
+  <div *ngIf="mission" class="headerInfo"> Aisles Scanned: <span> {{mission.aisleCount }}</span></div>
 </div>
 <app-export-modal id="export-popup">
   <div class="modal">
@@ -17,9 +17,9 @@
   </div>
   <div class="modal-background"></div>
 </app-export-modal>
-<div *ngIf="missionSummary" class="statRings">
-  <app-mission-stats class="left" [title]="'Out of Stocks Detected'" [average]="averageStoreOuts" [total]="missionSummary.outs"></app-mission-stats>
-  <app-mission-stats class="right" [title]="'Shelf Labels Detected'" [average]="averageStoreLabels" [total]="missionSummary.labels"></app-mission-stats>
+<div *ngIf="mission" class="statRings">
+  <app-mission-stats class="left" [title]="'Out of Stocks Detected'" [average]="averageStoreOuts" [total]="mission.outs"></app-mission-stats>
+  <app-mission-stats class="right" [title]="'Shelf Labels Detected'" [average]="averageStoreLabels" [total]="mission.labels"></app-mission-stats>
 </div>
 <div class="grid">
   <app-aisles-grid *ngIf="store" [aisles]="aisles" [missionId]="mission.missionId" [storeId]="store.storeId"></app-aisles-grid>

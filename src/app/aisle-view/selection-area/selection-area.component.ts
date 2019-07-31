@@ -65,10 +65,10 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   }
 
   missionSort(a: Mission, b: Mission) {
-    if (a.missionDateTime < b.missionDateTime) {
+    if (a.startDateTime < b.startDateTime) {
       return 1;
     }
-    if (a.missionDateTime > b.missionDateTime) {
+    if (a.startDateTime > b.startDateTime) {
       return -1;
     }
     return 0;
@@ -231,7 +231,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
       const middleText = 'On Hand';
       const middleWidth = doc.getStringUnitWidth(middleText) * doc.internal.getFontSize() / doc.internal.scaleFactor;
       const middleOffset = (doc.internal.pageSize.width - middleWidth) / 2;
-      const rightText =  this.selectedMission.missionDateTime.toLocaleString();
+      const rightText =  this.selectedMission.startDateTime.toLocaleString();
       const rightWidth = doc.getStringUnitWidth(rightText.toString()) * doc.internal.getFontSize() / doc.internal.scaleFactor;
       const rightOffset = (doc.internal.pageSize.width - rightWidth) - 20;
 

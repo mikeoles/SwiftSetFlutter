@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { ApiService } from '../api.service';
 import { Params, ActivatedRoute, Router } from '@angular/router';
-import MissionSummary from '../missionSummary.model';
 import Aisle from '../aisle.model';
 import Mission from '../mission.model';
 import Label from '../label.model';
@@ -20,7 +19,6 @@ import * as jsPDF from 'jspdf';
 })
 
 export class MissionViewComponent implements OnInit, OnDestroy {
-  missionSummary: MissionSummary;
   mission: Mission;
   store: Store;
   averageLabels: number;
@@ -58,24 +56,21 @@ export class MissionViewComponent implements OnInit, OnDestroy {
     });
     this.apiService.getMission(storeId, missionId).subscribe(mission => {
       this.mission = mission;
-      this.apiService.getMissionSummary(mission.storeId, this.mission.missionId).subscribe(missionSummary => {
-        this.missionSummary = missionSummary;
-        this.apiService.getAisles(mission.storeId, this.mission.missionId).subscribe(aisles => {
-          this.aisles = aisles;
-        });
-        const storeEndDate: Date = new Date();
-        const storeStartDate: Date = new Date();
-        storeStartDate.setDate(storeStartDate.getDate() - 13);
-        storeStartDate.setHours(0, 0, 0, 0);
-        this.apiService.getStore(mission.storeId, storeStartDate, storeEndDate).subscribe(store => {
-          this.store = store;
+      this.apiService.getAisles(mission.storeId, this.mission.missionId).subscribe(aisles => {
+        this.aisles = aisles;
+      });
+      const storeEndDate: Date = new Date();
+      const storeStartDate: Date = new Date();
+      storeStartDate.setDate(storeStartDate.getDate() - 13);
+      storeStartDate.setHours(0, 0, 0, 0);
+      this.apiService.getStore(mission.storeId, storeStartDate, storeEndDate).subscribe(store => {
+        this.store = store;
 
-          // If this page was nagivates to from the store view, show the two week average from there, if not show the last two weeks average
-          this.averageStoreLabels = this.dataService.averageStoreLabels
-            ? this.dataService.averageStoreLabels : this.store.totalAverageLabels;
-          this.averageStoreOuts = this.dataService.averageStoreOuts
-            ? this.dataService.averageStoreOuts : this.store.totalAverageOuts;
-        });
+        // If this page was nagivates to from the store view, show the two week average from there, if not show the last two weeks average
+        this.averageStoreLabels = this.dataService.averageStoreLabels
+          ? this.dataService.averageStoreLabels : this.store.totalAverageLabels;
+        this.averageStoreOuts = this.dataService.averageStoreOuts
+          ? this.dataService.averageStoreOuts : this.store.totalAverageOuts;
       });
     });
     this.service = this.apiService;
@@ -198,7 +193,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
     const middleText = 'On Hand';
     const middleWidth = doc.getStringUnitWidth(middleText) * doc.internal.getFontSize() / doc.internal.scaleFactor;
     const middleOffset = (doc.internal.pageSize.width - middleWidth) / 2;
-    const rightText =  this.mission.missionDateTime.toLocaleString();
+    const rightText =  this.mission.startDateTime.toLocaleString();
     const rightWidth = doc.getStringUnitWidth(rightText.toString()) * doc.internal.getFontSize() / doc.internal.scaleFactor;
     const rightOffset = (doc.internal.pageSize.width - rightWidth) - 20;
     doc.text(middleOffset, 10, middleText);

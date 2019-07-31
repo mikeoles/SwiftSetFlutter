@@ -1,6 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Params, ActivatedRoute, Router } from '@angular/router';
-import MissionSummary from '../missionSummary.model';
 import Store from '../store.model';
 import DaySummary from '../daySummary.model';
 import { DatepickerOptions } from 'ng2-datepicker';
@@ -10,6 +9,7 @@ import { ODataApiService } from '../oDataApi.service';
 import { StaticApiService } from '../staticApi.service';
 import { BackService } from '../back.service';
 import { Subscription } from 'rxjs';
+import Mission from '../mission.model';
 
 @Component({
   selector: 'app-data-display',
@@ -18,7 +18,7 @@ import { Subscription } from 'rxjs';
 })
 
 export class StoreViewComponent implements OnInit {
-  missionSummaries: MissionSummary[];
+  missions: Mission[];
   store: Store;
   storeId: string;
   selectedIndex: string;
@@ -78,8 +78,8 @@ export class StoreViewComponent implements OnInit {
   setIndex(selectedValues) {
     this.selectedIndex = selectedValues.index;
     this.selectedDate = selectedValues.date;
-    this.apiService.getMissionSummaries(this.selectedDate, this.storeId, Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe(
-      missionSummaries => this.missionSummaries = missionSummaries
+    this.apiService.getMissions(this.storeId, this.selectedDate, this.selectedDate).subscribe(
+      missions => this.missions = missions
     );
   }
 
@@ -127,23 +127,22 @@ export class StoreViewComponent implements OnInit {
     const columnNames = ['Mission Date', 'Customer - Store', 'Total Aisles Scanned', 'Total # Of Labels', 'Total # Unread Labels',
     'Percentage Unread Labels', 'Percentage Read Labels', '# Read Labels With Matching Product', '# Read Labels Missing Product',
     'Total # OOS'];
-    this.apiService.getRangeMissionSummaries(this.graphStartDate, this.graphEndDate, this.storeId,
-      Intl.DateTimeFormat().resolvedOptions().timeZone)
+    this.apiService.getMissions(this.storeId, this.graphStartDate, this.graphEndDate)
     .subscribe(
-      missionSummaries => {
+      missions => {
         const body = [];
-        missionSummaries.forEach( missionSummary => {
+        missions.forEach( mission => {
           let row = [];
-          row = row.concat(missionSummary.missionDateTime.toLocaleString().replace(',', ''));
+          row = row.concat(mission.startDateTime.toLocaleString().replace(',', ''));
           row = row.concat(this.store.storeName);
-          row = row.concat(missionSummary.aislesScanned);
-          row = row.concat(missionSummary.labels);
-          row = row.concat(missionSummary.unreadLabels);
-          row = row.concat(missionSummary.percentageUnread);
-          row = row.concat(missionSummary.percentageRead);
-          row = row.concat(missionSummary.readLabelsMatchingProduct);
-          row = row.concat(missionSummary.readLabelsMissingProduct);
-          row = row.concat(missionSummary.outs);
+          row = row.concat(mission.aisleCount);
+          row = row.concat(mission.labels);
+          row = row.concat(mission.unreadLabels);
+          row = row.concat(mission.percentageUnread);
+          row = row.concat(mission.percentageRead);
+          row = row.concat(mission.readLabelsMatchingProduct);
+          row = row.concat(mission.readLabelsMissingProduct);
+          row = row.concat(mission.outs);
           body.push(row);
         });
         const filename = 'PerformanceData_' + this.graphStartDate.toDateString() + '-' +

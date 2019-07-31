@@ -29,8 +29,12 @@ describe('SelectionAreaComponent', () => {
   let missionsListEl: HTMLLIElement;
   let aislesListEl: HTMLLIElement;
   const missions: Mission[] = [
-    { missionId: 1, missionName: '1111', storeId: '1', createDateTime: new Date('2018-12-12'), missionDateTime: new Date('2018-12-12') },
-    { missionId: 2, missionName: '2222', storeId: '1', createDateTime: new Date('2001-01-01'), missionDateTime: new Date('2001-01-01') },
+    { missionId: 1, missionName: '1111', storeId: '1', createDateTime: new Date('2018-12-12'), startDateTime: new Date('2018-12-12'),
+      endDateTime: new Date('2018-12-12'), aisleCount: 0, outs: 0, labels: 0, readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0,
+      unreadLabels: 0, percentageRead: 0, percentageUnread: 0  },
+    { missionId: 2, missionName: '2222', storeId: '1', createDateTime: new Date('2001-01-01'), startDateTime: new Date('2001-01-01'),
+      endDateTime: new Date('2001-01-01'), aisleCount: 0, outs: 0, labels: 0, readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0,
+      unreadLabels: 0, percentageRead: 0, percentageUnread: 0  },
   ];
   const aisles: Aisle[] = [
     { aisleId: 1, aisleName: '1111', panoramaUrl: '', labels: [], outs: [], createDateTime: new Date(),
@@ -52,7 +56,7 @@ describe('SelectionAreaComponent', () => {
   const store = { storeId: 1 };
 
   beforeEach(async(() => {
-    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getStore', 'getMission', 'getMissionSummary', 'getAisles', 'getAisle']);
+    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getStore', 'getMission', 'getAisles', 'getAisle']);
 
     TestBed.configureTestingModule({
       imports: [FormsModule, FontAwesomeModule],
@@ -100,7 +104,7 @@ describe('SelectionAreaComponent', () => {
       const pipe = new DatePipe('en');
       fixture.detectChanges();
       expect(missionsDropdownEl.childElementCount).toEqual(2);
-      expect(missionsDropdownEl.children[0].textContent).toEqual(pipe.transform(missions[0].missionDateTime, ' yyyy-MM-dd HH:mm:ss '));
+      expect(missionsDropdownEl.children[0].textContent).toEqual(pipe.transform(missions[0].startDateTime, ' yyyy-MM-dd HH:mm:ss '));
       done();
     });
   });
@@ -134,7 +138,7 @@ describe('SelectionAreaComponent', () => {
     fixture.whenStable().then(() => {
       const pipe = new DatePipe('en');
       fixture.detectChanges();
-      expect(missionsButtonEl.textContent).toEqual(` Mission ${pipe.transform(missions[0].missionDateTime, 'yyyy-MM-dd HH:mm:ss')} `);
+      expect(missionsButtonEl.textContent).toEqual(` Mission ${pipe.transform(missions[0].startDateTime, 'yyyy-MM-dd HH:mm:ss')} `);
       done();
     });
   });
@@ -151,7 +155,7 @@ describe('SelectionAreaComponent', () => {
     const pipe = new DatePipe('en');
     component.selectedMission  = missions[1];
     fixture.detectChanges();
-    expect(missionsButtonEl.textContent).toEqual(` Mission ${pipe.transform(missions[1].missionDateTime, 'yyyy-MM-dd HH:mm:ss')} `);
+    expect(missionsButtonEl.textContent).toEqual(` Mission ${pipe.transform(missions[1].startDateTime, 'yyyy-MM-dd HH:mm:ss')} `);
   });
 
   it('sets mission button based on input', () => {

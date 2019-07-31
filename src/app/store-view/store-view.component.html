@@ -12,5 +12,5 @@
   <div class="graphDisplay"><app-daily-graphs [title]="'Out of Stocks Detected'" [data]="store.summaryOuts" [overallAverage]="store.totalAverageOuts" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>
   <div class="graphDisplay"><app-daily-graphs [title]="'Shelf Labels Detected'" [data]="store.summaryLabels" [overallAverage]="store.totalAverageLabels" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>
 </div>
-<app-missions-grid *ngIf="missionSummaries" [averageStoreOuts]="store.totalAverageOuts" [averageStoreLabels]="store.totalAverageLabels"
-[missionSummaries]="missionSummaries" [missionsDate]="selectedDate" [storeId]="storeId"></app-missions-grid>
+<app-missions-grid *ngIf="missions" [averageStoreOuts]="store.totalAverageOuts" [averageStoreLabels]="store.totalAverageLabels"
+[missions]="missions" [missionsDate]="selectedDate" [storeId]="storeId"></app-missions-grid>

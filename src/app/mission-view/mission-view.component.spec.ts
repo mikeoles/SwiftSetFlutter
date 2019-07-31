@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import Label from '../label.model';
 import { ModalService } from '../modal/modal.service';
 import { EnvironmentService } from '../environment.service';
-import MissionSummary from '../missionSummary.model';
+import Mission from '../mission.model';
 
 @Component({selector: 'app-mission-stats', template: ''})
 class AppMissionStatsStubComponent {
@@ -42,16 +42,15 @@ describe('MissionViewComponent', () => {
     bounds: { top: 0, left: 0, width: 0, height: 0 },
     customFields: [], section: '', department: '', onHand: 0 },
   ];
-  const mission = { missionId: 1, name: '1111', createDateTime: new Date('2018-12-12'), missionDateTime: new Date('2018-12-12') };
-  const missionSummary: MissionSummary = {   missionId: 1, mission: '', storeId: 1, missionDateTime: new Date('2018-12-12'),
-  outs: 1, labels: 1, aislesScanned: 1,
-  percentageRead: 0, percentageUnread: 0, unreadLabels: 0, readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0 };
+  const mission: Mission = { missionId: 1, missionName: '', storeId: '1', startDateTime: new Date(), outs: 1, labels: 1,
+    aisleCount: 1, endDateTime: new Date(), percentageRead: 1, percentageUnread: 1, unreadLabels: 1, readLabelsMissingProduct: 1,
+    readLabelsMatchingProduct: 1, createDateTime: new Date() };
   const aisles = [{  aisleId: 1, name: '', panoramaUrl: '', labels: labels, outs: labels }];
   const aisle = {  aisleId: 1, name: '', panoramaUrl: '', labels: labels, outs: labels };
   const store = { storeId: 1 };
 
   beforeEach(async(() => {
-    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getStore', 'getMission', 'getMissionSummary', 'getAisles', 'getAisle']);
+    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getStore', 'getMission', 'getMissions', 'getAisles', 'getAisle']);
 
     TestBed.configureTestingModule({
       imports: [
@@ -80,7 +79,6 @@ describe('MissionViewComponent', () => {
 
     apiService = TestBed.get('ApiService');
     apiService.getMission.and.returnValue(of(mission));
-    apiService.getMissionSummary.and.returnValue(of(missionSummary));
     apiService.getAisles.and.returnValue(of(aisles));
     apiService.getAisle.and.returnValue(of(aisle));
     apiService.getStore.and.returnValue(of(store));

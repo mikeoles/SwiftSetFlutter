@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import MissionSummary from 'src/app/missionSummary.model';
 import { DataService } from 'src/app/data.service';
+import Mission from 'src/app/mission.model';
 
 @Component({
   selector: 'app-missions-grid',
@@ -9,7 +9,7 @@ import { DataService } from 'src/app/data.service';
   styleUrls: ['./missions-grid.component.scss']
 })
 export class MissionsGridComponent implements OnInit {
-  @Input() missionSummaries: MissionSummary[];
+  @Input() missions: Mission[];
   @Input() missionsDate: number;
   @Input() averageStoreOuts: number;
   @Input() averageStoreLabels: number;
