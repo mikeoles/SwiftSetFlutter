@@ -96,20 +96,14 @@ export class StoreViewComponent implements OnInit {
 
       let dailyLabelAverage = 0;
       for (let j = 0; j < this.store.summaryLabels.length; j++) {
-        if (this.environmentService.config.apiType === 'odata' &&
-          this.store.summaryLabels[j].date.toString() === cur.toISOString().substring(0, 10) ||
-          this.environmentService.config.apiType === 'static' &&
-          this.store.summaryLabels[j].date.toDateString() === cur.toDateString()) {
+        if (this.store.summaryLabels[j].date.toDateString() === cur.toDateString()) {
             dailyLabelAverage = this.store.summaryLabels[j].dailyAverage;
           }
         }
 
       let dailyOutAverage = 0;
       for (let j = 0; j < this.store.summaryOuts.length; j++) {
-        if (this.environmentService.config.apiType === 'odata' &&
-          this.store.summaryOuts[j].date.toString() === cur.toISOString().substring(0, 10) ||
-          this.environmentService.config.apiType === 'static' &&
-          this.store.summaryOuts[j].date.toDateString() === cur.toDateString()) {
+        if (this.store.summaryOuts[j].date.toDateString() === cur.toDateString()) {
             dailyOutAverage = this.store.summaryOuts[j].dailyAverage;
         }
       }

@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import Mission from './mission.model';
 import Aisle from './aisle.model';
 import Label from './label.model';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import MissionSummary from './missionSummary.model';
 import Store from './store.model';
 import { formatDate } from '@angular/common';
@@ -116,17 +116,86 @@ export class ODataApiService implements ApiService {
     };
   }
 
-  createSingleStore(store: any): Store {
+  createSingleStore(data: any): Store {
+    const missions = data[0];
+    const store = data[1];
+
+    missions.sort(missionDateSort);
+
+    const outsSummaries: DaySummary[] = [], labelsSummaries: DaySummary[] = [];
+    let lastMission = null, curLabelCount = 0, curOutCount = 0, missionCount = 0, lastDate: Date = null,
+      daysAdded = 0, totalOuts = 0, totalLabels = 0;
+
+    // Loop through the missions and combine values for each date
+    for (let i = 0; i < missions.length; i++) {
+      const missionDate: Date = new Date(missions[i].startDateTime);
+      if (lastMission === null) {
+        lastMission = missions[i];
+        lastDate = new Date(lastMission.startDateTime);
+      } else {
+        lastDate = new Date(lastMission.startDateTime);
+        missionCount++;
+        curLabelCount += lastMission.labels;
+        curOutCount += lastMission.outs;
+        // If its from a different date save all of the data from the previous date and reset the counts
+        if (lastDate.toDateString() !== missionDate.toDateString()) {
+          daysAdded++;
+          totalLabels += curLabelCount / missionCount;
+          totalOuts += curOutCount / missionCount;
+          labelsSummaries.push({
+            date: lastDate,
+            dailyAverage: curLabelCount / missionCount
+          });
+          outsSummaries.push({
+            date: lastDate,
+            dailyAverage: curOutCount / missionCount
+          });
+          missionCount = 0;
+          curLabelCount = 0;
+          curOutCount = 0;
+        }
+        lastMission = missions[i];
+      }
+    }
+
+    if (lastDate != null) {
+      lastDate = new Date(lastMission.startDateTime);
+      missionCount++;
+      curLabelCount += lastMission.labels;
+      curOutCount += lastMission.outs;
+      daysAdded++;
+      totalLabels += curLabelCount / missionCount;
+      totalOuts += curOutCount / missionCount;
+      labelsSummaries.push({
+        date: lastDate,
+        dailyAverage: curLabelCount / missionCount
+      });
+      outsSummaries.push({
+        date: lastDate,
+        dailyAverage: curOutCount / missionCount
+      });
+    }
+
     return {
-      storeId: store.value[0].id,
-      storeNumber: store.value[0].number,
-      storeName: store.value[0].name,
-      storeAddress: store.value[0].address,
-      totalAverageOuts: store.value[0].TotalAverageOuts,
-      totalAverageLabels: store.value[0].TotalAverageLabels,
-      summaryOuts: (store.value[0].SummaryOuts || []).map(o => this.createDaySummary(o)),
-      summaryLabels: (store.value[0].SummaryLabels || []).map(l => this.createDaySummary(l)),
+      storeId: store.id,
+      storeNumber: store.number,
+      storeName: store.name,
+      storeAddress: store.address,
+      totalAverageOuts: totalOuts / daysAdded,
+      totalAverageLabels: totalLabels / daysAdded,
+      summaryOuts: (outsSummaries || []).map(o => this.createDaySummary(o)),
+      summaryLabels: (labelsSummaries || []).map(l => this.createDaySummary(l)),
     };
+
+    function missionDateSort(a, b) {
+      if (a.startDateTime < b.startDateTime) {
+        return -1;
+      } else if (a.last_nom > b.last_nom) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
   }
 
   createStore(store: any): Store {
@@ -144,8 +213,8 @@ export class ODataApiService implements ApiService {
 
   createDaySummary(daySummary: any): DaySummary {
     return {
-      date: daySummary.Date,
-      dailyAverage: daySummary.DailyAverage
+      date: daySummary.date,
+      dailyAverage: daySummary.dailyAverage
     };
   }
 
@@ -154,10 +223,11 @@ export class ODataApiService implements ApiService {
   }
 
   getStore(storeId: string, startDate: Date, endDate: Date): Observable<Store> {
-    // tslint:disable-next-line:max-line-length
-    return this.http.get(`../assets/mock/store.json`)
+    return forkJoin(
+      this.http.get(`../assets/mock/missions.json`),
+      this.http.get('../assets/mock/store.json'))
     .pipe(
-      map<any, Store>(m => this.createSingleStore(m)),
+      map<any, Store>(a => this.createSingleStore(a))
     );
   }
 
