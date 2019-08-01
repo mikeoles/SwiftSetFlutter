@@ -50,7 +50,6 @@ describe('ProductDetailsComponent', () => {
       ],
       providers: [
         { provide: EnvironmentService, useValue: { config: {
-          showPlugs: true,
           productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price']
         }}}
       ]
@@ -121,13 +120,6 @@ describe('ProductDetailsComponent', () => {
   it('displays counts on buttons', () => {
     expect(buttons[0].textContent).toContain('(5)');
     expect(buttons[1].textContent).toContain('(5)');
-  });
-
-  it('can hide plugs', () => {
-    component.showPlugs = false;
-    fixture.detectChanges();
-    buttons = buttonsEl.children;
-    expect(buttonsEl.childElementCount).toEqual(3);
   });
 
   it('button can be selected', () => {

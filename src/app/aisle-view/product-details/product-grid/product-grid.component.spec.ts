@@ -28,7 +28,6 @@ describe('ProductGridComponent', () => {
       declarations: [ ProductGridComponent ],
       providers: [
         { provide: EnvironmentService, useValue: { config: {
-          showPlugs: true,
           productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price']
         }}}
       ]

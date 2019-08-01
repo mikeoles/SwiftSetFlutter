@@ -7,7 +7,6 @@ import { labelScrollOptions } from 'src/app/labelScrollOptions';
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:8080/',
-  showPlugs: false,
   coveragePercent: true,
   showCoverageAsPercent: true,
   onHand: true,

@@ -18,6 +18,5 @@
   <div [ngSwitch]="currentDisplay">
     <app-product-grid [products]="filteredOuts" [selectedId]="currentId" (gridClicked)='productGridSelected($event)' *ngSwitchCase="'outs'"></app-product-grid>
     <app-product-grid [products]="filteredLabels" [selectedId]="currentId" (gridClicked)='productGridSelected($event)' *ngSwitchCase="'labels'"></app-product-grid>
-    <app-product-grid [products]="labels" [selectedId]="currentId" (gridClicked)='productGridSelected($event)' *ngSwitchCase="'plugs'"></app-product-grid>
   </div>
 </div>
