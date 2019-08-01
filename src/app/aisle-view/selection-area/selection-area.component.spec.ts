@@ -12,6 +12,7 @@ import { ModalService } from 'src/app/modal/modal.service';
 import { EnvironmentService } from 'src/app/environment.service';
 import { ApiService } from 'src/app/api.service';
 import { of } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({selector: 'app-export-modal', template: ''})
 class ModalComponent {
@@ -29,35 +30,37 @@ describe('SelectionAreaComponent', () => {
   let missionsListEl: HTMLLIElement;
   let aislesListEl: HTMLLIElement;
   const aisles: Aisle[] = [
-    { aisleId: 1, aisleName: '1111', panoramaUrl: '', labels: [], outs: [], createDateTime: new Date(),
+    { aisleId: '1', aisleName: '1111', panoramaUrl: '', labels: [], outs: [], createDateTime: new Date(),
     coveragePercent: 0, outsCount: 0, labelsCount: 0,
     aisleCoverage: ''},
-    { aisleId: 2, aisleName: '2222', panoramaUrl: '', labels: [], outs: [], createDateTime: new Date(),
+    { aisleId: '2', aisleName: '2222', panoramaUrl: '', labels: [], outs: [], createDateTime: new Date(),
     coveragePercent: 0, outsCount: 0, labelsCount: 0,
     aisleCoverage: ''},
-    { aisleId: 3, aisleName: '3333', panoramaUrl: '', labels: [], outs: [], createDateTime: new Date(),
+    { aisleId: '3', aisleName: '3333', panoramaUrl: '', labels: [], outs: [], createDateTime: new Date(),
     coveragePercent: 0, outsCount: 0, labelsCount: 0,
     aisleCoverage: ''},
-    { aisleId: 4, aisleName: '4444', panoramaUrl: '', labels: [], outs: [], createDateTime: new Date(),
+    { aisleId: '4', aisleName: '4444', panoramaUrl: '', labels: [], outs: [], createDateTime: new Date(),
     coveragePercent: 0, outsCount: 0, labelsCount: 0,
     aisleCoverage: ''},
-    { aisleId: 5, aisleName: '5555', panoramaUrl: '', labels: [], outs: [], createDateTime: new Date(),
+    { aisleId: '5', aisleName: '5555', panoramaUrl: '', labels: [], outs: [], createDateTime: new Date(),
     coveragePercent: 0, outsCount: 0, labelsCount: 0,
     aisleCoverage: '' },
   ];
   const missions: Mission[] = [
-    { missionId: 1, missionName: '1111', storeId: '1', createDateTime: new Date('2018-12-12'), startDateTime: new Date('2018-12-12'),
+    { missionId: '1', missionName: '1111', storeId: '1', createDateTime: new Date('2018-12-12'), startDateTime: new Date('2018-12-12'),
       endDateTime: new Date('2018-12-12'), aisleCount: 0, outs: 0, labels: 0, readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0,
       unreadLabels: 0, percentageRead: 0, percentageUnread: 0, aisles: aisles  },
-    { missionId: 2, missionName: '2222', storeId: '1', createDateTime: new Date('2001-01-01'), startDateTime: new Date('2001-01-01'),
+    { missionId: '2', missionName: '2222', storeId: '1', createDateTime: new Date('2001-01-01'), startDateTime: new Date('2001-01-01'),
       endDateTime: new Date('2001-01-01'), aisleCount: 0, outs: 0, labels: 0, readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0,
       unreadLabels: 0, percentageRead: 0, percentageUnread: 0 , aisles: aisles },
   ];
-  const mission: Mission = missions[0];
+  const mission: Mission = { missionId: '2', missionName: '2222', storeId: '1', createDateTime: new Date('2001-01-01'),
+    startDateTime: new Date('2001-01-01'), endDateTime: new Date('2001-01-01'), aisleCount: 0, outs: 0, labels: 0,
+    readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0, unreadLabels: 0, percentageRead: 0, percentageUnread: 0 , aisles: aisles };
   const store = { storeId: 1 };
 
   beforeEach(async(() => {
-    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getStore', 'getMission', 'getAisles', 'getAisle']);
+    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getStore', 'getMission', 'getAisle']);
 
     TestBed.configureTestingModule({
       imports: [FormsModule, FontAwesomeModule],
@@ -68,7 +71,8 @@ describe('SelectionAreaComponent', () => {
         { provide: EnvironmentService, useValue: { config: {
           onHand: true,
           exportingPDF: true
-        }}}
+        }}},
+        { provide: Router },
       ]
     })
     .compileComponents();
@@ -83,6 +87,7 @@ describe('SelectionAreaComponent', () => {
     component.showMissions = true;
     component.exportOnHand = false;
     component.missions = missions;
+    component.aisles = mission.aisles;
     component.selectedMission = missions[0];
     component.selectedAisle = mission.aisles[0];
     fixture.detectChanges();

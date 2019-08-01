@@ -111,7 +111,7 @@ describe('ProductDetailsComponent', () => {
   });
 
   it('displays buttons', () => {
-    expect(buttonsEl.childElementCount).toEqual(4);
+    expect(buttonsEl.childElementCount).toEqual(2);
     expect(buttons[0].textContent).toContain('Outs');
     expect(buttons[1].textContent).toContain('Shelf Labels');
 

@@ -30,14 +30,6 @@ describe('AisleViewComponent', () => {
   let component: AisleViewComponent;
   let apiService: jasmine.SpyObj<ApiService>;
 
-  const missions: Mission[] = [
-    { missionId: 1, missionName: '1111', storeId: '1', createDateTime: new Date('2018-12-12'), startDateTime: new Date('2018-12-12'),
-      endDateTime: new Date('2018-12-12'), aisleCount: 0, outs: 0, labels: 0, readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0,
-      unreadLabels: 0, percentageRead: 0, percentageUnread: 0  },
-    { missionId: 2, missionName: '2222', storeId: '1', createDateTime: new Date('2001-01-01'), startDateTime: new Date('2001-01-01'),
-      endDateTime: new Date('2001-01-01'), aisleCount: 0, outs: 0, labels: 0, readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0,
-      unreadLabels: 0, percentageRead: 0, percentageUnread: 0  },
-  ];
   const labels: Label[] = [
     { labelId: 1, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
       }, department: '', section: '', customFields: [], onHand: 0 },
@@ -52,21 +44,29 @@ describe('AisleViewComponent', () => {
   ];
 
   const aisles: Aisle[] = [
-    { aisleId: 1, aisleName: '1111', panoramaUrl: '', labels: labels, outs: labels, createDateTime: new Date(),
+    { aisleId: '1', aisleName: '1111', panoramaUrl: '', labels: labels, outs: labels, createDateTime: new Date(),
       coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
-    { aisleId: 2, aisleName: '2222', panoramaUrl: '', labels: labels, outs: labels, createDateTime: new Date(),
+    { aisleId: '2', aisleName: '2222', panoramaUrl: '', labels: labels, outs: labels, createDateTime: new Date(),
       coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
-    { aisleId: 3, aisleName: '3333', panoramaUrl: '', labels: labels, outs: labels, createDateTime: new Date(),
+    { aisleId: '3', aisleName: '3333', panoramaUrl: '', labels: labels, outs: labels, createDateTime: new Date(),
       coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
-    { aisleId: 4, aisleName: '4444', panoramaUrl: '', labels: labels, outs: labels, createDateTime: new Date(),
+    { aisleId: '4', aisleName: '4444', panoramaUrl: '', labels: labels, outs: labels, createDateTime: new Date(),
       coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
-    { aisleId: 5, aisleName: '5555', panoramaUrl: '', labels: labels, outs: labels, createDateTime: new Date(),
+    { aisleId: '5', aisleName: '5555', panoramaUrl: '', labels: labels, outs: labels, createDateTime: new Date(),
       coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
   ];
 
+  const missions: Mission[] = [
+    { missionId: '1', missionName: '1111', storeId: '1', createDateTime: new Date('2018-12-12'), startDateTime: new Date('2018-12-12'),
+      endDateTime: new Date('2018-12-12'), aisleCount: 0, outs: 0, labels: 0, readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0,
+      unreadLabels: 0, percentageRead: 0, percentageUnread: 0, aisles: aisles  },
+    { missionId: '2', missionName: '2222', storeId: '1', createDateTime: new Date('2001-01-01'), startDateTime: new Date('2001-01-01'),
+      endDateTime: new Date('2001-01-01'), aisleCount: 0, outs: 0, labels: 0, readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0,
+      unreadLabels: 0, percentageRead: 0, percentageUnread: 0, aisles: aisles  },
+  ];
 
   beforeEach(async(() => {
-    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getMissions', 'getAisles', 'getAisle']);
+    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getMissions', 'getAisle']);
     const locationSpy = jasmine.createSpyObj('Location', ['replaceState']);
 
     TestBed.configureTestingModule({
@@ -104,7 +104,6 @@ describe('AisleViewComponent', () => {
 
     apiService = TestBed.get('ApiService');
     apiService.getMissions.and.returnValue(of(missions));
-    apiService.getAisles.and.returnValue(of(aisles));
     apiService.getAisle.and.returnValue(of(aisles[0]));
 
     fixture = TestBed.createComponent(AisleViewComponent);
@@ -127,7 +126,7 @@ describe('AisleViewComponent', () => {
   });
 
   it('should load the aisles', () => {
-    expect(fixture.componentInstance.aisles).toEqual(aisles);
+    expect(fixture.componentInstance.selectedMission.aisles).toEqual(aisles);
   });
 
   it('should load the outs and labels', () => {

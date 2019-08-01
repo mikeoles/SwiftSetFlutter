@@ -21,6 +21,7 @@ class AppDailyGraphsStubComponent {
 }
 @Component({selector: 'app-missions-grid', template: ''})
 class AppMissionsGridStubComponent {
+  @Input() missions: any[];
   @Input() missionsDate: any[];
   @Input() averageStoreOuts: number;
   @Input() averageStoreLabels: number;
@@ -54,7 +55,7 @@ describe('StoreViewComponent', () => {
   };
 
   beforeEach(async(() => {
-    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getStore', 'getMission']);
+    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getStore', 'getMissions']);
 
     TestBed.configureTestingModule({
       imports: [
@@ -70,7 +71,7 @@ describe('StoreViewComponent', () => {
       providers: [
         { provide: 'ApiService', useValue: apiServiceSpy },
         { provide: ActivatedRoute, useValue: {
-          params: [{ storeId: 1 }],
+          params: [{ storeId: '1' }],
         }},
         { provide: EnvironmentService, useValue: { config: {
           apiType: 'cloud',
