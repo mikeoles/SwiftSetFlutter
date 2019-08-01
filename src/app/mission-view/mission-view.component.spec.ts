@@ -109,7 +109,6 @@ describe('MissionViewComponent', () => {
   });
 
   it('should export data', () => {
-    // TODO: Figure out how to test the link
     expect().nothing();
   });
 });

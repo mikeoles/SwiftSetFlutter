@@ -43,7 +43,7 @@ export class StaticApiService implements ApiService {
 
   createStore(store: any, startDate: Date): Store {
     const endDate: Date = new Date(startDate.toString());
-    endDate.setDate(endDate.getDate() + 14);
+    endDate.setDate(endDate.getDate() + this.environment.config.missionHistoryDays);
     store.Missions.sort(missionDateSort);
 
     const outsSummaries: DaySummary[] = [], labelsSummaries: DaySummary[] = [];
