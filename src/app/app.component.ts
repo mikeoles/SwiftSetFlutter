@@ -4,6 +4,9 @@ import { KeyboardShortcutsService } from 'ng-keyboard-shortcuts';
 import { LogoService } from './logo.service';
 import { BackService } from './back.service';
 import { faArrowAltCircleLeft } from '@fortawesome/free-regular-svg-icons';
+import { AdalService } from 'adal-angular4';
+import { EnvironmentService } from './environment.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -14,11 +17,14 @@ import { faArrowAltCircleLeft } from '@fortawesome/free-regular-svg-icons';
 export class AppComponent implements OnInit {
 
   displayBackButton: boolean;
-
   faArrowAltCircleLeft = faArrowAltCircleLeft;
+  location: Location;
 
-  constructor(private router: Router, private logoService: LogoService, private backService: BackService) {
+  constructor(private router: Router, private logoService: LogoService, private backService: BackService, private adalSvc: AdalService,
+    private environment: EnvironmentService, private loc: Location) {
     router.events.subscribe( (event) => ( event instanceof NavigationEnd ) && this.handleRouteChange() );
+    this.location = loc;
+    this.adalSvc.init(environment.config.adalConfig);
   }
 
   ngOnInit() {
@@ -28,6 +34,17 @@ export class AppComponent implements OnInit {
       }
       window.scrollTo(0, 0);
     });
+    this.adalSvc.handleWindowCallback();
+    this.adalSvc.getUser();
+    if (!this.adalSvc.userInfo.authenticated) {
+       this.adalSvc.login();
+       localStorage.setItem('previousLocation', this.location.path());
+    } else if (this.adalSvc.userInfo.authenticated) {
+      this.adalSvc.acquireToken('https://graph.microsoft.com').subscribe(act => {
+        localStorage.setItem('token', act);
+      });
+      this.router.navigate([localStorage.getItem('previousLocation')]);
+    }
   }
 
   logoClicked() {
