@@ -6,13 +6,13 @@ import { labelScrollOptions } from 'src/app/labelScrollOptions';
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8080/',
+  apiUrl: 'http://localhost:8080',
   coveragePercent: true,
   showCoverageAsPercent: true,
   onHand: true,
   exportingPDF: true,
-  exportFields: ['Barcode', '"MIN"', '"ITEM_DESCRIPTION"', '"BASE_PRICE"', '"PROMO_PRICE"', 'top', 'left', 'width', 'height'],
-  productGridFields: ['Barcode', '"MIN"', '"ITEM_DESCRIPTION"', '"BASE_PRICE"', '"PROMO_PRICE"', 'top', 'left', 'width', 'height'],
+  exportFields: ['Barcode', 'top', 'left', 'width', 'height'],
+  productGridFields: ['Barcode', 'top', 'left', 'width', 'height'],
   labelScrolling: labelScrollOptions.vertical,
   apiType: 'cloud', // Options: cloud or static
   missionHistoryDays: 14 // Number of days to display missions for

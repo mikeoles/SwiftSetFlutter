@@ -37,7 +37,7 @@ export class CloudApiService implements ApiService {
 
     return {
       aisleId: aisle.aisleId,
-      aisleName: aisle.name,
+      aisleName: aisle.aisleName,
       panoramaUrl: aisle.panoramaUrl,
       createDateTime: aisle.createDate,
       labelsCount: aisle.labelsCount,
@@ -51,15 +51,17 @@ export class CloudApiService implements ApiService {
 
   createLabel(label: any): Label {
     const customFields = [];
-    Object.entries(label.custom_fields).forEach(
-      ([key, value]) => {
-        const customField = {
-          name: key,
-          value: value
-        };
-        customFields.push(customField);
-      }
-    );
+    if (label.custom_fields) {
+      Object.entries(label.custom_fields).forEach(
+        ([key, value]) => {
+          const customField = {
+            name: key,
+            value: value
+          };
+          customFields.push(customField);
+        }
+      );
+    }
 
     return {
       labelId: 0,
@@ -210,34 +212,37 @@ export class CloudApiService implements ApiService {
   }
 
   getStores(): Observable<Store[]> {
-    return this.http.get('../assets/mock/stores.json').pipe(map<any, Store[]>(o => o.map(s => this.createStore(s))), );
+    return this.http.get(`${this.apiUrl}/stores`).pipe(map<any, Store[]>(o => o.map(s => this.createStore(s))), );
   }
 
-  getStore(storeId: string, startDate: Date, endDate: Date): Observable<Store> {
+  getStore(storeId: string, start: Date, end: Date): Observable<Store> {
     return forkJoin(
-      this.http.get(`../assets/mock/missions.json`),
-      this.http.get('../assets/mock/store.json'))
+      this.getMissions(storeId, start, end),
+      this.http.get(`${this.apiUrl}/stores/${storeId}`))
     .pipe(
       map<any, Store>(a => this.createSingleStore(a))
     );
   }
 
-  getMissions(storeId: string, startDate: Date, endDate: Date): Observable<Mission[]> {
-    return this.http.get(`../assets/mock/missions.json`).pipe(
+  getMissions(storeId: string, start: Date, end: Date): Observable<Mission[]> {
+    const e: Date = new Date(end);
+    e.setDate(e.getDate() + 1);
+
+    return this.http.get(`${this.apiUrl}/stores/${storeId}/missions?startDate=${start.toISOString()}&endDate=${e.toISOString()}`).pipe(
       map<any, Mission[]>(o => o.map(m => this.createMission(m))), // Map the result to an array of Mission objects
       map(missions => missions.sort((a, b) => (b.createDateTime.getTime() - a.createDateTime.getTime()))), // Sort by create date time
     );
   }
 
   getMission(storeId: string, missionId: string): Observable<Mission> {
-    return this.http.get(`../assets/mock/mission.json`).pipe(
+    return this.http.get(`${this.apiUrl}/stores/${storeId}/missions/${missionId}`).pipe(
       // Map the result to a Mission object
       map<any, Mission>(m => this.createMission(m)),
     );
   }
 
   getAisle(storeId: string, missionId: string, aisleId: string): Observable<Aisle> {
-    return this.http.get(`../assets/mock/aisle.json`).pipe(
+    return this.http.get(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}`).pipe(
       // Map the result to an Aisle object
       map<any, Aisle>(a => this.createAisle(a)),
     );

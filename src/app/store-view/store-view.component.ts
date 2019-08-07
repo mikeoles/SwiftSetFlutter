@@ -41,11 +41,9 @@ export class StoreViewComponent implements OnInit {
   private environmentService: EnvironmentService, private backService: BackService, private router: Router) {
     this.showCoverageAsPercent = environmentService.config.showCoverageAsPercent;
     this.graphEndDate = new Date();
-    this.graphEndDate.setDate(this.graphEndDate.getDate());
     this.graphEndDate.setHours(0, 0, 0, 0);
     this.graphStartDate = new Date();
-    this.graphStartDate.setDate(this.graphEndDate.getDate() - environmentService.config.missionHistoryDays - 1);
-    this.graphStartDate.setHours(0, 0, 0, 0);
+    this.graphStartDate.setDate(this.graphEndDate.getDate() - environmentService.config.missionHistoryDays + 1);
     this.activatedRoute.params.forEach((params: Params) => {
       if (params['storeId'] !== undefined) {
         this.storeId = params['storeId'];
@@ -68,9 +66,7 @@ export class StoreViewComponent implements OnInit {
   changeGraphDates(event) {
     this.graphEndDate = new Date(event);
     this.graphStartDate = new Date(event);
-    this.graphStartDate.setDate(this.graphStartDate.getDate() - this.environmentService.config.missionHistoryDays);
-    this.graphEndDate.setHours(0, 0, 0 , 0);
-    this.graphStartDate.setHours(0, 0, 0 , 0);
+    this.graphStartDate.setDate(this.graphStartDate.getDate() - this.environmentService.config.missionHistoryDays + 1);
     this.apiService.getStore(this.storeId, this.graphStartDate, this.graphEndDate).subscribe(store => {
       this.setAllSummaryValues(store);
     });

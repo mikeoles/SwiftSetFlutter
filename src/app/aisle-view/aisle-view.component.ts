@@ -72,18 +72,14 @@ export class AisleViewComponent implements OnInit, OnDestroy {
         storeId = params['storeId'];
       }
     });
-
-    // TODO
-    this.apiService.getMissions(storeId, new Date(), new Date()).subscribe(missions => {
-      const mission = missions.find(m => m.missionId === missionId);
-      let date = new Date();
-
-      if (mission) {
+    this.apiService.getMission(storeId, missionId).subscribe(mission => {
+      const start: Date = new Date();
+      start.setTime(mission.startDateTime.getTime());
+      start.setHours(0, 0, 0, 0);
+      this.apiService.getMissions(storeId, start, start).subscribe(missions => {
         this.setMission(mission, aisleId);
-        date = mission.startDateTime;
-      }
-
-      this.missions = missions.filter(m => m.startDateTime.toDateString() === date.toDateString());
+        this.missions = missions.filter(m => m.startDateTime.toDateString() === mission.startDateTime.toDateString());
+      });
     });
   }
 
@@ -115,7 +111,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   setMission(mission: Mission, aisleId: string) {
     this.selectedMission = mission;
     mission.aisles.forEach(aisle => {
-      if (aisle.aisleId === aisleId) {
+      if (aisle.aisleId.toString() === aisleId) {
         this.setAisle(aisle);
       }
     });
