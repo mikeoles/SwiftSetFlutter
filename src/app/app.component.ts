@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
   faArrowAltCircleLeft = faArrowAltCircleLeft;
   location: Location;
 
-  constructor(private router: Router, private logoService: LogoService, private backService: BackService, private adalSvc: AdalService,
+  constructor(private router: Router, private logoService: LogoService, private backService: BackService, public adalSvc: AdalService,
     private environment: EnvironmentService, private loc: Location) {
     router.events.subscribe( (event) => ( event instanceof NavigationEnd ) && this.handleRouteChange() );
     this.location = loc;
@@ -36,14 +36,19 @@ export class AppComponent implements OnInit {
     });
     this.adalSvc.handleWindowCallback();
     this.adalSvc.getUser();
+    const context = this;
     if (!this.adalSvc.userInfo.authenticated) {
        this.adalSvc.login();
        localStorage.setItem('previousLocation', this.location.path());
-    } else if (this.adalSvc.userInfo.authenticated) {
+    } else if (this.adalSvc.userInfo.authenticated && !localStorage.getItem('token')) {
       this.adalSvc.acquireToken('https://graph.microsoft.com').subscribe(act => {
         localStorage.setItem('token', act);
+        if (localStorage.getItem('previousLocation').length > 0) {
+          context.router.navigate([localStorage.getItem('previousLocation')]);
+        } else {
+          location.reload();
+        }
       });
-      this.router.navigate([localStorage.getItem('previousLocation')]);
     }
   }
 

@@ -1,4 +1,4 @@
-<app-selection-area [missions]="missions" [aisles]="selectedMission.aisles"
+<app-selection-area *ngIf="selectedMission" [missions]="missions" [aisles]="selectedMission.aisles"
   [selectedMission]="selectedMission" [selectedAisle]="selectedAisle" [panoramaUrl]="panoramaUrl" [outs]="outs" [labels]="labels"
   (missionSelected)='changeMission($event)' (aisleSelected)='setAisle($event)' [panoTouched]=panoTouched
   (panoSwitch)='changePanoMode()' (resetPano)='resetPanoClicked()' (resetPanoAfterExport)='resetPanoAfterExportClicked()'>

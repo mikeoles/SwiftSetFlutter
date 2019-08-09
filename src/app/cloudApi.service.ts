@@ -10,6 +10,7 @@ import DaySummary from './daySummary.model';
 import CustomField from './customField.model';
 import { ApiService } from './api.service';
 import { EnvironmentService } from './environment.service';
+import { AdalService } from 'adal-angular4';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class CloudApiService implements ApiService {
   apiUrl: String;
   showCoverageAsPercent = false;
 
-  constructor(private http: HttpClient, private environment: EnvironmentService) {
+  constructor(private http: HttpClient, private environment: EnvironmentService, public adalSvc: AdalService) {
     this.apiUrl = environment.config.apiUrl;
     this.showCoverageAsPercent = environment.config.showCoverageAsPercent;
   }
@@ -212,14 +213,19 @@ export class CloudApiService implements ApiService {
   }
 
   getStores(): Observable<Store[]> {
-    return this.http.get(`${this.apiUrl}/stores`).pipe(map<any, Store[]>(o => o.map(s => this.createStore(s))), );
+    return this.http.get(
+      `${this.apiUrl}/stores`,
+      { params: {token: localStorage.getItem('token')} }
+    ).pipe(map<any, Store[]>(o => o.map(s => this.createStore(s))), );
   }
 
   getStore(storeId: string, start: Date, end: Date): Observable<Store> {
     return forkJoin(
       this.getMissions(storeId, start, end),
-      this.http.get(`${this.apiUrl}/stores/${storeId}`))
-    .pipe(
+      this.http.get(
+        `${this.apiUrl}/stores/${storeId}`,
+        { params: {token: localStorage.getItem('token')}})
+    ).pipe(
       map<any, Store>(a => this.createSingleStore(a))
     );
   }
@@ -228,21 +234,30 @@ export class CloudApiService implements ApiService {
     const e: Date = new Date(end);
     e.setDate(e.getDate() + 1);
 
-    return this.http.get(`${this.apiUrl}/stores/${storeId}/missions?startDate=${start.toISOString()}&endDate=${e.toISOString()}`).pipe(
+    return this.http.get(
+        `${this.apiUrl}/stores/${storeId}/missions?startDate=${start.toISOString()}&endDate=${e.toISOString()}`,
+        { params: {token: localStorage.getItem('token')} }
+      ).pipe(
       map<any, Mission[]>(o => o.map(m => this.createMission(m))), // Map the result to an array of Mission objects
       map(missions => missions.sort((a, b) => (b.createDateTime.getTime() - a.createDateTime.getTime()))), // Sort by create date time
     );
   }
 
   getMission(storeId: string, missionId: string): Observable<Mission> {
-    return this.http.get(`${this.apiUrl}/stores/${storeId}/missions/${missionId}`).pipe(
+    return this.http.get(
+        `${this.apiUrl}/stores/${storeId}/missions/${missionId}`,
+        { params: {token: localStorage.getItem('token')} }
+      ).pipe(
       // Map the result to a Mission object
       map<any, Mission>(m => this.createMission(m)),
     );
   }
 
   getAisle(storeId: string, missionId: string, aisleId: string): Observable<Aisle> {
-    return this.http.get(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}`).pipe(
+    return this.http.get(
+        `${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}`,
+        { params: {token: localStorage.getItem('token')} }
+      ).pipe(
       // Map the result to an Aisle object
       map<any, Aisle>(a => this.createAisle(a)),
     );
