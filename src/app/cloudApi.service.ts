@@ -18,6 +18,8 @@ import { AdalService } from 'adal-angular4';
 export class CloudApiService implements ApiService {
   apiUrl: String;
   showCoverageAsPercent = false;
+  private labelId = 0;
+
 
   constructor(private http: HttpClient, private environment: EnvironmentService, public adalSvc: AdalService) {
     this.apiUrl = environment.config.apiUrl;
@@ -65,7 +67,7 @@ export class CloudApiService implements ApiService {
     }
 
     return {
-      labelId: 0,
+      labelId: this.labelId++,
       labelName: label.labelName || 'Missing Product Data',
       barcode: label.barcode || '000000000000',
       productId: label.productId || '000000',
