@@ -95,7 +95,7 @@ export class CloudApiService implements ApiService {
   createMission(mission: any): Mission {
     return {
       missionId: mission.id,
-      missionName: mission.missionName,
+      missionName: mission.name,
       storeId: mission.store.id,
       startDateTime: new Date(mission.startDateTime),
       endDateTime: new Date(mission.endDateTime),
