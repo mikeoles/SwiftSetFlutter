@@ -4,6 +4,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { HttpClient } from '@angular/common/http';
 import { EnvironmentService } from './environment.service';
 import { CloudApiService } from './cloudApi.service';
+import { AdalService } from 'adal-angular4';
 
 describe('ApiService', () => {
   let httpClient: HttpClient;
@@ -13,7 +14,8 @@ describe('ApiService', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
-        { provide: EnvironmentService, useValue: { config: { apiUrl: 'http://example.com', showCoverageAsPercent: false }}}
+        { provide: EnvironmentService, useValue: { config: { apiUrl: 'http://example.com', showCoverageAsPercent: false }}},
+        { provide: AdalService }
       ]
     });
 

@@ -56,6 +56,10 @@ describe('AisleViewComponent', () => {
       coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
   ];
 
+  const mission: Mission = { missionId: '1', missionName: '1111', storeId: '1', createDateTime: new Date('2018-12-12'),
+    startDateTime: new Date('2018-12-12'), endDateTime: new Date('2018-12-12'), aisleCount: 0, outs: 0, labels: 0,
+    readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0, unreadLabels: 0, percentageRead: 0, percentageUnread: 0, aisles: aisles };
+
   const missions: Mission[] = [
     { missionId: '1', missionName: '1111', storeId: '1', createDateTime: new Date('2018-12-12'), startDateTime: new Date('2018-12-12'),
       endDateTime: new Date('2018-12-12'), aisleCount: 0, outs: 0, labels: 0, readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0,
@@ -66,7 +70,7 @@ describe('AisleViewComponent', () => {
   ];
 
   beforeEach(async(() => {
-    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getMissions', 'getAisle']);
+    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getMissions', 'getMission', 'getAisle']);
     const locationSpy = jasmine.createSpyObj('Location', ['replaceState']);
 
     TestBed.configureTestingModule({
@@ -103,6 +107,7 @@ describe('AisleViewComponent', () => {
     }).compileComponents();
 
     apiService = TestBed.get('ApiService');
+    apiService.getMission.and.returnValue(of(mission));
     apiService.getMissions.and.returnValue(of(missions));
     apiService.getAisle.and.returnValue(of(aisles[0]));
 

@@ -1,7 +1,7 @@
 <div class="panorama">
   <div [ngClass]="{'panoModeClass': panoMode}" class="image-owner" id="image-owner">
     <div id="pano-image" class="image">
-      <img [src]="panoramaUrl" *ngIf="panoramaUrl" />
+      <img [src]="'https://bossanovatest9190.blob.core.windows.net/quickstartblobs/BNR-loblaw_0528-20190703_115928UTC-atlaskermit9-official_run_chaperone-LG.10-fullpano.jpg'"/>
       <ng-container *ngFor="let annotation of annotations()">
           <div class="{{this.currentDisplay}}Annotation annotation"
           [class.selected]="(this.currentId === annotation.labelId) && !this.panoMode"
