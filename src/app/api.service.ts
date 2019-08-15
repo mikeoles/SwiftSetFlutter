@@ -6,7 +6,6 @@ import { EnvironmentService } from './environment.service';
 import { StaticApiService } from './staticApi.service';
 import { CloudApiService } from './cloudApi.service';
 import { HttpClient } from '@angular/common/http';
-import { AdalService } from 'adal-angular4';
 
 export interface ApiService {
   getStores();
@@ -16,10 +15,10 @@ export interface ApiService {
   getAisle(storeId: string, missionId: string, aisleId: string): Observable<Aisle>;
 }
 
-export function apiFactory(environment: EnvironmentService, http: HttpClient, adalSvc: AdalService) {
+export function apiFactory(environment: EnvironmentService, http: HttpClient) {
 
   if (environment.config.apiType === 'cloud') {
-    return new CloudApiService(http, environment, adalSvc);
+    return new CloudApiService(http, environment);
   } else {
     return new StaticApiService(http, environment);
   }

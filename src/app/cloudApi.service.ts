@@ -10,7 +10,6 @@ import DaySummary from './daySummary.model';
 import CustomField from './customField.model';
 import { ApiService } from './api.service';
 import { EnvironmentService } from './environment.service';
-import { AdalService } from 'adal-angular4';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +20,7 @@ export class CloudApiService implements ApiService {
   private labelId = 0;
 
 
-  constructor(private http: HttpClient, private environment: EnvironmentService, public adalSvc: AdalService) {
+  constructor(private http: HttpClient, private environment: EnvironmentService) {
     this.apiUrl = environment.config.apiUrl;
     this.showCoverageAsPercent = environment.config.showCoverageAsPercent;
   }

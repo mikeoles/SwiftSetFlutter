@@ -24,6 +24,9 @@ fi
 if [[ ! -z "$SHOW_COVERAGE_AS_PERCENT" ]]; then
   echo "  \"showCoverageAsPercent\": \"$SHOW_COVERAGE_AS_PERCENT\"," >> /usr/share/nginx/html/assets/config.json
 fi
+if [[ ! -z "$TENANT" ]] && [[ ! -z "$CLIENT_ID" ]] && [[ ! -z "$REDIRCET_URI" ]]; then
+  echo "  \"adalConfig\": {\"tenant\": \"$TENANT\", \"clientId\": \"$CLIENT_ID\", \"redirectUri\": \"$REDIRCET_URI\"}, " >> /usr/share/nginx/html/assets/config.json
+fi
 echo "  \"production\": true" >> /usr/share/nginx/html/assets/config.json
 echo "}" >> /usr/share/nginx/html/assets/config.json
 
