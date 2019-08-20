@@ -74,7 +74,6 @@ describe('StoreViewComponent', () => {
           params: [{ storeId: '1' }],
         }},
         { provide: EnvironmentService, useValue: { config: {
-          apiType: 'cloud',
           showCoverageAsPercent: false
         }}}
       ],

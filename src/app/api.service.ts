@@ -3,7 +3,6 @@ import Aisle from './aisle.model';
 import { Observable } from 'rxjs';
 import Store from './store.model';
 import { EnvironmentService } from './environment.service';
-import { StaticApiService } from './staticApi.service';
 import { CloudApiService } from './cloudApi.service';
 import { HttpClient } from '@angular/common/http';
 
@@ -16,10 +15,5 @@ export interface ApiService {
 }
 
 export function apiFactory(environment: EnvironmentService, http: HttpClient) {
-
-  if (environment.config.apiType === 'cloud') {
-    return new CloudApiService(http, environment);
-  } else {
-    return new StaticApiService(http, environment);
-  }
+  return new CloudApiService(http, environment);
 }

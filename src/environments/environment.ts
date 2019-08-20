@@ -14,7 +14,6 @@ export const environment = {
   exportFields: ['Barcode', 'top', 'left', 'width', 'height'],
   productGridFields: ['Barcode', 'top', 'left', 'width', 'height'],
   labelScrolling: labelScrollOptions.vertical,
-  apiType: 'cloud', // Options: cloud or static
   missionHistoryDays: 14, // Number of days to display missions for
   adalConfig: {
     tenant: 'caad7702-bb38-4deb-a052-d0d48724c18e',
