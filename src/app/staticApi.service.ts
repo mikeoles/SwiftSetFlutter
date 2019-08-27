@@ -10,7 +10,6 @@ import Mission from './mission.model';
 import Aisle from './aisle.model';
 import Label from './label.model';
 import CustomField from './customField.model';
-import ExclusionZone from './exclusionZone.model';
 import { mergeAll, tap, concatMap, switchMap, concatAll } from 'rxjs/operators';
 import { EnvironmentService } from './environment.service';
 
@@ -287,20 +286,6 @@ export class StaticApiService implements ApiService {
       spreads: [],
       coveragePercent: aisle.coveragePercent,
       aisleCoverage: aisleCoverage,
-      exclusionsCount: aisle.exclusionsCount,
-      exclusionZones: (aisle.exclusionZones || []).map(l => this.createExclusionZone(l)),
-    };
-  }
-
-  createExclusionZone(exclusionZone: any): ExclusionZone {
-    return{
-      exclusionZoneId: exclusionZone.exclusionZoneId,
-      bounds: {
-        top: exclusionZone.bounds.top,
-        left: exclusionZone.bounds.left,
-        width: exclusionZone.bounds.width,
-        height: exclusionZone.bounds.height,
-      }
     };
   }
 
