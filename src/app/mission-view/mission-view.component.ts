@@ -53,7 +53,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
         storeId = params['storeId'];
       }
     });
-    this.apiService.getMission(storeId, missionId).subscribe(mission => {
+    this.apiService.getMission(storeId, missionId, Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe(mission => {
       this.mission = mission;
       this.apiService.getStore(mission.storeId, new Date(), new Date()).subscribe(store => {
         this.store = store;

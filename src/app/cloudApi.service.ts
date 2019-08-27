@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import Mission from './mission.model';
 import Aisle from './aisle.model';
@@ -91,14 +91,18 @@ export class CloudApiService implements ApiService {
     };
   }
 
-  createMission(mission: any): Mission {
+  createMission(mission: any, timezone: string): Mission {
+    const adjStartDateString = new Date(mission.startDateTime).toLocaleString('en-US', {timeZone: timezone});
+    const adjEndDateString = new Date(mission.endDateTime).toLocaleString('en-US', {timeZone: timezone});
+    const adjCreateDateString = new Date(mission.createDateTime).toLocaleString('en-US', {timeZone: timezone});
+
     return {
       missionId: mission.id,
       missionName: mission.name,
       storeId: mission.store.id,
-      startDateTime: new Date(mission.startDateTime),
-      endDateTime: new Date(mission.endDateTime),
-      createDateTime: new Date(mission.createDateTime),
+      startDateTime: new Date(adjStartDateString),
+      endDateTime: new Date(adjEndDateString),
+      createDateTime: new Date(adjCreateDateString),
       aisleCount: mission.aisleCount,
       labels: mission.labels,
       outs: mission.outs,
@@ -176,6 +180,7 @@ export class CloudApiService implements ApiService {
       storeNumber: store.number,
       storeName: store.name,
       storeAddress: store.address,
+      timezone: store.timezone,
       totalAverageOuts: totalOuts / daysAdded,
       totalAverageLabels: totalLabels / daysAdded,
       summaryOuts: (outsSummaries || []).map(o => this.createDaySummary(o)),
@@ -199,10 +204,11 @@ export class CloudApiService implements ApiService {
       storeNumber: store.number,
       storeName: store.name,
       storeAddress: store.address,
-      totalAverageOuts: store.TotalAverageOuts,
-      totalAverageLabels: store.TotalAverageLabels,
-      summaryOuts: (store.SummaryOuts || []).map(o => this.createDaySummary(o)),
-      summaryLabels: (store.SummaryLabels || []).map(l => this.createDaySummary(l)),
+      timezone: store.timezone,
+      totalAverageOuts: 0,
+      totalAverageLabels: 0,
+      summaryOuts: [],
+      summaryLabels: [],
     };
   }
 
@@ -221,36 +227,50 @@ export class CloudApiService implements ApiService {
   }
 
   getStore(storeId: string, start: Date, end: Date): Observable<Store> {
-    return forkJoin(
-      this.getMissions(storeId, start, end),
-      this.http.get(
-        `${this.apiUrl}/stores/${storeId}`,
-        { params: {token: localStorage.getItem('token')}})
+    return this.http.get(
+      `${this.apiUrl}/stores/239b603a-feca-4ffd-b0b7-e23119036f43`,
+      { params: {token: localStorage.getItem('token')} }
     ).pipe(
+      switchMap((store: Store) =>
+        forkJoin(
+        this.getMissions(storeId, start, end, store.timezone),
+        this.http.get(
+          `${this.apiUrl}/stores/${storeId}`,
+          { params: {token: localStorage.getItem('token')}})
+        )
+      ),
       map<any, Store>(a => this.createSingleStore(a))
     );
   }
 
-  getMissions(storeId: string, start: Date, end: Date): Observable<Mission[]> {
-    const e: Date = new Date(end);
-    e.setDate(e.getDate() + 1);
+  getMissions(storeId: string, start: Date, end: Date, timezone: string): Observable<Mission[]> {
+    // Call api for missions on date of stores local timezone
+    const adjTZStartString = new Date(start).toLocaleString('en-US', {timeZone: timezone});
+    const adjTZStartDate = new Date(adjTZStartString);
+    let timezoneDiff = start.getTime() - adjTZStartDate.getTime();
+    start.setTime(start.getTime() + timezoneDiff);
+
+    const adjTZEndString = new Date(end).toLocaleString('en-US', {timeZone: timezone});
+    const adjTZEndDate = new Date(adjTZEndString);
+    timezoneDiff = end.getTime() - adjTZEndDate.getTime();
+    end.setTime(end.getTime() + timezoneDiff);
 
     return this.http.get(
-        `${this.apiUrl}/stores/${storeId}/missions?startDate=${start.toISOString()}&endDate=${e.toISOString()}`,
+        `${this.apiUrl}/stores/${storeId}/missions?startDate=${start.toISOString()}&endDate=${end.toISOString()}`,
         { params: {token: localStorage.getItem('token')} }
       ).pipe(
-      map<any, Mission[]>(o => o.map(m => this.createMission(m))), // Map the result to an array of Mission objects
+      map<any, Mission[]>(o => o.map(m => this.createMission(m, timezone))), // Map the result to an array of Mission objects
       map(missions => missions.sort((a, b) => (b.createDateTime.getTime() - a.createDateTime.getTime()))), // Sort by create date time
     );
   }
 
-  getMission(storeId: string, missionId: string): Observable<Mission> {
+  getMission(storeId: string, missionId: string, timezone: string): Observable<Mission> {
     return this.http.get(
         `${this.apiUrl}/stores/${storeId}/missions/${missionId}`,
         { params: {token: localStorage.getItem('token')} }
       ).pipe(
       // Map the result to a Mission object
-      map<any, Mission>(m => this.createMission(m)),
+      map<any, Mission>(m => this.createMission(m, timezone)),
     );
   }
 

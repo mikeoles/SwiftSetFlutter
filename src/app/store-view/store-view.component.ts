@@ -41,15 +41,16 @@ export class StoreViewComponent implements OnInit {
   private environmentService: EnvironmentService, private backService: BackService, private router: Router) {
     this.showCoverageAsPercent = environmentService.config.showCoverageAsPercent;
     this.graphEndDate = new Date();
-    this.graphEndDate.setHours(0, 0, 0, 0);
     this.graphStartDate = new Date();
     this.graphStartDate.setDate(this.graphEndDate.getDate() - environmentService.config.missionHistoryDays + 1);
+    const start = new Date(this.graphStartDate);
+    const end = new Date(this.graphEndDate);
     this.activatedRoute.params.forEach((params: Params) => {
       if (params['storeId'] !== undefined) {
         this.storeId = params['storeId'];
       }
     });
-    this.apiService.getStore(this.storeId, this.graphStartDate, this.graphEndDate).subscribe(store => {
+    this.apiService.getStore(this.storeId, start, end).subscribe(store => {
       this.setAllSummaryValues(store);
     });
   }
@@ -67,7 +68,9 @@ export class StoreViewComponent implements OnInit {
     this.graphEndDate = new Date(event);
     this.graphStartDate = new Date(event);
     this.graphStartDate.setDate(this.graphStartDate.getDate() - this.environmentService.config.missionHistoryDays + 1);
-    this.apiService.getStore(this.storeId, this.graphStartDate, this.graphEndDate).subscribe(store => {
+    const start = new Date(this.graphStartDate);
+    const end = new Date(this.graphEndDate);
+    this.apiService.getStore(this.storeId, start, end).subscribe(store => {
       this.setAllSummaryValues(store);
     });
   }
@@ -75,7 +78,10 @@ export class StoreViewComponent implements OnInit {
   setIndex(selectedValues) {
     this.selectedIndex = selectedValues.index;
     this.selectedDate = selectedValues.date;
-    this.apiService.getMissions(this.storeId, this.selectedDate, this.selectedDate).subscribe(
+    const indexDate: Date = new Date(selectedValues.date);
+    const end: Date = new Date(indexDate);
+    end.setDate(end.getDate() + 1);
+    this.apiService.getMissions(this.storeId, indexDate, end, this.store.timezone).subscribe(
       missions => this.missions = missions
     );
   }
@@ -85,7 +91,7 @@ export class StoreViewComponent implements OnInit {
     this.store = store;
     const allSummaryOuts: Array<DaySummary> = [];
     const allSummaryLabels: Array<DaySummary> = [];
-    const d = new Date(this.graphStartDate.toDateString());
+    const d = new Date(new Date(this.graphStartDate.toDateString()).toLocaleString('en-US', {timeZone: store.timezone}));
 
     for (let i = 0; i < this.environmentService.config.missionHistoryDays; i++) {
       const cur: Date = new Date(d.toDateString());
@@ -124,7 +130,7 @@ export class StoreViewComponent implements OnInit {
     const columnNames = ['Mission Date', 'Customer - Store', 'Total Aisles Scanned', 'Total # Of Labels', 'Total # Unread Labels',
     'Percentage Unread Labels', 'Percentage Read Labels', '# Read Labels With Matching Product', '# Read Labels Missing Product',
     'Total # OOS'];
-    this.apiService.getMissions(this.storeId, this.graphStartDate, this.graphEndDate)
+    this.apiService.getMissions(this.storeId, this.graphStartDate, this.graphEndDate, this.store.timezone)
     .subscribe(
       missions => {
         const body = [];
@@ -151,7 +157,7 @@ export class StoreViewComponent implements OnInit {
 
   exportAisleScanData() {
     const columnNames = ['Date Span', 'Aisle', '# Of Scans', 'Average Aisle Coverage'];
-    this.apiService.getMissions(this.storeId, this.graphStartDate, this.graphEndDate)
+    this.apiService.getMissions(this.storeId, this.graphStartDate, this.graphEndDate, this.store.timezone)
     .subscribe(
       missions => {
         let aisles: Aisle[] = [];

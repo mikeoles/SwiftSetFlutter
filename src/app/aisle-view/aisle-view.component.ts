@@ -72,13 +72,17 @@ export class AisleViewComponent implements OnInit, OnDestroy {
         storeId = params['storeId'];
       }
     });
-    this.apiService.getMission(storeId, missionId).subscribe(mission => {
-      const start: Date = new Date();
-      start.setTime(mission.startDateTime.getTime());
-      start.setHours(0, 0, 0, 0);
-      this.apiService.getMissions(storeId, start, start).subscribe(missions => {
-        this.setMission(mission, aisleId);
-        this.missions = missions.filter(m => m.startDateTime.toDateString() === mission.startDateTime.toDateString());
+    this.apiService.getStore(storeId, new Date(), new Date()).subscribe(store => {
+      this.apiService.getMission(storeId, missionId, store.timezone).subscribe(mission => {
+        const start: Date = new Date();
+        start.setTime(mission.startDateTime.getTime());
+        const end: Date = new Date(start);
+        end.setDate(end.getDate() + 3);
+        start.setDate(start.getDate() - 3);
+        this.apiService.getMissions(storeId, start, end, store.timezone).subscribe(missions => {
+          this.setMission(mission, aisleId);
+          this.missions = missions;
+        });
       });
     });
   }

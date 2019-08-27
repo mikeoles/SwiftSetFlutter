@@ -9,8 +9,8 @@ import { HttpClient } from '@angular/common/http';
 export interface ApiService {
   getStores();
   getStore(storeId: string, startDate: Date, endDate: Date): Observable<Store>;
-  getMissions(storeId: string, startDate: Date, endDate: Date): Observable<Mission[]> ;
-  getMission(storeId: string, missionId: string): Observable<Mission>;
+  getMissions(storeId: string, startDate: Date, endDate: Date, timezone: string): Observable<Mission[]> ;
+  getMission(storeId: string, missionId: string, timezone: string): Observable<Mission>;
   getAisle(storeId: string, missionId: string, aisleId: string): Observable<Aisle>;
 }
 
