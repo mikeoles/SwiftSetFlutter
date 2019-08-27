@@ -2,7 +2,7 @@
   <div class="bottomBar">
     <div id="missionsContainer">
       <button class="dropdownButton" [ngClass]="{'selectedButton': showMissions}" (click)="selectMissionsDropdown()">
-        Mission {{selectedMission?.startDateTime | date: 'yyyy-MM-dd HH:mm:ss'}}
+        Scan: {{selectedMission.missionName}}
         <fa-icon *ngIf="!showMissions" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
         <fa-icon *ngIf="showMissions" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
       </button>
@@ -13,7 +13,7 @@
           [value]="mission"
           (click)="missionChanged(mission)"
         >
-          {{mission?.startDateTime | date: 'yyyy-MM-dd HH:mm:ss'}}
+          {{mission.missionName}}
         </li>
       </ul>
       <div *ngIf="showMissions" class="pointer"></div>

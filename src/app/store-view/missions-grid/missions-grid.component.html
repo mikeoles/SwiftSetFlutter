@@ -3,8 +3,7 @@
 <table *ngIf="missions.length > 0">
   <thead>
     <tr>
-      <th>Mission ID</th>
-      <th>Start Time</th>
+      <th>Scan</th>
       <th>Outs</th>
       <th>Labels</th>
       <th>Aisles Scanned</th>
@@ -14,10 +13,9 @@
     <tr *ngFor="let mission of missions; let i = index" (click)="viewMission(mission.missionId)">
       <td>
         <a [routerLink]="" (click)="viewMission(mission.missionId)">
-          {{mission.startDateTime | date: 'yyyy-MM-dd HH:mm:ss'}}
+          {{mission.missionName}}
         </a>
       </td>
-      <td>{{mission.startDateTime | date: 'hh:mm a'}}</td>
       <td>{{mission.outs}}</td>
       <td>{{mission.labels}}</td>
       <td>{{mission.aisleCount}}</td>
