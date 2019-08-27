@@ -12,7 +12,6 @@ import DaySummary from './daySummary.model';
 import CustomField from './customField.model';
 import { ApiService } from './api.service';
 import { EnvironmentService } from './environment.service';
-import ExclusionZone from './exclusionZone.model';
 
 @Injectable({
   providedIn: 'root'
@@ -50,20 +49,6 @@ export class ODataApiService implements ApiService {
       spreads: [],
       coveragePercent: aisle.CoveragePercent,
       aisleCoverage: aisleCoverage,
-      exclusionsCount: aisle.ExclusionsCount,
-      exclusionZones: (aisle.ExclusionZones || []).map(ez => this.createExclusionZones(ez))
-    };
-  }
-
-  createExclusionZones(exclusionZone: any): ExclusionZone {
-    return {
-      exclusionZoneId: exclusionZone.Id,
-      bounds: {
-        top: exclusionZone.Z1,
-        left: exclusionZone.X1,
-        width: exclusionZone.X2 - exclusionZone.X1,
-        height: exclusionZone.Z2 - exclusionZone.Z1,
-      }
     };
   }
 
@@ -385,7 +370,7 @@ export class ODataApiService implements ApiService {
   }
 
   getAisle(storeId: number, missionId: number, aisleId: number): Observable<Aisle> {
-    return this.http.get(`${this.apiUrl}/DemoService/Panos(${aisleId})?$expand=Labels,Outs,ExclusionZones`).pipe(
+    return this.http.get(`${this.apiUrl}/DemoService/Panos(${aisleId})?$expand=Labels,Outs`).pipe(
       // API result
       // {
       //   "@odata.context": "$metadata#Panos(Labels(),Outs())/$entity",
