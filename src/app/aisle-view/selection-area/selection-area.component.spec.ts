@@ -12,7 +12,6 @@ import { ModalService } from 'src/app/modal/modal.service';
 import { EnvironmentService } from 'src/app/environment.service';
 import { ApiService } from 'src/app/api.service';
 import { of } from 'rxjs';
-import ExclusionZone from 'src/app/exclusionZone.model';
 
 @Component({selector: 'app-export-modal', template: ''})
 class ModalComponent {
@@ -33,24 +32,21 @@ describe('SelectionAreaComponent', () => {
     { missionId: 1, missionName: '1111', storeId: 1, createDateTime: new Date('2018-12-12'), missionDateTime: new Date('2018-12-12') },
     { missionId: 2, missionName: '2222', storeId: 1, createDateTime: new Date('2001-01-01'), missionDateTime: new Date('2001-01-01') },
   ];
-  const exclusionZones: ExclusionZone[] = [
-    { exclusionZoneId: 1, bounds: { top: 0, left: 0, width: 0, height: 0}}
-  ];
   const aisles: Aisle[] = [
     { aisleId: 1, aisleName: '1111', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '',
-    coveragePercent: 0, outsCount: 0, labelsCount: 0, exclusionZones: exclusionZones, exclusionsCount: 0,
+    coveragePercent: 0, outsCount: 0, labelsCount: 0,
     aisleCoverage: ''},
     { aisleId: 2, aisleName: '2222', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '',
-    coveragePercent: 0, outsCount: 0, labelsCount: 0, exclusionZones: exclusionZones, exclusionsCount: 0,
+    coveragePercent: 0, outsCount: 0, labelsCount: 0,
     aisleCoverage: ''},
     { aisleId: 3, aisleName: '3333', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '',
-    coveragePercent: 0, outsCount: 0, labelsCount: 0, exclusionZones: exclusionZones, exclusionsCount: 0,
+    coveragePercent: 0, outsCount: 0, labelsCount: 0,
     aisleCoverage: ''},
     { aisleId: 4, aisleName: '4444', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '',
-    coveragePercent: 0, outsCount: 0, labelsCount: 0, exclusionZones: exclusionZones, exclusionsCount: 0,
+    coveragePercent: 0, outsCount: 0, labelsCount: 0,
     aisleCoverage: ''},
     { aisleId: 5, aisleName: '5555', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '',
-    coveragePercent: 0, outsCount: 0, labelsCount: 0, exclusionZones: exclusionZones, exclusionsCount: 0,
+    coveragePercent: 0, outsCount: 0, labelsCount: 0,
     aisleCoverage: '' },
   ];
   const store = { storeId: 1 };
