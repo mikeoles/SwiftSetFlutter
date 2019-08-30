@@ -271,6 +271,10 @@ export class CloudApiService implements ApiService {
       ).pipe(
       // Map the result to a Mission object
       map<any, Mission>(m => this.createMission(m, timezone)),
+      map(mission => {
+        mission.aisles = mission.aisles.sort((a, b) => a.aisleName.localeCompare(b.aisleName));
+        return mission;
+      }),
     );
   }
 
