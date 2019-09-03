@@ -21,6 +21,7 @@ body {
 app-export-modal {
   /* modals are hidden by default */
   display: none;
+  font-weight: 900;
 
   button{
     border-radius: 25px !important;
@@ -43,8 +44,24 @@ app-export-modal {
 
   .exportTitle{
     font-size: 24px;
-    font-weight: 900;
+  }
+  
+  .dateSelection, .exportTitle{
     margin-bottom: 30px;
+  }
+
+  .requestDateError{
+    color: red;
+  }
+
+  input{
+    border-radius: 10px;
+    width: 120px;
+  }
+
+  .requestText{
+    font-size: 18px;
+    display: inline;
   }
 
   .modal {

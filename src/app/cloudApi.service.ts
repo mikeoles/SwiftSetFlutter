@@ -287,4 +287,11 @@ export class CloudApiService implements ApiService {
       map<any, Aisle>(a => this.createAisle(a)),
     );
   }
+
+  getHistorialData(startDate: Date, endDate: Date): any {
+    return this.http.get(
+      `${this.apiUrl}/historicalData?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`,
+      { params: {token: localStorage.getItem('token')} }
+    );
+  }
 }

@@ -9,6 +9,7 @@ import { BackService } from '../back.service';
 import { Subscription } from 'rxjs';
 import Mission from '../mission.model';
 import Aisle from '../aisle.model';
+import { ModalService } from '../modal/modal.service';
 
 @Component({
   selector: 'app-data-display',
@@ -22,8 +23,10 @@ export class StoreViewComponent implements OnInit {
   storeId: string;
   selectedIndex: string;
   selectedDate: Date;
-  graphEndDate: Date;
   graphStartDate: Date;
+  graphEndDate: Date;
+  requestStartDate: Date;
+  requestEndDate: Date;
   missionHistoryLength: Date;
   options: DatepickerOptions = {
     displayFormat: 'MMMM D[,] YYYY',
@@ -34,11 +37,13 @@ export class StoreViewComponent implements OnInit {
     }
   };
   showCoverageAsPercent = false;
+  error = false;
 
   private backButtonSubscription: Subscription;
 
   constructor(@Inject('ApiService') private apiService: ApiService, private activatedRoute: ActivatedRoute,
-  private environmentService: EnvironmentService, private backService: BackService, private router: Router) {
+  private environmentService: EnvironmentService, private backService: BackService, private router: Router,
+  private modalService: ModalService) {
     this.showCoverageAsPercent = environmentService.config.showCoverageAsPercent;
     this.graphEndDate = new Date();
     this.graphStartDate = new Date();
@@ -53,6 +58,8 @@ export class StoreViewComponent implements OnInit {
     this.apiService.getStore(this.storeId, start, end).subscribe(store => {
       this.setAllSummaryValues(store);
     });
+    this.requestStartDate = new Date();
+    this.requestEndDate = new Date();
   }
 
   ngOnInit() {
@@ -218,6 +225,36 @@ export class StoreViewComponent implements OnInit {
     document.body.appendChild(link);
     link.click();
     link.remove();
+  }
+
+  openModal(id: string) {
+    this.modalService.open(id);
+  }
+
+  closeModal(id: string) {
+    this.modalService.close(id);
+  }
+
+  requestData(modalId: string) {
+    const dateDifference = this.requestEndDate.getTime() - this.requestStartDate.getTime();
+    if (dateDifference < 0 || dateDifference > 1000 * 60 * 60 * 24 * 7) {
+    } else {
+      this.modalService.close(modalId);
+    }
+  }
+
+  changeRequestDates(request: string, newDate: string) {
+    if (request === 'start') {
+      this.requestStartDate = new Date(newDate);
+    } else {
+      this.requestEndDate = new Date(newDate);
+    }
+    const dateDifference = this.requestEndDate.getTime() - this.requestStartDate.getTime();
+    if (dateDifference < 0 || dateDifference > 1000 * 60 * 60 * 24 * 7) {
+      this.error = true;
+    } else {
+      this.error = false;
+    }
   }
 
 }

@@ -12,6 +12,7 @@ export interface ApiService {
   getMissions(storeId: string, startDate: Date, endDate: Date, timezone: string): Observable<Mission[]> ;
   getMission(storeId: string, missionId: string, timezone: string): Observable<Mission>;
   getAisle(storeId: string, missionId: string, aisleId: string): Observable<Aisle>;
+  getHistorialData(startDate: Date, endDate: Date);
 }
 
 export function apiFactory(environment: EnvironmentService, http: HttpClient) {

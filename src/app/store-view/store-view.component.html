@@ -5,8 +5,25 @@
 <div class="storeButton">
   <ng-datepicker [(ngModel)]="graphEndDate" (ngModelChange)="changeGraphDates($event)" [options]="options" [position]="'bottom-left'"></ng-datepicker>
 </div>
+<button class="storeButton" (click)="openModal('request-data-popup')">Request Data</button>
 <button class="storeButton" (click)="exportPerformanceData()">Performance Data</button>
 <button class="storeButton" (click)="exportAisleScanData()">Aisle Scan Data</button>
+<app-export-modal id="request-data-popup">
+  <div class="modal">
+      <div class="modal-body" [ngClass]="{'disabled': currentlyExporting}">
+        <div class="exportTitle">Select Date Range To Request</div>
+        <div class="dateSelection">
+          <div class="requestText">Start: </div><input type="date" name="requestStartDate" [ngModel] ="requestStartDate | date:'yyyy-MM-dd'" (ngModelChange)="changeRequestDates('start',$event)"> 
+          <div class="requestText" style="margin-left: 35px;">End: </div><input type="date" name="requestEndDate" [ngModel] ="requestEndDate | date:'yyyy-MM-dd'" 
+            (ngModelChange)="changeRequestDates('end',$event)">
+          <div *ngIf="error" class="requestDateError">End date must be less than 7 days after start date</div>
+        </div>
+        <button [disabled]="currentlyExporting" (click)="requestData('request-data-popup')">Request Data</button>
+        <button class="cancel" (click)="closeModal('request-data-popup');">Close</button>
+      </div>
+  </div>
+  <div class="modal-background"></div>
+</app-export-modal>
 <div class="title">Daily Statistics (Last {{missionHistoryLength}} days)</div>
 <div *ngIf="store">
   <div class="graphDisplay"><app-daily-graphs [title]="'Out of Stocks Detected'" [data]="store.summaryOuts" [overallAverage]="store.totalAverageOuts" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>

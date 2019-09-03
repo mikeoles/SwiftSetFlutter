@@ -1,7 +1,7 @@
 <div *ngIf="mission" class="missionInfo">
   <button class="exportButton" (click)="openModal('export-popup')"><img class="exportImage" src="../../assets/export-blue.png"> <span>Export</span></button>
   <div *ngIf="store">{{store.storeName}}</div>
-  <div class="headerInfo"> Scan: <span> {{mission.startDateTime | date: 'yyyy-MM-dd'}}</span></div>
+  <div class="headerInfo"> Scan: <span>{{mission.missionName}}</span></div>
   <div *ngIf="mission" class="headerInfo"> Aisles Scanned: <span> {{mission.aisleCount }}</span></div>
 </div>
 <app-export-modal id="export-popup">
