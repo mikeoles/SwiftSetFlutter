@@ -10,7 +10,7 @@
 <button class="storeButton" (click)="exportAisleScanData()">Aisle Scan Data</button>
 <app-export-modal id="request-data-popup">
   <div class="modal">
-      <div class="modal-body" [ngClass]="{'disabled': currentlyExporting}">
+      <div class="modal-body">
         <div class="exportTitle">Select Date Range To Request</div>
         <div class="dateSelection">
           <div class="requestText">Start: </div><input type="date" name="requestStartDate" [ngModel] ="requestStartDate | date:'yyyy-MM-dd'" (ngModelChange)="changeRequestDates('start',$event)"> 
@@ -18,7 +18,7 @@
             (ngModelChange)="changeRequestDates('end',$event)">
           <div *ngIf="error" class="requestDateError">End date must be less than 7 days after start date</div>
         </div>
-        <button [disabled]="currentlyExporting" (click)="requestData('request-data-popup')">Request Data</button>
+        <button (click)="requestData('request-data-popup')">Request Data</button>
         <button class="cancel" (click)="closeModal('request-data-popup');">Close</button>
       </div>
   </div>

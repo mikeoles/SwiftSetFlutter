@@ -16,13 +16,13 @@ import { EnvironmentService } from './environment.service';
 })
 export class CloudApiService implements ApiService {
   apiUrl: String;
-  showCoverageAsPercent = false;
+  coverageDisplayType = 'Description';
   private labelId = 0;
 
 
   constructor(private http: HttpClient, private environment: EnvironmentService) {
     this.apiUrl = environment.config.apiUrl;
-    this.showCoverageAsPercent = environment.config.showCoverageAsPercent;
+    this.coverageDisplayType = environment.config.coverageDisplayType;
   }
 
   createAisle(aisle: any): Aisle {
@@ -33,7 +33,7 @@ export class CloudApiService implements ApiService {
       aisleCoverage = 'Medium';
     }
 
-    if (this.showCoverageAsPercent) {
+    if (this.coverageDisplayType.toLowerCase() === 'percent') {
       aisleCoverage = aisle.coveragePercent;
     }
 

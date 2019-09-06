@@ -8,7 +8,7 @@ export const environment = {
   production: false,
   apiUrl: 'http://localhost:8080',
   coveragePercent: true,
-  showCoverageAsPercent: true,
+  coverageDisplayType: 'description',
   onHand: true,
   exportingPDF: true,
   exportFields: ['Barcode', 'top', 'left', 'width', 'height'],

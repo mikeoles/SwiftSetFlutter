@@ -36,7 +36,7 @@ export class StoreViewComponent implements OnInit {
       'font-weight': 'bold', 'width': 'auto', 'text-align': 'center', 'cursor': 'pointer'
     }
   };
-  showCoverageAsPercent = false;
+  coverageDisplayType = 'description';
   error = false;
 
   private backButtonSubscription: Subscription;
@@ -44,7 +44,7 @@ export class StoreViewComponent implements OnInit {
   constructor(@Inject('ApiService') private apiService: ApiService, private activatedRoute: ActivatedRoute,
   private environmentService: EnvironmentService, private backService: BackService, private router: Router,
   private modalService: ModalService) {
-    this.showCoverageAsPercent = environmentService.config.showCoverageAsPercent;
+    this.coverageDisplayType = environmentService.config.coverageDisplayType;
     this.graphEndDate = new Date();
     this.graphStartDate = new Date();
     this.graphStartDate.setDate(this.graphEndDate.getDate() - environmentService.config.missionHistoryDays + 1);
@@ -198,7 +198,7 @@ export class StoreViewComponent implements OnInit {
           } else if (coveragePercent >= 40) {
             avgAisleCoverage = 'Medium';
           }
-          if (this.showCoverageAsPercent) {
+          if (this.coverageDisplayType.toLowerCase() === 'percent') {
             avgAisleCoverage = coveragePercent.toString();
           }
           row = row.concat(avgAisleCoverage);
