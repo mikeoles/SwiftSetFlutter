@@ -28,7 +28,7 @@ import { NgDatepickerModule } from 'ng2-datepicker';
 import { DataService } from './data.service';
 import { apiFactory } from './api.service';
 import { FleetViewComponent } from './fleet-view/fleet-view.component';
-import { AdalService } from 'adal-angular4';
+import { OAuthModule } from 'angular-oauth2-oidc';
 
 @NgModule({
   declarations: [
@@ -59,7 +59,8 @@ import { AdalService } from 'adal-angular4';
     RoundProgressModule,
     AppRoutingModule,
     NgMultiSelectDropDownModule.forRoot(),
-    NgDatepickerModule
+    NgDatepickerModule,
+    OAuthModule.forRoot()
   ],
   providers: [
     EnvironmentService,
@@ -77,9 +78,8 @@ import { AdalService } from 'adal-angular4';
     {
         provide: 'ApiService',
         useFactory: apiFactory,
-        deps: [EnvironmentService, HttpClient, AdalService]
+        deps: [EnvironmentService, HttpClient]
     },
-    AdalService
   ],
   bootstrap: [AppComponent]
 })

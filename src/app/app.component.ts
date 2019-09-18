@@ -4,9 +4,8 @@ import { KeyboardShortcutsService } from 'ng-keyboard-shortcuts';
 import { LogoService } from './logo.service';
 import { BackService } from './back.service';
 import { faArrowAltCircleLeft } from '@fortawesome/free-regular-svg-icons';
-import { AdalService } from 'adal-angular4';
-import { EnvironmentService } from './environment.service';
 import { Location } from '@angular/common';
+import { ApiService } from './api.service';
 
 @Component({
   selector: 'app-root',
@@ -20,11 +19,8 @@ export class AppComponent implements OnInit {
   faArrowAltCircleLeft = faArrowAltCircleLeft;
   location: Location;
 
-  constructor(private router: Router, private logoService: LogoService, private backService: BackService, public adalSvc: AdalService,
-    private environment: EnvironmentService, private loc: Location) {
+  constructor(private router: Router, private logoService: LogoService, private backService: BackService, private apiService: ApiService) {
     router.events.subscribe( (event) => ( event instanceof NavigationEnd ) && this.handleRouteChange() );
-    this.location = loc;
-    this.adalSvc.init(environment.config.adalConfig);
   }
 
   ngOnInit() {
@@ -33,23 +29,28 @@ export class AppComponent implements OnInit {
           return;
       }
       window.scrollTo(0, 0);
-    });
-    this.adalSvc.handleWindowCallback();
-    this.adalSvc.getUser();
-    const context = this;
-    if (!this.adalSvc.userInfo.authenticated) {
-       this.adalSvc.login();
-       localStorage.setItem('previousLocation', this.location.path());
-    } else if (this.adalSvc.userInfo.authenticated && !localStorage.getItem('token')) {
-      this.adalSvc.acquireToken('https://graph.microsoft.com').subscribe(act => {
-        localStorage.setItem('token', act);
-        if (localStorage.getItem('previousLocation').length > 0) {
-          context.router.navigate([localStorage.getItem('previousLocation')]);
-        } else {
-          location.reload();
+      const curUrlTree = this.router.parseUrl(this.router.url);
+      const code: string = curUrlTree.queryParamMap.get('code');
+      let state: string = curUrlTree.queryParamMap.get('state');
+      if (code && code.length > 0) {
+        if (state = localStorage.getItem('state')) {
+          localStorage.setItem('access_code', code);
         }
-      });
-    }
+      } else if (!localStorage.getItem('access_code')) {
+        state = Math.random().toString();
+        window.location.href = 'http://localhost:5556/auth?' +
+        'client_id=example-app&' +
+        'redirect_uri=http%3A%2F%2Flocalhost%3A4200&' +
+        'response_type=code&scope=openid+profile+email+offline_access+groups' +
+        '&state=' + state;
+        localStorage.setItem('state', state);
+      } else if (localStorage.getItem('access_token') && localStorage.getItem('id_token')) {
+        this.apiService.getTokens(localStorage.getItem('access_code')).subscribe( tokens => {
+          localStorage.setItem('access_token', tokens.access_token);
+          localStorage.setItem('id_token', tokens.id_token);
+        });
+      }
+    });
   }
 
   logoClicked() {

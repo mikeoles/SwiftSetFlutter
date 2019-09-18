@@ -19,9 +19,6 @@ fi
 if [[ ! -z "$COVERAGE_DISPLAY_TYPE" ]]; then
   echo "  \"coverageDisplayType\": \"$COVERAGE_DISPLAY_TYPE\"," >> /usr/share/nginx/html/assets/config.json
 fi
-if [[ ! -z "$TENANT" ]] && [[ ! -z "$CLIENT_ID" ]] && [[ ! -z "$REDIRCET_URI" ]]; then
-  echo "  \"adalConfig\": {\"tenant\": \"$TENANT\", \"clientId\": \"$CLIENT_ID\", \"redirectUri\": \"$REDIRCET_URI\"}, " >> /usr/share/nginx/html/assets/config.json
-fi
 echo "  \"production\": true" >> /usr/share/nginx/html/assets/config.json
 echo "}" >> /usr/share/nginx/html/assets/config.json
 

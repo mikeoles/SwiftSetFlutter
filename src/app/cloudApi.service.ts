@@ -228,7 +228,7 @@ export class CloudApiService implements ApiService {
 
   getStore(storeId: string, start: Date, end: Date): Observable<Store> {
     return this.http.get(
-      `${this.apiUrl}/stores/239b603a-feca-4ffd-b0b7-e23119036f43`,
+      `${this.apiUrl}/stores/${storeId}`,
       { params: {token: localStorage.getItem('token')} }
     ).pipe(
       switchMap((store: Store) =>
@@ -292,6 +292,12 @@ export class CloudApiService implements ApiService {
     return this.http.get(
       `${this.apiUrl}/historicalData?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`,
       { params: {token: localStorage.getItem('token')} }
+    );
+  }
+
+  getTokens(accessCode: string): any {
+    return this.http.get(
+      `${this.apiUrl}/validate?access_code=${accessCode}`
     );
   }
 }
