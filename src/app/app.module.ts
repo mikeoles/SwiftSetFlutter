@@ -29,7 +29,6 @@ import { DataService } from './data.service';
 import { apiFactory } from './api.service';
 import { FleetViewComponent } from './fleet-view/fleet-view.component';
 import { ProgressBarModule } from 'angular-progress-bar';
-import { OAuthModule } from 'angular-oauth2-oidc';
 
 @NgModule({
   declarations: [
@@ -62,7 +61,6 @@ import { OAuthModule } from 'angular-oauth2-oidc';
     NgMultiSelectDropDownModule.forRoot(),
     NgDatepickerModule,
     ProgressBarModule,
-    OAuthModule.forRoot()
   ],
   providers: [
     EnvironmentService,

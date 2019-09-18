@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { KeyboardShortcutsService } from 'ng-keyboard-shortcuts';
 import { LogoService } from './logo.service';
 import { BackService } from './back.service';
 import { faArrowAltCircleLeft } from '@fortawesome/free-regular-svg-icons';
-import { Location } from '@angular/common';
 import { ApiService } from './api.service';
 
 @Component({
@@ -17,9 +16,9 @@ export class AppComponent implements OnInit {
 
   displayBackButton: boolean;
   faArrowAltCircleLeft = faArrowAltCircleLeft;
-  location: Location;
 
-  constructor(private router: Router, private logoService: LogoService, private backService: BackService, private apiService: ApiService) {
+  constructor(@Inject('ApiService') private apiService: ApiService, private router: Router, private logoService: LogoService,
+    private backService: BackService) {
     router.events.subscribe( (event) => ( event instanceof NavigationEnd ) && this.handleRouteChange() );
   }
 
