@@ -36,9 +36,18 @@ export class StoreViewComponent implements OnInit {
       'font-weight': 'bold', 'width': 'auto', 'text-align': 'center', 'cursor': 'pointer'
     }
   };
+  requestDateOptions: DatepickerOptions = {
+    displayFormat: 'MMMM D[,] YYYY',
+    barTitleFormat: 'MMMM YYYY',
+    dayNamesFormat: 'dd',
+    addStyle: {'border': '3px #2baae1 solid', 'border-radius': '30px', 'color': '#2baae1', 'font-size' : '12px', 'height' : '18px',
+      'font-weight': 'bold', 'width': 'auto', 'text-align': 'center', 'cursor': 'pointer'
+    }
+  };
   coverageDisplayType = 'description';
   error = false;
-
+  currentlyRequesting = false;
+  progress = 0;
   private backButtonSubscription: Subscription;
 
   constructor(@Inject('ApiService') private apiService: ApiService, private activatedRoute: ActivatedRoute,
@@ -237,24 +246,21 @@ export class StoreViewComponent implements OnInit {
 
   requestData(modalId: string) {
     const dateDifference = this.requestEndDate.getTime() - this.requestStartDate.getTime();
-    if (dateDifference < 0 || dateDifference > 1000 * 60 * 60 * 24 * 7) {
+    if (dateDifference > 0 && dateDifference < 1000 * 60 * 60 * 24 * 7) {
+      this.currentlyRequesting = true;
+      this.progress = 20;
+      // this.modalService.close(modalId);
+      this.error = false;
     } else {
-      this.modalService.close(modalId);
+      this.error = true;
     }
   }
 
   changeRequestDates(request: string, newDate: string) {
     if (request === 'start') {
-      this.requestStartDate = new Date(newDate);
+      this.requestStartDate = new Date(new Date(newDate).toLocaleString('en-US', {timeZone: this.store.timezone}));
     } else {
       this.requestEndDate = new Date(newDate);
     }
-    const dateDifference = this.requestEndDate.getTime() - this.requestStartDate.getTime();
-    if (dateDifference < 0 || dateDifference > 1000 * 60 * 60 * 24 * 7) {
-      this.error = true;
-    } else {
-      this.error = false;
-    }
   }
-
 }

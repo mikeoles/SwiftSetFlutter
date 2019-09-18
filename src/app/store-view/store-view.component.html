@@ -11,15 +11,23 @@
 <app-export-modal id="request-data-popup">
   <div class="modal">
       <div class="modal-body">
-        <div class="exportTitle">Select Date Range To Request</div>
-        <div class="dateSelection">
-          <div class="requestText">Start: </div><input type="date" name="requestStartDate" [ngModel] ="requestStartDate | date:'yyyy-MM-dd'" (ngModelChange)="changeRequestDates('start',$event)"> 
-          <div class="requestText" style="margin-left: 35px;">End: </div><input type="date" name="requestEndDate" [ngModel] ="requestEndDate | date:'yyyy-MM-dd'" 
-            (ngModelChange)="changeRequestDates('end',$event)">
-          <div *ngIf="error" class="requestDateError">End date must be less than 7 days after start date</div>
+        <div class="requestForm" [ngClass]="{'disabled': currentlyRequesting}">
+          <div class="exportTitle">Select Date Range To Request</div>
+          <div class="dateSelection">
+            <div class="requestText">Start: </div>
+            <ng-datepicker [(ngModel)]="requestStartDate" (ngModelChange)="changeRequestDates('start',$event)" [options]="requestDateOptions" [position]="'bottom-left'"></ng-datepicker>
+            <div class="requestText endText">End: </div>
+            <ng-datepicker [(ngModel)]="requestEndDate" (ngModelChange)="changeRequestDates('end',$event)" [options]="requestDateOptions" [position]="'bottom-left'"></ng-datepicker>
+            <div *ngIf="error" class="requestDateError">End date must be less than 7 days after start date</div>
+          </div>
+          <button (click)="requestData('request-data-popup')">Request Data</button>
+          <button class="cancel" (click)="closeModal('request-data-popup');">Close</button>
         </div>
-        <button (click)="requestData('request-data-popup')">Request Data</button>
-        <button class="cancel" (click)="closeModal('request-data-popup');">Close</button>
+        <div class="requestProgress" [ngClass]="{'disabled': !currentlyRequesting}">
+          <div class="exportTitle">Select Date Range To Request</div>
+          <progress-bar [progress]="progress" [color]="'#488aff'"></progress-bar>
+          <button class="cancel" (click)="closeModal('request-data-popup');">Close</button>
+        </div>
       </div>
   </div>
   <div class="modal-background"></div>

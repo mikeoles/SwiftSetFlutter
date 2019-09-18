@@ -45,3 +45,15 @@ button:focus {
     margin-top: 35px;
   }
 }
+
+.disabled {
+  display: none;
+}
+
+.endText {
+  margin-left: 15px;
+}
+
+button{
+  cursor: pointer !important;
+}

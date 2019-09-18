@@ -56,14 +56,18 @@ app-export-modal {
 
   input{
     border-radius: 10px;
-    width: 120px;
+    width: 140px;
+  }
+
+  input:focus{
+    outline: 0;
   }
 
   .requestText{
     font-size: 18px;
     display: inline;
   }
-
+  
   .modal {
       /* modal container fixed across whole screen */
       position: fixed;
@@ -158,6 +162,10 @@ button {
 .ngx-datepicker-calendar-container{
   z-index: 1 !important;
   margin-top: 20px !important;
+}
+
+.ngx-datepicker-container{
+  display: inline !important;
 }
 
 canvas{
