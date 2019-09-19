@@ -43,10 +43,10 @@ describe('MissionViewComponent', () => {
     bounds: { top: 0, left: 0, width: 0, height: 0 },
     customFields: [], section: '', department: '', onHand: 0 },
   ];
-  const aisles: Aisle[] = [{  aisleId: '1', aisleName: '', panoramaUrl: '', labels: labels, outs: labels, coveragePercent: 0,
-  aisleCoverage: '0', createDateTime: new Date(), labelsCount: 0, outsCount: 0 }];
-  const aisle: Aisle = {  aisleId: '1', aisleName: '', panoramaUrl: '', labels: labels, outs: labels, coveragePercent: 0,
-  aisleCoverage: '0', createDateTime: new Date(), labelsCount: 0, outsCount: 0 };
+  const aisles: Aisle[] = [{  aisleId: '1', aisleName: '', panoramaUrl: '', labels: labels, outs: labels, sectionLabels: labels,
+  coveragePercent: 0, aisleCoverage: '0', createDateTime: new Date(), labelsCount: 0, outsCount: 0 }];
+  const aisle: Aisle = {  aisleId: '1', aisleName: '', panoramaUrl: '', labels: labels, outs: labels, sectionLabels: labels,
+  coveragePercent: 0, aisleCoverage: '0', createDateTime: new Date(), labelsCount: 0, outsCount: 0 };
   const mission: Mission = { missionId: '1', missionName: '', storeId: '1', startDateTime: new Date(), outs: 1, labels: 1,
     aisleCount: 1, endDateTime: new Date(), percentageRead: 1, percentageUnread: 1, unreadLabels: 1, readLabelsMissingProduct: 1,
     readLabelsMatchingProduct: 1, createDateTime: new Date(), aisles: aisles };
@@ -105,7 +105,7 @@ describe('MissionViewComponent', () => {
   });
 
   it('should set the current mission', () => {
-    expect(apiService.getMission).toHaveBeenCalledWith(1, 1);
+    expect(apiService.getMission).toHaveBeenCalledWith(1, 1, Intl.DateTimeFormat().resolvedOptions().timeZone);
     expect(component.mission.missionId).toEqual('1');
   });
 

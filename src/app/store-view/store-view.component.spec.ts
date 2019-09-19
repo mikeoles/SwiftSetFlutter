@@ -11,6 +11,8 @@ import Store from '../store.model';
 import { NgDatepickerModule } from 'ng2-datepicker';
 import { EnvironmentService } from '../environment.service';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ProgressBarModule } from 'angular-progress-bar';
+import { ModalService } from 'src/app/modal/modal.service';
 import Mission from '../mission.model';
 
 @Component({selector: 'app-daily-graphs', template: ''})
@@ -26,6 +28,11 @@ class AppMissionsGridStubComponent {
   @Input() averageStoreOuts: number;
   @Input() averageStoreLabels: number;
   @Input() storeId: number;
+}
+
+@Component({selector: 'app-export-modal', template: ''})
+class ModalComponent {
+  @Input() id: string;
 }
 
 describe('StoreViewComponent', () => {
@@ -63,11 +70,13 @@ describe('StoreViewComponent', () => {
         HttpClientTestingModule,
         NgDatepickerModule,
         RouterTestingModule.withRoutes([]),
+        ProgressBarModule
       ],
       declarations: [
         StoreViewComponent,
         AppDailyGraphsStubComponent,
         AppMissionsGridStubComponent,
+        ModalComponent
       ],
       providers: [
         { provide: 'ApiService', useValue: apiServiceSpy },
@@ -76,7 +85,8 @@ describe('StoreViewComponent', () => {
         }},
         { provide: EnvironmentService, useValue: { config: {
           coverageDisplayType: 'description'
-        }}}
+        }}},
+        { provide: ModalService},
       ],
     })
     .compileComponents();

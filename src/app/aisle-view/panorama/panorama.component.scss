@@ -30,6 +30,10 @@
         border-color:  $labels;
       }
 
+      .sectionLabelsAnnotation {
+        border-color:  $sectionLabels;
+      }
+
       .selected {
         border-color: $selected;
       }

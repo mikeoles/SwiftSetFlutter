@@ -37,6 +37,16 @@ describe('ProductDetailsComponent', () => {
     { labelId: 10, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0,
       height: 0 }, department: '', section: '', customFields: [], onHand: 0 },
   ];
+  const sectionLabels: Label[] = [
+    { labelId: 6, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
+      }, department: '', section: '', customFields: [], onHand: 0 },
+    { labelId: 7, labelName: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0,
+      height: 0 }, department: '', section: '', customFields: [], onHand: 0 },
+    { labelId: 8, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
+      }, department: '', section: '', customFields: [], onHand: 0 },
+    { labelId: 9, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
+      }, department: '', section: '', customFields: [], onHand: 0 },
+  ];
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -63,6 +73,7 @@ describe('ProductDetailsComponent', () => {
 
     component.labels = labels;
     component.outs = outs;
+    component.sectionLabels = sectionLabels;
     fixture.detectChanges();
     buttonsEl = fixture.debugElement.query(By.css('#tableSelection')).nativeElement;
     buttons = buttonsEl.children;
@@ -111,15 +122,16 @@ describe('ProductDetailsComponent', () => {
   });
 
   it('displays buttons', () => {
-    expect(buttonsEl.childElementCount).toEqual(2);
+    expect(buttonsEl.childElementCount).toEqual(3);
     expect(buttons[0].textContent).toContain('Outs');
     expect(buttons[1].textContent).toContain('Shelf Labels');
-
+    expect(buttons[2].textContent).toContain('Section Labels');
   });
 
   it('displays counts on buttons', () => {
     expect(buttons[0].textContent).toContain('(5)');
     expect(buttons[1].textContent).toContain('(5)');
+    expect(buttons[2].textContent).toContain('(4)');
   });
 
   it('button can be selected', () => {

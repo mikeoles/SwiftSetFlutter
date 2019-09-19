@@ -30,19 +30,19 @@ describe('SelectionAreaComponent', () => {
   let missionsListEl: HTMLLIElement;
   let aislesListEl: HTMLLIElement;
   const aisles: Aisle[] = [
-    { aisleId: '1', aisleName: '1111', panoramaUrl: '', labels: [], outs: [], createDateTime: new Date(),
+    { aisleId: '1', aisleName: '1111', panoramaUrl: '', labels: [], outs: [], sectionLabels: [], createDateTime: new Date(),
     coveragePercent: 0, outsCount: 0, labelsCount: 0,
     aisleCoverage: ''},
-    { aisleId: '2', aisleName: '2222', panoramaUrl: '', labels: [], outs: [], createDateTime: new Date(),
+    { aisleId: '2', aisleName: '2222', panoramaUrl: '', labels: [], outs: [], sectionLabels: [], createDateTime: new Date(),
     coveragePercent: 0, outsCount: 0, labelsCount: 0,
     aisleCoverage: ''},
-    { aisleId: '3', aisleName: '3333', panoramaUrl: '', labels: [], outs: [], createDateTime: new Date(),
+    { aisleId: '3', aisleName: '3333', panoramaUrl: '', labels: [], outs: [], sectionLabels: [], createDateTime: new Date(),
     coveragePercent: 0, outsCount: 0, labelsCount: 0,
     aisleCoverage: ''},
-    { aisleId: '4', aisleName: '4444', panoramaUrl: '', labels: [], outs: [], createDateTime: new Date(),
+    { aisleId: '4', aisleName: '4444', panoramaUrl: '', labels: [], outs: [], sectionLabels: [], createDateTime: new Date(),
     coveragePercent: 0, outsCount: 0, labelsCount: 0,
     aisleCoverage: ''},
-    { aisleId: '5', aisleName: '5555', panoramaUrl: '', labels: [], outs: [], createDateTime: new Date(),
+    { aisleId: '5', aisleName: '5555', panoramaUrl: '', labels: [], outs: [], sectionLabels: [], createDateTime: new Date(),
     coveragePercent: 0, outsCount: 0, labelsCount: 0,
     aisleCoverage: '' },
   ];
@@ -107,10 +107,9 @@ describe('SelectionAreaComponent', () => {
 
   it('has a dropdown of missions', done => {
     fixture.whenStable().then(() => {
-      const pipe = new DatePipe('en');
       fixture.detectChanges();
       expect(missionsDropdownEl.childElementCount).toEqual(2);
-      expect(missionsDropdownEl.children[0].textContent).toEqual(pipe.transform(missions[0].startDateTime, ' yyyy-MM-dd HH:mm:ss '));
+      expect(missionsDropdownEl.children[0].textContent).toEqual(' ' + missions[0].missionName + ' ');
       done();
     });
   });
@@ -144,7 +143,7 @@ describe('SelectionAreaComponent', () => {
     fixture.whenStable().then(() => {
       const pipe = new DatePipe('en');
       fixture.detectChanges();
-      expect(missionsButtonEl.textContent).toEqual(` Mission ${pipe.transform(missions[0].startDateTime, 'yyyy-MM-dd HH:mm:ss')} `);
+      expect(missionsButtonEl.textContent).toEqual(` Scan: ${missions[0].missionName} `);
       done();
     });
   });
@@ -161,7 +160,7 @@ describe('SelectionAreaComponent', () => {
     const pipe = new DatePipe('en');
     component.selectedMission  = missions[1];
     fixture.detectChanges();
-    expect(missionsButtonEl.textContent).toEqual(` Mission ${pipe.transform(missions[1].startDateTime, 'yyyy-MM-dd HH:mm:ss')} `);
+    expect(missionsButtonEl.textContent).toEqual(` Scan: ${missions[1].missionName} `);
   });
 
   it('sets mission button based on input', () => {

@@ -18,6 +18,7 @@ import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 export class PanoramaComponent implements OnInit, OnChanges {
   @Input() outs: any[];
   @Input() labels: any[];
+  @Input() sectionLabels: any[];
   @Input() currentId: number;
   @Input() currentDisplay: string;
   @Input() panoramaUrl: string;
@@ -142,6 +143,8 @@ export class PanoramaComponent implements OnInit, OnChanges {
         return this.outs;
       case 'labels':
         return this.labels;
+      case 'sectionLabels':
+        return this.sectionLabels;
     }
   }
 

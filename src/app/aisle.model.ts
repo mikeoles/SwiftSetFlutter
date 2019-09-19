@@ -11,4 +11,5 @@ export default class Aisle {
   aisleCoverage: string;
   labels: Label[];
   outs: Label[];
+  sectionLabels: Label[];
 }

@@ -37,6 +37,9 @@ export class CloudApiService implements ApiService {
       aisleCoverage = aisle.coveragePercent;
     }
 
+    const testSectionLabels = [];
+    testSectionLabels.push('yo');
+
     return {
       aisleId: aisle.aisleId,
       aisleName: aisle.aisleName,
@@ -46,8 +49,29 @@ export class CloudApiService implements ApiService {
       labels: (aisle.labels || []).map(l => this.createLabel(l)),
       outsCount: aisle.outsCount,
       outs: (aisle.outs || []).map(l => this.createLabel(l)),
+      sectionLabels: (testSectionLabels || []).map(l => this.createSectionLabel(l)),
       coveragePercent: aisle.coveragePercent,
       aisleCoverage: aisleCoverage,
+    };
+  }
+
+  createSectionLabel(l: any): any {
+    return {
+      labelId: this.labelId++,
+      labelName: 'Section One',
+      barcode: '000000000004',
+      productId: '0003100',
+      price: 1.99,
+      department: 'test',
+      onHand: 0,
+      bounds: {
+        top: 2225,
+        left: 456,
+        width: 38,
+        height: 44,
+      },
+      section: 'section uno',
+      customFields: ([]).map(cf => this.createCustomField(cf)),
     };
   }
 
