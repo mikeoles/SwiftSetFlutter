@@ -12,6 +12,9 @@
           (click)="annotationClicked(annotation)">
         </div>
       </ng-container>
+      <ng-container *ngFor="let sectionBreak of sectionBreaks">
+        <div class="break" [style.left.px]="sectionBreak"></div>
+      </ng-container>
     </div>
   </div>
   <div id="zoom">

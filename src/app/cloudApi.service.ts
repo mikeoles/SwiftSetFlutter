@@ -10,6 +10,7 @@ import DaySummary from './daySummary.model';
 import CustomField from './customField.model';
 import { ApiService } from './api.service';
 import { EnvironmentService } from './environment.service';
+import SectionLabel from './sectionLabel.model';
 
 @Injectable({
   providedIn: 'root'
@@ -37,9 +38,6 @@ export class CloudApiService implements ApiService {
       aisleCoverage = aisle.coveragePercent;
     }
 
-    const testSectionLabels = [];
-    testSectionLabels.push('yo');
-
     return {
       aisleId: aisle.aisleId,
       aisleName: aisle.aisleName,
@@ -49,29 +47,24 @@ export class CloudApiService implements ApiService {
       labels: (aisle.labels || []).map(l => this.createLabel(l)),
       outsCount: aisle.outsCount,
       outs: (aisle.outs || []).map(l => this.createLabel(l)),
-      sectionLabels: (testSectionLabels || []).map(l => this.createSectionLabel(l)),
+      sectionLabels: (aisle.sectionLabels || []).map(l => this.createSectionLabel(l)),
+      topStock: (aisle.topStock || []).map(l => this.createLabel(l)),
+      sectionBreaks: aisle.sectionBreaks,
       coveragePercent: aisle.coveragePercent,
       aisleCoverage: aisleCoverage,
     };
   }
 
-  createSectionLabel(l: any): any {
+  createSectionLabel(label: any): SectionLabel {
     return {
       labelId: this.labelId++,
-      labelName: 'Section One',
-      barcode: '000000000004',
-      productId: '0003100',
-      price: 1.99,
-      department: 'test',
-      onHand: 0,
+      barcode: label.barcode || '000000000000',
       bounds: {
-        top: 2225,
-        left: 456,
-        width: 38,
-        height: 44,
-      },
-      section: 'section uno',
-      customFields: ([]).map(cf => this.createCustomField(cf)),
+        top: label.bounds.top,
+        left: label.bounds.left,
+        width: label.bounds.width,
+        height: label.bounds.height,
+      }
     };
   }
 

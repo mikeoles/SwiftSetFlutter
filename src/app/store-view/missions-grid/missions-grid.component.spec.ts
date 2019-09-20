@@ -10,12 +10,10 @@ describe('MissionsGridComponent', () => {
   let component: MissionsGridComponent;
   let fixture: ComponentFixture<MissionsGridComponent>;
   const aisles: Aisle[] = [
-    { aisleId: '1', aisleName: '1111', panoramaUrl: '', labels: [], outs: [], sectionLabels: [], createDateTime: new Date(),
-    coveragePercent: 0, outsCount: 0, labelsCount: 0,
-    aisleCoverage: ''},
-    { aisleId: '2', aisleName: '2222', panoramaUrl: '', labels: [], outs: [], sectionLabels: [], createDateTime: new Date(),
-    coveragePercent: 0, outsCount: 0, labelsCount: 0,
-    aisleCoverage: ''},
+    { aisleId: '1', aisleName: '1111', panoramaUrl: '', labels: [], outs: [], sectionLabels: [], sectionBreaks: [], topStock: [],
+    createDateTime: new Date(), coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
+    { aisleId: '2', aisleName: '2222', panoramaUrl: '', labels: [], outs: [], sectionLabels: [], sectionBreaks: [], topStock: [],
+    createDateTime: new Date(), coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
   ];
   const missions: Mission[] = [
     { missionId: '1', missionName: '1111', storeId: '1', createDateTime: new Date('2018-12-12'), startDateTime: new Date('2018-12-12'),

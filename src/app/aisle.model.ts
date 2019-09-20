@@ -1,4 +1,5 @@
 import Label from './label.model';
+import SectionLabel from './sectionLabel.model';
 
 export default class Aisle {
   aisleId: string;
@@ -11,5 +12,7 @@ export default class Aisle {
   aisleCoverage: string;
   labels: Label[];
   outs: Label[];
-  sectionLabels: Label[];
+  sectionLabels: SectionLabel[];
+  topStock: Label[];
+  sectionBreaks: number[];
 }

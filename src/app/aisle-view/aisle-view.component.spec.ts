@@ -20,6 +20,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { EnvironmentService } from '../environment.service';
 import Store from '../store.model';
+import SectionLabel from '../sectionLabel.model';
 
 @Component({selector: 'app-export-modal', template: ''})
 class ModalComponent {
@@ -44,16 +45,28 @@ describe('AisleViewComponent', () => {
       }, department: '', section: '', customFields: [], onHand: 0 },
   ];
 
+  const sectionLabels: SectionLabel[] = [
+    { labelId: 6,  barcode: '12345', bounds: { top: 0, left: 0, width: 0, height: 0 } },
+    { labelId: 7,  barcode: '12345', bounds: { top: 0, left: 0, width: 0, height: 0 } },
+  ];
+
+  const sectionBreaks: number[] = [19, 200];
+
   const aisles: Aisle[] = [
-    { aisleId: '1', aisleName: '1111', panoramaUrl: '', labels: labels, outs: labels, sectionLabels: labels, createDateTime: new Date(),
+    { aisleId: '1', aisleName: '1111', panoramaUrl: '', createDateTime: new Date(),
+      labels: labels, outs: labels, sectionLabels: sectionLabels, sectionBreaks: sectionBreaks, topStock: labels,
       coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
-    { aisleId: '2', aisleName: '2222', panoramaUrl: '', labels: labels, outs: labels, sectionLabels: labels, createDateTime: new Date(),
+    { aisleId: '2', aisleName: '2222', panoramaUrl: '', createDateTime: new Date(),
+      labels: labels, outs: labels, sectionLabels: sectionLabels, sectionBreaks: sectionBreaks, topStock: labels,
       coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
-    { aisleId: '3', aisleName: '3333', panoramaUrl: '', labels: labels, outs: labels, sectionLabels: labels, createDateTime: new Date(),
+    { aisleId: '3', aisleName: '3333', panoramaUrl: '', createDateTime: new Date(),
+      labels: labels, outs: labels, sectionLabels: sectionLabels, sectionBreaks: sectionBreaks, topStock: labels,
       coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
-    { aisleId: '4', aisleName: '4444', panoramaUrl: '', labels: labels, outs: labels, sectionLabels: labels, createDateTime: new Date(),
+    { aisleId: '4', aisleName: '4444', panoramaUrl: '', createDateTime: new Date(),
+      labels: labels, outs: labels, sectionLabels: sectionLabels, sectionBreaks: sectionBreaks, topStock: labels,
       coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
-    { aisleId: '5', aisleName: '5555', panoramaUrl: '', labels: labels, outs: labels, sectionLabels: labels, createDateTime: new Date(),
+    { aisleId: '5', aisleName: '5555', panoramaUrl: '', createDateTime: new Date(),
+      labels: labels, outs: labels, sectionLabels: sectionLabels, sectionBreaks: sectionBreaks, topStock: labels,
       coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
   ];
 

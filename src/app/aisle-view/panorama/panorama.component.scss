@@ -22,6 +22,15 @@
         border: 10px solid;
       }
 
+      .break{
+        position: absolute;
+        color: $sectionBreak;
+        border: 20px solid;
+        width: 0px;
+        height: 100%;
+        top: 0px;
+      }
+
       .outsAnnotation {
         border-color: $outs;
       }
@@ -32,6 +41,10 @@
 
       .sectionLabelsAnnotation {
         border-color:  $sectionLabels;
+      }
+
+      .topStockAnnotation {
+        border-color:  $topStock;
       }
 
       .selected {

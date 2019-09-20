@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import {Location} from '@angular/common';
 import { BackService } from '../back.service';
+import SectionLabel from '../sectionLabel.model';
 
 @Component({
   selector: 'app-aisle-view',
@@ -24,7 +25,9 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   title = 'aisle';
   outs: Label[];
   labels: Label[];
-  sectionLabels: Label[];
+  sectionLabels: SectionLabel[];
+  topStock: Label[];
+  sectionBreaks: number[];
   missions: Mission[];
   selectedMission: Mission;
   selectedAisle: Aisle;
@@ -128,6 +131,8 @@ export class AisleViewComponent implements OnInit, OnDestroy {
       this.outs = fullAisle.outs;
       this.labels = fullAisle.labels;
       this.sectionLabels = fullAisle.sectionLabels;
+      this.topStock = fullAisle.topStock;
+      this.sectionBreaks = fullAisle.sectionBreaks;
       this.panoramaUrl = fullAisle.panoramaUrl;
       this.currentDisplay = 'outs';
       this.currentId = null;

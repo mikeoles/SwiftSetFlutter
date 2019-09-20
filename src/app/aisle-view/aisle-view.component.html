@@ -3,11 +3,11 @@
   (missionSelected)='changeMission($event)' (aisleSelected)='setAisle($event)' [panoTouched]=panoTouched
   (panoSwitch)='changePanoMode()' (resetPano)='resetPanoClicked()' (resetPanoAfterExport)='resetPanoAfterExportClicked()'>
 </app-selection-area>
-<app-panorama [outs]="outs" [labels]="labels" [sectionLabels]="sectionLabels" [panoramaUrl]="panoramaUrl"
-  [currentId]="currentId" [currentDisplay]="currentDisplay" (panoramaId)='setId($event)' [panoMode]='panoMode' 
-  (panoramaTouched)='hideDropdowns()' [resetPano]='resetPano' [resetPanoAfterExport]='resetPanoAfterExport'>
+<app-panorama [outs]="outs" [labels]="labels" [sectionLabels]="sectionLabels" [sectionBreaks]="sectionBreaks" [topStock]="topStock" 
+  [panoramaUrl]="panoramaUrl" [currentId]="currentId" [currentDisplay]="currentDisplay" (panoramaId)='setId($event)'
+  [panoMode]='panoMode' (panoramaTouched)='hideDropdowns()' [resetPano]='resetPano' [resetPanoAfterExport]='resetPanoAfterExport'>
 </app-panorama>
-<app-product-details [outs]="outs" [labels]="labels" [sectionLabels]="sectionLabels"
+<app-product-details [outs]="outs" [labels]="labels"
   (gridId)='setId($event)' (gridDisplay)='setDisplay($event)'
   [currentId]="currentId" [currentDisplay]="currentDisplay" [panoMode]='panoMode'>
 </app-product-details>

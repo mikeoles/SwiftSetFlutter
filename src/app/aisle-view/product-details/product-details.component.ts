@@ -23,7 +23,7 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
   @Output() gridId = new EventEmitter();
   @Output() gridDisplay = new EventEmitter();
   @Input() outs: Label[] = [];
-  @Input() sectionLabels: Label[] = [];
+  @Input() topStock: Label[] = [];
   filteredOuts: Label[] = [];
   @Input() labels: Label[] = [];
   filteredLabels: Label[] = [];

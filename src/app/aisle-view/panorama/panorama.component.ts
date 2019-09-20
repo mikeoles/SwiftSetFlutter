@@ -9,6 +9,8 @@ import {
 } from '@angular/core';
 import panzoom from 'panzoom';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
+import Label from 'src/app/label.model';
+import SectionLabel from 'src/app/sectionLabel.model';
 
 @Component({
   selector: 'app-panorama',
@@ -16,9 +18,11 @@ import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./panorama.component.scss']
 })
 export class PanoramaComponent implements OnInit, OnChanges {
-  @Input() outs: any[];
-  @Input() labels: any[];
-  @Input() sectionLabels: any[];
+  @Input() outs: Label[];
+  @Input() labels: Label[];
+  @Input() sectionLabels: SectionLabel[];
+  @Input() topStock: Label[];
+  @Input() sectionBreaks: number[];
   @Input() currentId: number;
   @Input() currentDisplay: string;
   @Input() panoramaUrl: string;
@@ -145,6 +149,8 @@ export class PanoramaComponent implements OnInit, OnChanges {
         return this.labels;
       case 'sectionLabels':
         return this.sectionLabels;
+      case 'topStock':
+        return this.topStock;
     }
   }
 
