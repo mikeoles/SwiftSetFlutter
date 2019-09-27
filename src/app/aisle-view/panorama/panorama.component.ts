@@ -10,7 +10,6 @@ import {
 import panzoom from 'panzoom';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import Label from 'src/app/label.model';
-import SectionLabel from 'src/app/sectionLabel.model';
 
 @Component({
   selector: 'app-panorama',
@@ -20,18 +19,28 @@ import SectionLabel from 'src/app/sectionLabel.model';
 export class PanoramaComponent implements OnInit, OnChanges {
   @Input() outs: Label[];
   @Input() labels: Label[];
-  @Input() sectionLabels: SectionLabel[];
+  @Input() sectionLabels: Label[];
   @Input() topStock: Label[];
   @Input() sectionBreaks: number[];
+
+  @Input() showOuts: boolean;
+  @Input() showShelfLabels: boolean;
+  @Input() showSectionLabels: boolean;
+  @Input() showSectionBreaks: boolean;
+  @Input() showTopStock: boolean;
+
   @Input() currentId: number;
-  @Input() currentDisplay: string;
   @Input() panoramaUrl: string;
   @Input() panoMode: boolean;
   @Input() resetPano = false;
   @Input() resetPanoAfterExport = false;
   @Input() downloadPano = false;
+  @Input() debugMode = false;
+  @Input() currentlyDisplayed: Set<string>;
+
   @Output() panoramaId = new EventEmitter();
   @Output() panoramaTouched = new EventEmitter();
+
   selectedIdWithPano = false;
   panZoomApi: any;
   faPlus = faPlus;
@@ -100,7 +109,10 @@ export class PanoramaComponent implements OnInit, OnChanges {
       } else {
         if (this.currentId && this.currentId !== -1 && !this.selectedIdWithPano) {
 
-          const annotations = this.annotations();
+          let annotations: Label[] = this.annotations('outs');
+          annotations = annotations.concat(this.annotations('shelfLabels'));
+          annotations = annotations.concat(this.annotations('sectionLabels'));
+          annotations = annotations.concat(this.annotations('topStock'));
           let selectedX: number, selectedY: number, i: number;
           let currentZoomLevel = this.panZoomApi.getTransform().scale;
           if (currentZoomLevel < this.zoomedInLevel) {
@@ -141,11 +153,11 @@ export class PanoramaComponent implements OnInit, OnChanges {
     }
   }
 
-  annotations() {
-    switch (this.currentDisplay) {
+  annotations(displayType: string) {
+    switch (displayType) {
       case 'outs':
         return this.outs;
-      case 'labels':
+      case 'shelfLabels':
         return this.labels;
       case 'sectionLabels':
         return this.sectionLabels;

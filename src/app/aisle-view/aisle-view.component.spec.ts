@@ -20,7 +20,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { EnvironmentService } from '../environment.service';
 import Store from '../store.model';
-import SectionLabel from '../sectionLabel.model';
 
 @Component({selector: 'app-export-modal', template: ''})
 class ModalComponent {
@@ -34,39 +33,34 @@ describe('AisleViewComponent', () => {
 
   const labels: Label[] = [
     { labelId: 1, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      }, department: '', section: '', customFields: [], onHand: 0 },
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [] },
     { labelId: 2, labelName: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0,
-      height: 0, }, department: '', section: '', customFields: [], onHand: 0 },
+      height: 0, }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [] },
     { labelId: 3, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      }, department: '', section: '', customFields: [], onHand: 0 },
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [] },
     { labelId: 4, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      }, department: '', section: '', customFields: [], onHand: 0 },
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [] },
     { labelId: 5, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      }, department: '', section: '', customFields: [], onHand: 0 },
-  ];
-
-  const sectionLabels: SectionLabel[] = [
-    { labelId: 6,  barcode: '12345', bounds: { top: 0, left: 0, width: 0, height: 0 } },
-    { labelId: 7,  barcode: '12345', bounds: { top: 0, left: 0, width: 0, height: 0 } },
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [] },
   ];
 
   const sectionBreaks: number[] = [19, 200];
 
   const aisles: Aisle[] = [
     { aisleId: '1', aisleName: '1111', panoramaUrl: '', createDateTime: new Date(),
-      labels: labels, outs: labels, sectionLabels: sectionLabels, sectionBreaks: sectionBreaks, topStock: labels,
+      labels: labels, outs: labels, sectionLabels: labels, sectionBreaks: sectionBreaks, topStock: labels,
       coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
     { aisleId: '2', aisleName: '2222', panoramaUrl: '', createDateTime: new Date(),
-      labels: labels, outs: labels, sectionLabels: sectionLabels, sectionBreaks: sectionBreaks, topStock: labels,
+      labels: labels, outs: labels, sectionLabels: labels, sectionBreaks: sectionBreaks, topStock: labels,
       coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
     { aisleId: '3', aisleName: '3333', panoramaUrl: '', createDateTime: new Date(),
-      labels: labels, outs: labels, sectionLabels: sectionLabels, sectionBreaks: sectionBreaks, topStock: labels,
+      labels: labels, outs: labels, sectionLabels: labels, sectionBreaks: sectionBreaks, topStock: labels,
       coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
     { aisleId: '4', aisleName: '4444', panoramaUrl: '', createDateTime: new Date(),
-      labels: labels, outs: labels, sectionLabels: sectionLabels, sectionBreaks: sectionBreaks, topStock: labels,
+      labels: labels, outs: labels, sectionLabels: labels, sectionBreaks: sectionBreaks, topStock: labels,
       coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
     { aisleId: '5', aisleName: '5555', panoramaUrl: '', createDateTime: new Date(),
-      labels: labels, outs: labels, sectionLabels: sectionLabels, sectionBreaks: sectionBreaks, topStock: labels,
+      labels: labels, outs: labels, sectionLabels: labels, sectionBreaks: sectionBreaks, topStock: labels,
       coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
   ];
 
@@ -183,7 +177,6 @@ describe('AisleViewComponent', () => {
     expect(panoramaDe.componentInstance.labels).toEqual(component.selectedAisle.labels);
     expect(panoramaDe.componentInstance.panoramaUrl).toEqual(component.selectedAisle.panoramaUrl);
     expect(panoramaDe.componentInstance.currentId).toEqual(component.currentId);
-    expect(panoramaDe.componentInstance.currentDisplay).toEqual(component.currentDisplay);
   });
 
   it('should set the product details component', () => {
@@ -191,6 +184,5 @@ describe('AisleViewComponent', () => {
     expect(productDetailsDe.componentInstance.outs).toEqual(component.selectedAisle.outs);
     expect(productDetailsDe.componentInstance.labels).toEqual(component.selectedAisle.labels);
     expect(productDetailsDe.componentInstance.currentId).toEqual(component.currentId);
-    expect(productDetailsDe.componentInstance.currentDisplay).toEqual(component.currentDisplay);
   });
 });

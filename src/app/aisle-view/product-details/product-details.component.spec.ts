@@ -15,37 +15,37 @@ describe('ProductDetailsComponent', () => {
   let buttons: HTMLCollection;
   const labels: Label[] = [
     { labelId: 1, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
-      }, department: '', section: '', customFields: [], onHand: 0},
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: []},
     { labelId: 2, labelName: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0,
-      height: 0}, department: '', section: '', customFields: [], onHand: 0},
+      height: 0}, department: '', section: '', customFields: [], onHand: 0, productCoordinates: []},
     { labelId: 3, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
-      }, department: '', section: '', customFields: [], onHand: 0},
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: []},
     { labelId: 4, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
-      }, department: '', section: '', customFields: [], onHand: 0},
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: []},
     { labelId: 5, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
-      }, department: '', section: '', customFields: [], onHand: 0},
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: []},
   ];
   const outs: Label[] = [
     { labelId: 6, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
-      }, department: '', section: '', customFields: [], onHand: 0 },
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [] },
     { labelId: 7, labelName: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0,
-      height: 0 }, department: '', section: '', customFields: [], onHand: 0 },
+      height: 0 }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [] },
     { labelId: 8, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
-      }, department: '', section: '', customFields: [], onHand: 0 },
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [] },
     { labelId: 9, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
-      }, department: '', section: '', customFields: [], onHand: 0 },
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [] },
     { labelId: 10, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0,
-      height: 0 }, department: '', section: '', customFields: [], onHand: 0 },
+      height: 0 }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [] },
   ];
   const topStock: Label[] = [
     { labelId: 6, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
-      }, department: '', section: '', customFields: [], onHand: 0 },
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [] },
     { labelId: 7, labelName: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0,
-      height: 0 }, department: '', section: '', customFields: [], onHand: 0 },
+      height: 0 }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [] },
     { labelId: 8, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
-      }, department: '', section: '', customFields: [], onHand: 0 },
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [] },
     { labelId: 9, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
-      }, department: '', section: '', customFields: [], onHand: 0 },
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [] },
   ];
 
   beforeEach(async(() => {
@@ -83,13 +83,6 @@ describe('ProductDetailsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  it('should emit display type', () => {
-    spyOn(component.gridDisplay, 'emit');
-    component.selectGrid('outs');
-    fixture.detectChanges();
-    expect(component.gridDisplay.emit).toHaveBeenCalledWith('outs');
- });
 
   it('should emit -1 ID when display type clicked', () => {
     spyOn(component.gridId, 'emit');

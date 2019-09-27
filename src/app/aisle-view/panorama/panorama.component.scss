@@ -1,5 +1,17 @@
 @import '../../../variables';
 
+svg{
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  line{
+    stroke: $productLines;
+    stroke-width: 4px;
+  }
+}
+
 .panorama {
   overflow: hidden;
   text-align: center;
@@ -35,7 +47,7 @@
         border-color: $outs;
       }
 
-      .labelsAnnotation {
+      .shelfLabelsAnnotation {
         border-color:  $labels;
       }
 
@@ -45,6 +57,10 @@
 
       .topStockAnnotation {
         border-color:  $topStock;
+      }
+
+      .productAnnotation {
+        border-color:  $product;
       }
 
       .selected {

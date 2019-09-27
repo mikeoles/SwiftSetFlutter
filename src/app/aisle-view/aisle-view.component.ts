@@ -10,7 +10,6 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import {Location} from '@angular/common';
 import { BackService } from '../back.service';
-import SectionLabel from '../sectionLabel.model';
 
 @Component({
   selector: 'app-aisle-view',
@@ -25,21 +24,22 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   title = 'aisle';
   outs: Label[];
   labels: Label[];
-  sectionLabels: SectionLabel[];
+  sectionLabels: Label[];
   topStock: Label[];
   sectionBreaks: number[];
   missions: Mission[];
   selectedMission: Mission;
   selectedAisle: Aisle;
   currentId: number;
-  currentDisplay: string;
   panoramaUrl: string;
   panoMode: boolean;
   panoTouched: boolean;
   resetPano: boolean;
   resetPanoAfterExport: boolean;
+  debugMode: boolean;
   private logoSubscription: Subscription;
   private backButtonSubscription: Subscription;
+  currentlyDisplayed: Set<string> = new Set<string>();
 
   constructor(@Inject('ApiService') private apiService: ApiService,
               private keyboard: KeyboardShortcutsService,
@@ -49,7 +49,6 @@ export class AisleViewComponent implements OnInit, OnDestroy {
               private location: Location,
               private router: Router
               ) {
-    this.currentDisplay = 'outs';
     this.panoMode = false;
     this.keyboard.add([
       {
@@ -61,6 +60,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.currentlyDisplayed.add('outs');
     this.logoSubscription = this.logoService.logoClickEvent().subscribe(() => this.changePanoMode());
     this.backButtonSubscription = this.backService.backClickEvent().subscribe(() => this.goBack());
 
@@ -108,6 +108,18 @@ export class AisleViewComponent implements OnInit, OnDestroy {
     this.resetPano = !this.resetPano;
   }
 
+  toggleDebug() {
+    this.debugMode = !this.debugMode;
+  }
+
+  toggleDisplayed(d: string) {
+    if (this.currentlyDisplayed.has(d)) {
+      this.currentlyDisplayed.delete(d);
+    } else {
+      this.currentlyDisplayed.add(d);
+    }
+  }
+
   resetPanoAfterExportClicked() {
     this.resetPanoAfterExport = !this.resetPanoAfterExport;
   }
@@ -134,7 +146,6 @@ export class AisleViewComponent implements OnInit, OnDestroy {
       this.topStock = fullAisle.topStock;
       this.sectionBreaks = fullAisle.sectionBreaks;
       this.panoramaUrl = fullAisle.panoramaUrl;
-      this.currentDisplay = 'outs';
       this.currentId = null;
     });
     this.location.replaceState(
@@ -147,9 +158,5 @@ export class AisleViewComponent implements OnInit, OnDestroy {
 
   hideDropdowns() {
     this.panoTouched = true;
-  }
-
-  setDisplay(display) {
-    this.currentDisplay = display;
   }
 }

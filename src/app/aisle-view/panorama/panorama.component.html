@@ -2,19 +2,50 @@
   <div [ngClass]="{'panoModeClass': panoMode}" class="image-owner" id="image-owner">
     <div id="pano-image" class="image">
       <img [src]="panoramaUrl" *ngIf="panoramaUrl" />
-      <ng-container *ngFor="let annotation of annotations()">
-          <div class="{{this.currentDisplay}}Annotation annotation"
+      
+      <ng-container *ngFor="let displayType of currentlyDisplayed">
+        <ng-container *ngFor="let annotation of annotations(displayType)">
+          <div class="{{displayType}}Annotation annotation"
           [class.selected]="(this.currentId === annotation.labelId) && !this.panoMode"
           [style.left.px]="annotation.bounds.left"
           [style.top.px]="annotation.bounds.top"
           [style.width.px]="annotation.bounds.width"
           [style.height.px]="annotation.bounds.height"
-          (click)="annotationClicked(annotation)">
-        </div>
+          (click)="annotationClicked(annotation)"></div>
+          <ng-container *ngIf="debugMode">
+            <ng-container *ngFor="let productCoordinate of annotation.productCoordinates">
+              <div class="productAnnotation annotation"
+              [class.selected]="(this.currentId === annotation.labelId) && !this.panoMode"
+              [style.left.px]="productCoordinate.left"
+              [style.top.px]="productCoordinate.top"
+              [style.width.px]="productCoordinate.width"
+              [style.height.px]="productCoordinate.height"
+              (click)="annotationClicked(annotation)"></div>
+            </ng-container>
+          </ng-container>
+        </ng-container>
       </ng-container>
-      <ng-container *ngFor="let sectionBreak of sectionBreaks">
-        <div class="break" [style.left.px]="sectionBreak"></div>
+
+      <ng-container *ngIf="debugMode && currentlyDisplayed.has('shelfLabels')">
+        <svg>
+          <ng-container *ngFor="let annotation of labels">
+            <ng-container *ngFor="let productCoordinate of annotation.productCoordinates">
+              <line 
+              [attr.x1]="annotation.bounds.left+annotation.bounds.width/2+10" 
+              [attr.y1]="annotation.bounds.top" 
+              [attr.x2]="productCoordinate.left+productCoordinate.width/2+10" 
+              [attr.y2]="productCoordinate.top+productCoordinate.height/2+10" />
+            </ng-container>
+          </ng-container>
+        </svg>
       </ng-container>
+      
+      <ng-container *ngIf="currentlyDisplayed.has('sectionBreaks')">
+        <ng-container *ngFor="let sectionBreak of sectionBreaks">
+          <div class="break" [style.left.px]="sectionBreak"></div>
+        </ng-container>
+      </ng-container>
+
     </div>
   </div>
   <div id="zoom">

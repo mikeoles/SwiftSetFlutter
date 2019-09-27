@@ -17,6 +17,7 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
 
   @Output() gridClicked = new EventEmitter();
   @Input() products: Label[];
+  @Input() onlyBarcode: boolean; // Displays only the barcode in the grid, used for top stock and shelf labels
   @Input() selectedId: number;
   showDepartment: Boolean;
   showSection: Boolean;
@@ -94,7 +95,12 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
 
   getGridData() {
     this.rows = [];
-    this.columnHeaders = this.environment.config.productGridFields;
+    if (this.onlyBarcode) {
+      this.columnHeaders = ['Barcode'];
+    } else {
+      this.columnHeaders = this.environment.config.productGridFields;
+    }
+
     for (let i = 0; i < this.products.length; i++) {
       const product: Label = this.products[i];
       let row: Array<String> = Array<String>();

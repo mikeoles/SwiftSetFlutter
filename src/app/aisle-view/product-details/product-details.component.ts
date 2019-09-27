@@ -12,6 +12,8 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
 
   showDepartment: Boolean;
   showSection: Boolean;
+  showTopStock = false;
+  showSectionLabels = false;
 
   departmentsList: string[] = [];
   sectionsList: string[] = [];
@@ -19,21 +21,25 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
   selectedDepts: string[] = [];
   selectedSects: string[] = [];
 
-  dropdownSettings = {};
-  @Output() gridId = new EventEmitter();
-  @Output() gridDisplay = new EventEmitter();
   @Input() outs: Label[] = [];
+  @Input() labels: Label[] = [];
+  @Input() sectionLabels: Label[] = [];
   @Input() topStock: Label[] = [];
   filteredOuts: Label[] = [];
-  @Input() labels: Label[] = [];
   filteredLabels: Label[] = [];
+
   @Input() currentId: number;
-  @Input() currentDisplay: string;
+  currentDisplay = 'outs';
   @Input() panoMode: boolean;
+  @Output() gridId = new EventEmitter();
+  @Output() gridDisplay = new EventEmitter();
+  dropdownSettings = {};
 
   constructor(private environment: EnvironmentService) {
     this.showDepartment = environment.config.productGridFields.includes('Department');
     this.showSection = environment.config.productGridFields.includes('Section');
+    this.showTopStock = environment.config.showTopStock;
+    this.showSectionLabels = environment.config.showSectionLabels;
   }
 
 
@@ -106,13 +112,11 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
 
   }
 
-  // Called when the user clicks one of the buttons to change tables
   selectGrid(type) {
-    this.gridDisplay.emit(type);
+    this.currentDisplay = type;
     this.gridId.emit(-1);    // Emit -1 to signal that no elements are selected
   }
 
-  // Called when the user clicks on one of the rows in the table
   productGridSelected(id) {
     if (id === this.currentId) {
       this.gridId.emit(-1);

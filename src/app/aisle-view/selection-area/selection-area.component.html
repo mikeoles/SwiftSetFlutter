@@ -29,8 +29,7 @@
           [class.selected]="aisle.aisleId === this.selectedAisle.aisleId"
           *ngFor="let aisle of aisles"
           [value]="aisle"
-          (click)="aisleChanged(aisle)"
-        >
+          (click)="aisleChanged(aisle)">
           {{aisle?.aisleName}}
         </li>
       </ul>
@@ -40,7 +39,44 @@
     <button class="panoChangeButton" (click)="nextPano()"><fa-icon size="lg" class="fa" [icon]="faArrowRight"></fa-icon></button>
     <button class="rightButton" (click)="openModal('export-popup')"><img class="exportImage" src="../../assets/export-blue.png"> <span>Export</span></button>
     <button class="rightButton" (click)="resetPanoClick()">Reset Pano</button>
+    <button [ngClass]="{'selectedButton': debugMode}" class="rightButton" (click)="toggleDebugMode()">Debug</button>
     
+    <div class="rightDropdown rightButton">
+      <button class="dropdownButton" [ngClass]="{'selectedButton': showAisles}" (click)="selectDisplayDropdown()">
+        Display
+        <fa-icon *ngIf="!showDisplayToggles" size="lg" class="marginLeft fa" [icon]="faAngleDown"></fa-icon>
+        <fa-icon *ngIf="showDisplayToggles" size="lg" class="marginLeft fa" [icon]="faAngleUp"></fa-icon>
+      </button>
+      <ul class="displayDropdown" *ngIf="showDisplayToggles">
+        <li (click)="displaySelected('outs')">
+          <fa-icon *ngIf="currentlyDisplayed.has('outs')" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
+          <fa-icon *ngIf="!currentlyDisplayed.has('outs')" size="lg" class="check" [icon]="faSquare"></fa-icon>
+          Outs
+        </li>
+        <li (click)="displaySelected('shelfLabels')">
+          <fa-icon *ngIf="currentlyDisplayed.has('shelfLabels')" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
+          <fa-icon *ngIf="!currentlyDisplayed.has('shelfLabels')" size="lg" class="check" [icon]="faSquare"></fa-icon>
+          Shelf Labels
+        </li>
+        <li *ngIf="showTopStock" (click)="displaySelected('topStock')">
+          <fa-icon *ngIf="currentlyDisplayed.has('topStock')" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
+          <fa-icon *ngIf="!currentlyDisplayed.has('topStock')" size="lg" class="check" [icon]="faSquare"></fa-icon>
+          Top Stock
+        </li>
+        <li *ngIf="showSectionLabels" (click)="displaySelected('sectionLabels')">
+          <fa-icon *ngIf="currentlyDisplayed.has('sectionLabels')" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
+          <fa-icon *ngIf="!currentlyDisplayed.has('sectionLabels')" size="lg" class="check" [icon]="faSquare"></fa-icon>
+          Section Labels
+        </li>
+        <li *ngIf="showSectionBreaks" (click)="displaySelected('sectionBreaks')">
+          <fa-icon *ngIf="currentlyDisplayed.has('sectionBreaks')" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
+          <fa-icon *ngIf="!currentlyDisplayed.has('sectionBreaks')" size="lg" class="check" [icon]="faSquare"></fa-icon>
+          Section Breaks
+        </li>
+      </ul>
+      <div *ngIf="showDisplayToggles" class="pointer displayPointer"></div>
+    </div>
+
     <div id="collapsedContainer">
       <button class="dropdownButton" [ngClass]="{'selectedButton': showOptions}" (click)="selectOptionsDropdown()">
         Options
@@ -50,6 +86,7 @@
       <ul class="dropdown" *ngIf="showOptions">
         <li (click)="openModal('export-popup')">Export</li>
         <li (click)="resetPanoClick()">Reset Pano</li>
+        <li (click)="toggleDebugMode()">Debug</li>
       </ul>
       <div *ngIf="showOptions" class="pointer"></div>
     </div>

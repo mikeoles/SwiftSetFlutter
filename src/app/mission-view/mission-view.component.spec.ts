@@ -12,7 +12,6 @@ import { ModalService } from '../modal/modal.service';
 import { EnvironmentService } from '../environment.service';
 import Mission from '../mission.model';
 import Aisle from '../aisle.model';
-import SectionLabel from '../sectionLabel.model';
 
 @Component({selector: 'app-mission-stats', template: ''})
 class AppMissionStatsStubComponent {
@@ -39,24 +38,19 @@ describe('MissionViewComponent', () => {
   const labels: Label[] = [
     { labelName: 'label name', labelId: 1, barcode: '12345', productId: '12345', price: 0.0,
     bounds: { top: 0, left: 0, width: 0, height: 0 },
-    customFields: [], section: '', department: '', onHand: 0 },
+    customFields: [], section: '', department: '', onHand: 0, productCoordinates: [] },
     { labelName: 'label name', labelId: 1, barcode: '550376332', productId: '12345', price: 0.0,
     bounds: { top: 0, left: 0, width: 0, height: 0 },
-    customFields: [], section: '', department: '', onHand: 0 },
-  ];
-
-  const sectionLabels: SectionLabel[] = [
-    { labelId: 1, barcode: '12345', bounds: { top: 0, left: 0, width: 0, height: 0 } },
-    { labelId: 1, barcode: '12345', bounds: { top: 0, left: 0, width: 0, height: 0 } },
+    customFields: [], section: '', department: '', onHand: 0, productCoordinates: [] },
   ];
 
   const sectionBreaks: number[] = [19, 200];
 
   const aisles: Aisle[] = [{  aisleId: '1', aisleName: '', panoramaUrl: '', createDateTime: new Date(),
-  labels: labels, outs: labels, sectionLabels: sectionLabels, topStock: labels, sectionBreaks: sectionBreaks,
+  labels: labels, outs: labels, sectionLabels: labels, topStock: labels, sectionBreaks: sectionBreaks,
   coveragePercent: 0, aisleCoverage: '0', labelsCount: 0, outsCount: 0 }];
   const aisle: Aisle = {  aisleId: '1', aisleName: '', panoramaUrl: '', createDateTime: new Date(),
-    labels: labels, outs: labels, sectionLabels: sectionLabels, topStock: labels, sectionBreaks: sectionBreaks,
+    labels: labels, outs: labels, sectionLabels: labels, topStock: labels, sectionBreaks: sectionBreaks,
     coveragePercent: 0, aisleCoverage: '0', labelsCount: 0, outsCount: 0 };
   const mission: Mission = { missionId: '1', missionName: '', storeId: '1', startDateTime: new Date(), outs: 1, labels: 1,
     aisleCount: 1, endDateTime: new Date(), percentageRead: 1, percentageUnread: 1, unreadLabels: 1, readLabelsMissingProduct: 1,

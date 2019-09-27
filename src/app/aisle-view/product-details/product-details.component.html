@@ -1,24 +1,40 @@
 <div>
   <div id="tableSelection">
-    <button [ngClass]="{'selectedButton': currentDisplay == 'outs'}" (click)="selectGrid('outs')">Outs ({{(outs || []).length}})</button>
-    <button [ngClass]="{'selectedButton': currentDisplay == 'labels'}" (click)="selectGrid('labels')">Shelf Labels ({{(labels || []).length}})</button>
-    <button [ngClass]="{'selectedButton': currentDisplay == 'topStock'}" (click)="selectGrid('topStock')">Top Stock ({{(topStock || []).length}})</button>
+    <button [ngClass]="{'selectedButton': currentDisplay == 'outs'}" (click)="selectGrid('outs')">
+      Outs ({{(outs || []).length}})
+    </button>
+    <button [ngClass]="{'selectedButton': currentDisplay == 'labels'}" (click)="selectGrid('labels')">
+      Shelf Labels ({{(labels || []).length}})
+    </button>
+    <button *ngIf="showSectionLabels" [ngClass]="{'selectedButton': currentDisplay == 'sectionLabels'}" (click)="selectGrid('sectionLabels')">
+      Section Labels ({{(sectionLabels || []).length}})
+    </button>
+    <button *ngIf="showTopStock" [ngClass]="{'selectedButton': currentDisplay == 'topStock'}" (click)="selectGrid('topStock')">
+      Top Stock ({{(topStock || []).length}})
+    </button>
   </div>
   <div *ngIf="showDepartment || showSection" id="filterButtons">
     <div id="filterTitle">Filter</div>
-    <ng-multiselect-dropdown *ngIf="showDepartment" class="dropdown" [placeholder]="'Department'" [data]="departmentsList" [(ngModel)]="selectedDepts" [settings]="dropdownSettings"
-      (onSelect)="runFilters()" (onSelectAll)="runFilters()" (onDeSelect)="runFilters()" (onDeSelectAll)="runFilters()">
+    <ng-multiselect-dropdown *ngIf="showDepartment" class="dropdown" [placeholder]="'Department'" [data]="departmentsList"
+      [(ngModel)]="selectedDepts" [settings]="dropdownSettings" (onSelect)="runFilters()" (onSelectAll)="runFilters()"
+      (onDeSelect)="runFilters()" (onDeSelectAll)="runFilters()">
     </ng-multiselect-dropdown>
-    <ng-multiselect-dropdown *ngIf="showSection" class="dropdown" [placeholder]="'Section'" [data]="sectionsList" [(ngModel)]="selectedSects" [settings]="dropdownSettings"
-      (onSelect)="runFilters()" (onSelectAll)="runFilters()" (onDeSelect)="runFilters()" (onDeSelectAll)="runFilters()">
+    <ng-multiselect-dropdown *ngIf="showSection" class="dropdown" [placeholder]="'Section'" [data]="sectionsList"
+      [(ngModel)]="selectedSects" [settings]="dropdownSettings" (onSelect)="runFilters()" (onSelectAll)="runFilters()"
+      (onDeSelect)="runFilters()" (onDeSelectAll)="runFilters()">
     </ng-multiselect-dropdown>
   </div>
 </div>
 
 <div *ngIf='!panoMode'>
   <div [ngSwitch]="currentDisplay">
-    <app-product-grid [products]="filteredOuts" [selectedId]="currentId" (gridClicked)='productGridSelected($event)' *ngSwitchCase="'outs'"></app-product-grid>
-    <app-product-grid [products]="filteredLabels" [selectedId]="currentId" (gridClicked)='productGridSelected($event)' *ngSwitchCase="'labels'"></app-product-grid>
-    <app-product-grid [products]="topStock" [selectedId]="currentId" (gridClicked)='productGridSelected($event)' *ngSwitchCase="'topStock'"></app-product-grid>
+    <app-product-grid [products]="filteredOuts" [selectedId]="currentId" (gridClicked)='productGridSelected($event)'
+      *ngSwitchCase="'outs'"></app-product-grid>
+    <app-product-grid [products]="filteredLabels" [selectedId]="currentId" (gridClicked)='productGridSelected($event)'
+      *ngSwitchCase="'labels'"></app-product-grid>
+    <app-product-grid [products]="sectionLabels" [onlyBarcode]="true" [selectedId]="currentId" (gridClicked)='productGridSelected($event)'
+      *ngSwitchCase="'sectionLabels'"></app-product-grid>
+    <app-product-grid [products]="topStock" [onlyBarcode]="true" [selectedId]="currentId" (gridClicked)='productGridSelected($event)'
+      *ngSwitchCase="'topStock'"></app-product-grid>
   </div>
 </div>

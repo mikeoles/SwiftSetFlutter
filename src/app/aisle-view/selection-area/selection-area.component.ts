@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output, HostListener, ElementRef, OnChanges, SimpleChanges, Inject } from '@angular/core';
-import { faAngleDown, faAngleUp, faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faAngleUp, faArrowRight, faArrowLeft, faCheckSquare, faSquare } from '@fortawesome/free-solid-svg-icons';
 import Mission from '../../mission.model';
 import Aisle from '../../aisle.model';
 import * as jsPDF from 'jspdf';
@@ -20,11 +20,19 @@ import { Router } from '@angular/router';
   styleUrls: ['./selection-area.component.scss']
 })
 export class SelectionAreaComponent implements OnInit, OnChanges {
+  store: Store;
+
   showMissions = false;
   showOptions = false;
   showAisles = false;
+  showDisplayToggles = false;
+  showTopStock = false;
+  showSectionLabels = false;
+  showSectionBreaks = false;
+
   exportOnHand = false;
   exportingPDF = false;
+
   @Input() missions: Mission[];
   @Input() aisles: Aisle[];
   @Input() selectedMission: Mission;
@@ -33,21 +41,32 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   @Input() panoramaUrl: string;
   @Input() outs: Label[] = [];
   @Input() labels: Label[] = [];
+  @Input() debugMode: boolean;
+  @Input() currentlyDisplayed: Set<string>;
+
   @Output() missionSelected = new EventEmitter();
   @Output() aisleSelected = new EventEmitter();
   @Output() resetPano = new EventEmitter();
   @Output() resetPanoAfterExport = new EventEmitter();
-  store: Store;
+  @Output() toggleDebug = new EventEmitter();
+  @Output() toggleDisplayed = new EventEmitter();
+
   faAngleDown = faAngleDown;
   faAngleUp = faAngleUp;
   faArrowRight = faArrowRight;
   faArrowLeft = faArrowLeft;
+  faCheckSquare = faCheckSquare;
+  faSquare = faSquare;
+
   currentlyExporting = false;
 
   constructor(private eRef: ElementRef, private modalService: ModalService, private environment: EnvironmentService,
     @Inject('ApiService') private apiService: ApiService, private router: Router) {
     this.exportOnHand = environment.config.onHand;
     this.exportingPDF = environment.config.exportingPDF;
+    this.showTopStock = environment.config.showTopStock;
+    this.showSectionLabels = environment.config.showSectionLabels;
+    this.showSectionBreaks = environment.config.showSectionBreaks;
   }
 
   ngOnInit() {
@@ -100,26 +119,44 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
     this.showAisles = false;
   }
 
+  displaySelected(display) {
+    this.toggleDisplayed.emit(display);
+  }
+
   selectMissionsDropdown() {
     this.showMissions = !this.showMissions;
     this.showAisles = false;
     this.showOptions = false;
+    this.showDisplayToggles = false;
   }
 
   selectAislesDropdown() {
     this.showAisles = !this.showAisles;
     this.showMissions = false;
     this.showOptions = false;
+    this.showDisplayToggles = false;
+  }
+
+  selectDisplayDropdown() {
+    this.showDisplayToggles = !this.showDisplayToggles;
+    this.showMissions = false;
+    this.showOptions = false;
+    this.showAisles = false;
   }
 
   selectOptionsDropdown() {
     this.showOptions = !this.showOptions;
     this.showAisles = false;
     this.showMissions = false;
+    this.showDisplayToggles = false;
   }
 
   resetPanoClick() {
     this.resetPano.emit();
+  }
+
+  toggleDebugMode() {
+    this.toggleDebug.emit();
   }
 
   exportAisle(exportType: string, modalId: string) {

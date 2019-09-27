@@ -10,7 +10,7 @@ import DaySummary from './daySummary.model';
 import CustomField from './customField.model';
 import { ApiService } from './api.service';
 import { EnvironmentService } from './environment.service';
-import SectionLabel from './sectionLabel.model';
+import ProductCoordinate from './productCoordinate.model';
 
 @Injectable({
   providedIn: 'root'
@@ -48,23 +48,32 @@ export class CloudApiService implements ApiService {
       outsCount: aisle.outsCount,
       outs: (aisle.outs || []).map(l => this.createLabel(l)),
       sectionLabels: (aisle.sectionLabels || []).map(l => this.createSectionLabel(l)),
-      topStock: (aisle.topStock || []).map(l => this.createLabel(l)),
-      sectionBreaks: aisle.sectionBreaks,
+      topStock: (aisle.topStock || []).map(l => this.createSectionLabel(l)),
+      sectionBreaks: [600, 4500],
       coveragePercent: aisle.coveragePercent,
       aisleCoverage: aisleCoverage,
     };
   }
 
-  createSectionLabel(label: any): SectionLabel {
+    // Section label and top stock only contains a barcode and bound
+  createSectionLabel(label: any): Label {
     return {
       labelId: this.labelId++,
+      labelName: 'Section Label',
       barcode: label.barcode || '000000000000',
+      productId: '',
+      price: label.price || 0.0,
+      department: '',
+      onHand: 0,
       bounds: {
         top: label.bounds.top,
         left: label.bounds.left,
         width: label.bounds.width,
         height: label.bounds.height,
-      }
+      },
+      productCoordinates: [],
+      section: '',
+      customFields: [],
     };
   }
 
@@ -82,6 +91,8 @@ export class CloudApiService implements ApiService {
       );
     }
 
+    const prc = [0, 120];
+
     return {
       labelId: this.labelId++,
       labelName: label.labelName || 'Missing Product Data',
@@ -96,8 +107,18 @@ export class CloudApiService implements ApiService {
         width: label.bounds.width,
         height: label.bounds.height,
       },
+      productCoordinates: (prc || []).map(pc => this.createProductCoordinate(label.bounds, pc)),
       section: label.section,
       customFields: (customFields || []).map(cf => this.createCustomField(cf)),
+    };
+  }
+
+  createProductCoordinate(productCoordinate: any, rightoffset: number): ProductCoordinate {
+    return{
+      top: productCoordinate.top - 160,
+      left: productCoordinate.left + rightoffset,
+      width: productCoordinate.width / 2,
+      height: productCoordinate.height * 3.5
     };
   }
 

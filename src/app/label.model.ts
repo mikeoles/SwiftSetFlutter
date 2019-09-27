@@ -1,4 +1,5 @@
 import CustomField from './customField.model';
+import ProductCoordinate from './productCoordinate.model';
 
 export default class Label {
   labelId: number;
@@ -15,5 +16,6 @@ export default class Label {
     width: number;
     height: number;
   };
+  productCoordinates: ProductCoordinate[];
   customFields: Array<CustomField>;
 }

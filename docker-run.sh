@@ -19,6 +19,15 @@ fi
 if [[ ! -z "$COVERAGE_DISPLAY_TYPE" ]]; then
   echo "  \"coverageDisplayType\": \"$COVERAGE_DISPLAY_TYPE\"," >> /usr/share/nginx/html/assets/config.json
 fi
+if [[ ! -z "$SHOW_TOP_STOCK" ]]; then
+  echo "  \"showTopStock\": \"$SHOW_TOP_STOCK\"," >> /usr/share/nginx/html/assets/config.json
+fi
+if [[ ! -z "$SHOW_SECTION_LABELS" ]]; then
+  echo "  \"showSectionLabels\": \"$SHOW_SECTION_LABELS\"," >> /usr/share/nginx/html/assets/config.json
+fi
+if [[ ! -z "$SHOW_SECTION_BREAK" ]]; then
+  echo "  \"showSectionBreak\": \"$SHOW_SECTION_BREAK\"," >> /usr/share/nginx/html/assets/config.json
+fi
 echo "  \"production\": true" >> /usr/share/nginx/html/assets/config.json
 echo "}" >> /usr/share/nginx/html/assets/config.json
 

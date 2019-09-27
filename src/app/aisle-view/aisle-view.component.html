@@ -1,13 +1,15 @@
 <app-selection-area *ngIf="selectedMission" [missions]="missions" [aisles]="selectedMission.aisles"
   [selectedMission]="selectedMission" [selectedAisle]="selectedAisle" [panoramaUrl]="panoramaUrl" [outs]="outs" [labels]="labels"
   (missionSelected)='changeMission($event)' (aisleSelected)='setAisle($event)' [panoTouched]=panoTouched
-  (panoSwitch)='changePanoMode()' (resetPano)='resetPanoClicked()' (resetPanoAfterExport)='resetPanoAfterExportClicked()'>
+  (panoSwitch)='changePanoMode()' (resetPano)='resetPanoClicked()' (resetPanoAfterExport)='resetPanoAfterExportClicked()'
+  (toggleDebug)='toggleDebug()' [debugMode]='debugMode' 
+  [currentlyDisplayed]='currentlyDisplayed' (toggleDisplayed)='toggleDisplayed($event)'>
 </app-selection-area>
 <app-panorama [outs]="outs" [labels]="labels" [sectionLabels]="sectionLabels" [sectionBreaks]="sectionBreaks" [topStock]="topStock" 
-  [panoramaUrl]="panoramaUrl" [currentId]="currentId" [currentDisplay]="currentDisplay" (panoramaId)='setId($event)'
-  [panoMode]='panoMode' (panoramaTouched)='hideDropdowns()' [resetPano]='resetPano' [resetPanoAfterExport]='resetPanoAfterExport'>
+  [panoramaUrl]="panoramaUrl" [currentId]="currentId" (panoramaId)='setId($event)'
+  [panoMode]='panoMode' (panoramaTouched)='hideDropdowns()' [resetPano]='resetPano' [resetPanoAfterExport]='resetPanoAfterExport'
+  [debugMode]='debugMode' [currentlyDisplayed]='currentlyDisplayed'>
 </app-panorama>
-<app-product-details [outs]="outs" [labels]="labels"
-  (gridId)='setId($event)' (gridDisplay)='setDisplay($event)'
-  [currentId]="currentId" [currentDisplay]="currentDisplay" [panoMode]='panoMode'>
+<app-product-details [outs]="outs" [labels]="labels" [sectionLabels]="sectionLabels" [topStock]="topStock" 
+  (gridId)='setId($event)' [currentId]="currentId" [panoMode]='panoMode'>
 </app-product-details>
