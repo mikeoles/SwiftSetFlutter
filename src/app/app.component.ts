@@ -5,6 +5,8 @@ import { LogoService } from './logo.service';
 import { BackService } from './back.service';
 import { faArrowAltCircleLeft } from '@fortawesome/free-regular-svg-icons';
 import { ApiService } from './api.service';
+import { Roles } from '../permissions/roles';
+import { EnvironmentService } from './environment.service';
 
 @Component({
   selector: 'app-root',
@@ -16,9 +18,10 @@ export class AppComponent implements OnInit {
 
   displayBackButton: boolean;
   faArrowAltCircleLeft = faArrowAltCircleLeft;
+  permissionsSet: Promise<boolean>;
 
   constructor(@Inject('ApiService') private apiService: ApiService, private router: Router, private logoService: LogoService,
-    private backService: BackService) {
+    private backService: BackService, private environment: EnvironmentService) {
     router.events.subscribe( (event) => ( event instanceof NavigationEnd ) && this.handleRouteChange() );
   }
 
@@ -32,7 +35,7 @@ export class AppComponent implements OnInit {
       const code: string = curUrlTree.queryParamMap.get('code');
       let state: string = curUrlTree.queryParamMap.get('state');
       if (code && code.length > 0) {
-        if (state = localStorage.getItem('state')) {
+        if (state === localStorage.getItem('state')) {
           localStorage.setItem('access_code', code);
         }
       } else if (!localStorage.getItem('access_code')) {
@@ -43,10 +46,19 @@ export class AppComponent implements OnInit {
         'response_type=code&scope=openid+profile+email+offline_access+groups' +
         '&state=' + state;
         localStorage.setItem('state', state);
-      } else if (localStorage.getItem('access_token') && localStorage.getItem('id_token')) {
+      } else if (!localStorage.getItem('access_token') || !localStorage.getItem('id_token')) {
         this.apiService.getTokens(localStorage.getItem('access_code')).subscribe( tokens => {
           localStorage.setItem('access_token', tokens.access_token);
           localStorage.setItem('id_token', tokens.id_token);
+          this.apiService.getRoles(localStorage.getItem('id_token')).subscribe( role => {
+            this.environment.setPermissons(Roles[role]);
+            this.permissionsSet = Promise.resolve(true);
+          });
+        });
+      } else {
+        this.apiService.getRoles(localStorage.getItem('id_token')).subscribe( role => {
+          this.environment.setPermissons(Roles[role]);
+          this.permissionsSet = Promise.resolve(true);
         });
       }
     });
@@ -66,5 +78,6 @@ export class AppComponent implements OnInit {
     } else {
       this.displayBackButton = false;
     }
+    this.permissionsSet = Promise.resolve(true);
   }
 }

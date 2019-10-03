@@ -13,6 +13,7 @@ import panzoom from 'panzoom';
 import htmlToImage from 'html-to-image';
 import { saveAs } from 'file-saver';
 import { Router } from '@angular/router';
+import { Permissions } from 'src/permissions/permissions';
 
 @Component({
   selector: 'app-selection-area',
@@ -29,6 +30,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   showTopStock = false;
   showSectionLabels = false;
   showSectionBreaks = false;
+  showDebugging = false;
 
   exportOnHand = false;
   exportingPDF = false;
@@ -64,9 +66,10 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
     @Inject('ApiService') private apiService: ApiService, private router: Router) {
     this.exportOnHand = environment.config.onHand;
     this.exportingPDF = environment.config.exportingPDF;
-    this.showTopStock = environment.config.showTopStock;
-    this.showSectionLabels = environment.config.showSectionLabels;
-    this.showSectionBreaks = environment.config.showSectionBreaks;
+    this.showTopStock = environment.config.permissions.indexOf(Permissions.topStock) > -1;
+    this.showSectionLabels = environment.config.permissions.indexOf(Permissions.sectionLabels) > -1;
+    this.showSectionBreaks = environment.config.permissions.indexOf(Permissions.sectionBreaks) > -1;
+    this.showDebugging = environment.config.permissions.indexOf(Permissions.debugging) > -1;
   }
 
   ngOnInit() {

@@ -1,6 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
+import { Permissions } from 'src/permissions/permissions';
 
 @Injectable({
   providedIn: 'root'
@@ -22,5 +23,9 @@ export class EnvironmentService {
 
   get config() {
       return this.appConfig;
+  }
+
+  setPermissons(permissions: Permissions[]) {
+    this.appConfig.permissions = permissions;
   }
 }

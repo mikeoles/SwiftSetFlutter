@@ -11,7 +11,5 @@ export const environment = {
   labelScrolling: labelScrollOptions.vertical,
   productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price', 'On Hand'],
   missionHistoryDays: 14, // Number of days to display missions for
-  showTopStock: true,
-  showSectionLabels: true,
-  showSectionBreaks: true,
+  permissions: ['topStock', 'debugging', 'sectionLabels', 'sectionBreaks']
 };

@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Input, OnChanges } from '@angular/core';
 import Label from '../../label.model';
 import { EnvironmentService } from 'src/app/environment.service';
+import { Permissions } from 'src/permissions/permissions';
 
 @Component({
   selector: 'app-product-details',
@@ -38,8 +39,8 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
   constructor(private environment: EnvironmentService) {
     this.showDepartment = environment.config.productGridFields.includes('Department');
     this.showSection = environment.config.productGridFields.includes('Section');
-    this.showTopStock = environment.config.showTopStock;
-    this.showSectionLabels = environment.config.showSectionLabels;
+    this.showTopStock = environment.config.permissions.indexOf(Permissions.topStock) > -1;
+    this.showSectionLabels = environment.config.permissions.indexOf(Permissions.sectionLabels) > -1;
   }
 
 

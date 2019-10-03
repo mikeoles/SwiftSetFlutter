@@ -4,13 +4,14 @@ import { HttpClient } from '@angular/common/http';
 import Mission from './mission.model';
 import Aisle from './aisle.model';
 import Label from './label.model';
-import { Observable, forkJoin } from 'rxjs';
+import { Observable, forkJoin, of } from 'rxjs';
 import Store from './store.model';
 import DaySummary from './daySummary.model';
 import CustomField from './customField.model';
 import { ApiService } from './api.service';
 import { EnvironmentService } from './environment.service';
 import ProductCoordinate from './productCoordinate.model';
+import keys from './keys.json';
 
 @Injectable({
   providedIn: 'root'
@@ -334,8 +335,10 @@ export class CloudApiService implements ApiService {
   }
 
   getTokens(accessCode: string): any {
-    return this.http.get(
-      `${this.apiUrl}/validate?access_code=${accessCode}`
-    );
+    return of(keys);
+  }
+
+  getRoles(idToken: string): Observable<string> {
+    return of('loblaws');
   }
 }
