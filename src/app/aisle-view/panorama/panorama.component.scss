@@ -34,6 +34,10 @@
         border-color:  $primary;
       }
 
+      .missingBarcodesAnnotation {
+        border-color:  $missingBarcodes;
+      }
+
       .selected {
         border-color: $selected;
       }

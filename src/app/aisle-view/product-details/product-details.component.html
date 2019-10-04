@@ -2,6 +2,7 @@
   <div id="tableSelection">
     <button [ngClass]="{'selectedButton': currentDisplay == 'outs'}" (click)="selectGrid('outs')">Outs ({{(outs || []).length}})</button>
     <button [ngClass]="{'selectedButton': currentDisplay == 'labels'}" (click)="selectGrid('labels')">Shelf Labels ({{(labels || []).length}})</button>
+    <button [ngClass]="{'selectedButton': currentDisplay == 'missingBarcodes'}" (click)="selectGrid('missingBarcodes')">Missing Barcodes ({{(missingBarcodes || []).length}})</button>
     <button *ngIf="showPlugs" [ngClass]="{'selectedButton': currentDisplay == 'plugs'}" (click)="selectGrid('plugs')">Spreads</button>
     <button *ngIf="showSuppliers" [ngClass]="{'selectedButton': currentDisplay == 'suppliers'}" (click)="selectGrid('suppliers')">Suppliers</button>
   </div>
@@ -20,6 +21,7 @@
   <div [ngSwitch]="currentDisplay">
     <app-product-grid [products]="filteredOuts" [selectedId]="currentId" (gridClicked)='productGridSelected($event)' *ngSwitchCase="'outs'"></app-product-grid>
     <app-product-grid [products]="filteredLabels" [selectedId]="currentId" (gridClicked)='productGridSelected($event)' *ngSwitchCase="'labels'"></app-product-grid>
+    <app-product-grid [products]="missingBarcodes" [selectedId]="currentId" (gridClicked)='productGridSelected($event)' *ngSwitchCase="'missingBarcodes'"></app-product-grid>
     <app-product-grid [products]="labels" [selectedId]="currentId" (gridClicked)='productGridSelected($event)' *ngSwitchCase="'plugs'"></app-product-grid>
     <app-product-grid [products]="labels" [selectedId]="currentId" (gridClicked)='productGridSelected($event)' *ngSwitchCase="'suppliers'"></app-product-grid>
   </div>

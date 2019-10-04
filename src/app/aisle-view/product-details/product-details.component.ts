@@ -28,6 +28,7 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
   filteredOuts: Label[] = [];
   @Input() labels: Label[] = [];
   filteredLabels: Label[] = [];
+  @Input() missingBarcodes: Label[] = [];
   @Input() currentId: number;
   @Input() currentDisplay: string;
   @Input() panoMode: boolean;
