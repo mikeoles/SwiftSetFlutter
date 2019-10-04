@@ -113,11 +113,12 @@ describe('ProductDetailsComponent', () => {
   });
 
   it('displays buttons', () => {
-    expect(buttonsEl.childElementCount).toEqual(4);
+    expect(buttonsEl.childElementCount).toEqual(5);
     expect(buttons[0].textContent).toContain('Outs');
     expect(buttons[1].textContent).toContain('Shelf Labels');
-    expect(buttons[2].textContent).toContain('Spreads');
-    expect(buttons[3].textContent).toContain('Suppliers');
+    expect(buttons[2].textContent).toContain('Missing Barcodes');
+    expect(buttons[3].textContent).toContain('Spreads');
+    expect(buttons[4].textContent).toContain('Suppliers');
   });
 
   it('displays counts on buttons', () => {
@@ -129,16 +130,16 @@ describe('ProductDetailsComponent', () => {
     component.showPlugs = false;
     fixture.detectChanges();
     buttons = buttonsEl.children;
-    expect(buttonsEl.childElementCount).toEqual(3);
-    expect(buttons[2].textContent).toEqual('Suppliers');
+    expect(buttonsEl.childElementCount).toEqual(4);
+    expect(buttons[3].textContent).toEqual('Suppliers');
   });
 
   it('can hide suppliers', () => {
     component.showSuppliers = false;
     fixture.detectChanges();
     buttons = buttonsEl.children;
-    expect(buttonsEl.childElementCount).toEqual(3);
-    expect(buttons[2].textContent).toEqual('Spreads');
+    expect(buttonsEl.childElementCount).toEqual(4);
+    expect(buttons[3].textContent).toEqual('Spreads');
   });
 
   it('can hide plugs and suppliers', () => {
@@ -146,7 +147,7 @@ describe('ProductDetailsComponent', () => {
     component.showSuppliers = false;
     fixture.detectChanges();
     buttons = buttonsEl.children;
-    expect(buttonsEl.childElementCount).toEqual(2);
+    expect(buttonsEl.childElementCount).toEqual(3);
   });
 
   it('button can be selected', () => {
