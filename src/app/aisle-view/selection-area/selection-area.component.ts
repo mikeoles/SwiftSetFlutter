@@ -158,7 +158,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
       }
       for (let i = 0; i < row.length; i++) {
         if (typeof row[i] === 'string') {
-          row[i] = row[i].replace('"', '""');
+          row[i] = row[i].replace(/"/g, '""');
           if (row[i].includes('\n') || row[i].includes(',') || row[i].includes('"')) {
             row[i] = '"' + row[i] + '"';
           }
