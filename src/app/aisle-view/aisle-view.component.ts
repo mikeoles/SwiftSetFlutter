@@ -24,6 +24,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   title = 'aisle';
   outs: Label[];
   labels: Label[];
+  missingBarcodes: Label[];
   missions: Mission[];
   selectedMission: Mission;
   aisles: Aisle[];
@@ -126,6 +127,17 @@ export class AisleViewComponent implements OnInit, OnDestroy {
     this.apiService.getAisle(this.selectedMission.storeId, this.selectedMission.missionId, aisle.aisleId).subscribe(fullAisle => {
       this.outs = fullAisle.outs;
       this.labels = fullAisle.labels;
+      this.missingBarcodes = [];
+      this.labels.forEach(label => {
+        if (/^0*$/.test(label.barcode)) {
+          this.missingBarcodes.push(label);
+        }
+      });
+      this.outs.forEach(out => {
+        if (/^0*$/.test(out.barcode)) {
+          this.missingBarcodes.push(out);
+        }
+      });
       this.panoramaUrl = fullAisle.panoramaUrl;
       this.currentDisplay = 'outs';
       this.currentId = null;
