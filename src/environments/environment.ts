@@ -15,7 +15,9 @@ export const environment = {
   productGridFields: ['Barcode', 'top', 'left', 'width', 'height'],
   labelScrolling: labelScrollOptions.vertical,
   missionHistoryDays: 14, // Number of days to display missions for
-  permissions: ['topStock', 'debugging', 'sectionLabels', 'sectionBreaks']
+  permissions: ['topStock', 'debugging', 'sectionLabels', 'sectionBreaks'],
+  authUsers: false,
+  authUrl: 'http://localhost:5556/auth?'
 };
 
 /*

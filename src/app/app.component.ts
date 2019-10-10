@@ -31,35 +31,8 @@ export class AppComponent implements OnInit {
           return;
       }
       window.scrollTo(0, 0);
-      const curUrlTree = this.router.parseUrl(this.router.url);
-      const code: string = curUrlTree.queryParamMap.get('code');
-      let state: string = curUrlTree.queryParamMap.get('state');
-      if (code && code.length > 0) {
-        if (state === localStorage.getItem('state')) {
-          localStorage.setItem('access_code', code);
-        }
-      } else if (!localStorage.getItem('access_code')) {
-        state = Math.random().toString();
-        window.location.href = 'http://localhost:5556/auth?' +
-        'client_id=example-app&' +
-        'redirect_uri=http%3A%2F%2Flocalhost%3A4200&' +
-        'response_type=code&scope=openid+profile+email+offline_access+groups' +
-        '&state=' + state;
-        localStorage.setItem('state', state);
-      } else if (!localStorage.getItem('access_token') || !localStorage.getItem('id_token')) {
-        this.apiService.getTokens(localStorage.getItem('access_code')).subscribe( tokens => {
-          localStorage.setItem('access_token', tokens.access_token);
-          localStorage.setItem('id_token', tokens.id_token);
-          this.apiService.getRoles(localStorage.getItem('id_token')).subscribe( role => {
-            this.environment.setPermissons(Roles[role]);
-            this.permissionsSet = Promise.resolve(true);
-          });
-        });
-      } else {
-        this.apiService.getRoles(localStorage.getItem('id_token')).subscribe( role => {
-          this.environment.setPermissons(Roles[role]);
-          this.permissionsSet = Promise.resolve(true);
-        });
+      if (this.environment.config.authUsers) {
+        this.authenticateUser();
       }
     });
   }
@@ -79,5 +52,38 @@ export class AppComponent implements OnInit {
       this.displayBackButton = false;
     }
     this.permissionsSet = Promise.resolve(true);
+  }
+
+  authenticateUser() {
+    const curUrlTree = this.router.parseUrl(this.router.url);
+    const code: string = curUrlTree.queryParamMap.get('code');
+    let state: string = curUrlTree.queryParamMap.get('state');
+    if (code && code.length > 0) {
+      if (state === localStorage.getItem('state')) {
+        localStorage.setItem('access_code', code);
+      }
+    } else if (!localStorage.getItem('access_code')) {
+      state = Math.random().toString();
+      window.location.href =  this.environment.config.authUrl +
+      'client_id=example-app&' +
+      'redirect_uri=http%3A%2F%2Flocalhost%3A4200&' +
+      'response_type=code&scope=openid+profile+email+offline_access+groups' +
+      '&state=' + state;
+      localStorage.setItem('state', state);
+    } else if (!localStorage.getItem('access_token') || !localStorage.getItem('id_token')) {
+      this.apiService.getTokens(localStorage.getItem('access_code')).subscribe( tokens => {
+        localStorage.setItem('access_token', tokens.access_token);
+        localStorage.setItem('id_token', tokens.id_token);
+        this.apiService.getRoles(localStorage.getItem('id_token')).subscribe( role => {
+          this.environment.setPermissons(Roles[role]);
+          this.permissionsSet = Promise.resolve(true);
+        });
+      });
+    } else {
+      this.apiService.getRoles(localStorage.getItem('id_token')).subscribe( role => {
+        this.environment.setPermissons(Roles[role]);
+        this.permissionsSet = Promise.resolve(true);
+      });
+    }
   }
 }
