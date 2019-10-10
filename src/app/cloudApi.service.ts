@@ -40,13 +40,13 @@ export class CloudApiService implements ApiService {
     }
 
     return {
-      aisleId: aisle.aisleId,
-      aisleName: aisle.aisleName,
+      aisleId: aisle.id,
+      aisleName: aisle.name,
       panoramaUrl: aisle.panoramaUrl,
-      createDateTime: aisle.createDate,
-      labelsCount: aisle.labelsCount,
+      createDateTime: aisle.createDateTime,
+      labelsCount: aisle.labelCount,
       labels: (aisle.labels || []).map(l => this.createLabel(l)),
-      outsCount: aisle.outsCount,
+      outsCount: aisle.outCount,
       outs: (aisle.outs || []).map(l => this.createLabel(l)),
       sectionLabels: (aisle.sectionLabels || []).map(l => this.createSectionLabel(l)),
       topStock: (aisle.topStock || []).map(l => this.createSectionLabel(l)),
@@ -79,9 +79,16 @@ export class CloudApiService implements ApiService {
   }
 
   createLabel(label: any): Label {
+    const product = label.product || {
+      description: 'Missing Product Data',
+      price: 0.0,
+      onHand: null,
+      itemId: '000000',
+    };
+
     const customFields = [];
-    if (label.custom_fields) {
-      Object.entries(label.custom_fields).forEach(
+    if (label.product) {
+      Object.entries(label.product).forEach(
         ([key, value]) => {
           const customField = {
             name: key,
@@ -96,12 +103,12 @@ export class CloudApiService implements ApiService {
 
     return {
       labelId: this.labelId++,
-      labelName: label.labelName || 'Missing Product Data',
+      labelName: product.description,
       barcode: label.barcode || '000000000000',
-      productId: label.productId || '000000',
-      price: label.price || 0.0,
+      productId: product.itemId,
+      price: label.price || product.price,
       department: '',
-      onHand: label.onHand,
+      onHand: product.onHand,
       bounds: {
         top: label.bounds.top,
         left: label.bounds.left,
@@ -143,13 +150,13 @@ export class CloudApiService implements ApiService {
       endDateTime: new Date(adjEndDateString),
       createDateTime: new Date(adjCreateDateString),
       aisleCount: mission.aisleCount,
-      labels: mission.labels,
-      outs: mission.outs,
-      readLabelsMatchingProduct: mission.readLabelsMatchingProduct,
-      readLabelsMissingProduct: mission.readLabelsMissingProduct,
-      unreadLabels: mission.unreadLabels,
-      percentageUnread: mission.percentageUnread,
-      percentageRead: mission.percentageRead,
+      labels: mission.labelCount,
+      outs: mission.outCount,
+      readLabelsMatchingProduct: mission.labelMatchingProductCount,
+      readLabelsMissingProduct: mission.labelMissingProductCount,
+      unreadLabels: mission.labelUnreadCount,
+      percentageUnread: mission.labelUnreadPercentage,
+      percentageRead: mission.labelReadPercentage,
       aisles: (mission.aisles || []).map(a => this.createAisle(a)),
     };
   }
