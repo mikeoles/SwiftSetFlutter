@@ -15,15 +15,16 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
   showSection: Boolean;
   showTopStock = false;
   showSectionLabels = false;
+  showMisreadBarcodes = false;
 
   departmentsList: string[] = [];
   sectionsList: string[] = [];
-
   selectedDepts: string[] = [];
   selectedSects: string[] = [];
 
   @Input() outs: Label[] = [];
   @Input() labels: Label[] = [];
+  @Input() misreadBarcodes: Label[] = [];
   @Input() sectionLabels: Label[] = [];
   @Input() topStock: Label[] = [];
   filteredOuts: Label[] = [];
@@ -33,7 +34,6 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
   currentDisplay = 'outs';
   @Input() panoMode: boolean;
   @Output() gridId = new EventEmitter();
-  @Output() gridDisplay = new EventEmitter();
   dropdownSettings = {};
 
   constructor(private environment: EnvironmentService) {
@@ -41,6 +41,7 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
     this.showSection = environment.config.productGridFields.includes('Section');
     this.showTopStock = environment.config.permissions.indexOf(Permissions.topStock) > -1;
     this.showSectionLabels = environment.config.permissions.indexOf(Permissions.sectionLabels) > -1;
+    this.showMisreadBarcodes = environment.config.permissions.indexOf(Permissions.misreadBarcodes) > -1;
   }
 
 

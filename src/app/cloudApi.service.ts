@@ -12,6 +12,7 @@ import { ApiService } from './api.service';
 import { EnvironmentService } from './environment.service';
 import ProductCoordinate from './productCoordinate.model';
 import keys from './keys.json';
+import AnnotationCategory from './annotationCategory.model';
 
 @Injectable({
   providedIn: 'root'
@@ -50,7 +51,7 @@ export class CloudApiService implements ApiService {
       outs: (aisle.outs || []).map(l => this.createLabel(l)),
       sectionLabels: (aisle.sectionLabels || []).map(l => this.createSectionLabel(l)),
       topStock: (aisle.topStock || []).map(l => this.createSectionLabel(l)),
-      sectionBreaks: [600, 4500],
+      sectionBreaks: aisle.sectionBreaks,
       coveragePercent: aisle.coveragePercent,
       aisleCoverage: aisleCoverage,
     };
@@ -75,6 +76,7 @@ export class CloudApiService implements ApiService {
       productCoordinates: [],
       section: '',
       customFields: [],
+      misreadType: '',
     };
   }
 
@@ -92,8 +94,6 @@ export class CloudApiService implements ApiService {
       );
     }
 
-    const prc = [0, 120];
-
     return {
       labelId: this.labelId++,
       labelName: label.labelName || 'Missing Product Data',
@@ -108,18 +108,19 @@ export class CloudApiService implements ApiService {
         width: label.bounds.width,
         height: label.bounds.height,
       },
-      productCoordinates: (prc || []).map(pc => this.createProductCoordinate(label.bounds, pc)),
+      productCoordinates: (label.productCoordinates || []).map(pc => this.createProductCoordinate(label.bounds)),
       section: label.section,
       customFields: (customFields || []).map(cf => this.createCustomField(cf)),
+      misreadType: '',
     };
   }
 
-  createProductCoordinate(productCoordinate: any, rightoffset: number): ProductCoordinate {
+  createProductCoordinate(productCoordinate: any): ProductCoordinate {
     return{
-      top: productCoordinate.top - 160,
-      left: productCoordinate.left + rightoffset,
-      width: productCoordinate.width / 2,
-      height: productCoordinate.height * 3.5
+      top: productCoordinate.top,
+      left: productCoordinate.left,
+      width: productCoordinate.width,
+      height: productCoordinate.height
     };
   }
 
@@ -339,6 +340,54 @@ export class CloudApiService implements ApiService {
   }
 
   getRoles(idToken: string): Observable<string> {
-    return of('loblaws');
+    return of('bossanova');
+  }
+
+  getMissedCategories(): Observable<AnnotationCategory[]> {
+    return this.http.get('http://localhost:4200/assets/mock/categoriesmissed.json').pipe(
+      map<any, AnnotationCategory[]>(o => o.map(c => this.createAnnotationCategory(c))),
+    );
+  }
+
+  getMisreadCategories(): Observable<AnnotationCategory[]> {
+    return this.http.get('http://localhost:4200/assets/mock/categories.json').pipe(
+      map<any, AnnotationCategory[]>(o => o.map(c => this.createAnnotationCategory(c))),
+    );
+  }
+
+  createAnnotationCategory(category: any): AnnotationCategory {
+    return {
+      category: category.category,
+      color: category.color,
+      hotkey: category.hotkey,
+    };
+  }
+
+  getAnnotations(storeId: string, missionId: string, aisleId: string) {
+    throw new Error('Method not implemented.');
+  }
+
+  createMissedLabelAnnotation(storeId: string, missionId: string, aisleId: string, top: string, left: string, category: string) {
+    throw new Error('Method not implemented.');
+  }
+
+  updateMissedLabelAnnotation(storeId: string, missionId: string, aisleId: string, top: string, left: string, category: string) {
+    throw new Error('Method not implemented.');
+  }
+
+  deleteMissedLabelAnnotation(storeId: string, missionId: string, aisleId: string, top: string, left: string) {
+    throw new Error('Method not implemented.');
+  }
+
+  createMisreadLabelAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string, category: string) {
+    throw new Error('Method not implemented.');
+  }
+
+  updateMisreadLabelAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string, category: string) {
+    throw new Error('Method not implemented.');
+  }
+
+  deleteMisreadLabelAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string) {
+    throw new Error('Method not implemented.');
   }
 }

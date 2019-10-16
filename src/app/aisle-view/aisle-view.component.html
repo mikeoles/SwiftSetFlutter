@@ -2,14 +2,18 @@
   [selectedMission]="selectedMission" [selectedAisle]="selectedAisle" [panoramaUrl]="panoramaUrl" [outs]="outs" [labels]="labels"
   (missionSelected)='changeMission($event)' (aisleSelected)='setAisle($event)' [panoTouched]=panoTouched
   (panoSwitch)='changePanoMode()' (resetPano)='resetPanoClicked()' (resetPanoAfterExport)='resetPanoAfterExportClicked()'
-  (toggleDebug)='toggleDebug()' [debugMode]='debugMode' 
+  (toggleMode)='toggleMode($event)' [debugMode]='debugMode' [missingBarcodesMode]='missingBarcodesMode'
   [currentlyDisplayed]='currentlyDisplayed' (toggleDisplayed)='toggleDisplayed($event)'>
 </app-selection-area>
-<app-panorama [outs]="outs" [labels]="labels" [sectionLabels]="sectionLabels" [sectionBreaks]="sectionBreaks" [topStock]="topStock" 
-  [panoramaUrl]="panoramaUrl" [currentId]="currentId" (panoramaId)='setId($event)'
-  [panoMode]='panoMode' (panoramaTouched)='hideDropdowns()' [resetPano]='resetPano' [resetPanoAfterExport]='resetPanoAfterExport'
-  [debugMode]='debugMode' [currentlyDisplayed]='currentlyDisplayed'>
+<app-panorama [panoramaUrl]="panoramaUrl" [currentId]="currentId" [currentlyDisplayed]='currentlyDisplayed'
+  [outs]="outs" [labels]="labels" [sectionLabels]="sectionLabels" [sectionBreaks]="sectionBreaks" [topStock]="topStock" 
+  [panoMode]='panoMode' [debugMode]='debugMode'  [resetPano]='resetPano' [resetPanoAfterExport]='resetPanoAfterExport'
+  [missingBarcodesMode]='missingBarcodesMode' [misreadBarcodes]="misreadBarcodes" 
+  (panoramaTouched)='hideDropdowns()' (panoramaId)='setId($event)'
+  (changeMisreadCategory)='changeMisreadCategory($event)' (changeMissedCategory)='changeMissedCategory($event)'
+  (addMisreadCategory)='addMisreadCategory($event)' (addMissedCategory)='addMissedCategory($event)'
+  (deleteMisreadCategory)='deleteMisreadCategory($event)' (deleteMissedCategory)='deleteMissedCategory($event)'>
 </app-panorama>
-<app-product-details [outs]="outs" [labels]="labels" [sectionLabels]="sectionLabels" [topStock]="topStock" 
+<app-product-details [outs]="outs" [labels]="labels" [sectionLabels]="sectionLabels" [topStock]="topStock"  [misreadBarcodes]="misreadBarcodes"
   (gridId)='setId($event)' [currentId]="currentId" [panoMode]='panoMode'>
 </app-product-details>

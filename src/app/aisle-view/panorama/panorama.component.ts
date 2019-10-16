@@ -5,11 +5,18 @@ import {
   Output,
   EventEmitter,
   OnChanges,
-  SimpleChanges
+  SimpleChanges,
+  Inject
 } from '@angular/core';
 import panzoom from 'panzoom';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import Label from 'src/app/label.model';
+import { EnvironmentService } from 'src/app/environment.service';
+import { Permissions } from 'src/permissions/permissions';
+import AnnotationCategory from 'src/app/annotationCategory.model';
+import { ApiService } from 'src/app/api.service';
+import { KeyboardShortcutsService } from 'ng-keyboard-shortcuts';
+import MissedBarcode from 'src/app/missedBarcode.model';
 
 @Component({
   selector: 'app-panorama',
@@ -19,6 +26,7 @@ import Label from 'src/app/label.model';
 export class PanoramaComponent implements OnInit, OnChanges {
   @Input() outs: Label[];
   @Input() labels: Label[];
+  @Input() misreadBarcodes: Label[];
   @Input() sectionLabels: Label[];
   @Input() topStock: Label[];
   @Input() sectionBreaks: number[];
@@ -36,15 +44,34 @@ export class PanoramaComponent implements OnInit, OnChanges {
   @Input() resetPanoAfterExport = false;
   @Input() downloadPano = false;
   @Input() debugMode = false;
-  @Input() currentlyDisplayed: Set<string>;
+  @Input() missingBarcodesMode = false;
+  @Input() currentlyDisplayed: Array<string>;
 
   @Output() panoramaId = new EventEmitter();
   @Output() panoramaTouched = new EventEmitter();
+  @Output() addMisreadCategory = new EventEmitter<{labelId: number, category: string}>();
+  @Output() changeMisreadCategory = new EventEmitter<{labelId: number, category: string}>();
+  @Output() deleteMisreadCategory = new EventEmitter<number>();
+  @Output() addMissedCategory = new EventEmitter<MissedBarcode>();
+  @Output() changeMissedCategory = new EventEmitter<MissedBarcode>();
+  @Output() deleteMissedCategory = new EventEmitter<MissedBarcode>();
 
+  misreadAnnotationCategories: AnnotationCategory[];
+  missedAnnotationCategories: AnnotationCategory[];
+  misreadCategoryColors = new Map<string, string>();
+  missedCategoryColors = new Map<string, string>();
+  missedBarcodeMarkers: MissedBarcode[] = [];
+  qaUser = false;
+  annotationMenu = '';
   selectedIdWithPano = false;
-  panZoomApi: any;
+  annotationLeft = 0;
+  annotationTop = 0;
+  selectedMarker = false;
+
   faPlus = faPlus;
   faMinus = faMinus;
+
+  panZoomApi: any;
   startingZoomLevel = .13;
   panoZoomLevel = .25;
   zoomedInLevel = .5;
@@ -52,16 +79,57 @@ export class PanoramaComponent implements OnInit, OnChanges {
   yOffset = 725;
   currentWidth = 0;
   currentHeight = 0;
-  constructor() {}
+  selectedAnnotation: Label;
+
+  constructor(private environment: EnvironmentService, @Inject('ApiService') private apiService: ApiService,
+    private keyboard: KeyboardShortcutsService) {
+    this.qaUser = environment.config.permissions.indexOf(Permissions.QA) > -1;
+  }
 
   ngOnInit() {
+    this.apiService.getMisreadCategories().subscribe(categories => {
+      this.misreadAnnotationCategories = categories;
+      this.misreadAnnotationCategories.forEach( category => {
+        this.misreadCategoryColors.set(category.category, category.color);
+        this.keyboard.add([
+          {
+            key: category.hotkey,
+            command: () => this.setCategory(category.category, 'missing'),
+            preventDefault: true
+          }
+        ]);
+      });
+    });
+
+    this.apiService.getMissedCategories().subscribe(categories => {
+      this.missedAnnotationCategories = categories;
+      this.missedAnnotationCategories.forEach( category => {
+        this.missedCategoryColors.set(category.category, category.color);
+        this.keyboard.add([
+          {
+            key: category.hotkey,
+            command: () => this.setCategory(category.category, 'missed'),
+            preventDefault: true
+          }
+        ]);
+      });
+    });
+
 
     const element = document.getElementById('pano-image');
     const owner = document.getElementById('image-owner');
-
+    const context = this;
     this.panZoomApi = panzoom(element, {
       maxZoom: 10,
       minZoom: 0.12,
+      onDoubleClick: function(e: any) {
+        if (context.missingBarcodesMode) {
+          context.annotationLeft = e.offsetX;
+          context.annotationTop = e.offsetY;
+          context.annotationMenu = 'missed';
+        }
+      },
+      zoomDoubleClickSpeed: 1,
     });
 
     // Check if image is moved off screen and center it
@@ -90,6 +158,11 @@ export class PanoramaComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.panZoomApi) {
+      if (changes['missingBarcodesMode']) {
+        if (changes['missingBarcodesMode'].currentValue === false) {
+          this.annotationMenu = '';
+        }
+      }
       if (changes['panoMode']) {
         const element = document.getElementById('pano-image');
         this.centerImage(element.offsetWidth, element.offsetHeight);
@@ -108,19 +181,16 @@ export class PanoramaComponent implements OnInit, OnChanges {
         100);
       } else {
         if (this.currentId && this.currentId !== -1 && !this.selectedIdWithPano) {
+          let selectedX: number, selectedY: number, i: number, currentZoomLevel = this.panZoomApi.getTransform().scale;
+          const annotations: Label[] = [].concat(this.outs, this.labels, this.sectionLabels, this.topStock);
 
-          let annotations: Label[] = this.annotations('outs');
-          annotations = annotations.concat(this.annotations('shelfLabels'));
-          annotations = annotations.concat(this.annotations('sectionLabels'));
-          annotations = annotations.concat(this.annotations('topStock'));
-          let selectedX: number, selectedY: number, i: number;
-          let currentZoomLevel = this.panZoomApi.getTransform().scale;
           if (currentZoomLevel < this.zoomedInLevel) {
             currentZoomLevel = this.zoomedInLevel;
           }
 
           for (i = 0; i < annotations.length; i++) {
             if (annotations[i].labelId === this.currentId) {
+              this.showOrHideAnnotationOptions(annotations[i]);
               selectedX =
                 annotations[i].bounds.left +
                 annotations[i].bounds.width / 2 -
@@ -129,7 +199,6 @@ export class PanoramaComponent implements OnInit, OnChanges {
                 annotations[i].bounds.top +
                 annotations[i].bounds.height / 2 -
                 (this.panoHeight / 2) * (1 / currentZoomLevel);
-              break;
             }
           }
 
@@ -163,7 +232,33 @@ export class PanoramaComponent implements OnInit, OnChanges {
         return this.sectionLabels;
       case 'topStock':
         return this.topStock;
+      case 'misreadBarcodes':
+        return this.misreadBarcodes;
     }
+  }
+
+  categories() {
+    switch (this.annotationMenu) {
+      case 'missed':
+        return this.missedAnnotationCategories;
+      case 'misread':
+        return this.misreadAnnotationCategories;
+    }
+  }
+
+  showOrHideAnnotationOptions(annotation: Label) { // Determines wether to show the popup for annotation options
+    let isMissingBarcode = false;
+    this.misreadBarcodes.forEach(missingBarcode => {
+      if (missingBarcode.labelId === annotation.labelId) {
+        isMissingBarcode = true;
+      }
+    });
+    if (this.currentlyDisplayed.includes('misreadBarcodes') && isMissingBarcode && this.qaUser) {
+      this.annotationMenu = 'misread';
+    }
+    this.annotationLeft = annotation.bounds.left + annotation.bounds.width + 20; // Set bounds for annoation options pane
+    this.annotationTop = annotation.bounds.top - annotation.bounds.height;
+    this.selectedAnnotation = annotation;
   }
 
   centerImage(imageWidth: number, imageHeight: number) {
@@ -189,11 +284,16 @@ export class PanoramaComponent implements OnInit, OnChanges {
     this.panZoomApi.zoomAbs(0, 0, zoom);
   }
 
-  annotationClicked(annotation) {
+  annotationClicked(annotation: Label) {
+    this.showOrHideAnnotationOptions(annotation);
     if (!this.panoMode) {
       if (this.currentId !== annotation.labelId) {
+        if (this.annotationMenu === 'missed') {
+          this.annotationMenu = '';
+        }
         this.panoramaId.emit(annotation.labelId);
       } else {
+        this.annotationMenu = ''; // hide annotation menu when unselected
         this.panoramaId.emit(-1);
       }
       this.selectedIdWithPano = true;
@@ -212,5 +312,102 @@ export class PanoramaComponent implements OnInit, OnChanges {
 
   resetZoom() {
     this.centerImage(this.currentWidth, this.currentHeight);
+  }
+
+  panoTouched() {
+    this.annotationMenu = '';
+  }
+
+  deleteCategory() {
+    if (this.annotationMenu === 'missed') {
+      const index = this.missedBarcodeMarkers.findIndex((obj => obj.left === this.annotationLeft && obj.top === this.annotationTop));
+      if (index > -1) {
+        this.deleteMissedCategory.emit(this.missedBarcodeMarkers[index]);
+        this.missedBarcodeMarkers.splice(index, 1);
+      }
+    }
+
+    if (this.annotationMenu === 'misread' && this.selectedAnnotation.misreadType.length > 0) {
+      this.deleteMisreadCategory.emit(this.selectedAnnotation.labelId);
+    }
+
+    this.annotationMenu = '';
+  }
+
+  // If type can be set to missed or misread, if none then determine based on annotation menu type
+  setCategory(category: string, type: string = 'none') {
+    if (type === 'missed' || this.annotationMenu === 'missed') {
+      if (this.selectedMarker) { // edit marker
+        const index = this.missedBarcodeMarkers.findIndex((obj => obj.left === this.annotationLeft && obj.top === this.annotationTop));
+        this.missedBarcodeMarkers[index].category = category;
+        this.changeMissedCategory.emit(this.missedBarcodeMarkers[index]);
+        this.selectedMarker = false;
+      } else { // create new marker
+        const length = this.missedBarcodeMarkers.push({
+          top: this.annotationTop,
+          left: this.annotationLeft,
+          category: category
+        });
+        this.addMissedCategory.emit(this.missedBarcodeMarkers[length - 1]);
+      }
+    }
+
+    if (type === 'misread' || this.annotationMenu === 'misread') {
+      if (this.selectedAnnotation.misreadType) {
+        this.changeMisreadCategory.emit({
+          labelId: this.selectedAnnotation.labelId,
+          category: category
+        });
+      } else {
+        this.addMisreadCategory.emit({
+          labelId: this.selectedAnnotation.labelId,
+          category: category
+        });
+      }
+    }
+
+    this.annotationMenu = '';
+
+  }
+
+  setAnnotationStyles(category: string, hovered: number, i: number, color: string) {
+    const styles = {};
+    styles['background-color'] = 'white';
+    styles['color'] = color;
+    if (this.selectedAnnotation && this.selectedAnnotation.misreadType === category && this.annotationMenu === 'misread') {
+      styles['background-color'] = 'lightgrey';
+    }
+    if (hovered === i) {
+      styles['color'] = 'black';
+    }
+    return styles;
+  }
+
+  setLabelStyles(displayType: string, annotation: Label) {
+    const styles = {};
+    styles['left.px'] = annotation.bounds.left;
+    styles['top.px'] = annotation.bounds.top;
+    styles['width.px'] = annotation.bounds.width;
+    styles['height.px'] = annotation.bounds.height;
+    if (displayType === 'misreadBarcodes' && annotation.labelId !== this.currentId) {
+      styles['border-color'] = this.misreadCategoryColors.get(annotation.misreadType);
+    }
+    return styles;
+  }
+
+  setMarkerStyles(top: number, left: number, category: string) {
+    const styles = {};
+    styles['top.px'] = top - 35;
+    styles['left.px'] = left - 35;
+    styles['border-color'] = this.missedCategoryColors.get(category);
+    return styles;
+  }
+
+  editMarker(index: number) {
+    const selected: MissedBarcode = this.missedBarcodeMarkers[index];
+    this.annotationTop = selected.top;
+    this.annotationLeft = selected.left;
+    this.annotationMenu = 'missed';
+    this.selectedMarker = true;
   }
 }

@@ -1,0 +1,17 @@
+[
+    {
+        "category": "blurry",
+        "color": "#ffa500",
+        "hotkey": "b"
+    },
+    {
+        "category": "obstructed",
+        "color": "#551a8b",
+        "hotkey": "o"
+    },
+    {
+        "category": "blocked",
+        "color": "#000000",
+        "hotkey": "q"
+    }
+]

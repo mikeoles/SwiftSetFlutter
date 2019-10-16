@@ -24,6 +24,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   title = 'aisle';
   outs: Label[];
   labels: Label[];
+  misreadBarcodes: Label[];
   sectionLabels: Label[];
   topStock: Label[];
   sectionBreaks: number[];
@@ -37,9 +38,10 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   resetPano: boolean;
   resetPanoAfterExport: boolean;
   debugMode: boolean;
+  missingBarcodesMode: boolean;
   private logoSubscription: Subscription;
   private backButtonSubscription: Subscription;
-  currentlyDisplayed: Set<string> = new Set<string>();
+  currentlyDisplayed: Array<string> = new Array<string>();
 
   constructor(@Inject('ApiService') private apiService: ApiService,
               private keyboard: KeyboardShortcutsService,
@@ -60,7 +62,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.currentlyDisplayed.add('outs');
+    this.currentlyDisplayed.push('outs');
     this.logoSubscription = this.logoService.logoClickEvent().subscribe(() => this.changePanoMode());
     this.backButtonSubscription = this.backService.backClickEvent().subscribe(() => this.goBack());
 
@@ -108,15 +110,27 @@ export class AisleViewComponent implements OnInit, OnDestroy {
     this.resetPano = !this.resetPano;
   }
 
-  toggleDebug() {
-    this.debugMode = !this.debugMode;
+  toggleMode(mode: string) {
+    switch (mode) {
+      case 'debug':
+        this.debugMode = !this.debugMode;
+        break;
+      case 'missingBarcodes':
+        this.missingBarcodesMode = !this.missingBarcodesMode;
+        break;
+    }
   }
 
+  // If the element is in the list remove it, if not add it.  Move shelf labels to the front so they arent written over outs in the UI
   toggleDisplayed(d: string) {
-    if (this.currentlyDisplayed.has(d)) {
-      this.currentlyDisplayed.delete(d);
+    if (this.currentlyDisplayed.indexOf(d) !== -1) {
+      this.currentlyDisplayed.splice(this.currentlyDisplayed.indexOf(d), 1);
     } else {
-      this.currentlyDisplayed.add(d);
+      if (d === 'shelfLabels') {
+        this.currentlyDisplayed.unshift(d);
+      } else {
+        this.currentlyDisplayed.push(d);
+      }
     }
   }
 
@@ -142,6 +156,17 @@ export class AisleViewComponent implements OnInit, OnDestroy {
     this.apiService.getAisle(this.selectedMission.storeId, this.selectedMission.missionId, aisle.aisleId).subscribe(fullAisle => {
       this.outs = fullAisle.outs;
       this.labels = fullAisle.labels;
+      this.misreadBarcodes = [];
+      this.labels.forEach(label => {
+        if (/^0*$/.test(label.barcode)) {
+          this.misreadBarcodes.push(label);
+        }
+      });
+      this.outs.forEach(out => {
+        if (/^0*$/.test(out.barcode)) {
+          this.misreadBarcodes.push(out);
+        }
+      });
       this.sectionLabels = fullAisle.sectionLabels;
       this.topStock = fullAisle.topStock;
       this.sectionBreaks = fullAisle.sectionBreaks;
@@ -158,5 +183,65 @@ export class AisleViewComponent implements OnInit, OnDestroy {
 
   hideDropdowns() {
     this.panoTouched = true;
+  }
+
+  changeMissedCategory(info) {
+    this.apiService.updateMissedLabelAnnotation(
+      this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.top, info.left, info.category
+    );
+  }
+
+  addMissedCategory(info) {
+    this.apiService.createMissedLabelAnnotation(
+      this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.top, info.left, info.category
+    );
+  }
+
+  deleteMissedCategory(info) {
+    this.apiService.deleteMissedLabelAnnotation(
+      this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.top, info.left
+    );
+  }
+
+  changeMisreadCategory(info) {
+    // TODO fix this so it updates the child components in a better way (service)
+    const i = this.misreadBarcodes.findIndex((obj => obj.labelId === info.labelId));
+    this.misreadBarcodes[i].misreadType = info.category;
+    const labels = this.misreadBarcodes.slice(1);
+    const temp = this.misreadBarcodes[0];
+    this.misreadBarcodes = labels;
+    this.misreadBarcodes.unshift(temp);
+
+    this.apiService.updateMisreadLabelAnnotation(
+      this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.labelId, info.category
+    );
+  }
+
+  addMisreadCategory(info) {
+    // TODO fix this so it updates the child components in a better way (service)
+    const i = this.misreadBarcodes.findIndex((obj => obj.labelId === info.labelId));
+    this.misreadBarcodes[i].misreadType = info.category;
+    const labels = this.misreadBarcodes.slice(1);
+    const temp = this.misreadBarcodes[0];
+    this.misreadBarcodes = labels;
+    this.misreadBarcodes.unshift(temp);
+
+    this.apiService.createMisreadLabelAnnotation(
+      this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.labelId, info.category
+    );
+  }
+
+  deleteMisreadCategory(info) {
+    // TODO fix this so it updates the child components in a better way (service)
+    const i = this.misreadBarcodes.findIndex((obj => obj.labelId === info.labelId));
+    this.misreadBarcodes[i].misreadType = info.category;
+    const labels = this.misreadBarcodes.slice(1);
+    const temp = this.misreadBarcodes[0];
+    this.misreadBarcodes = labels;
+    this.misreadBarcodes.unshift(temp);
+
+    this.apiService.deleteMisreadLabelAnnotation(
+      this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.labelId
+    );
   }
 }

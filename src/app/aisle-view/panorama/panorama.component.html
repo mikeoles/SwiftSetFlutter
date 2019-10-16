@@ -1,32 +1,45 @@
 <div class="panorama">
   <div [ngClass]="{'panoModeClass': panoMode}" class="image-owner" id="image-owner">
     <div id="pano-image" class="image">
-      <img [src]="panoramaUrl" *ngIf="panoramaUrl" />
-      
+      <img [src]="panoramaUrl" *ngIf="panoramaUrl" (click)="panoTouched()"/>
+
       <ng-container *ngFor="let displayType of currentlyDisplayed">
         <ng-container *ngFor="let annotation of annotations(displayType)">
           <div class="{{displayType}}Annotation annotation"
           [class.selected]="(this.currentId === annotation.labelId) && !this.panoMode"
-          [style.left.px]="annotation.bounds.left"
-          [style.top.px]="annotation.bounds.top"
-          [style.width.px]="annotation.bounds.width"
-          [style.height.px]="annotation.bounds.height"
+          [ngStyle]="setLabelStyles(displayType,annotation)"
           (click)="annotationClicked(annotation)"></div>
           <ng-container *ngIf="debugMode">
             <ng-container *ngFor="let productCoordinate of annotation.productCoordinates">
               <div class="productAnnotation annotation"
               [class.selected]="(this.currentId === annotation.labelId) && !this.panoMode"
-              [style.left.px]="productCoordinate.left"
-              [style.top.px]="productCoordinate.top"
-              [style.width.px]="productCoordinate.width"
-              [style.height.px]="productCoordinate.height"
+              [ngStyle]="setLabelStyles(displayType,annotation)"
               (click)="annotationClicked(annotation)"></div>
             </ng-container>
           </ng-container>
         </ng-container>
       </ng-container>
 
-      <ng-container *ngIf="debugMode && currentlyDisplayed.has('shelfLabels')">
+      <ul id="annotationSelector" *ngIf="annotationMenu"
+        [style.left.px]="annotationLeft"
+        [style.top.px]="annotationTop">
+        <ng-container *ngFor="let category of categories(); let i = index">
+          <li
+            [ngStyle]="setAnnotationStyles(category.category, hovered, i, category.color)" (mouseover)="hovered = i" (mouseleave)="hovered = -1" 
+            (click)="setCategory(category.category)">
+            {{category.category}} <span>{{category.hotkey | uppercase}}</span>
+          </li>
+        </ng-container>
+        <li class="delete" (click)="deleteCategory()">Delete</li>
+      </ul>
+
+      <ng-container *ngIf="missingBarcodesMode">
+        <ng-container *ngFor="let marker of missedBarcodeMarkers; let i = index">
+          <div class="marker" [ngStyle]="setMarkerStyles(marker.top, marker.left, marker.category)" (click)="editMarker(i)"></div>
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngIf="debugMode && currentlyDisplayed.includes('shelfLabels')">
         <svg>
           <ng-container *ngFor="let annotation of labels">
             <ng-container *ngFor="let productCoordinate of annotation.productCoordinates">
@@ -40,7 +53,7 @@
         </svg>
       </ng-container>
       
-      <ng-container *ngIf="currentlyDisplayed.has('sectionBreaks')">
+      <ng-container *ngIf="currentlyDisplayed.includes('sectionBreaks')">
         <ng-container *ngFor="let sectionBreak of sectionBreaks">
           <div class="break" [style.left.px]="sectionBreak"></div>
         </ng-container>

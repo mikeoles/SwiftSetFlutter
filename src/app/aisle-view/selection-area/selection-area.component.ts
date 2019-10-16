@@ -30,7 +30,8 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   showTopStock = false;
   showSectionLabels = false;
   showSectionBreaks = false;
-  showDebugging = false;
+  showQA = false;
+  showMisreadBarcodes = true;
 
   exportOnHand = false;
   exportingPDF = false;
@@ -44,13 +45,14 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   @Input() outs: Label[] = [];
   @Input() labels: Label[] = [];
   @Input() debugMode: boolean;
+  @Input() missingBarcodesMode: boolean;
   @Input() currentlyDisplayed: Set<string>;
 
   @Output() missionSelected = new EventEmitter();
   @Output() aisleSelected = new EventEmitter();
   @Output() resetPano = new EventEmitter();
   @Output() resetPanoAfterExport = new EventEmitter();
-  @Output() toggleDebug = new EventEmitter();
+  @Output() toggleMode = new EventEmitter<string>();
   @Output() toggleDisplayed = new EventEmitter();
 
   faAngleDown = faAngleDown;
@@ -69,7 +71,8 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
     this.showTopStock = environment.config.permissions.indexOf(Permissions.topStock) > -1;
     this.showSectionLabels = environment.config.permissions.indexOf(Permissions.sectionLabels) > -1;
     this.showSectionBreaks = environment.config.permissions.indexOf(Permissions.sectionBreaks) > -1;
-    this.showDebugging = environment.config.permissions.indexOf(Permissions.debugging) > -1;
+    this.showMisreadBarcodes = environment.config.permissions.indexOf(Permissions.misreadBarcodes) > -1;
+    this.showQA = environment.config.permissions.indexOf(Permissions.QA) > -1;
   }
 
   ngOnInit() {
@@ -158,8 +161,8 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
     this.resetPano.emit();
   }
 
-  toggleDebugMode() {
-    this.toggleDebug.emit();
+  toggleModeClicked(mode: string) {
+    this.toggleMode.emit(mode);
   }
 
   exportAisle(exportType: string, modalId: string) {

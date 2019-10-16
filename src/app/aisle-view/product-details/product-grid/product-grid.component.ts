@@ -18,6 +18,7 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
   @Output() gridClicked = new EventEmitter();
   @Input() products: Label[];
   @Input() onlyBarcode: boolean; // Displays only the barcode in the grid, used for top stock and shelf labels
+  @Input() showMisreadType: boolean; // Displays the type of error assigned to a misread label by QA
   @Input() selectedId: number;
   showDepartment: Boolean;
   showSection: Boolean;
@@ -99,6 +100,10 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
       this.columnHeaders = ['Barcode'];
     } else {
       this.columnHeaders = this.environment.config.productGridFields;
+    }
+
+    if (this.showMisreadType && !this.columnHeaders.includes('Misread Type')) {
+      this.columnHeaders.push('Misread Type');
     }
 
     for (let i = 0; i < this.products.length; i++) {
