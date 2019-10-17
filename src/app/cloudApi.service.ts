@@ -346,6 +346,6 @@ export class CloudApiService implements ApiService {
   }
 
   getRoles(idToken: string): Observable<string> {
-    return of('loblaws');
+    return of('bossanova');
   }
 }

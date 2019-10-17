@@ -1,7 +1,9 @@
-import { Component, OnInit, Output, EventEmitter, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, OnChanges, Inject } from '@angular/core';
 import Label from '../../label.model';
 import { EnvironmentService } from 'src/app/environment.service';
 import { Permissions } from 'src/permissions/permissions';
+import { ApiService } from 'src/app/api.service';
+import { Roles } from 'src/permissions/roles';
 
 @Component({
   selector: 'app-product-details',
@@ -36,11 +38,15 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
   @Output() gridDisplay = new EventEmitter();
   dropdownSettings = {};
 
-  constructor(private environment: EnvironmentService) {
+  constructor(private environment: EnvironmentService, @Inject('ApiService') private apiService: ApiService) {
     this.showDepartment = environment.config.productGridFields.includes('Department');
     this.showSection = environment.config.productGridFields.includes('Section');
-    this.showTopStock = environment.config.permissions.indexOf(Permissions.topStock) > -1;
-    this.showSectionLabels = environment.config.permissions.indexOf(Permissions.sectionLabels) > -1;
+    const context = this;
+    this.apiService.getRoles(localStorage.getItem('id_token')).subscribe( role => {
+      context.environment.setPermissions(Roles[role]);
+      this.showTopStock = environment.config.permissions.indexOf(Permissions.topStock) > -1;
+      this.showSectionLabels = environment.config.permissions.indexOf(Permissions.sectionLabels) > -1;
+    });
   }
 
 

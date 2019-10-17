@@ -6,8 +6,8 @@ import { labelScrollOptions } from 'src/app/labelScrollOptions';
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8080',
-  coveragePercent: true,
+  apiUrl: 'https://bnr-cloud-api.azurewebsites.net',
+  coveragePercent: false,
   coverageDisplayType: 'description',
   onHand: true,
   exportingPDF: true,
@@ -17,7 +17,7 @@ export const environment = {
   missionHistoryDays: 14, // Number of days to display missions for
   permissions: ['topStock', 'debugging', 'sectionLabels', 'sectionBreaks'],
   authUsers: false,
-  authUrl: 'http://localhost:5556/auth?'
+  authUrl: 'http://localhost:5556/auth?',
 };
 
 /*

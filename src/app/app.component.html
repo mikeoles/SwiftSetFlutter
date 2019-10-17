@@ -5,6 +5,4 @@
   </div>
   <img id="logo" (click)="logoClicked()" src="../assets/logo.png"/>
 </header>
-<div *ngIf="permissionsSet | async">
-  <router-outlet></router-outlet>
-</div>
+<router-outlet></router-outlet>
