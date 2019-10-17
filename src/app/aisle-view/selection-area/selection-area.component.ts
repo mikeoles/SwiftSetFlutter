@@ -14,6 +14,7 @@ import htmlToImage from 'html-to-image';
 import { saveAs } from 'file-saver';
 import { Router } from '@angular/router';
 import { Permissions } from 'src/permissions/permissions';
+import { Roles } from 'src/permissions/roles';
 
 @Component({
   selector: 'app-selection-area',
@@ -68,11 +69,15 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
     @Inject('ApiService') private apiService: ApiService, private router: Router) {
     this.exportOnHand = environment.config.onHand;
     this.exportingPDF = environment.config.exportingPDF;
-    this.showTopStock = environment.config.permissions.indexOf(Permissions.topStock) > -1;
-    this.showSectionLabels = environment.config.permissions.indexOf(Permissions.sectionLabels) > -1;
-    this.showSectionBreaks = environment.config.permissions.indexOf(Permissions.sectionBreaks) > -1;
-    this.showMisreadBarcodes = environment.config.permissions.indexOf(Permissions.misreadBarcodes) > -1;
-    this.showQA = environment.config.permissions.indexOf(Permissions.QA) > -1;
+
+    const context = this;
+    this.apiService.getRoles(localStorage.getItem('id_token')).subscribe( role => {
+      context.environment.setPermissions(Roles[role]);
+      context.showTopStock = environment.config.permissions.indexOf(Permissions.topStock) > -1;
+      context.showSectionLabels = environment.config.permissions.indexOf(Permissions.sectionLabels) > -1;
+      context.showSectionBreaks = environment.config.permissions.indexOf(Permissions.sectionBreaks) > -1;
+      context.showQA = environment.config.permissions.indexOf(Permissions.QA) > -1;
+    });
   }
 
   ngOnInit() {

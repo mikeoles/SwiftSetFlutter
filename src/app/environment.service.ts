@@ -25,7 +25,7 @@ export class EnvironmentService {
       return this.appConfig;
   }
 
-  setPermissons(permissions: Permissions[]) {
+  setPermissions(permissions: Permissions[]) {
     this.appConfig.permissions = permissions;
   }
 }

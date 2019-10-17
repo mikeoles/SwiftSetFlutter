@@ -5,7 +5,6 @@ import { LogoService } from './logo.service';
 import { BackService } from './back.service';
 import { faArrowAltCircleLeft } from '@fortawesome/free-regular-svg-icons';
 import { ApiService } from './api.service';
-import { Roles } from '../permissions/roles';
 import { EnvironmentService } from './environment.service';
 
 @Component({
@@ -18,7 +17,6 @@ export class AppComponent implements OnInit {
 
   displayBackButton: boolean;
   faArrowAltCircleLeft = faArrowAltCircleLeft;
-  permissionsSet: Promise<boolean>;
 
   constructor(@Inject('ApiService') private apiService: ApiService, private router: Router, private logoService: LogoService,
     private backService: BackService, private environment: EnvironmentService) {
@@ -51,7 +49,6 @@ export class AppComponent implements OnInit {
     } else {
       this.displayBackButton = false;
     }
-    this.permissionsSet = Promise.resolve(true);
   }
 
   authenticateUser() {
@@ -74,15 +71,6 @@ export class AppComponent implements OnInit {
       this.apiService.getTokens(localStorage.getItem('access_code')).subscribe( tokens => {
         localStorage.setItem('access_token', tokens.access_token);
         localStorage.setItem('id_token', tokens.id_token);
-        this.apiService.getRoles(localStorage.getItem('id_token')).subscribe( role => {
-          this.environment.setPermissons(Roles[role]);
-          this.permissionsSet = Promise.resolve(true);
-        });
-      });
-    } else {
-      this.apiService.getRoles(localStorage.getItem('id_token')).subscribe( role => {
-        this.environment.setPermissons(Roles[role]);
-        this.permissionsSet = Promise.resolve(true);
       });
     }
   }
