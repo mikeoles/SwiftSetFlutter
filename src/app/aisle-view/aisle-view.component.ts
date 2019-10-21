@@ -37,11 +37,10 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   panoTouched: boolean;
   resetPano: boolean;
   resetPanoAfterExport: boolean;
-  debugMode: boolean;
-  missingBarcodesMode: boolean;
   private logoSubscription: Subscription;
   private backButtonSubscription: Subscription;
   currentlyDisplayed: Array<string> = new Array<string>();
+  qaModesTurnedOn: Array<string> = new Array<string>();
 
   constructor(@Inject('ApiService') private apiService: ApiService,
               private keyboard: KeyboardShortcutsService,
@@ -111,14 +110,12 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   }
 
   toggleMode(mode: string) {
-    switch (mode) {
-      case 'debug':
-        this.debugMode = !this.debugMode;
-        break;
-      case 'missingBarcodes':
-        this.missingBarcodesMode = !this.missingBarcodesMode;
-        break;
+    if (this.qaModesTurnedOn.indexOf(mode) !== -1) {
+      this.qaModesTurnedOn.splice(this.currentlyDisplayed.indexOf(mode), 1);
+    } else {
+      this.qaModesTurnedOn.push(mode);
     }
+    this.qaModesTurnedOn = Object.assign([], this.qaModesTurnedOn);
   }
 
   // If the element is in the list remove it, if not add it.  Move shelf labels to the front so they arent written over outs in the UI
@@ -185,63 +182,41 @@ export class AisleViewComponent implements OnInit, OnDestroy {
     this.panoTouched = true;
   }
 
-  changeMissedCategory(info) {
-    this.apiService.updateMissedLabelAnnotation(
-      this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.top, info.left, info.category
-    );
+  updateMissedCategory(info) {
+    if (info.action === 'update') {
+      this.apiService.updateMissedLabelAnnotation(
+        this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId,
+        info.barcode.top, info.barcode.left, info.barcode.category
+      );
+    } else if (info.action === 'add') {
+      this.apiService.createMissedLabelAnnotation(
+        this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId,
+        info.barcode.top, info.barcode.left, info.barcode.category
+      );
+    } else if (info.action === 'delete') {
+      this.apiService.deleteMissedLabelAnnotation(
+        this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.barcode.top, info.barcode.left
+      );
+    }
   }
 
-  addMissedCategory(info) {
-    this.apiService.createMissedLabelAnnotation(
-      this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.top, info.left, info.category
-    );
-  }
-
-  deleteMissedCategory(info) {
-    this.apiService.deleteMissedLabelAnnotation(
-      this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.top, info.left
-    );
-  }
-
-  changeMisreadCategory(info) {
-    // TODO fix this so it updates the child components in a better way (service)
+  updateMisreadCategory(info) {
     const i = this.misreadBarcodes.findIndex((obj => obj.labelId === info.labelId));
     this.misreadBarcodes[i].misreadType = info.category;
-    const labels = this.misreadBarcodes.slice(1);
-    const temp = this.misreadBarcodes[0];
-    this.misreadBarcodes = labels;
-    this.misreadBarcodes.unshift(temp);
+    this.misreadBarcodes = Object.assign([], this.misreadBarcodes);
 
-    this.apiService.updateMisreadLabelAnnotation(
-      this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.labelId, info.category
-    );
-  }
-
-  addMisreadCategory(info) {
-    // TODO fix this so it updates the child components in a better way (service)
-    const i = this.misreadBarcodes.findIndex((obj => obj.labelId === info.labelId));
-    this.misreadBarcodes[i].misreadType = info.category;
-    const labels = this.misreadBarcodes.slice(1);
-    const temp = this.misreadBarcodes[0];
-    this.misreadBarcodes = labels;
-    this.misreadBarcodes.unshift(temp);
-
-    this.apiService.createMisreadLabelAnnotation(
-      this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.labelId, info.category
-    );
-  }
-
-  deleteMisreadCategory(info) {
-    // TODO fix this so it updates the child components in a better way (service)
-    const i = this.misreadBarcodes.findIndex((obj => obj.labelId === info.labelId));
-    this.misreadBarcodes[i].misreadType = info.category;
-    const labels = this.misreadBarcodes.slice(1);
-    const temp = this.misreadBarcodes[0];
-    this.misreadBarcodes = labels;
-    this.misreadBarcodes.unshift(temp);
-
-    this.apiService.deleteMisreadLabelAnnotation(
-      this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.labelId
-    );
+    if (info.action === 'update') {
+      this.apiService.updateMisreadLabelAnnotation(
+        this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.labelId, info.category
+      );
+    } else if (info.action === 'add') {
+      this.apiService.createMisreadLabelAnnotation(
+        this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.labelId, info.category
+      );
+    } else if (info.action === 'delete') {
+      this.apiService.deleteMisreadLabelAnnotation(
+        this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.labelId
+      );
+    }
   }
 }

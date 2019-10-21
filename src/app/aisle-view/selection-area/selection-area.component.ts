@@ -23,19 +23,15 @@ import { Roles } from 'src/permissions/roles';
 })
 export class SelectionAreaComponent implements OnInit, OnChanges {
   store: Store;
+  currentDropdown = '';
+  exportOnHand = false;
+  exportingPDF = false;
 
-  showMissions = false;
-  showOptions = false;
-  showAisles = false;
-  showDisplayToggles = false;
   showTopStock = false;
   showSectionLabels = false;
   showSectionBreaks = false;
   showQA = false;
   showMisreadBarcodes = true;
-
-  exportOnHand = false;
-  exportingPDF = false;
 
   @Input() missions: Mission[];
   @Input() aisles: Aisle[];
@@ -45,15 +41,14 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   @Input() panoramaUrl: string;
   @Input() outs: Label[] = [];
   @Input() labels: Label[] = [];
-  @Input() debugMode: boolean;
-  @Input() missingBarcodesMode: boolean;
   @Input() currentlyDisplayed: Set<string>;
+  @Input() qaModesTurnedOn: Set<string>;
 
   @Output() missionSelected = new EventEmitter();
   @Output() aisleSelected = new EventEmitter();
   @Output() resetPano = new EventEmitter();
   @Output() resetPanoAfterExport = new EventEmitter();
-  @Output() toggleMode = new EventEmitter<string>();
+  @Output() toggleMode = new EventEmitter();
   @Output() toggleDisplayed = new EventEmitter();
 
   faAngleDown = faAngleDown;
@@ -86,8 +81,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['panoTouched']) {
       this.panoTouched = false;
-      this.showAisles = false;
-      this.showMissions = false;
+      this.currentDropdown = '';
     }
     if (changes['missions'] && this.missions) {
       this.missions.sort(this.missionSort);
@@ -107,8 +101,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   @HostListener('document:click', ['$event'])
   clickout(event) {
     if (!event.target.classList.contains('dropdownButton')) {
-      this.showMissions = false;
-      this.showAisles = false;
+      this.currentDropdown = '';
     }
   }
 
@@ -122,52 +115,28 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
 
   missionChanged(mission) {
     this.missionSelected.emit(mission);
-    this.showMissions = false;
+    this.currentDropdown = '';
   }
 
   aisleChanged(aisle) {
     this.aisleSelected.emit(aisle);
-    this.showAisles = false;
+    this.currentDropdown = '';
   }
 
-  displaySelected(display) {
+  displaySelected(display: string) {
     this.toggleDisplayed.emit(display);
   }
 
-  selectMissionsDropdown() {
-    this.showMissions = !this.showMissions;
-    this.showAisles = false;
-    this.showOptions = false;
-    this.showDisplayToggles = false;
+  qaModeSelected(mode: string) {
+    this.toggleMode.emit(mode);
   }
 
-  selectAislesDropdown() {
-    this.showAisles = !this.showAisles;
-    this.showMissions = false;
-    this.showOptions = false;
-    this.showDisplayToggles = false;
-  }
-
-  selectDisplayDropdown() {
-    this.showDisplayToggles = !this.showDisplayToggles;
-    this.showMissions = false;
-    this.showOptions = false;
-    this.showAisles = false;
-  }
-
-  selectOptionsDropdown() {
-    this.showOptions = !this.showOptions;
-    this.showAisles = false;
-    this.showMissions = false;
-    this.showDisplayToggles = false;
+  openDropdown(name: string) {
+    this.currentDropdown = this.currentDropdown === name ? '' : name;
   }
 
   resetPanoClick() {
     this.resetPano.emit();
-  }
-
-  toggleModeClicked(mode: string) {
-    this.toggleMode.emit(mode);
   }
 
   exportAisle(exportType: string, modalId: string) {

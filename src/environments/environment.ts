@@ -6,7 +6,7 @@ import { labelScrollOptions } from 'src/app/labelScrollOptions';
 
 export const environment = {
   production: false,
-  apiUrl: 'https://bnr-cloud-api.azurewebsites.net',
+  apiUrl: 'http://localhost:8080',
   coveragePercent: false,
   coverageDisplayType: 'description',
   onHand: true,

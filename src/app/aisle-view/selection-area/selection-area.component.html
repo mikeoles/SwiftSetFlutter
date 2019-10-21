@@ -1,12 +1,12 @@
 <div class="container">
   <div class="bottomBar">
     <div id="missionsContainer">
-      <button class="dropdownButton" [ngClass]="{'selectedButton': showMissions}" (click)="selectMissionsDropdown()">
+      <button class="dropdownButton" [ngClass]="{'selectedButton': currentDropdown === 'missions'}" (click)="openDropdown('missions')">
         Scan: {{selectedMission.missionName}}
-        <fa-icon *ngIf="!showMissions" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
-        <fa-icon *ngIf="showMissions" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
+        <fa-icon *ngIf="currentDropdown !== 'missions'" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
+        <fa-icon *ngIf="currentDropdown === 'missions'" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
       </button>
-      <ul class="dropdown" *ngIf="showMissions">
+      <ul class="dropdown" *ngIf="currentDropdown === 'missions'">
         <li
           *ngFor="let mission of missions"
           [class.selected]="mission.missionId === this.selectedMission.missionId"
@@ -16,15 +16,15 @@
           {{mission.missionName}}
         </li>
       </ul>
-      <div *ngIf="showMissions" class="pointer"></div>
+      <div *ngIf="currentDropdown === 'missions'" class="pointer"></div>
     </div>
     <div id="aislesContainer">
-      <button class="dropdownButton" [ngClass]="{'selectedButton': showAisles}" (click)="selectAislesDropdown()">
+      <button class="dropdownButton" [ngClass]="{'selectedButton': currentDropdown === 'aisles'}" (click)="openDropdown('aisles')">
         Aisle {{selectedAisle?.aisleName}}
-        <fa-icon *ngIf="!showAisles" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
-        <fa-icon *ngIf="showAisles" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
+        <fa-icon *ngIf="currentDropdown !== 'aisles'" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
+        <fa-icon *ngIf="currentDropdown === 'aisles'" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
       </button>
-      <ul *ngIf="showAisles">
+      <ul *ngIf="currentDropdown === 'aisles'">
         <li
           [class.selected]="aisle.aisleId === this.selectedAisle.aisleId"
           *ngFor="let aisle of aisles"
@@ -33,22 +33,41 @@
           {{aisle?.aisleName}}
         </li>
       </ul>
-      <div *ngIf="showAisles" class="pointer"></div>
+      <div *ngIf="currentDropdown === 'aisles'" class="pointer"></div>
     </div>
     <button class="panoChangeButton" (click)="previousPano()"><fa-icon size="lg" class="fa" [icon]="faArrowLeft"></fa-icon></button>
     <button class="panoChangeButton" (click)="nextPano()"><fa-icon size="lg" class="fa" [icon]="faArrowRight"></fa-icon></button>
     <button class="rightButton" (click)="openModal('export-popup')"><img class="exportImage" src="../../assets/export-blue.png"> <span>Export</span></button>
     <button class="rightButton" (click)="resetPanoClick()">Reset Pano</button>
-    <button *ngIf="showQA" [ngClass]="{'selectedButton': debugMode}" class="rightButton" (click)="toggleModeClicked('debug')">Debug</button>
-    <button *ngIf="showQA" [ngClass]="{'selectedButton': missingBarcodesMode}" class="rightButton" (click)="toggleModeClicked('missingBarcodes')">Missing Barcodes</button>
 
     <div class="rightDropdown rightButton">
-      <button class="dropdownButton" [ngClass]="{'selectedButton': showAisles}" (click)="selectDisplayDropdown()">
-        Display
-        <fa-icon *ngIf="!showDisplayToggles" size="lg" class="marginLeft fa" [icon]="faAngleDown"></fa-icon>
-        <fa-icon *ngIf="showDisplayToggles" size="lg" class="marginLeft fa" [icon]="faAngleUp"></fa-icon>
+      <button class="dropdownButton" (click)="openDropdown('qaModes')">
+        QA Modes
+        <fa-icon *ngIf="currentDropdown !== 'qaModes'" size="lg" class="marginLeft fa" [icon]="faAngleDown"></fa-icon>
+        <fa-icon *ngIf="currentDropdown === 'qaModes'" size="lg" class="marginLeft fa" [icon]="faAngleUp"></fa-icon>
       </button>
-      <ul class="displayDropdown" *ngIf="showDisplayToggles">
+      <ul class="displayDropdown" *ngIf="currentDropdown === 'qaModes'">
+        <li (click)="qaModeSelected('debug')">
+          <fa-icon *ngIf="qaModesTurnedOn.includes('debug')" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
+          <fa-icon *ngIf="!qaModesTurnedOn.includes('debug')" size="lg" class="check" [icon]="faSquare"></fa-icon>
+          Debug
+        </li>
+        <li (click)="qaModeSelected('missingBarcodes')">
+          <fa-icon *ngIf="qaModesTurnedOn.includes('missingBarcodes')" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
+          <fa-icon *ngIf="!qaModesTurnedOn.includes('missingBarcodes')" size="lg" class="check" [icon]="faSquare"></fa-icon>
+          Set Missing Barcodes
+        </li>
+      </ul>
+      <div *ngIf="currentDropdown === 'qaModes'" class="pointer displayPointer"></div>
+    </div>
+
+    <div class="rightDropdown rightButton">
+      <button class="dropdownButton" (click)="openDropdown('display')">
+        Display
+        <fa-icon *ngIf="currentDropdown !== 'display'" size="lg" class="marginLeft fa" [icon]="faAngleDown"></fa-icon>
+        <fa-icon *ngIf="currentDropdown === 'display'" size="lg" class="marginLeft fa" [icon]="faAngleUp"></fa-icon>
+      </button>
+      <ul class="displayDropdown" *ngIf="currentDropdown === 'display'">
         <li (click)="displaySelected('outs')">
           <fa-icon *ngIf="currentlyDisplayed.includes('outs')" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
           <fa-icon *ngIf="!currentlyDisplayed.includes('outs')" size="lg" class="check" [icon]="faSquare"></fa-icon>
@@ -65,10 +84,10 @@
           Top Stock
         </li>
         <li *ngIf="showMisreadBarcodes" (click)="displaySelected('misreadBarcodes')">
-            <fa-icon *ngIf="currentlyDisplayed.includes('misreadBarcodes')" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
-            <fa-icon *ngIf="!currentlyDisplayed.includes('misreadBarcodes')" size="lg" class="check" [icon]="faSquare"></fa-icon>
-            Misread Barcodes
-          </li>
+          <fa-icon *ngIf="currentlyDisplayed.includes('misreadBarcodes')" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
+          <fa-icon *ngIf="!currentlyDisplayed.includes('misreadBarcodes')" size="lg" class="check" [icon]="faSquare"></fa-icon>
+          Misread Barcodes
+        </li>
         <li *ngIf="showSectionLabels" (click)="displaySelected('sectionLabels')">
           <fa-icon *ngIf="currentlyDisplayed.includes('sectionLabels')" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
           <fa-icon *ngIf="!currentlyDisplayed.includes('sectionLabels')" size="lg" class="check" [icon]="faSquare"></fa-icon>
@@ -80,10 +99,10 @@
           Section Breaks
         </li>
       </ul>
-      <div *ngIf="showDisplayToggles" class="pointer displayPointer"></div>
+      <div *ngIf="currentDropdown === 'display'" class="pointer displayPointer"></div>
     </div>
 
-    <div id="collapsedContainer">
+    <!-- <div id="collapsedContainer">
       <button class="dropdownButton" [ngClass]="{'selectedButton': showOptions}" (click)="selectOptionsDropdown()">
         Options
         <fa-icon *ngIf="!showOptions" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
@@ -96,7 +115,7 @@
         <li *ngIf="showQA" (click)="toggleModeClicked('misreadBarcodes')">Misread Barcodes</li>
       </ul>
       <div *ngIf="showOptions" class="pointer"></div>
-    </div>
+    </div> -->
 
   </div>
 

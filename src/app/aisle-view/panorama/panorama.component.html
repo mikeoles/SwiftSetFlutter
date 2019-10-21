@@ -9,18 +9,21 @@
           [class.selected]="(this.currentId === annotation.labelId) && !this.panoMode"
           [ngStyle]="setLabelStyles(displayType,annotation)"
           (click)="annotationClicked(annotation)"></div>
-          <ng-container *ngIf="debugMode">
+          <ng-container *ngIf="qaModesTurnedOn.includes('debug') && currentlyDisplayed.includes('shelfLabels')">
             <ng-container *ngFor="let productCoordinate of annotation.productCoordinates">
               <div class="productAnnotation annotation"
               [class.selected]="(this.currentId === annotation.labelId) && !this.panoMode"
-              [ngStyle]="setLabelStyles(displayType,annotation)"
+              [style.left.px]="productCoordinate.left"
+              [style.top.px]="productCoordinate.top"
+              [style.width.px]="productCoordinate.width"
+              [style.height.px]="productCoordinate.height"
               (click)="annotationClicked(annotation)"></div>
             </ng-container>
           </ng-container>
         </ng-container>
       </ng-container>
 
-      <ul id="annotationSelector" *ngIf="annotationMenu"
+      <ul id="annotationSelector" *ngIf="annotationMenu !== 'none'"
         [style.left.px]="annotationLeft"
         [style.top.px]="annotationTop">
         <ng-container *ngFor="let category of categories(); let i = index">
@@ -30,16 +33,17 @@
             {{category.category}} <span>{{category.hotkey | uppercase}}</span>
           </li>
         </ng-container>
-        <li class="delete" (click)="deleteCategory()">Delete</li>
+        <li *ngIf="(annotationMenu === 'missed' && selectedMarkerCategory) || (annotationMenu === 'misread' && selectedAnnotation.misreadType)" 
+          class="delete" (click)="deleteCategory()">Delete</li>
       </ul>
 
-      <ng-container *ngIf="missingBarcodesMode">
+      <ng-container *ngIf="qaModesTurnedOn.includes('missingBarcodes')">
         <ng-container *ngFor="let marker of missedBarcodeMarkers; let i = index">
           <div class="marker" [ngStyle]="setMarkerStyles(marker.top, marker.left, marker.category)" (click)="editMarker(i)"></div>
         </ng-container>
       </ng-container>
 
-      <ng-container *ngIf="debugMode && currentlyDisplayed.includes('shelfLabels')">
+      <ng-container *ngIf="qaModesTurnedOn.includes('debug') && currentlyDisplayed.includes('shelfLabels')">
         <svg>
           <ng-container *ngFor="let annotation of labels">
             <ng-container *ngFor="let productCoordinate of annotation.productCoordinates">

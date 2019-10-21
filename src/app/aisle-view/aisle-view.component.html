@@ -2,17 +2,13 @@
   [selectedMission]="selectedMission" [selectedAisle]="selectedAisle" [panoramaUrl]="panoramaUrl" [outs]="outs" [labels]="labels"
   (missionSelected)='changeMission($event)' (aisleSelected)='setAisle($event)' [panoTouched]=panoTouched
   (panoSwitch)='changePanoMode()' (resetPano)='resetPanoClicked()' (resetPanoAfterExport)='resetPanoAfterExportClicked()'
-  (toggleMode)='toggleMode($event)' [debugMode]='debugMode' [missingBarcodesMode]='missingBarcodesMode'
-  [currentlyDisplayed]='currentlyDisplayed' (toggleDisplayed)='toggleDisplayed($event)'>
+  (toggleMode)='toggleMode($event)' [qaModesTurnedOn]='qaModesTurnedOn' [currentlyDisplayed]='currentlyDisplayed' (toggleDisplayed)='toggleDisplayed($event)'>
 </app-selection-area>
 <app-panorama [panoramaUrl]="panoramaUrl" [currentId]="currentId" [currentlyDisplayed]='currentlyDisplayed'
   [outs]="outs" [labels]="labels" [sectionLabels]="sectionLabels" [sectionBreaks]="sectionBreaks" [topStock]="topStock" 
-  [panoMode]='panoMode' [debugMode]='debugMode'  [resetPano]='resetPano' [resetPanoAfterExport]='resetPanoAfterExport'
-  [missingBarcodesMode]='missingBarcodesMode' [misreadBarcodes]="misreadBarcodes" 
-  (panoramaTouched)='hideDropdowns()' (panoramaId)='setId($event)'
-  (changeMisreadCategory)='changeMisreadCategory($event)' (changeMissedCategory)='changeMissedCategory($event)'
-  (addMisreadCategory)='addMisreadCategory($event)' (addMissedCategory)='addMissedCategory($event)'
-  (deleteMisreadCategory)='deleteMisreadCategory($event)' (deleteMissedCategory)='deleteMissedCategory($event)'>
+  [panoMode]='panoMode' [qaModesTurnedOn]='qaModesTurnedOn'  [resetPano]='resetPano' [resetPanoAfterExport]='resetPanoAfterExport'
+  [misreadBarcodes]="misreadBarcodes"  (panoramaTouched)='hideDropdowns()' (panoramaId)='setId($event)'
+  (updateMisreadCategory)='updateMisreadCategory($event)' (updateMissedCategory)='updateMissedCategory($event)'>
 </app-panorama>
 <app-product-details [outs]="outs" [labels]="labels" [sectionLabels]="sectionLabels" [topStock]="topStock"  [misreadBarcodes]="misreadBarcodes"
   (gridId)='setId($event)' [currentId]="currentId" [panoMode]='panoMode'>

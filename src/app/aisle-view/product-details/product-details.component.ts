@@ -8,7 +8,7 @@ import { Roles } from 'src/permissions/roles';
 @Component({
   selector: 'app-product-details',
   templateUrl: './product-details.component.html',
-  styleUrls: ['./product-details.component.scss']
+  styleUrls: ['./product-details.component.scss'],
 })
 
 export class ProductDetailsComponent implements OnInit, OnChanges {
@@ -17,7 +17,7 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
   showSection: Boolean;
   showTopStock = false;
   showSectionLabels = false;
-  showMisreadBarcodes = false;
+  showMisreadBarcodes = true;
 
   departmentsList: string[] = [];
   sectionsList: string[] = [];
