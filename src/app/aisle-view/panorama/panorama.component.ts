@@ -18,6 +18,14 @@ import { ApiService } from 'src/app/api.service';
 import { KeyboardShortcutsService } from 'ng-keyboard-shortcuts';
 import MissedBarcode from 'src/app/missedBarcode.model';
 
+enum AnnotationType {
+  misread = 'misread',
+  missed = 'missed',
+  falsePositive = 'falsePositive',
+  falseNegative = 'falseNegative',
+  none = 'none'
+}
+
 @Component({
   selector: 'app-panorama',
   templateUrl: './panorama.component.html',
@@ -443,12 +451,4 @@ export class PanoramaComponent implements OnInit, OnChanges {
     this.selectedMarkerCategory = selected.categoryName;
     this.annotationMenu = AnnotationType.missed;
   }
-}
-
-enum AnnotationType {
-  misread = 'misread',
-  missed = 'missed',
-  falsePositive = 'falsePositive',
-  falseNegative = 'falseNegative',
-  none = 'none'
 }
