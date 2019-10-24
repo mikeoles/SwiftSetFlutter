@@ -3,8 +3,6 @@ def config = [
 ]
 
 def releaseBranch = 'master'
-def developmentBranch = 'devel'
-def validDockerPushBranches = [releaseBranch, developmentBranch]
 def registry = 'bossanova-cloud-container.jfrog.io'
 def imageName = 'demo-images/demo-ui'
 def artifactoryCredential = 'jenkins_build_jumpcloud'
@@ -29,7 +27,7 @@ build(config) {
   }
 
   stage('Push') {
-    if(validDockerPushBranches.contains(env.BRANCH_NAME)) {
+    if(env.BRANCH_NAME == releaseBranch) {
       docker.withRegistry("https://${registry}", artifactoryCredential) {
         sh("docker push ${fullImageTag}")
       }
