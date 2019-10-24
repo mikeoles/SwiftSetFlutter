@@ -13,5 +13,6 @@ export const environment = {
   missionHistoryDays: 14, // Number of days to display missions for
   permissions: ['topStock', 'debugging', 'sectionLabels', 'sectionBreaks'],
   authUsers: false,
-  authUrl: 'http://localhost:5556/auth?'
+  authUrl: 'http://localhost:5556/auth?',
+  authRedirectUrl: 'http://localhost/'
 };

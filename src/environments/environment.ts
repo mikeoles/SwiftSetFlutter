@@ -18,6 +18,7 @@ export const environment = {
   permissions: ['topStock', 'QA', 'sectionLabels', 'sectionBreaks', 'misreadBarcodes'],
   authUsers: false,
   authUrl: 'http://localhost:5556/auth?',
+  authRedirectUrl: 'http://localhost/'
 };
 
 /*

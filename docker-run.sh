@@ -34,6 +34,9 @@ fi
 if [[ ! -z "$AUTH_URL" ]]; then
   echo "  \"authUrl\": \"$AUTH_URL\"," >> /usr/share/nginx/html/assets/config.json
 fi
+if [[ ! -z "$AUTH_REDIRECT_URL" ]]; then
+  echo "  \"authRedirectUrl\": \"$AUTH_REDIRECT_URL\"," >> /usr/share/nginx/html/assets/config.json
+fi
 echo "  \"production\": true" >> /usr/share/nginx/html/assets/config.json
 echo "}" >> /usr/share/nginx/html/assets/config.json
 
