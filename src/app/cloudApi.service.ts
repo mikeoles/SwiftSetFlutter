@@ -77,7 +77,7 @@ export class CloudApiService implements ApiService {
       productCoordinates: [],
       section: '',
       customFields: [],
-      misreadType: '',
+      annotations: {},
     };
   }
 
@@ -99,7 +99,8 @@ export class CloudApiService implements ApiService {
       productCoordinates: [],
       section: '',
       customFields: [],
-      misreadType: '',
+      annotations: {},
+      annotationColor: ''
     };
   }
 
@@ -122,7 +123,8 @@ export class CloudApiService implements ApiService {
       productCoordinates: [],
       section: '',
       customFields: [],
-      misreadType: '',
+      annotations: {},
+      annotationColor: ''
     };
   }
 
@@ -160,7 +162,8 @@ export class CloudApiService implements ApiService {
       productCoordinates: (prc || []).map(pc => this.createProductCoordinate(label.bounds, pc)),
       section: label.section,
       customFields: (customFields || []).map(cf => this.createCustomField(cf)),
-      misreadType: '',
+      annotations: {},
+      annotationColor: ''
     };
   }
 
@@ -399,44 +402,80 @@ export class CloudApiService implements ApiService {
   }
 
   getMisreadCategories(): Observable<AnnotationCategory[]> {
-    return this.http.get('http://localhost:4200/assets/mock/categories.json').pipe(
+    return this.http.get('http://localhost:4200/assets/mock/categoriesmisread.json').pipe(
+      map<any, AnnotationCategory[]>(o => o.map(c => this.createAnnotationCategory(c))),
+    );
+  }
+
+  getFalsePositiveCategories(): Observable<AnnotationCategory[]> {
+    return this.http.get('http://localhost:4200/assets/mock/categoriesfalsepositive.json').pipe(
+      map<any, AnnotationCategory[]>(o => o.map(c => this.createAnnotationCategory(c))),
+    );
+  }
+
+  getFalseNegativeCategories(): Observable<AnnotationCategory[]> {
+    return this.http.get('http://localhost:4200/assets/mock/categoriesfalsenegative.json').pipe(
       map<any, AnnotationCategory[]>(o => o.map(c => this.createAnnotationCategory(c))),
     );
   }
 
   createAnnotationCategory(category: any): AnnotationCategory {
     return {
-      category: category.category,
+      categoryName: category.category,
       color: category.color,
       hotkey: category.hotkey,
     };
   }
 
   getAnnotations(storeId: string, missionId: string, aisleId: string) {
-    throw new Error('Method not implemented.');
+    console.log('Method not implemented.');
   }
 
   createMissedLabelAnnotation(storeId: string, missionId: string, aisleId: string, top: string, left: string, category: string) {
-    throw new Error('Method not implemented.');
+    console.log('Method not implemented.');
   }
 
   updateMissedLabelAnnotation(storeId: string, missionId: string, aisleId: string, top: string, left: string, category: string) {
-    throw new Error('Method not implemented.');
+    console.log('Method not implemented.');
   }
 
   deleteMissedLabelAnnotation(storeId: string, missionId: string, aisleId: string, top: string, left: string) {
-    throw new Error('Method not implemented.');
+    console.log('Method not implemented.');
   }
 
   createMisreadLabelAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string, category: string) {
-    throw new Error('Method not implemented.');
+    console.log('Method not implemented.');
   }
 
   updateMisreadLabelAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string, category: string) {
-    throw new Error('Method not implemented.');
+    console.log('Method not implemented.');
   }
 
   deleteMisreadLabelAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string) {
-    throw new Error('Method not implemented.');
+    console.log('Method not implemented.');
+  }
+
+  createFalseNegativeAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string, category: string) {
+    console.log('Method not implemented.');
+  }
+
+  updateFalseNegativeAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string, category: string) {
+    console.log('Method not implemented.');
+  }
+
+  deleteFalseNegativeAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string) {
+    console.log('Method not implemented.');
+  }
+
+  createFalsePositiveAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string, category: string) {
+    console.log('Method not implemented.');
+  }
+
+  updateFalsePositiveAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string, category: string) {
+    console.log('Method not implemented.');
+  }
+
+  deleteFalsePositiveAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string) {
+    console.log('Method not implemented.');
   }
 }

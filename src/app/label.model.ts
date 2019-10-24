@@ -19,5 +19,6 @@ export default class Label {
   };
   productCoordinates: ProductCoordinate[];
   customFields: Array<CustomField>;
-  misreadType: string;
+  annotations: {};
+  annotationColor: string;
 }

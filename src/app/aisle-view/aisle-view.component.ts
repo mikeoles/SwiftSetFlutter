@@ -111,7 +111,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
 
   toggleMode(mode: string) {
     if (this.qaModesTurnedOn.indexOf(mode) !== -1) {
-      this.qaModesTurnedOn.splice(this.currentlyDisplayed.indexOf(mode), 1);
+      this.qaModesTurnedOn.splice(this.qaModesTurnedOn.indexOf(mode), 1);
     } else {
       this.qaModesTurnedOn.push(mode);
     }
@@ -129,6 +129,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
         this.currentlyDisplayed.push(d);
       }
     }
+    this.currentlyDisplayed = Object.assign([], this.currentlyDisplayed);
   }
 
   resetPanoAfterExportClicked() {
@@ -200,9 +201,24 @@ export class AisleViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateMisreadCategory(info) {
+  updateLabelCategory(info) {
+    switch (info.annotationType) {
+      case 'misread':
+        return this.updateMisread(info);
+      case 'falsePositive':
+        return this.updateFalsePositive(info);
+      case 'falseNegative':
+        return this.updateFalseNegative(info);
+    }
+  }
+
+  updateMisread(info: any): any {
     const i = this.misreadBarcodes.findIndex((obj => obj.labelId === info.labelId));
-    this.misreadBarcodes[i].misreadType = info.category;
+    if (info.action === 'delete') {
+      delete this.misreadBarcodes[i].annotations['misread'];
+    } else {
+      this.misreadBarcodes[i].annotations['misread'] = info.category;
+    }
     this.misreadBarcodes = Object.assign([], this.misreadBarcodes);
 
     if (info.action === 'update') {
@@ -215,6 +231,54 @@ export class AisleViewComponent implements OnInit, OnDestroy {
       );
     } else if (info.action === 'delete') {
       this.apiService.deleteMisreadLabelAnnotation(
+        this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.labelId
+      );
+    }
+  }
+
+  updateFalsePositive(info: any): any {
+    const i = this.outs.findIndex((obj => obj.labelId === info.labelId));
+    if (info.action === 'delete') {
+      delete this.outs[i].annotations['falsePositive'];
+    } else {
+      this.outs[i].annotations['falsePositive'] = info.category;
+    }
+    this.outs = Object.assign([], this.outs);
+
+    if (info.action === 'update') {
+      this.apiService.updateFalsePositiveAnnotation(
+        this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.labelId, info.category
+      );
+    } else if (info.action === 'add') {
+      this.apiService.createFalsePositiveAnnotation(
+        this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.labelId, info.category
+      );
+    } else if (info.action === 'delete') {
+      this.apiService.deleteFalsePositiveAnnotation(
+        this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.labelId
+      );
+    }
+  }
+
+  updateFalseNegative(info: any): any {
+    const i = this.labels.findIndex((obj => obj.labelId === info.labelId));
+    if (info.action === 'delete') {
+      delete this.labels[i].annotations['falseNegative'];
+    } else {
+      this.labels[i].annotations['falseNegative'] = info.category;
+    }
+    this.labels = Object.assign([], this.labels);
+
+    if (info.action === 'update') {
+      this.apiService.updateFalseNegativeAnnotation(
+        this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.labelId, info.category
+      );
+    } else if (info.action === 'add') {
+      this.apiService.createFalseNegativeAnnotation(
+        this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.labelId, info.category
+      );
+    } else if (info.action === 'delete') {
+      this.apiService.deleteFalseNegativeAnnotation(
         this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.labelId
       );
     }

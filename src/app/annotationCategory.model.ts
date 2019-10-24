@@ -1,5 +1,5 @@
 export default class AnnotationCategory {
-    category: string;
+    categoryName: string;
     color: string;
     hotkey: string;
 }

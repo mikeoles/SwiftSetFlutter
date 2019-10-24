@@ -5,14 +5,16 @@
 
       <ng-container *ngFor="let displayType of currentlyDisplayed">
         <ng-container *ngFor="let annotation of annotations(displayType)">
-          <div class="{{displayType}}Annotation annotation"
-          [class.selected]="(this.currentId === annotation.labelId) && !this.panoMode"
-          [ngStyle]="setLabelStyles(displayType,annotation)"
+          <div class="annotation"
+          [style.left.px] = "annotation.bounds.left"
+          [style.top.px] = "annotation.bounds.top"
+          [style.width.px] = "annotation.bounds.width"
+          [style.height.px] = "annotation.bounds.height"
+          [style.border-color] = "annotation.annotationColor"
           (click)="annotationClicked(annotation)"></div>
           <ng-container *ngIf="qaModesTurnedOn.includes('debug') && currentlyDisplayed.includes('shelfLabels')">
             <ng-container *ngFor="let productCoordinate of annotation.productCoordinates">
               <div class="productAnnotation annotation"
-              [class.selected]="(this.currentId === annotation.labelId) && !this.panoMode"
               [style.left.px]="productCoordinate.left"
               [style.top.px]="productCoordinate.top"
               [style.width.px]="productCoordinate.width"
@@ -28,18 +30,18 @@
         [style.top.px]="annotationTop">
         <ng-container *ngFor="let category of categories(); let i = index">
           <li
-            [ngStyle]="setAnnotationStyles(category.category, hovered, i, category.color)" (mouseover)="hovered = i" (mouseleave)="hovered = -1" 
-            (click)="setCategory(category.category)">
-            {{category.category}} <span>{{category.hotkey | uppercase}}</span>
+            [ngStyle]="setAnnotationStyles(category.categoryName, hovered, i, category.color)" (mouseover)="hovered = i" (mouseleave)="hovered = -1" 
+            (click)="setCategory(category.categoryName)">
+            {{category.categoryName}} <span>{{category.hotkey | uppercase}}</span>
           </li>
         </ng-container>
-        <li *ngIf="(annotationMenu === 'missed' && selectedMarkerCategory) || (annotationMenu === 'misread' && selectedAnnotation.misreadType)" 
+        <li *ngIf="(annotationMenu === 'missed' && selectedMarkerCategory) || (selectedAnnotation && (selectedAnnotation.annotations[annotationMenu]))" 
           class="delete" (click)="deleteCategory()">Delete</li>
       </ul>
 
       <ng-container *ngIf="qaModesTurnedOn.includes('missingBarcodes')">
         <ng-container *ngFor="let marker of missedBarcodeMarkers; let i = index">
-          <div class="marker" [ngStyle]="setMarkerStyles(marker.top, marker.left, marker.category)" (click)="editMarker(i)"></div>
+          <div class="marker" [ngStyle]="setMarkerStyles(marker.top, marker.left, marker.categoryName)" (click)="editMarker(i)"></div>
         </ng-container>
       </ng-container>
 

@@ -8,7 +8,7 @@
   [outs]="outs" [labels]="labels" [sectionLabels]="sectionLabels" [sectionBreaks]="sectionBreaks" [topStock]="topStock" 
   [panoMode]='panoMode' [qaModesTurnedOn]='qaModesTurnedOn'  [resetPano]='resetPano' [resetPanoAfterExport]='resetPanoAfterExport'
   [misreadBarcodes]="misreadBarcodes"  (panoramaTouched)='hideDropdowns()' (panoramaId)='setId($event)'
-  (updateMisreadCategory)='updateMisreadCategory($event)' (updateMissedCategory)='updateMissedCategory($event)'>
+  (updateLabelCategory)='updateLabelCategory($event)' (updateMissedCategory)='updateMissedCategory($event)'>
 </app-panorama>
 <app-product-details [outs]="outs" [labels]="labels" [sectionLabels]="sectionLabels" [topStock]="topStock"  [misreadBarcodes]="misreadBarcodes"
   (gridId)='setId($event)' [currentId]="currentId" [panoMode]='panoMode'>

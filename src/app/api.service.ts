@@ -18,13 +18,21 @@ export interface ApiService {
   getRoles(idToken: string): Observable<string>;
   getMissedCategories(): Observable<AnnotationCategory[]>;
   getMisreadCategories(): Observable<AnnotationCategory[]>;
+  getFalseNegativeCategories(): Observable<AnnotationCategory[]>;
+  getFalsePositiveCategories(): Observable<AnnotationCategory[]>;
   getAnnotations(storeId: string, missionId: string, aisleId: string);
   createMissedLabelAnnotation(storeId: string, missionId: string, aisleId: string, top: string, left: string, category: string);
   updateMissedLabelAnnotation(storeId: string, missionId: string, aisleId: string, top: string, left: string, category: string);
-  deleteMissedLabelAnnotation(storeId: string, missionId: string, aisleId: string, top: string, left: string,);
+  deleteMissedLabelAnnotation(storeId: string, missionId: string, aisleId: string, top: string, left: string);
   createMisreadLabelAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string, category: string);
   updateMisreadLabelAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string, category: string);
   deleteMisreadLabelAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string);
+  createFalsePositiveAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string, category: string);
+  updateFalsePositiveAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string, category: string);
+  deleteFalsePositiveAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string);
+  createFalseNegativeAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string, category: string);
+  updateFalseNegativeAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string, category: string);
+  deleteFalseNegativeAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string);
 }
 
 export function apiFactory(environment: EnvironmentService, http: HttpClient) {

@@ -42,11 +42,13 @@ export class PanoramaComponent implements OnInit, OnChanges {
 
   @Output() panoramaId = new EventEmitter();
   @Output() panoramaTouched = new EventEmitter();
-  @Output() updateMisreadCategory = new EventEmitter<{labelId: number, category: string, action: string}>();
+  @Output() updateLabelCategory = new EventEmitter<{labelId: number, category: string, action: string, annotationType: AnnotationType}>();
   @Output() updateMissedCategory = new EventEmitter<{barcode: MissedBarcode, action: string}>();
 
   misreadAnnotationCategories: AnnotationCategory[];
   missedAnnotationCategories: AnnotationCategory[];
+  falsePositiveAnnotationCategories: AnnotationCategory[];
+  falseNegativeAnnotationCategories: AnnotationCategory[];
   missedBarcodeMarkers: MissedBarcode[] = [];
 
   annotationMenu: AnnotationType = AnnotationType.none; // missing or misread
@@ -70,6 +72,13 @@ export class PanoramaComponent implements OnInit, OnChanges {
   currentWidth = 0;
   currentHeight = 0;
 
+  labelsColor = '#00CD87';
+  outsColor = '#FFFFFF';
+  misreadBarcodesColor = '#FF0000';
+  sectionLabelsColor = '#800080';
+  topStockColor = '#FFC0CB';
+  selectedColor = '#FFD54A';
+
   constructor(private environment: EnvironmentService, @Inject('ApiService') private apiService: ApiService,
     private keyboard: KeyboardShortcutsService) {
     this.qaUser = environment.config.permissions.indexOf(Permissions.QA) > -1;
@@ -77,31 +86,20 @@ export class PanoramaComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.apiService.getMisreadCategories().subscribe(categories => {
-      this.misreadAnnotationCategories = categories;
-      this.misreadAnnotationCategories.forEach( category => {
-        this.keyboard.add([
-          {
-            key: category.hotkey,
-            command: () => this.setCategory(category.category, AnnotationType.misread),
-            preventDefault: true
-          }
-        ]);
-      });
+      this.addCategories(this.misreadAnnotationCategories = categories);
     });
 
     this.apiService.getMissedCategories().subscribe(categories => {
-      this.missedAnnotationCategories = categories;
-      this.missedAnnotationCategories.forEach( category => {
-        this.keyboard.add([
-          {
-            key: category.hotkey,
-            command: () => this.setCategory(category.category, AnnotationType.missed),
-            preventDefault: true
-          }
-        ]);
-      });
+      this.addCategories(this.missedAnnotationCategories = categories);
     });
 
+    this.apiService.getFalsePositiveCategories().subscribe(categories => {
+      this.addCategories(this.falsePositiveAnnotationCategories = categories);
+    });
+
+    this.apiService.getFalseNegativeCategories().subscribe(categories => {
+      this.addCategories(this.falseNegativeAnnotationCategories = categories);
+    });
 
     const element = document.getElementById('pano-image');
     const owner = document.getElementById('image-owner');
@@ -144,13 +142,35 @@ export class PanoramaComponent implements OnInit, OnChanges {
     });
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (this.panZoomApi) {
-      if (changes['qaModesTurnedOn']) {
-        if (!changes['qaModesTurnedOn'].currentValue.includes('missingBarcodes')) {
-          this.annotationMenu = AnnotationType.none;
+  addCategories(categories: AnnotationCategory[]): any {
+    categories.forEach( category => {
+      this.keyboard.add([
+        {
+          key: category.hotkey,
+          command: () => this.setCategory(category.categoryName),
+          preventDefault: true
         }
+      ]);
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['outs'] || changes['misreadBarcodes'] || changes['labels'] ||
+      changes['currentId'] || changes['currentlyDisplayed'] || changes['qaModesTurnedOn']) {
+        this.updateLabelBorders(this.outs, this.outsColor, 'outs');
+        this.updateLabelBorders(this.labels, this.labelsColor, 'shelfLabels');
+        this.updateLabelBorders(this.misreadBarcodes, this.misreadBarcodesColor, 'misreadBarcodes');
+        this.updateLabelBorders(this.topStock, this.topStockColor, 'topStock');
+        this.updateLabelBorders(this.sectionLabels, this.sectionLabelsColor, 'sectionLabels');
+    }
+
+    if (changes['qaModesTurnedOn']) {
+      if (!changes['qaModesTurnedOn'].currentValue.includes('missingBarcodes')) {
+        this.annotationMenu = AnnotationType.none;
       }
+    }
+
+    if (this.panZoomApi) {
       if (changes['panoMode']) {
         const element = document.getElementById('pano-image');
         this.centerImage(element.offsetWidth, element.offsetHeight);
@@ -210,6 +230,27 @@ export class PanoramaComponent implements OnInit, OnChanges {
     }
   }
 
+  updateLabelBorders(labels: Label[], color: string, name: string): any {
+    if (labels && this.currentlyDisplayed.includes(name)) {
+      labels.forEach(label => {
+        const annotationModes = Object.keys(label.annotations);
+        if (label.labelId === this.currentId) { // selected color
+          label.annotationColor = this.selectedColor;
+        } else if (annotationModes.length > 0) { // annotated color
+          const categoriesList = this.categories(annotationModes[0]);
+          const categoryName = label.annotations[annotationModes[0]]; // pick first annotation if multiple
+          categoriesList.forEach( category => {
+            if (category.categoryName === categoryName) {
+              label.annotationColor = category.color;
+            }
+          });
+        } else { // regular color
+          label.annotationColor = color;
+        }
+      });
+    }
+  }
+
   annotations(displayType: string) {
     switch (displayType) {
       case 'outs':
@@ -225,21 +266,32 @@ export class PanoramaComponent implements OnInit, OnChanges {
     }
   }
 
-  categories() {
-    switch (this.annotationMenu) {
-      case AnnotationType.missed:
-        return this.missedAnnotationCategories;
-      case AnnotationType.misread:
-        return this.misreadAnnotationCategories;
+  categories(annotationName: string) {
+    if (annotationName === AnnotationType.missed || this.annotationMenu === AnnotationType.missed) {
+      return this.missedAnnotationCategories;
+    } else if (annotationName === AnnotationType.misread || this.annotationMenu === AnnotationType.misread) {
+      return this.misreadAnnotationCategories;
+    } else if (annotationName === AnnotationType.falsePositive || this.annotationMenu === AnnotationType.falsePositive) {
+      return this.falsePositiveAnnotationCategories;
+    } else if (annotationName === AnnotationType.falseNegative || this.annotationMenu === AnnotationType.falseNegative) {
+      return this.falseNegativeAnnotationCategories;
     }
   }
 
   showOrHideAnnotationOptions(annotation: Label) { // Determines wether to show the popup for annotation options
     this.annotationMenu = AnnotationType.none;
-    const isMissingBarcode = this.misreadBarcodes.findIndex((obj => obj.labelId === annotation.labelId)) > -1;
-    if (this.currentlyDisplayed.includes('misreadBarcodes') && isMissingBarcode && this.qaUser) {
+    const isMissingBarcode = this.misreadBarcodes.findIndex((label => label.labelId === annotation.labelId)) > -1;
+    const isOut = this.outs.findIndex((label => label.labelId === annotation.labelId)) > -1;
+    const isLabel = this.labels.findIndex((label => label.labelId === annotation.labelId)) > -1;
+    if (this.currentlyDisplayed.includes('misreadBarcodes') && isMissingBarcode && this.qaModesTurnedOn.includes('misreadBarcodes')) {
       this.annotationMenu = AnnotationType.misread;
-      this.annotationLeft = annotation.bounds.left + annotation.bounds.width + 20; // Set bounds for annoation options pane
+    } else if (this.currentlyDisplayed.includes('outs') && isOut && this.qaModesTurnedOn.includes('falsePositives')) {
+      this.annotationMenu = AnnotationType.falsePositive;
+    } else if (this.currentlyDisplayed.includes('shelfLabels') && !isOut && isLabel && this.qaModesTurnedOn.includes('falseNegatives')) {
+      this.annotationMenu = AnnotationType.falseNegative;
+    }
+    if (this.annotationMenu !== AnnotationType.none) {
+      this.annotationLeft = annotation.bounds.left + annotation.bounds.width + 20; // Set bounds for annotation options pane
       this.annotationTop = annotation.bounds.top - annotation.bounds.height;
       this.selectedAnnotation = annotation;
     }
@@ -301,10 +353,14 @@ export class PanoramaComponent implements OnInit, OnChanges {
   panoTouched() {
     this.annotationMenu = AnnotationType.none;
     this.selectedMarkerCategory = '';
+    this.panoramaId.emit(-1);
   }
 
   deleteCategory() {
-    if (this.annotationMenu === AnnotationType.missed) {
+    this.cancelZoom = true;
+    if (this.annotationMenu === AnnotationType.none) {
+      return;
+    } else if (this.annotationMenu === AnnotationType.missed) {
       const index = this.missedBarcodeMarkers.findIndex((obj => obj.left === this.annotationLeft && obj.top === this.annotationTop));
       if (index > -1) {
         this.updateMissedCategory.emit({
@@ -313,55 +369,55 @@ export class PanoramaComponent implements OnInit, OnChanges {
         });
         this.missedBarcodeMarkers.splice(index, 1);
       }
-    }
-
-    if (this.annotationMenu === AnnotationType.misread && this.selectedAnnotation.misreadType.length > 0) {
-      this.updateMisreadCategory.emit({
+    } else {
+      this.updateLabelCategory.emit({
         labelId: this.selectedAnnotation.labelId,
         category: '',
-        action: 'delete'
+        action: 'delete',
+        annotationType: this.annotationMenu
       });
     }
     this.annotationMenu = AnnotationType.none;
-    this.cancelZoom = true;
   }
 
-  setCategory(category: string, type: string = AnnotationType.none) { // use type for hotkeys and annotationMenu for menu click
-    if (type === AnnotationType.missed || this.annotationMenu === AnnotationType.missed) {
+  setCategory(category: string) {
+    this.cancelZoom = true;
+    if ( this.annotationMenu === AnnotationType.none) {
+      return;
+    } else if ( this.annotationMenu === AnnotationType.missed) {
       let index = this.missedBarcodeMarkers.findIndex((obj => obj.left === this.annotationLeft && obj.top === this.annotationTop));
       const action = index > -1 ? 'update' : 'add';
       if (index > -1) { // edit if already exists
-        this.missedBarcodeMarkers[index].category = category;
+        this.missedBarcodeMarkers[index].categoryName = category;
       } else { // create new missed barcode marker
         index = this.missedBarcodeMarkers.push({
           top: this.annotationTop,
           left: this.annotationLeft,
-          category: category
+          categoryName: category
         }) - 1;
       }
       this.updateMissedCategory.emit({
         barcode: this.missedBarcodeMarkers[index],
         action: action
       });
-    }
-
-    if (type === AnnotationType.misread || this.annotationMenu === AnnotationType.misread) {
-      this.updateMisreadCategory.emit({
+     } else {
+      this.updateLabelCategory.emit({
         labelId: this.selectedAnnotation.labelId,
         category: category,
-        action: this.selectedAnnotation.misreadType ? 'update' : 'add'
+        action: this.selectedAnnotation.annotations[this.annotationMenu] ? 'update' : 'add', // todo
+        annotationType: this.annotationMenu
       });
     }
     this.annotationMenu = AnnotationType.none;
-    this.cancelZoom = true;
   }
 
   setAnnotationStyles(category: string, hovered: number, i: number, color: string) {
     const styles = {};
     styles['background-color'] = 'white';
     styles['color'] = color;
-    if ((this.annotationMenu === AnnotationType.misread && this.selectedAnnotation && this.selectedAnnotation.misreadType === category) ||
-        (this.annotationMenu === AnnotationType.missed && this.selectedMarkerCategory === category)) {
+    if (this.annotationMenu === AnnotationType.missed && this.selectedMarkerCategory === category) {
+      styles['background-color'] = 'lightgray'; // highlight the currently selected color light gray
+    } else if (this.selectedAnnotation && this.selectedAnnotation.annotations[this.annotationMenu] === category) {
       styles['background-color'] = 'lightgray'; // highlight the currently selected color light gray
     }
     if (hovered === i) {
@@ -371,26 +427,11 @@ export class PanoramaComponent implements OnInit, OnChanges {
     return styles;
   }
 
-  setLabelStyles(displayType: string, annotation: Label) {
-    const styles = {};
-    styles['left.px'] = annotation.bounds.left;
-    styles['top.px'] = annotation.bounds.top;
-    styles['width.px'] = annotation.bounds.width;
-    styles['height.px'] = annotation.bounds.height;
-    if (this.misreadAnnotationCategories && displayType === 'misreadBarcodes' && annotation.labelId !== this.currentId) {
-      const index = this.misreadAnnotationCategories.findIndex((obj => obj.category === annotation.misreadType));
-      if (index > -1) {
-        styles['border-color'] = this.misreadAnnotationCategories[index].color;
-      }
-    }
-    return styles;
-  }
-
   setMarkerStyles(top: number, left: number, category: string) {
     const styles = {};
     styles['top.px'] = top - 35;
     styles['left.px'] = left - 35;
-    const index = this.missedAnnotationCategories.findIndex((obj => obj.category === category));
+    const index = this.missedAnnotationCategories.findIndex((obj => obj.categoryName === category));
     styles['border-color'] = this.missedAnnotationCategories[index].color;
     return styles;
   }
@@ -399,7 +440,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
     const selected: MissedBarcode = this.missedBarcodeMarkers[index];
     this.annotationTop = selected.top;
     this.annotationLeft = selected.left;
-    this.selectedMarkerCategory = selected.category;
+    this.selectedMarkerCategory = selected.categoryName;
     this.annotationMenu = AnnotationType.missed;
   }
 }
@@ -407,5 +448,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
 enum AnnotationType {
   misread = 'misread',
   missed = 'missed',
+  falsePositive = 'falsePositive',
+  falseNegative = 'falseNegative',
   none = 'none'
 }

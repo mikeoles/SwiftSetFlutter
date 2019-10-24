@@ -31,15 +31,15 @@
 
 <div *ngIf='!panoMode'>
   <div [ngSwitch]="currentDisplay">
-    <app-product-grid [products]="filteredOuts" [selectedId]="currentId" (gridClicked)='productGridSelected($event)'
+    <app-product-grid [products]="filteredOuts" [selectedId]="currentId" [annotationTypes]="['False Positive']" (gridClicked)='productGridSelected($event)'
       *ngSwitchCase="'outs'"></app-product-grid>
-    <app-product-grid [products]="filteredLabels" [selectedId]="currentId" (gridClicked)='productGridSelected($event)'
+    <app-product-grid [products]="filteredLabels" [selectedId]="currentId" [annotationTypes]="['False Negative']" (gridClicked)='productGridSelected($event)'
       *ngSwitchCase="'labels'"></app-product-grid>
-    <app-product-grid [products]="misreadBarcodes" [selectedId]="currentId" [showMisreadType]="true" (gridClicked)='productGridSelected($event)'
+    <app-product-grid [products]="misreadBarcodes" [selectedId]="currentId" [annotationTypes]="['Misread']" (gridClicked)='productGridSelected($event)'
       *ngSwitchCase="'misreadBarcodes'"></app-product-grid>
-    <app-product-grid [products]="sectionLabels" [onlyBarcode]="true" [selectedId]="currentId" (gridClicked)='productGridSelected($event)'
+    <app-product-grid [products]="sectionLabels" [onlyBarcode]="true" [annotationTypes]="[]" [selectedId]="currentId" (gridClicked)='productGridSelected($event)'
       *ngSwitchCase="'sectionLabels'"></app-product-grid>
-    <app-product-grid [products]="topStock" [onlyBarcode]="true" [selectedId]="currentId" (gridClicked)='productGridSelected($event)'
+    <app-product-grid [products]="topStock" [onlyBarcode]="true" [annotationTypes]="[]" [selectedId]="currentId" (gridClicked)='productGridSelected($event)'
       *ngSwitchCase="'topStock'"></app-product-grid>
   </div>
 </div>

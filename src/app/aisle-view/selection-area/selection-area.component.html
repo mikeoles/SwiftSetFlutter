@@ -52,10 +52,25 @@
           <fa-icon *ngIf="!qaModesTurnedOn.includes('debug')" size="lg" class="check" [icon]="faSquare"></fa-icon>
           Debug
         </li>
+        <li (click)="qaModeSelected('misreadBarcodes')">
+          <fa-icon *ngIf="qaModesTurnedOn.includes('misreadBarcodes')" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
+          <fa-icon *ngIf="!qaModesTurnedOn.includes('misreadBarcodes')" size="lg" class="check" [icon]="faSquare"></fa-icon>
+          Misread Barcodes
+        </li>
         <li (click)="qaModeSelected('missingBarcodes')">
           <fa-icon *ngIf="qaModesTurnedOn.includes('missingBarcodes')" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
           <fa-icon *ngIf="!qaModesTurnedOn.includes('missingBarcodes')" size="lg" class="check" [icon]="faSquare"></fa-icon>
-          Set Missing Barcodes
+          Missing Barcodes
+        </li>
+        <li (click)="qaModeSelected('falsePositives')">
+          <fa-icon *ngIf="qaModesTurnedOn.includes('falsePositives')" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
+          <fa-icon *ngIf="!qaModesTurnedOn.includes('falsePositives')" size="lg" class="check" [icon]="faSquare"></fa-icon>
+          False Positives
+        </li>
+        <li (click)="qaModeSelected('falseNegatives')">
+          <fa-icon *ngIf="qaModesTurnedOn.includes('falseNegatives')" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
+          <fa-icon *ngIf="!qaModesTurnedOn.includes('falseNegatives')" size="lg" class="check" [icon]="faSquare"></fa-icon>
+          False Negatives
         </li>
       </ul>
       <div *ngIf="currentDropdown === 'qaModes'" class="pointer displayPointer"></div>

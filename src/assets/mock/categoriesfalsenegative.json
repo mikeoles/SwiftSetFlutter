@@ -1,16 +1,16 @@
 [
     {
-        "category": "blurry",
+        "category": "fn 1",
         "color": "#ffa500",
         "hotkey": "b"
     },
     {
-        "category": "obstructed",
+        "category": "fn 2",
         "color": "#551a8b",
         "hotkey": "o"
     },
     {
-        "category": "occluded",
+        "category": "fn 3",
         "color": "#d4af37",
         "hotkey": "f"
     }

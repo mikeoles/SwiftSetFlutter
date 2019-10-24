@@ -18,7 +18,7 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
   @Output() gridClicked = new EventEmitter();
   @Input() products: Label[];
   @Input() onlyBarcode: boolean; // Displays only the barcode in the grid, used for top stock and shelf labels
-  @Input() showMisreadType: boolean; // Displays the type of error assigned to a misread label by QA
+  @Input() annotationTypes: string[];
   @Input() selectedId: number;
   showDepartment: Boolean;
   showSection: Boolean;
@@ -99,12 +99,14 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
     if (this.onlyBarcode) {
       this.columnHeaders = ['Barcode'];
     } else {
-      this.columnHeaders = this.environment.config.productGridFields;
+      this.columnHeaders = Object.assign([], this.environment.config.productGridFields);
     }
 
-    if (this.showMisreadType && !this.columnHeaders.includes('Misread Type')) {
-      this.columnHeaders.push('Misread Type');
-    }
+    this.annotationTypes.forEach(annotationType => {
+      if (this.annotationTypes && !this.columnHeaders.includes(annotationType)) {
+        this.columnHeaders.push(annotationType);
+      }
+    });
 
     for (let i = 0; i < this.products.length; i++) {
       const product: Label = this.products[i];
@@ -124,6 +126,8 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
           cellValue = product[fieldLowercase];
         } else if (product.bounds[fieldLowercase]) {
           cellValue = product.bounds[fieldLowercase];
+        } else if (product.annotations[fieldLowercase]) {
+          cellValue = product.annotations[fieldLowercase];
         } else {
           for (let k = 0; k < product.customFields.length; k++) {
             if (product.customFields[k].name === field || product.customFields[k].name === '"' + field + '"') {
