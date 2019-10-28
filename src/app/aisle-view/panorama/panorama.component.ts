@@ -40,7 +40,6 @@ export class PanoramaComponent implements OnInit, OnChanges {
   @Input() sectionLabels: Label[];
   @Input() topStock: Label[];
   @Input() sectionBreaks: number[];
-
   @Input() currentId: number;
   @Input() panoramaUrl: string;
   @Input() panoMode: boolean;

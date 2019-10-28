@@ -24,11 +24,11 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   title = 'aisle';
   outs: Label[];
   labels: Label[];
+
   misreadBarcodes: Label[];
   sectionLabels: Label[];
   topStock: Label[];
   sectionBreaks: number[];
-
   missions: Mission[];
   selectedMission: Mission;
   selectedAisle: Aisle;
@@ -170,7 +170,6 @@ export class AisleViewComponent implements OnInit, OnDestroy {
       this.sectionLabels = fullAisle.sectionLabels;
       this.topStock = fullAisle.topStock;
       this.sectionBreaks = fullAisle.sectionBreaks;
-
       this.panoramaUrl = fullAisle.panoramaUrl;
       this.currentId = null;
     });
