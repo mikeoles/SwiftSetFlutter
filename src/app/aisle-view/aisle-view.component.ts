@@ -28,6 +28,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   sectionLabels: Label[];
   topStock: Label[];
   sectionBreaks: number[];
+
   missions: Mission[];
   selectedMission: Mission;
   selectedAisle: Aisle;
@@ -37,6 +38,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   panoTouched: boolean;
   resetPano: boolean;
   resetPanoAfterExport: boolean;
+
   private logoSubscription: Subscription;
   private backButtonSubscription: Subscription;
   currentlyDisplayed: Array<string> = new Array<string>();
@@ -168,6 +170,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
       this.sectionLabels = fullAisle.sectionLabels;
       this.topStock = fullAisle.topStock;
       this.sectionBreaks = fullAisle.sectionBreaks;
+
       this.panoramaUrl = fullAisle.panoramaUrl;
       this.currentId = null;
     });

@@ -30,6 +30,7 @@ enum AnnotationType {
   selector: 'app-panorama',
   templateUrl: './panorama.component.html',
   styleUrls: ['./panorama.component.scss'],
+  providers: [ KeyboardShortcutsService ],
 })
 
 export class PanoramaComponent implements OnInit, OnChanges {

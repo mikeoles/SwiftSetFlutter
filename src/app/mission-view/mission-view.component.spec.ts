@@ -37,10 +37,10 @@ describe('MissionViewComponent', () => {
 
   const labels: Label[] = [
     { labelName: 'label name', labelId: 1, barcode: '12345', productId: '12345', price: 0.0,
-    bounds: { top: 0, left: 0, width: 0, height: 0 },
+    bounds: { top: 0, left: 0, width: 0, height: 0}, annotations: [], annotationColor: '',
     customFields: [], section: '', department: '', onHand: 0, productCoordinates: [] },
     { labelName: 'label name', labelId: 1, barcode: '550376332', productId: '12345', price: 0.0,
-    bounds: { top: 0, left: 0, width: 0, height: 0 },
+    bounds: { top: 0, left: 0, width: 0, height: 0 }, annotations: [], annotationColor: '',
     customFields: [], section: '', department: '', onHand: 0, productCoordinates: [] },
   ];
 

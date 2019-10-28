@@ -7,48 +7,56 @@ import Label from '../../label.model';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { FormsModule } from '@angular/forms';
 import { EnvironmentService } from 'src/app/environment.service';
+import { of } from 'rxjs';
+import { ApiService } from 'src/app/api.service';
 
 describe('ProductDetailsComponent', () => {
   let component: ProductDetailsComponent;
   let fixture: ComponentFixture<ProductDetailsComponent>;
   let buttonsEl: HTMLElement;
   let buttons: HTMLCollection;
+  let apiService: jasmine.SpyObj<ApiService>;
+  let environmentService: jasmine.SpyObj<EnvironmentService>;
+
   const labels: Label[] = [
     { labelId: 1, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
-      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: []},
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], annotations: [], annotationColor: ''},
     { labelId: 2, labelName: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0,
-      height: 0}, department: '', section: '', customFields: [], onHand: 0, productCoordinates: []},
+      height: 0}, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], annotations: [], annotationColor: ''},
     { labelId: 3, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
-      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: []},
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], annotations: [], annotationColor: ''},
     { labelId: 4, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
-      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: []},
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], annotations: [], annotationColor: ''},
     { labelId: 5, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
-      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: []},
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], annotations: [], annotationColor: ''},
   ];
   const outs: Label[] = [
     { labelId: 6, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
-      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [] },
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], annotations: [], annotationColor: '' },
     { labelId: 7, labelName: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0,
-      height: 0 }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [] },
+      height: 0 }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], annotations: [], annotationColor: '' },
     { labelId: 8, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
-      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [] },
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], annotations: [], annotationColor: '' },
     { labelId: 9, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
-      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [] },
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], annotations: [], annotationColor: '' },
     { labelId: 10, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0,
-      height: 0 }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [] },
+      height: 0 }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], annotations: [], annotationColor: '' },
   ];
   const topStock: Label[] = [
     { labelId: 6, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
-      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [] },
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], annotations: [], annotationColor: '' },
     { labelId: 7, labelName: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0,
-      height: 0 }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [] },
+      height: 0 }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], annotations: [], annotationColor: '' },
     { labelId: 8, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
-      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [] },
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], annotations: [], annotationColor: '' },
     { labelId: 9, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
-      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [] },
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], annotations: [], annotationColor: '' },
   ];
 
   beforeEach(async(() => {
+    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getRoles']);
+    const environmentServiceSpy = jasmine.createSpyObj('EnvironmentService', ['setPermissions']);
+
     TestBed.configureTestingModule({
       declarations: [
         ProductDetailsComponent,
@@ -59,12 +67,18 @@ describe('ProductDetailsComponent', () => {
         FormsModule
       ],
       providers: [
+        { provide: 'ApiService', useValue: apiServiceSpy },
         { provide: EnvironmentService, useValue: { config: {
-          productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price']
-        }}}
+          productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price'],
+          permissions: ['topStock', 'QA', 'sectionLabels', 'sectionBreaks', 'misreadBarcodes']
+        }}},
       ]
     })
     .compileComponents();
+
+    environmentService = TestBed.get(EnvironmentService);
+    apiService = TestBed.get('ApiService');
+    apiService.getRoles.and.returnValue(of('bossanova'));
   }));
 
   beforeEach(() => {
@@ -116,16 +130,17 @@ describe('ProductDetailsComponent', () => {
   });
 
   it('displays buttons', () => {
-    expect(buttonsEl.childElementCount).toEqual(3);
+    expect(buttonsEl.childElementCount).toEqual(5);
     expect(buttons[0].textContent).toContain('Outs');
     expect(buttons[1].textContent).toContain('Shelf Labels');
-    expect(buttons[2].textContent).toContain('Top Stock');
+    expect(buttons[2].textContent).toContain('Misread Barcodes');
+    expect(buttons[3].textContent).toContain('Section Labels');
+    expect(buttons[4].textContent).toContain('Top Stock');
   });
 
   it('displays counts on buttons', () => {
     expect(buttons[0].textContent).toContain('(5)');
     expect(buttons[1].textContent).toContain('(5)');
-    expect(buttons[2].textContent).toContain('(4)');
   });
 
   it('button can be selected', () => {

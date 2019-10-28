@@ -46,6 +46,7 @@ describe('SelectionAreaComponent', () => {
       labels: [], outs: [], sectionLabels: [], sectionBreaks: [], topStock: [],
       coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: '' },
   ];
+
   const missions: Mission[] = [
     { missionId: '1', missionName: '1111', storeId: '1', createDateTime: new Date('2018-12-12'), startDateTime: new Date('2018-12-12'),
       endDateTime: new Date('2018-12-12'), aisleCount: 0, outs: 0, labels: 0, readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0,
@@ -61,7 +62,7 @@ describe('SelectionAreaComponent', () => {
     summaryOuts: [], summaryLabels: [], timezone: '' };
 
   beforeEach(async(() => {
-    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getStore', 'getMission', 'getAisle']);
+    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getStore', 'getMission', 'getAisle', 'getRoles']);
 
     TestBed.configureTestingModule({
       imports: [FormsModule, FontAwesomeModule],
@@ -71,7 +72,8 @@ describe('SelectionAreaComponent', () => {
         { provide: ModalService},
         { provide: EnvironmentService, useValue: { config: {
           onHand: true,
-          exportingPDF: true
+          exportingPDF: true,
+          permissions: ['topStock', 'QA', 'sectionLabels', 'sectionBreaks', 'misreadBarcodes']
         }}},
         { provide: Router },
       ]
@@ -80,12 +82,11 @@ describe('SelectionAreaComponent', () => {
 
     apiService = TestBed.get('ApiService');
     apiService.getStore.and.returnValue(of(store));
+    apiService.getRoles.and.returnValue(of('bossanova'));
   }));
   beforeEach(() => {
     fixture = TestBed.createComponent(SelectionAreaComponent);
     component = fixture.componentInstance;
-    component.showAisles = true;
-    component.showMissions = true;
     component.exportOnHand = false;
     component.missions = missions;
     component.aisles = mission.aisles;
@@ -94,10 +95,6 @@ describe('SelectionAreaComponent', () => {
     fixture.detectChanges();
     missionsButtonEl = fixture.debugElement.query(By.css('#missionsContainer > button')).nativeElement;
     aislesButtonEl = fixture.debugElement.query(By.css('#aislesContainer > button')).nativeElement;
-    missionsDropdownEl = fixture.debugElement.query(By.css('#missionsContainer > ul')).nativeElement;
-    aislesDropdownEl = fixture.debugElement.query(By.css('#aislesContainer > ul')).nativeElement;
-    missionsListEl = fixture.debugElement.query(By.css('#missionsContainer > ul > li:nth-child(2)')).nativeElement;
-    aislesListEl = fixture.debugElement.query(By.css('#aislesContainer > ul > li:nth-child(4)')).nativeElement;
     fixture.detectChanges();
   });
 
@@ -107,7 +104,9 @@ describe('SelectionAreaComponent', () => {
 
   it('has a dropdown of missions', done => {
     fixture.whenStable().then(() => {
+      component.currentDropdown = 'missions';
       fixture.detectChanges();
+      missionsDropdownEl = fixture.debugElement.query(By.css('#missionsContainer > ul')).nativeElement;
       expect(missionsDropdownEl.childElementCount).toEqual(2);
       expect(missionsDropdownEl.children[0].textContent).toEqual(' ' + missions[0].missionName + ' ');
       done();
@@ -116,7 +115,9 @@ describe('SelectionAreaComponent', () => {
 
   it('has a dropdown of aisles', done => {
     fixture.whenStable().then(() => {
+      component.currentDropdown = 'aisles';
       fixture.detectChanges();
+      aislesDropdownEl = fixture.debugElement.query(By.css('#aislesContainer > ul')).nativeElement;
       expect(aislesDropdownEl.childElementCount).toEqual(5);
       expect(aislesDropdownEl.children[4].textContent).toEqual(' 5555 ');
       done();
@@ -125,6 +126,9 @@ describe('SelectionAreaComponent', () => {
 
   it('emits mission when selected', () => {
     spyOn(component.missionSelected, 'emit');
+    component.currentDropdown = 'missions';
+    fixture.detectChanges();
+    missionsListEl = fixture.debugElement.query(By.css('#missionsContainer > ul > li:nth-child(2)')).nativeElement;
     missionsListEl.click();
     missionsListEl.dispatchEvent(new Event('change'));
     fixture.detectChanges();
@@ -133,6 +137,9 @@ describe('SelectionAreaComponent', () => {
 
   it('emits aisle when selected', () => {
     spyOn(component.aisleSelected, 'emit');
+    component.currentDropdown = 'aisles';
+    fixture.detectChanges();
+    aislesListEl = fixture.debugElement.query(By.css('#aislesContainer > ul > li:nth-child(4)')).nativeElement;
     aislesListEl.click();
     aislesListEl.dispatchEvent(new Event('change'));
     fixture.detectChanges();
@@ -167,22 +174,6 @@ describe('SelectionAreaComponent', () => {
     component.selectedAisle = aisles[1];
     fixture.detectChanges();
     expect(aislesButtonEl.textContent).toEqual(' Aisle 2222 ');
-  });
-
-  it('hide missions dropdown after click', () => {
-    expect(component.showMissions).toEqual(true);
-    missionsListEl.click();
-    missionsListEl.dispatchEvent(new Event('change'));
-    fixture.detectChanges();
-    expect(component.showMissions).toEqual(false);
-  });
-
-  it('hide aisles dropdown after click', () => {
-    expect(component.showAisles).toEqual(true);
-    aislesListEl.click();
-    aislesListEl.dispatchEvent(new Event('change'));
-    fixture.detectChanges();
-    expect(component.showAisles).toEqual(false);
   });
 
 });

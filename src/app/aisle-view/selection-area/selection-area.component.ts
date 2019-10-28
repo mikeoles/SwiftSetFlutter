@@ -41,6 +41,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   @Input() panoramaUrl: string;
   @Input() outs: Label[] = [];
   @Input() labels: Label[] = [];
+
   @Input() currentlyDisplayed: Set<string>;
   @Input() qaModesTurnedOn: Set<string>;
 
@@ -67,7 +68,9 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
 
     const context = this;
     this.apiService.getRoles(localStorage.getItem('id_token')).subscribe( role => {
-      context.environment.setPermissions(Roles[role]);
+      if (typeof context.environment.setPermissions === 'function') {
+        context.environment.setPermissions(Roles[role]);
+      }
       context.showTopStock = environment.config.permissions.indexOf(Permissions.topStock) > -1;
       context.showSectionLabels = environment.config.permissions.indexOf(Permissions.sectionLabels) > -1;
       context.showSectionBreaks = environment.config.permissions.indexOf(Permissions.sectionBreaks) > -1;
@@ -179,7 +182,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
       }
       for (let i = 0; i < row.length; i++) {
         if (typeof row[i] === 'string') {
-          row[i] = row[i].replace('"', '""');
+          row[i] = row[i].replace(/"/g, '""');
           if (row[i].includes('\n') || row[i].includes(',') || row[i].includes('"')) {
             row[i] = '"' + row[i] + '"';
           }

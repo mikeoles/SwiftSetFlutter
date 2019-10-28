@@ -21,6 +21,7 @@ import { Location } from '@angular/common';
 import { EnvironmentService } from '../environment.service';
 import Store from '../store.model';
 
+
 @Component({selector: 'app-export-modal', template: ''})
 class ModalComponent {
   @Input() id: string;
@@ -30,18 +31,19 @@ describe('AisleViewComponent', () => {
   let fixture: ComponentFixture<AisleViewComponent>;
   let component: AisleViewComponent;
   let apiService: jasmine.SpyObj<ApiService>;
+  let environmentService: jasmine.SpyObj<EnvironmentService>;
 
   const labels: Label[] = [
     { labelId: 1, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [] },
-    { labelId: 2, labelName: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0,
-      height: 0, }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [] },
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], annotations: [], annotationColor: '' },
+    { labelId: 2, labelName: 'label name', barcode: '55037', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], annotations: [], annotationColor: '' },
     { labelId: 3, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [] },
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], annotations: [], annotationColor: '' },
     { labelId: 4, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [] },
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], annotations: [], annotationColor: '' },
     { labelId: 5, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [] },
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], annotations: [], annotationColor: '' },
   ];
 
   const sectionBreaks: number[] = [19, 200];
@@ -89,8 +91,10 @@ describe('AisleViewComponent', () => {
 };
 
   beforeEach(async(() => {
-    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getMissions', 'getMission', 'getAisle', 'getStore']);
+    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getMissions', 'getMission', 'getAisle', 'getStore', 'getRoles',
+    'getMisreadCategories', 'getMissedCategories', 'getFalseNegativeCategories', 'getFalsePositiveCategories']);
     const locationSpy = jasmine.createSpyObj('Location', ['replaceState']);
+    const environmentServiceSpy = jasmine.createSpyObj('EnvironmentService', ['setPermissions']);
 
     TestBed.configureTestingModule({
       imports: [
@@ -109,6 +113,7 @@ describe('AisleViewComponent', () => {
       ],
       providers: [
         { provide: 'ApiService', useValue: apiServiceSpy },
+        { provide: EnvironmentService, useValue: environmentServiceSpy },
         { provide: ModalService},
         { provide: Router },
         { provide: Location, useValue:  locationSpy},
@@ -120,16 +125,23 @@ describe('AisleViewComponent', () => {
           }],
         }},
         { provide: EnvironmentService, useValue: { config: {
-          productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price']
+          productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price'],
+          permissions: ['topStock', 'QA', 'sectionLabels', 'sectionBreaks', 'misreadBarcodes']
         }}},
       ],
     }).compileComponents();
 
+    environmentService = TestBed.get(EnvironmentService);
     apiService = TestBed.get('ApiService');
     apiService.getMission.and.returnValue(of(mission));
     apiService.getMissions.and.returnValue(of(missions));
     apiService.getAisle.and.returnValue(of(aisles[0]));
     apiService.getStore.and.returnValue(of(store));
+    apiService.getRoles.and.returnValue(of('bossanova'));
+    apiService.getMisreadCategories.and.returnValues(of([]));
+    apiService.getMissedCategories.and.returnValues(of([]));
+    apiService.getFalseNegativeCategories.and.returnValues(of([]));
+    apiService.getFalsePositiveCategories.and.returnValues(of([]));
     fixture = TestBed.createComponent(AisleViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

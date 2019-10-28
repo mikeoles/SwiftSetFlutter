@@ -39,8 +39,11 @@ export class DailyGraphsComponent implements OnInit, OnChanges {
       callbacks: {
         label: function(tooltipItems) {
           return tooltipItems.yLabel;
-        }
-      }
+        },
+        title: function(tooltipItems) {
+          return '';
+        },
+      },
     }
   };
   public barChartData: Array<Array<number>> = [];

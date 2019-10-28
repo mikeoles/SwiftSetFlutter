@@ -43,7 +43,9 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
     this.showSection = environment.config.productGridFields.includes('Section');
     const context = this;
     this.apiService.getRoles(localStorage.getItem('id_token')).subscribe( role => {
-      context.environment.setPermissions(Roles[role]);
+      if (typeof context.environment.setPermissions === 'function') {
+        context.environment.setPermissions(Roles[role]);
+      }
       this.showTopStock = environment.config.permissions.indexOf(Permissions.topStock) > -1;
       this.showSectionLabels = environment.config.permissions.indexOf(Permissions.sectionLabels) > -1;
     });
