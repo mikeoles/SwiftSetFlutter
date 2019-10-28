@@ -21,6 +21,7 @@ body {
 app-export-modal {
   /* modals are hidden by default */
   display: none;
+  font-weight: 900;
 
   button{
     border-radius: 25px !important;
@@ -43,10 +44,30 @@ app-export-modal {
 
   .exportTitle{
     font-size: 24px;
-    font-weight: 900;
+  }
+  
+  .dateSelection, .exportTitle{
     margin-bottom: 30px;
   }
 
+  .requestDateError{
+    color: red;
+  }
+
+  input{
+    border-radius: 10px;
+    width: 140px;
+  }
+
+  input:focus{
+    outline: 0;
+  }
+
+  .requestText{
+    font-size: 18px;
+    display: inline;
+  }
+  
   .modal {
       /* modal container fixed across whole screen */
       position: fixed;
@@ -141,6 +162,10 @@ button {
 .ngx-datepicker-calendar-container{
   z-index: 1 !important;
   margin-top: 20px !important;
+}
+
+.ngx-datepicker-container{
+  display: inline !important;
 }
 
 canvas{

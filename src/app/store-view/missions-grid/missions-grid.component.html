@@ -1,28 +1,26 @@
 <div class="gridTitle">Summary For {{missionsDate | date:'MMMM d'}}</div>
 
-<table *ngIf="missionSummaries.length > 0">
+<table *ngIf="missions.length > 0">
   <thead>
     <tr>
-      <th>Mission ID</th>
-      <th>Time</th>
+      <th>Scan</th>
       <th>Outs</th>
       <th>Labels</th>
       <th>Aisles Scanned</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let missionSummary of missionSummaries; let i = index" (click)="viewMission(missionSummary.missionId)">
+    <tr *ngFor="let mission of missions; let i = index" (click)="viewMission(mission.missionId)">
       <td>
-        <a [routerLink]="" (click)="viewMission(missionSummary.missionId)">
-          {{missionSummary.missionDateTime | date: 'yyyy-MM-dd HH:mm:ss'}}
+        <a [routerLink]="" (click)="viewMission(mission.missionId)">
+          {{mission.missionName}}
         </a>
       </td>
-      <td>{{missionSummary.missionDateTime | date: 'hh:mm a'}}</td>
-      <td>{{missionSummary.outs}}</td>
-      <td>{{missionSummary.labels}}</td>
-      <td>{{missionSummary.aislesScanned}}</td>
+      <td>{{mission.outs}}</td>
+      <td>{{mission.labels}}</td>
+      <td>{{mission.aisleCount}}</td>
     </tr>
   </tbody>
 </table>
 
-<div class="gridTitle" *ngIf="missionSummaries.length === 0">No Data Available For This Date</div>
+<div class="gridTitle" *ngIf="missions.length === 0">No Data Available For This Date</div>

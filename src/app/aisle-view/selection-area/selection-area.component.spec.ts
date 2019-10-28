@@ -12,6 +12,7 @@ import { ModalService } from 'src/app/modal/modal.service';
 import { EnvironmentService } from 'src/app/environment.service';
 import { ApiService } from 'src/app/api.service';
 import { of } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({selector: 'app-export-modal', template: ''})
 class ModalComponent {
@@ -28,31 +29,40 @@ describe('SelectionAreaComponent', () => {
   let aislesDropdownEl: HTMLElement;
   let missionsListEl: HTMLLIElement;
   let aislesListEl: HTMLLIElement;
-  const missions: Mission[] = [
-    { missionId: 1, missionName: '1111', storeId: 1, createDateTime: new Date('2018-12-12'), missionDateTime: new Date('2018-12-12') },
-    { missionId: 2, missionName: '2222', storeId: 1, createDateTime: new Date('2001-01-01'), missionDateTime: new Date('2001-01-01') },
-  ];
   const aisles: Aisle[] = [
-    { aisleId: 1, aisleName: '1111', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '',
-    coveragePercent: 0, outsCount: 0, labelsCount: 0,
-    aisleCoverage: ''},
-    { aisleId: 2, aisleName: '2222', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '',
-    coveragePercent: 0, outsCount: 0, labelsCount: 0,
-    aisleCoverage: ''},
-    { aisleId: 3, aisleName: '3333', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '',
-    coveragePercent: 0, outsCount: 0, labelsCount: 0,
-    aisleCoverage: ''},
-    { aisleId: 4, aisleName: '4444', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '',
-    coveragePercent: 0, outsCount: 0, labelsCount: 0,
-    aisleCoverage: ''},
-    { aisleId: 5, aisleName: '5555', panoramaUrl: '', labels: [], outs: [], spreads: [], zone: '',
-    coveragePercent: 0, outsCount: 0, labelsCount: 0,
-    aisleCoverage: '' },
+    { aisleId: '1', aisleName: '1111', panoramaUrl: '', createDateTime: new Date(),
+      labels: [], outs: [], sectionLabels: [], sectionBreaks: [], topStock: [],
+      coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
+    { aisleId: '2', aisleName: '2222', panoramaUrl: '', createDateTime: new Date(),
+      labels: [], outs: [], sectionLabels: [], sectionBreaks: [], topStock: [],
+      coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
+    { aisleId: '3', aisleName: '3333', panoramaUrl: '', createDateTime: new Date(),
+      labels: [], outs: [], sectionLabels: [], sectionBreaks: [], topStock: [],
+      coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
+    { aisleId: '4', aisleName: '4444', panoramaUrl: '', createDateTime: new Date(),
+      labels: [], outs: [], sectionLabels: [], sectionBreaks: [], topStock: [],
+      coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
+    { aisleId: '5', aisleName: '5555', panoramaUrl: '', createDateTime: new Date(),
+      labels: [], outs: [], sectionLabels: [], sectionBreaks: [], topStock: [],
+      coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: '' },
   ];
-  const store = { storeId: 1 };
+
+  const missions: Mission[] = [
+    { missionId: '1', missionName: '1111', storeId: '1', createDateTime: new Date('2018-12-12'), startDateTime: new Date('2018-12-12'),
+      endDateTime: new Date('2018-12-12'), aisleCount: 0, outs: 0, labels: 0, readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0,
+      unreadLabels: 0, percentageRead: 0, percentageUnread: 0, aisles: aisles  },
+    { missionId: '2', missionName: '2222', storeId: '1', createDateTime: new Date('2001-01-01'), startDateTime: new Date('2001-01-01'),
+      endDateTime: new Date('2001-01-01'), aisleCount: 0, outs: 0, labels: 0, readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0,
+      unreadLabels: 0, percentageRead: 0, percentageUnread: 0 , aisles: aisles },
+  ];
+  const mission: Mission = { missionId: '2', missionName: '2222', storeId: '1', createDateTime: new Date('2001-01-01'),
+    startDateTime: new Date('2001-01-01'), endDateTime: new Date('2001-01-01'), aisleCount: 0, outs: 0, labels: 0,
+    readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0, unreadLabels: 0, percentageRead: 0, percentageUnread: 0 , aisles: aisles };
+    const store = { storeId: '1',   storeNumber: 1, storeName: '', storeAddress: '', totalAverageOuts: 0, totalAverageLabels: 0,
+    summaryOuts: [], summaryLabels: [], timezone: '' };
 
   beforeEach(async(() => {
-    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getStore', 'getMission', 'getMissionSummary', 'getAisles', 'getAisle']);
+    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getStore', 'getMission', 'getAisle', 'getRoles']);
 
     TestBed.configureTestingModule({
       imports: [FormsModule, FontAwesomeModule],
@@ -62,32 +72,29 @@ describe('SelectionAreaComponent', () => {
         { provide: ModalService},
         { provide: EnvironmentService, useValue: { config: {
           onHand: true,
-          exportingPDF: true
-        }}}
+          exportingPDF: true,
+          permissions: ['topStock', 'QA', 'sectionLabels', 'sectionBreaks', 'misreadBarcodes']
+        }}},
+        { provide: Router },
       ]
     })
     .compileComponents();
 
     apiService = TestBed.get('ApiService');
     apiService.getStore.and.returnValue(of(store));
+    apiService.getRoles.and.returnValue(of('bossanova'));
   }));
   beforeEach(() => {
     fixture = TestBed.createComponent(SelectionAreaComponent);
     component = fixture.componentInstance;
-    component.showAisles = true;
-    component.showMissions = true;
     component.exportOnHand = false;
     component.missions = missions;
-    component.aisles = aisles;
+    component.aisles = mission.aisles;
     component.selectedMission = missions[0];
-    component.selectedAisle = aisles[0];
+    component.selectedAisle = mission.aisles[0];
     fixture.detectChanges();
     missionsButtonEl = fixture.debugElement.query(By.css('#missionsContainer > button')).nativeElement;
     aislesButtonEl = fixture.debugElement.query(By.css('#aislesContainer > button')).nativeElement;
-    missionsDropdownEl = fixture.debugElement.query(By.css('#missionsContainer > ul')).nativeElement;
-    aislesDropdownEl = fixture.debugElement.query(By.css('#aislesContainer > ul')).nativeElement;
-    missionsListEl = fixture.debugElement.query(By.css('#missionsContainer > ul > li:nth-child(2)')).nativeElement;
-    aislesListEl = fixture.debugElement.query(By.css('#aislesContainer > ul > li:nth-child(4)')).nativeElement;
     fixture.detectChanges();
   });
 
@@ -97,17 +104,20 @@ describe('SelectionAreaComponent', () => {
 
   it('has a dropdown of missions', done => {
     fixture.whenStable().then(() => {
-      const pipe = new DatePipe('en');
+      component.currentDropdown = 'missions';
       fixture.detectChanges();
+      missionsDropdownEl = fixture.debugElement.query(By.css('#missionsContainer > ul')).nativeElement;
       expect(missionsDropdownEl.childElementCount).toEqual(2);
-      expect(missionsDropdownEl.children[0].textContent).toEqual(pipe.transform(missions[0].missionDateTime, ' yyyy-MM-dd HH:mm:ss '));
+      expect(missionsDropdownEl.children[0].textContent).toEqual(' ' + missions[0].missionName + ' ');
       done();
     });
   });
 
   it('has a dropdown of aisles', done => {
     fixture.whenStable().then(() => {
+      component.currentDropdown = 'aisles';
       fixture.detectChanges();
+      aislesDropdownEl = fixture.debugElement.query(By.css('#aislesContainer > ul')).nativeElement;
       expect(aislesDropdownEl.childElementCount).toEqual(5);
       expect(aislesDropdownEl.children[4].textContent).toEqual(' 5555 ');
       done();
@@ -116,6 +126,9 @@ describe('SelectionAreaComponent', () => {
 
   it('emits mission when selected', () => {
     spyOn(component.missionSelected, 'emit');
+    component.currentDropdown = 'missions';
+    fixture.detectChanges();
+    missionsListEl = fixture.debugElement.query(By.css('#missionsContainer > ul > li:nth-child(2)')).nativeElement;
     missionsListEl.click();
     missionsListEl.dispatchEvent(new Event('change'));
     fixture.detectChanges();
@@ -124,6 +137,9 @@ describe('SelectionAreaComponent', () => {
 
   it('emits aisle when selected', () => {
     spyOn(component.aisleSelected, 'emit');
+    component.currentDropdown = 'aisles';
+    fixture.detectChanges();
+    aislesListEl = fixture.debugElement.query(By.css('#aislesContainer > ul > li:nth-child(4)')).nativeElement;
     aislesListEl.click();
     aislesListEl.dispatchEvent(new Event('change'));
     fixture.detectChanges();
@@ -134,7 +150,7 @@ describe('SelectionAreaComponent', () => {
     fixture.whenStable().then(() => {
       const pipe = new DatePipe('en');
       fixture.detectChanges();
-      expect(missionsButtonEl.textContent).toEqual(` Mission ${pipe.transform(missions[0].missionDateTime, 'yyyy-MM-dd HH:mm:ss')} `);
+      expect(missionsButtonEl.textContent).toEqual(` Scan: ${missions[0].missionName} `);
       done();
     });
   });
@@ -151,29 +167,13 @@ describe('SelectionAreaComponent', () => {
     const pipe = new DatePipe('en');
     component.selectedMission  = missions[1];
     fixture.detectChanges();
-    expect(missionsButtonEl.textContent).toEqual(` Mission ${pipe.transform(missions[1].missionDateTime, 'yyyy-MM-dd HH:mm:ss')} `);
+    expect(missionsButtonEl.textContent).toEqual(` Scan: ${missions[1].missionName} `);
   });
 
   it('sets mission button based on input', () => {
     component.selectedAisle = aisles[1];
     fixture.detectChanges();
     expect(aislesButtonEl.textContent).toEqual(' Aisle 2222 ');
-  });
-
-  it('hide missions dropdown after click', () => {
-    expect(component.showMissions).toEqual(true);
-    missionsListEl.click();
-    missionsListEl.dispatchEvent(new Event('change'));
-    fixture.detectChanges();
-    expect(component.showMissions).toEqual(false);
-  });
-
-  it('hide aisles dropdown after click', () => {
-    expect(component.showAisles).toEqual(true);
-    aislesListEl.click();
-    aislesListEl.dispatchEvent(new Event('change'));
-    fixture.detectChanges();
-    expect(component.showAisles).toEqual(false);
   });
 
 });

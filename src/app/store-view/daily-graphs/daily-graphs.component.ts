@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { EnvironmentService } from 'src/app/environment.service';
 
 @Component({
   selector: 'app-daily-graphs',
@@ -12,7 +13,7 @@ export class DailyGraphsComponent implements OnInit, OnChanges {
   @Output() selectedIndex = new EventEmitter();
   @Input() currentIndex: number;
   todaysAverage: number;
-  displayedDays = 14;
+  displayedDays = 0;
   max = 0;
 
   public barChartType: 'bar';
@@ -38,8 +39,11 @@ export class DailyGraphsComponent implements OnInit, OnChanges {
       callbacks: {
         label: function(tooltipItems) {
           return tooltipItems.yLabel;
-        }
-      }
+        },
+        title: function(tooltipItems) {
+          return '';
+        },
+      },
     }
   };
   public barChartData: Array<Array<number>> = [];
@@ -47,7 +51,7 @@ export class DailyGraphsComponent implements OnInit, OnChanges {
   public selectedColor = [{ backgroundColor: '#FFD54A' }];
 
 
-  constructor() { }
+  constructor(private environment: EnvironmentService) { }
 
   ngOnInit() {
     this.barChartOptions.scales.yAxes = [{
@@ -57,6 +61,7 @@ export class DailyGraphsComponent implements OnInit, OnChanges {
         max : this.max,
       },
     }];
+    this.displayedDays = this.environment.config.missionHistoryLength;
   }
 
   ngOnChanges(changes: SimpleChanges) {

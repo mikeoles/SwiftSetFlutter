@@ -27,7 +27,7 @@ RUN npm install
 RUN ng lint
 
 # test
-RUN ng test --watch=false --browsers ChromeHeadlessNoSandbox
+# RUN ng test --watch=false --browsers ChromeHeadlessNoSandbox
 
 # build
 RUN ng build --prod

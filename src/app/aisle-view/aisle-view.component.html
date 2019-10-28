@@ -1,13 +1,15 @@
-<app-selection-area [missions]="missions" [aisles]="aisles"
+<app-selection-area *ngIf="selectedMission" [missions]="missions" [aisles]="selectedMission.aisles"
   [selectedMission]="selectedMission" [selectedAisle]="selectedAisle" [panoramaUrl]="panoramaUrl" [outs]="outs" [labels]="labels"
   (missionSelected)='changeMission($event)' (aisleSelected)='setAisle($event)' [panoTouched]=panoTouched
-  (panoSwitch)='changePanoMode()' (resetPano)='resetPanoClicked()'>
+  (panoSwitch)='changePanoMode()' (resetPano)='resetPanoClicked()' (resetPanoAfterExport)='resetPanoAfterExportClicked()'
+  (toggleMode)='toggleMode($event)' [qaModesTurnedOn]='qaModesTurnedOn' [currentlyDisplayed]='currentlyDisplayed' (toggleDisplayed)='toggleDisplayed($event)'>
 </app-selection-area>
-<app-panorama [outs]="outs" [labels]="labels" [missingBarcodes]="missingBarcodes" [panoramaUrl]="panoramaUrl"
-  [currentId]="currentId" [currentDisplay]="currentDisplay" (panoramaId)='setId($event)' [panoMode]='panoMode' 
-  (panoramaTouched)='hideDropdowns()' [resetPano]='resetPano'>
+<app-panorama [panoramaUrl]="panoramaUrl" [currentId]="currentId" [currentlyDisplayed]='currentlyDisplayed'
+  [outs]="outs" [labels]="labels" [sectionLabels]="sectionLabels" [sectionBreaks]="sectionBreaks" [topStock]="topStock" 
+  [panoMode]='panoMode' [qaModesTurnedOn]='qaModesTurnedOn'  [resetPano]='resetPano' [resetPanoAfterExport]='resetPanoAfterExport'
+  [misreadBarcodes]="misreadBarcodes"  (panoramaTouched)='hideDropdowns()' (panoramaId)='setId($event)'
+  (updateLabelCategory)='updateLabelCategory($event)' (updateMissedCategory)='updateMissedCategory($event)'>
 </app-panorama>
-<app-product-details [outs]="outs" [labels]="labels" [missingBarcodes]="missingBarcodes"
-  (gridId)='setId($event)' (gridDisplay)='setDisplay($event)'
-  [currentId]="currentId" [currentDisplay]="currentDisplay" [panoMode]='panoMode'>
+<app-product-details [outs]="outs" [labels]="labels" [sectionLabels]="sectionLabels" [topStock]="topStock"  [misreadBarcodes]="misreadBarcodes"
+  (gridId)='setId($event)' [currentId]="currentId" [panoMode]='panoMode'>
 </app-product-details>

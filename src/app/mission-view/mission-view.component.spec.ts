@@ -10,10 +10,8 @@ import { ActivatedRoute } from '@angular/router';
 import Label from '../label.model';
 import { ModalService } from '../modal/modal.service';
 import { EnvironmentService } from '../environment.service';
-import MissionSummary from '../missionSummary.model';
-import Store from '../store.model';
-import Aisle from '../aisle.model';
 import Mission from '../mission.model';
+import Aisle from '../aisle.model';
 
 @Component({selector: 'app-mission-stats', template: ''})
 class AppMissionStatsStubComponent {
@@ -38,37 +36,30 @@ describe('MissionViewComponent', () => {
   let originalTimeout;
 
   const labels: Label[] = [
-    { labelId: 1, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0,
-    bounds: { top: 0, left: 0, width: 0, height: 0, topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 },
-    customFields: [], section: '', department: '', onHand: 0 },
-    { labelId: 2, labelName: 'label name', barcode: '550376332', productId: '12345', price: 0.0,
-    bounds: { top: 0, left: 0, width: 0, height: 0, topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 },
-    customFields: [], section: '', department: '', onHand: 0 },
+    { labelName: 'label name', labelId: 1, barcode: '12345', productId: '12345', price: 0.0,
+    bounds: { top: 0, left: 0, width: 0, height: 0}, annotations: [], annotationColor: '',
+    customFields: [], section: '', department: '', onHand: 0, productCoordinates: [] },
+    { labelName: 'label name', labelId: 1, barcode: '550376332', productId: '12345', price: 0.0,
+    bounds: { top: 0, left: 0, width: 0, height: 0 }, annotations: [], annotationColor: '',
+    customFields: [], section: '', department: '', onHand: 0, productCoordinates: [] },
   ];
-  const mission: Mission = {
-    missionId: 1, missionName: '2222', storeId: 1, createDateTime: new Date('2001-01-01'), missionDateTime: new Date('2001-01-01') };
-  const missionSummary: MissionSummary = {   missionId: 1, mission: '', storeId: 1, missionDateTime: new Date('2018-12-12'),
-  outs: 1, labels: 1, spreads: 1, aislesScanned: 1,
-  percentageRead: 0, percentageUnread: 0, unreadLabels: 0, readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0 };
-  const aisles: Aisle[] = [
-    { aisleId: 1, aisleName: '1111', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '',
-      coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
-  ];
-  const aisle: Aisle = { aisleId: 1, aisleName: '1111', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '',
-  coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''};
-  const store: Store = {  storeId: 1,
-    storeName: '',
-    storeAddress: '',
-    totalAverageOuts: 1,
-    totalAverageLabels: 1,
-    totalAverageSpreads: 1,
-    summaryOuts: [],
-    summaryLabels: [],
-    summarySpreads: []
-  };
+
+  const sectionBreaks: number[] = [19, 200];
+
+  const aisles: Aisle[] = [{  aisleId: '1', aisleName: '', panoramaUrl: '', createDateTime: new Date(),
+  labels: labels, outs: labels, sectionLabels: labels, topStock: labels, sectionBreaks: sectionBreaks,
+  coveragePercent: 0, aisleCoverage: '0', labelsCount: 0, outsCount: 0 }];
+  const aisle: Aisle = {  aisleId: '1', aisleName: '', panoramaUrl: '', createDateTime: new Date(),
+    labels: labels, outs: labels, sectionLabels: labels, topStock: labels, sectionBreaks: sectionBreaks,
+    coveragePercent: 0, aisleCoverage: '0', labelsCount: 0, outsCount: 0 };
+  const mission: Mission = { missionId: '1', missionName: '', storeId: '1', startDateTime: new Date(), outs: 1, labels: 1,
+    aisleCount: 1, endDateTime: new Date(), percentageRead: 1, percentageUnread: 1, unreadLabels: 1, readLabelsMissingProduct: 1,
+    readLabelsMatchingProduct: 1, createDateTime: new Date(), aisles: aisles };
+  const store = { storeId: '1',   storeNumber: 1, storeName: '', storeAddress: '', totalAverageOuts: 0, totalAverageLabels: 0,
+    summaryOuts: [], summaryLabels: [], timezone: '' };
 
   beforeEach(async(() => {
-    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getStore', 'getMission', 'getMissionSummary', 'getAisles', 'getAisle']);
+    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getStore', 'getMission', 'getMissions', 'getAisle']);
 
     TestBed.configureTestingModule({
       imports: [
@@ -97,8 +88,6 @@ describe('MissionViewComponent', () => {
 
     apiService = TestBed.get('ApiService');
     apiService.getMission.and.returnValue(of(mission));
-    apiService.getMissionSummary.and.returnValue(of(missionSummary));
-    apiService.getAisles.and.returnValue(of(aisles));
     apiService.getAisle.and.returnValue(of(aisle));
     apiService.getStore.and.returnValue(of(store));
   }));
@@ -121,12 +110,11 @@ describe('MissionViewComponent', () => {
   });
 
   it('should set the current mission', () => {
-    expect(apiService.getMission).toHaveBeenCalledWith(1, 1);
-    expect(component.mission.missionId).toEqual(1);
+    expect(apiService.getMission).toHaveBeenCalledWith(1, 1, Intl.DateTimeFormat().resolvedOptions().timeZone);
+    expect(component.mission.missionId).toEqual('1');
   });
 
   it('should export data', () => {
-    // TODO: Figure out how to test the link
     expect().nothing();
   });
 });

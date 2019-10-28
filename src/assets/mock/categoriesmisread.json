@@ -1,0 +1,17 @@
+[
+    {
+        "category": "misread 1",
+        "color": "#ffa500",
+        "hotkey": "b"
+    },
+    {
+        "category": "misread 2",
+        "color": "#551a8b",
+        "hotkey": "o"
+    },
+    {
+        "category": "misread 3",
+        "color": "#000000",
+        "hotkey": "q"
+    }
+]

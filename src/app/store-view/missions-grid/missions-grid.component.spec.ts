@@ -3,15 +3,25 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MissionsGridComponent } from './missions-grid.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
-import MissionSummary from 'src/app/missionSummary.model';
+import Aisle from 'src/app/aisle.model';
+import Mission from 'src/app/mission.model';
 
 describe('MissionsGridComponent', () => {
   let component: MissionsGridComponent;
   let fixture: ComponentFixture<MissionsGridComponent>;
-
-  const missionSummaries: MissionSummary[] = [
-    { missionId: 0, mission: '', storeId: 0, missionDateTime: new Date(), outs: 0, labels: 0, spreads: 0,
-    aislesScanned: 0, percentageRead: 1, percentageUnread: 1, unreadLabels: 1, readLabelsMissingProduct: 1, readLabelsMatchingProduct: 1}
+  const aisles: Aisle[] = [
+    { aisleId: '1', aisleName: '1111', panoramaUrl: '', labels: [], outs: [], sectionLabels: [], sectionBreaks: [], topStock: [],
+    createDateTime: new Date(), coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
+    { aisleId: '2', aisleName: '2222', panoramaUrl: '', labels: [], outs: [], sectionLabels: [], sectionBreaks: [], topStock: [],
+    createDateTime: new Date(), coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
+  ];
+  const missions: Mission[] = [
+    { missionId: '1', missionName: '1111', storeId: '1', createDateTime: new Date('2018-12-12'), startDateTime: new Date('2018-12-12'),
+      endDateTime: new Date('2018-12-12'), aisleCount: 0, outs: 0, labels: 0, readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0,
+      unreadLabels: 0, percentageRead: 0, percentageUnread: 0, aisles: aisles  },
+    { missionId: '2', missionName: '2222', storeId: '1', createDateTime: new Date('2001-01-01'), startDateTime: new Date('2001-01-01'),
+      endDateTime: new Date('2001-01-01'), aisleCount: 0, outs: 0, labels: 0, readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0,
+      unreadLabels: 0, percentageRead: 0, percentageUnread: 0 , aisles: aisles },
   ];
 
   beforeEach(async(() => {
@@ -27,7 +37,7 @@ describe('MissionsGridComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MissionsGridComponent);
     component = fixture.componentInstance;
-    component.missionSummaries = missionSummaries;
+    component.missions = missions;
     component.storeId = 2;
     fixture.detectChanges();
   });

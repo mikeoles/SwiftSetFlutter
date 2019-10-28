@@ -28,7 +28,7 @@ import { NgDatepickerModule } from 'ng2-datepicker';
 import { DataService } from './data.service';
 import { apiFactory } from './api.service';
 import { FleetViewComponent } from './fleet-view/fleet-view.component';
-
+import { ProgressBarModule } from 'angular-progress-bar';
 
 @NgModule({
   declarations: [
@@ -59,7 +59,8 @@ import { FleetViewComponent } from './fleet-view/fleet-view.component';
     RoundProgressModule,
     AppRoutingModule,
     NgMultiSelectDropDownModule.forRoot(),
-    NgDatepickerModule
+    NgDatepickerModule,
+    ProgressBarModule,
   ],
   providers: [
     EnvironmentService,
@@ -78,7 +79,7 @@ import { FleetViewComponent } from './fleet-view/fleet-view.component';
         provide: 'ApiService',
         useFactory: apiFactory,
         deps: [EnvironmentService, HttpClient]
-      }
+    },
   ],
   bootstrap: [AppComponent]
 })

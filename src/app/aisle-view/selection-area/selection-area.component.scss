@@ -38,6 +38,18 @@ button{
   float: right;
   text-align: center;
   width: auto;
+  margin: 20px 10px 20px 10px;
+}
+
+.rightDropdown{
+  margin: 0px -10px 0px -10px;
+  button{
+    width: auto;
+  }
+}
+
+.marginLeft{
+  margin-left: 10px;
 }
 
 .panoChangeButton{
@@ -203,6 +215,11 @@ ul{
   float: right;
 }
 
+.check{
+  float: left;
+  margin-right: 3px;
+}
+
 .selected{
   color: black !important;
 }
@@ -230,6 +247,15 @@ ul{
   border-style: solid;
   border-width: 0 20px 20px 20px;
   border-color: transparent transparent white transparent;
+}
+
+.displayPointer{
+  margin-left: 70px;
+}
+
+.displayDropdown{
+  margin-left: 0px;
+  width: 200px;
 }
 
 .selectedButton{

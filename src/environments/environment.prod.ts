@@ -2,8 +2,6 @@ import { labelScrollOptions } from 'src/app/labelScrollOptions';
 
 export const environment = {
   production: true,
-  showPlugs: false,
-  showSuppliers: false,
   coveragePercent: true,
   onHand: true,
   pdfExport: true,
@@ -12,5 +10,9 @@ export const environment = {
   'Last Recvd', 'DNO'],
   labelScrolling: labelScrollOptions.vertical,
   productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price', 'On Hand'],
-  apiType: 'odata' // Options: odata or static
+  missionHistoryDays: 14, // Number of days to display missions for
+  permissions: ['topStock', 'debugging', 'sectionLabels', 'sectionBreaks'],
+  authUsers: false,
+  authUrl: 'http://localhost:5556/auth?',
+  authRedirectUrl: 'http://localhost/'
 };

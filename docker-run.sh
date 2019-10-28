@@ -10,27 +10,35 @@ fi
 if [[ ! -z "$PRODUCT_GRID_FIELDS" ]]; then
   echo "  \"productGridFields\": [$PRODUCT_GRID_FIELDS]," >> /usr/share/nginx/html/assets/config.json
 fi
-if [[ ! -z "$API_TYPE" ]]; then
-  echo "  \"apiType\": \"$API_TYPE\"," >> /usr/share/nginx/html/assets/config.json
-else
-  echo "  \"apiType\": odata" >> /usr/share/nginx/html/assets/config.json
-fi
 if [[ ! -z "$ON_HAND" ]]; then
   echo "  \"onHand\": \"$ON_HAND\"," >> /usr/share/nginx/html/assets/config.json
 fi
 if [[ ! -z "$EXPORTING_PDF" ]]; then
   echo "  \"exportingPDF\": \"$EXPORTING_PDF\"," >> /usr/share/nginx/html/assets/config.json
 fi
-
-if [[ ! -z "$SHOW_COVERAGE_AS_PERCENT" ]]; then
-  echo "  \"showCoverageAsPercent\": \"$SHOW_COVERAGE_AS_PERCENT\"," >> /usr/share/nginx/html/assets/config.json
+if [[ ! -z "$COVERAGE_DISPLAY_TYPE" ]]; then
+  echo "  \"coverageDisplayType\": \"$COVERAGE_DISPLAY_TYPE\"," >> /usr/share/nginx/html/assets/config.json
+fi
+if [[ ! -z "$SHOW_TOP_STOCK" ]]; then
+  echo "  \"showTopStock\": \"$SHOW_TOP_STOCK\"," >> /usr/share/nginx/html/assets/config.json
+fi
+if [[ ! -z "$SHOW_SECTION_LABELS" ]]; then
+  echo "  \"showSectionLabels\": \"$SHOW_SECTION_LABELS\"," >> /usr/share/nginx/html/assets/config.json
+fi
+if [[ ! -z "$SHOW_SECTION_BREAK" ]]; then
+  echo "  \"showSectionBreak\": \"$SHOW_SECTION_BREAK\"," >> /usr/share/nginx/html/assets/config.json
+fi
+if [[ ! -z "$AUTH_USERS" ]]; then
+  echo "  \"authUsers\": \"$AUTH_USERS\"," >> /usr/share/nginx/html/assets/config.json
+fi
+if [[ ! -z "$AUTH_URL" ]]; then
+  echo "  \"authUrl\": \"$AUTH_URL\"," >> /usr/share/nginx/html/assets/config.json
+fi
+if [[ ! -z "$AUTH_REDIRECT_URL" ]]; then
+  echo "  \"authRedirectUrl\": \"$AUTH_REDIRECT_URL\"," >> /usr/share/nginx/html/assets/config.json
 fi
 echo "  \"production\": true" >> /usr/share/nginx/html/assets/config.json
 echo "}" >> /usr/share/nginx/html/assets/config.json
-
-if [[ "$API_TYPE" = "static" ]]; then
-  sed -i '/api.*/,+3d'  /etc/nginx/conf.d/default.conf
-fi
 
 if [[ ! -z "$USER_NAME" ]] && [[ ! -z "$PASSWORD_HASH" ]]; then
   echo "$USER_NAME:$PASSWORD_HASH" >> /etc/nginx/conf.d/nginx_auth.htpasswd

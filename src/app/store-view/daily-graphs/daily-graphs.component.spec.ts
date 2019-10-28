@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DailyGraphsComponent } from './daily-graphs.component';
 import { ChartsModule } from 'ng2-charts';
 import { SimpleChanges, SimpleChange } from '@angular/core';
+import { EnvironmentService } from 'src/app/environment.service';
 
 describe('DailyGraphsComponent', () => {
   let component: DailyGraphsComponent;
@@ -16,7 +17,12 @@ describe('DailyGraphsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ DailyGraphsComponent ],
-      imports: [ ChartsModule ]
+      imports: [ ChartsModule ],
+      providers: [
+        { provide: EnvironmentService, useValue: { config: {
+          missionHistoryLength: 14
+        }}}
+      ],
     })
     .compileComponents();
   }));

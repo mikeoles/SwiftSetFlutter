@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output, HostListener, ElementRef, OnChanges, SimpleChanges, Inject } from '@angular/core';
-import { faAngleDown, faAngleUp, faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faAngleUp, faArrowRight, faArrowLeft, faCheckSquare, faSquare } from '@fortawesome/free-solid-svg-icons';
 import Mission from '../../mission.model';
 import Aisle from '../../aisle.model';
 import * as jsPDF from 'jspdf';
@@ -9,6 +9,12 @@ import { ModalService } from '../../modal/modal.service';
 import { EnvironmentService } from 'src/app/environment.service';
 import { ApiService } from 'src/app/api.service';
 import Store from 'src/app/store.model';
+import panzoom from 'panzoom';
+import htmlToImage from 'html-to-image';
+import { saveAs } from 'file-saver';
+import { Router } from '@angular/router';
+import { Permissions } from 'src/permissions/permissions';
+import { Roles } from 'src/permissions/roles';
 
 @Component({
   selector: 'app-selection-area',
@@ -16,11 +22,17 @@ import Store from 'src/app/store.model';
   styleUrls: ['./selection-area.component.scss']
 })
 export class SelectionAreaComponent implements OnInit, OnChanges {
-  showMissions = false;
-  showOptions = false;
-  showAisles = false;
+  store: Store;
+  currentDropdown = '';
   exportOnHand = false;
   exportingPDF = false;
+
+  showTopStock = false;
+  showSectionLabels = false;
+  showSectionBreaks = false;
+  showQA = false;
+  showMisreadBarcodes = true;
+
   @Input() missions: Mission[];
   @Input() aisles: Aisle[];
   @Input() selectedMission: Mission;
@@ -29,20 +41,41 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   @Input() panoramaUrl: string;
   @Input() outs: Label[] = [];
   @Input() labels: Label[] = [];
+
+  @Input() currentlyDisplayed: Set<string>;
+  @Input() qaModesTurnedOn: Set<string>;
+
   @Output() missionSelected = new EventEmitter();
   @Output() aisleSelected = new EventEmitter();
   @Output() resetPano = new EventEmitter();
-  store: Store;
+  @Output() resetPanoAfterExport = new EventEmitter();
+  @Output() toggleMode = new EventEmitter();
+  @Output() toggleDisplayed = new EventEmitter();
+
   faAngleDown = faAngleDown;
   faAngleUp = faAngleUp;
   faArrowRight = faArrowRight;
   faArrowLeft = faArrowLeft;
+  faCheckSquare = faCheckSquare;
+  faSquare = faSquare;
+
   currentlyExporting = false;
 
   constructor(private eRef: ElementRef, private modalService: ModalService, private environment: EnvironmentService,
-    @Inject('ApiService') private apiService: ApiService) {
+    @Inject('ApiService') private apiService: ApiService, private router: Router) {
     this.exportOnHand = environment.config.onHand;
     this.exportingPDF = environment.config.exportingPDF;
+
+    const context = this;
+    this.apiService.getRoles(localStorage.getItem('id_token')).subscribe( role => {
+      if (typeof context.environment.setPermissions === 'function') {
+        context.environment.setPermissions(Roles[role]);
+      }
+      context.showTopStock = environment.config.permissions.indexOf(Permissions.topStock) > -1;
+      context.showSectionLabels = environment.config.permissions.indexOf(Permissions.sectionLabels) > -1;
+      context.showSectionBreaks = environment.config.permissions.indexOf(Permissions.sectionBreaks) > -1;
+      context.showQA = environment.config.permissions.indexOf(Permissions.QA) > -1;
+    });
   }
 
   ngOnInit() {
@@ -51,8 +84,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['panoTouched']) {
       this.panoTouched = false;
-      this.showAisles = false;
-      this.showMissions = false;
+      this.currentDropdown = '';
     }
     if (changes['missions'] && this.missions) {
       this.missions.sort(this.missionSort);
@@ -60,21 +92,19 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   }
 
   missionSort(a: Mission, b: Mission) {
-    if (a.missionDateTime < b.missionDateTime) {
+    if (a.startDateTime < b.startDateTime) {
       return 1;
     }
-    if (a.missionDateTime > b.missionDateTime) {
+    if (a.startDateTime > b.startDateTime) {
       return -1;
     }
     return 0;
   }
 
-
   @HostListener('document:click', ['$event'])
   clickout(event) {
     if (!event.target.classList.contains('dropdownButton')) {
-      this.showMissions = false;
-      this.showAisles = false;
+      this.currentDropdown = '';
     }
   }
 
@@ -88,30 +118,24 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
 
   missionChanged(mission) {
     this.missionSelected.emit(mission);
-    this.showMissions = false;
+    this.currentDropdown = '';
   }
 
   aisleChanged(aisle) {
     this.aisleSelected.emit(aisle);
-    this.showAisles = false;
+    this.currentDropdown = '';
   }
 
-  selectMissionsDropdown() {
-    this.showMissions = !this.showMissions;
-    this.showAisles = false;
-    this.showOptions = false;
+  displaySelected(display: string) {
+    this.toggleDisplayed.emit(display);
   }
 
-  selectAislesDropdown() {
-    this.showAisles = !this.showAisles;
-    this.showMissions = false;
-    this.showOptions = false;
+  qaModeSelected(mode: string) {
+    this.toggleMode.emit(mode);
   }
 
-  selectOptionsDropdown() {
-    this.showOptions = !this.showOptions;
-    this.showAisles = false;
-    this.showMissions = false;
+  openDropdown(name: string) {
+    this.currentDropdown = this.currentDropdown === name ? '' : name;
   }
 
   resetPanoClick() {
@@ -182,8 +206,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
 
   exportPDF(modalId: string) {
     this.currentlyExporting = true;
-    const day: Date = new Date();
-    this.apiService.getStore(this.selectedMission.storeId, day, Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe(store => {
+    this.apiService.getStore(this.selectedMission.storeId, new Date(), new Date()).subscribe(store => {
       const doc = new jsPDF('landscape');
       const exportFields: string[] = this.environment.config.exportFields;
       const head = [this.environment.config.exportFields];
@@ -228,7 +251,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
       const middleText = 'On Hand';
       const middleWidth = doc.getStringUnitWidth(middleText) * doc.internal.getFontSize() / doc.internal.scaleFactor;
       const middleOffset = (doc.internal.pageSize.width - middleWidth) / 2;
-      const rightText =  this.selectedMission.missionDateTime.toLocaleString();
+      const rightText =  this.selectedMission.startDateTime.toLocaleString();
       const rightWidth = doc.getStringUnitWidth(rightText.toString()) * doc.internal.getFontSize() / doc.internal.scaleFactor;
       const rightOffset = (doc.internal.pageSize.width - rightWidth) - 20;
 
@@ -241,6 +264,26 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
       this.modalService.close(modalId);
     });
     this.currentlyExporting = false;
+  }
+
+  exportPano(modalId: string) {
+    const element = document.getElementById('pano-image');
+    this.currentlyExporting = true;
+    const context = this;
+    panzoom(element, {
+      maxZoom: 1,
+      minZoom: 1,
+    });
+    setTimeout(() => {
+      htmlToImage.toBlob(document.getElementById('pano-image'))
+      .then(function (blob) {
+        saveAs(blob, 'pano.jpg');
+        context.currentlyExporting = false;
+        context.modalService.close(modalId);
+        context.resetPanoAfterExport.emit();
+      });
+    },
+    1000);
   }
 
   nextPano() {

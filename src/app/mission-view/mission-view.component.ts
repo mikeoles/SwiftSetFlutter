@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { ApiService } from '../api.service';
 import { Params, ActivatedRoute, Router } from '@angular/router';
-import MissionSummary from '../missionSummary.model';
 import Aisle from '../aisle.model';
 import Mission from '../mission.model';
 import Label from '../label.model';
@@ -20,11 +19,9 @@ import * as jsPDF from 'jspdf';
 })
 
 export class MissionViewComponent implements OnInit, OnDestroy {
-  missionSummary: MissionSummary;
   mission: Mission;
   store: Store;
   averageLabels: number;
-  aisles: Aisle[];
   averageStoreOuts: number;
   averageStoreLabels: number;
   service: ApiService;
@@ -47,34 +44,24 @@ export class MissionViewComponent implements OnInit, OnDestroy {
     const html = document.getElementsByTagName('html')[0];
     html.setAttribute('style', 'position: relative; overflow: auto;');
     this.backButtonSubscription = this.backService.backClickEvent().subscribe(() => this.goBack());
-    let missionId: number, storeId: number;
+    let missionId: string, storeId: string;
     this.activatedRoute.params.forEach((params: Params) => {
       if (params['missionId'] !== undefined) {
-        missionId = Number(params['missionId']);
+        missionId = params['missionId'];
       }
       if (params['storeId'] !== undefined) {
-        storeId = Number(params['storeId']);
+        storeId = params['storeId'];
       }
     });
-    this.apiService.getMission(storeId, missionId).subscribe(mission => {
+    this.apiService.getMission(storeId, missionId, Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe(mission => {
       this.mission = mission;
-      this.apiService.getMissionSummary(mission.storeId, this.mission.missionId).subscribe(missionSummary => {
-        this.missionSummary = missionSummary;
-        this.apiService.getAisles(mission.storeId, this.mission.missionId).subscribe(aisles => {
-          this.aisles = aisles;
-        });
-        const twoWeeksAgo: Date = new Date();
-        twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 13);
-        twoWeeksAgo.setHours(0, 0, 0, 0);
-        this.apiService.getStore(mission.storeId, twoWeeksAgo, Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe(store => {
-          this.store = store;
-
-          // If this page was nagivates to from the store view, show the two week average from there, if not show the last two weeks average
-          this.averageStoreLabels = this.dataService.averageStoreLabels
-            ? this.dataService.averageStoreLabels : this.store.totalAverageLabels;
-          this.averageStoreOuts = this.dataService.averageStoreOuts
-            ? this.dataService.averageStoreOuts : this.store.totalAverageOuts;
-        });
+      this.apiService.getStore(mission.storeId, new Date(), new Date()).subscribe(store => {
+        this.store = store;
+        // If this page was nagivates to from the store view, show the two week average from there, if not show the last two weeks average
+        this.averageStoreLabels = this.dataService.averageStoreLabels
+          ? this.dataService.averageStoreLabels : this.store.totalAverageLabels;
+        this.averageStoreOuts = this.dataService.averageStoreOuts
+          ? this.dataService.averageStoreOuts : this.store.totalAverageOuts;
       });
     });
     this.service = this.apiService;
@@ -103,7 +90,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
   }
 
   addAisles(i: number, exportType: string, exportFields: string[], modalId: string, body: any[], fileType: string) {
-    if (i === this.aisles.length) {
+    if (i === this.mission.aisles.length) {
       if (fileType === 'pdf') {
         this.exportPDF(body);
       } else {
@@ -111,7 +98,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
       }
       this.modalService.close(modalId);
     } else {
-      this.apiService.getAisle(this.mission.storeId, this.mission.missionId, this.aisles[i].aisleId).subscribe(aisle => {
+      this.apiService.getAisle(this.mission.storeId, this.mission.missionId, this.mission.aisles[i].aisleId).subscribe(aisle => {
         const outs: Label[] = aisle.outs;
         const labels: Label[]  = aisle.labels;
         const exportData: Label[] = exportType === 'labels' ? labels : outs;
@@ -197,7 +184,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
     const middleText = 'On Hand';
     const middleWidth = doc.getStringUnitWidth(middleText) * doc.internal.getFontSize() / doc.internal.scaleFactor;
     const middleOffset = (doc.internal.pageSize.width - middleWidth) / 2;
-    const rightText =  this.mission.missionDateTime.toLocaleString();
+    const rightText =  this.mission.startDateTime.toLocaleString();
     const rightWidth = doc.getStringUnitWidth(rightText.toString()) * doc.internal.getFontSize() / doc.internal.scaleFactor;
     const rightOffset = (doc.internal.pageSize.width - rightWidth) - 20;
     doc.text(middleOffset, 10, middleText);

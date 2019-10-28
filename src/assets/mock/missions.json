@@ -1,0 +1,41 @@
+[{
+  "id": "b00bb3b1-2e22-47bd-84b7-1071d5212502",
+  "missionName": "BNR-albertsons_0199-20190628_185455UTC-atlaskermit28-official_run_chaperone",
+  "startDateTime": "2019-06-28T18:54:55+00:00",
+  "endDateTime": "2019-06-28T18:54:55+00:00",
+  "createDateTime": "2019-06-28T20:12:38+00:00",
+  "aisleCount": 2,
+  "labels": 11756,
+  "outs": 93,
+  "readLabelsMissingProduct": 1054,
+  "readLabelsMatchingProduct": 10702,
+  "unreadLabels": 1268,
+  "percentageUnread": 10.78,
+  "percentageRead": 89.21,
+  "store": {
+    "id": "0a0ba5df-3f0e-4329-8266-deb3f0b4caed",
+    "number": 528,
+    "name": "Loblaws #528",
+    "address": "555 Davenport Rd, Waterloo, ON N2L 6L2, Canada"
+  },
+  "aisles": [
+  {
+    "aisleId": "f59a4d6e-5b1a-4a84-b84a-814e76ef0bc2",
+    "name": "A1B",
+    "coveragePercent": 79.2172,
+    "panoramaUrl": "Mission-106/Aisle-1633/BNR-albertsons_0199-20190628_185455UTC-atlaskermit28-official_run_chaperone-A.1B-fullpano.jpg",
+    "createDate": "2019-06-28T20:12:38+00:00",
+    "labelCount": 697,
+    "outCount": 7
+  },
+  {
+    "aisleId": "7076981f-0410-4e0f-8912-79771a400496",
+    "name": "A2B",
+    "coveragePercent": 72.5,
+    "panoramaUrl": "Mission-106/Aisle-1633/BNR-albertsons_0199-20190628_185455UTC-atlaskermit28-official_run_chaperone-A.2B-fullpano.jpg",
+    "createDate": "2019-06-28T20:12:38+00:00",
+    "labelsCount": 432,
+    "outsCount": 12
+  }
+  ]
+}]

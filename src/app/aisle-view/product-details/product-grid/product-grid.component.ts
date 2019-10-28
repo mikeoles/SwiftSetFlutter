@@ -11,12 +11,14 @@ export enum KEY_CODE {
 @Component({
   selector: 'app-product-grid',
   templateUrl: './product-grid.component.html',
-  styleUrls: ['./product-grid.component.scss']
+  styleUrls: ['./product-grid.component.scss'],
 })
 export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges {
 
   @Output() gridClicked = new EventEmitter();
   @Input() products: Label[];
+  @Input() onlyBarcode: boolean; // Displays only the barcode in the grid, used for top stock and shelf labels
+  @Input() annotationTypes: string[];
   @Input() selectedId: number;
   showDepartment: Boolean;
   showSection: Boolean;
@@ -24,8 +26,8 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
   rows: Array<Array<String>> = [];
 
   constructor(private environment: EnvironmentService) {
-    this.showDepartment = this.environment.config.productGridFields.includes('Department');
-    this.showSection = this.environment.config.productGridFields.includes('Section');
+    // this.showDepartment = this.environment.config.productGridFields.includes('Department');
+    // this.showSection = this.environment.config.productGridFields.includes('Section');
   }
 
   ngOnInit() {
@@ -94,7 +96,19 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
 
   getGridData() {
     this.rows = [];
-    this.columnHeaders = this.environment.config.productGridFields;
+    if (this.onlyBarcode) {
+      this.columnHeaders = ['Barcode'];
+    } else {
+      this.columnHeaders = ['Label Name', 'Barcode', 'Product Id', 'Price'];
+      // this.columnHeaders = Object.assign([], this.environment.config.productGridFields);
+    }
+
+    this.annotationTypes.forEach(annotationType => {
+      if (this.annotationTypes && !this.columnHeaders.includes(annotationType)) {
+        this.columnHeaders.push(annotationType);
+      }
+    });
+
     for (let i = 0; i < this.products.length; i++) {
       const product: Label = this.products[i];
       let row: Array<String> = Array<String>();
@@ -113,6 +127,8 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
           cellValue = product[fieldLowercase];
         } else if (product.bounds[fieldLowercase]) {
           cellValue = product.bounds[fieldLowercase];
+        } else if (product.annotations[fieldLowercase]) {
+          cellValue = product.annotations[fieldLowercase];
         } else {
           for (let k = 0; k < product.customFields.length; k++) {
             if (product.customFields[k].name === field || product.customFields[k].name === '"' + field + '"') {

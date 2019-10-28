@@ -6,16 +6,19 @@ import { labelScrollOptions } from 'src/app/labelScrollOptions';
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8080/',
-  showPlugs: false,
-  showSuppliers: false,
-  coveragePercent: true,
+  apiUrl: 'http://localhost:8080',
+  coveragePercent: false,
+  coverageDisplayType: 'description',
   onHand: true,
   exportingPDF: true,
-  exportFields: ['Barcode', 'Product Id', 'Description', 'Department', 'Left'],
-  productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price', 'On Hand'],
+  exportFields: ['Barcode', 'top', 'left', 'width', 'height'],
+  productGridFields: ['Barcode', 'top', 'left', 'width', 'height'],
   labelScrolling: labelScrollOptions.vertical,
-  apiType: 'odata' // Options: odata or static
+  missionHistoryDays: 14, // Number of days to display missions for
+  permissions: ['topStock', 'QA', 'sectionLabels', 'sectionBreaks', 'misreadBarcodes'],
+  authUsers: false,
+  authUrl: 'http://localhost:5556/auth?',
+  authRedirectUrl: 'http://localhost/'
 };
 
 /*

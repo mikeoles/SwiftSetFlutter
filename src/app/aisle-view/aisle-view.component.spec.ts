@@ -19,6 +19,8 @@ import { ModalService } from '../modal/modal.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { EnvironmentService } from '../environment.service';
+import Store from '../store.model';
+
 
 @Component({selector: 'app-export-modal', template: ''})
 class ModalComponent {
@@ -29,41 +31,70 @@ describe('AisleViewComponent', () => {
   let fixture: ComponentFixture<AisleViewComponent>;
   let component: AisleViewComponent;
   let apiService: jasmine.SpyObj<ApiService>;
+  let environmentService: jasmine.SpyObj<EnvironmentService>;
 
-  const missions: Mission[] = [
-    { missionId: 1, missionName: '1111', storeId: 1, createDateTime: new Date('2018-12-12'), missionDateTime: new Date('2018-12-12') },
-    { missionId: 2, missionName: '2222', storeId: 1, createDateTime: new Date('2001-01-01'), missionDateTime: new Date('2001-01-01') },
-  ];
   const labels: Label[] = [
     { labelId: 1, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 }, department: '', section: '', customFields: [], onHand: 0 },
-    { labelId: 2, labelName: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0,
-      height: 0, topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 }, department: '', section: '', customFields: [], onHand: 0 },
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], annotations: [], annotationColor: '' },
+    { labelId: 2, labelName: 'label name', barcode: '55037', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], annotations: [], annotationColor: '' },
     { labelId: 3, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 }, department: '', section: '', customFields: [], onHand: 0 },
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], annotations: [], annotationColor: '' },
     { labelId: 4, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 }, department: '', section: '', customFields: [], onHand: 0 },
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], annotations: [], annotationColor: '' },
     { labelId: 5, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      topMeters: 0, leftMeters: 0, widthMeters: 0, heightMeters: 0 }, department: '', section: '', customFields: [], onHand: 0 },
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], annotations: [], annotationColor: '' },
   ];
+
+  const sectionBreaks: number[] = [19, 200];
 
   const aisles: Aisle[] = [
-    { aisleId: 1, aisleName: '1111', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '',
+    { aisleId: '1', aisleName: '1111', panoramaUrl: '', createDateTime: new Date(),
+      labels: labels, outs: labels, sectionLabels: labels, sectionBreaks: sectionBreaks, topStock: labels,
       coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
-    { aisleId: 2, aisleName: '2222', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '',
+    { aisleId: '2', aisleName: '2222', panoramaUrl: '', createDateTime: new Date(),
+      labels: labels, outs: labels, sectionLabels: labels, sectionBreaks: sectionBreaks, topStock: labels,
       coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
-    { aisleId: 3, aisleName: '3333', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '',
+    { aisleId: '3', aisleName: '3333', panoramaUrl: '', createDateTime: new Date(),
+      labels: labels, outs: labels, sectionLabels: labels, sectionBreaks: sectionBreaks, topStock: labels,
       coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
-    { aisleId: 4, aisleName: '4444', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '',
+    { aisleId: '4', aisleName: '4444', panoramaUrl: '', createDateTime: new Date(),
+      labels: labels, outs: labels, sectionLabels: labels, sectionBreaks: sectionBreaks, topStock: labels,
       coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
-    { aisleId: 5, aisleName: '5555', panoramaUrl: '', labels: labels, outs: labels, spreads: [], zone: '',
+    { aisleId: '5', aisleName: '5555', panoramaUrl: '', createDateTime: new Date(),
+      labels: labels, outs: labels, sectionLabels: labels, sectionBreaks: sectionBreaks, topStock: labels,
       coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
   ];
 
+  const mission: Mission = { missionId: '1', missionName: '1111', storeId: '1', createDateTime: new Date('2018-12-12'),
+    startDateTime: new Date('2018-12-12'), endDateTime: new Date('2018-12-12'), aisleCount: 0, outs: 0, labels: 0,
+    readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0, unreadLabels: 0, percentageRead: 0, percentageUnread: 0, aisles: aisles };
+
+  const missions: Mission[] = [
+    { missionId: '1', missionName: '1111', storeId: '1', createDateTime: new Date('2018-12-12'), startDateTime: new Date('2018-12-12'),
+      endDateTime: new Date('2018-12-12'), aisleCount: 0, outs: 0, labels: 0, readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0,
+      unreadLabels: 0, percentageRead: 0, percentageUnread: 0, aisles: aisles  },
+    { missionId: '2', missionName: '2222', storeId: '1', createDateTime: new Date('2001-01-01'), startDateTime: new Date('2001-01-01'),
+      endDateTime: new Date('2018-12-13'), aisleCount: 0, outs: 0, labels: 0, readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0,
+      unreadLabels: 0, percentageRead: 0, percentageUnread: 0, aisles: aisles  },
+  ];
+
+  const store: Store = {  storeId: '',
+  storeNumber: 1,
+  storeName: '',
+  storeAddress: '',
+  totalAverageOuts: 1,
+  totalAverageLabels: 1,
+  summaryOuts: [],
+  summaryLabels: [],
+  timezone: ''
+};
 
   beforeEach(async(() => {
-    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getMissions', 'getAisles', 'getAisle']);
+    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getMissions', 'getMission', 'getAisle', 'getStore', 'getRoles',
+    'getMisreadCategories', 'getMissedCategories', 'getFalseNegativeCategories', 'getFalsePositiveCategories']);
     const locationSpy = jasmine.createSpyObj('Location', ['replaceState']);
+    const environmentServiceSpy = jasmine.createSpyObj('EnvironmentService', ['setPermissions']);
 
     TestBed.configureTestingModule({
       imports: [
@@ -82,6 +113,7 @@ describe('AisleViewComponent', () => {
       ],
       providers: [
         { provide: 'ApiService', useValue: apiServiceSpy },
+        { provide: EnvironmentService, useValue: environmentServiceSpy },
         { provide: ModalService},
         { provide: Router },
         { provide: Location, useValue:  locationSpy},
@@ -93,18 +125,23 @@ describe('AisleViewComponent', () => {
           }],
         }},
         { provide: EnvironmentService, useValue: { config: {
-          showPlugs: true,
-          showSuppliers: true,
-          productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price']
-        }}}
+          productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price'],
+          permissions: ['topStock', 'QA', 'sectionLabels', 'sectionBreaks', 'misreadBarcodes']
+        }}},
       ],
     }).compileComponents();
 
+    environmentService = TestBed.get(EnvironmentService);
     apiService = TestBed.get('ApiService');
+    apiService.getMission.and.returnValue(of(mission));
     apiService.getMissions.and.returnValue(of(missions));
-    apiService.getAisles.and.returnValue(of(aisles));
     apiService.getAisle.and.returnValue(of(aisles[0]));
-
+    apiService.getStore.and.returnValue(of(store));
+    apiService.getRoles.and.returnValue(of('bossanova'));
+    apiService.getMisreadCategories.and.returnValues(of([]));
+    apiService.getMissedCategories.and.returnValues(of([]));
+    apiService.getFalseNegativeCategories.and.returnValues(of([]));
+    apiService.getFalsePositiveCategories.and.returnValues(of([]));
     fixture = TestBed.createComponent(AisleViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -121,11 +158,11 @@ describe('AisleViewComponent', () => {
   });
 
   it('should load the missions', () => {
-    expect(fixture.componentInstance.missions).toEqual([missions[0]]);
+    expect(fixture.componentInstance.missions).toEqual(missions);
   });
 
   it('should load the aisles', () => {
-    expect(fixture.componentInstance.aisles).toEqual(aisles);
+    expect(fixture.componentInstance.selectedMission.aisles).toEqual(aisles);
   });
 
   it('should load the outs and labels', () => {
@@ -140,7 +177,7 @@ describe('AisleViewComponent', () => {
 
   it('should set the selection area component', () => {
     const selectionAreaDe = fixture.debugElement.query(By.directive(SelectionAreaComponent));
-    expect(selectionAreaDe.componentInstance.missions).toEqual([missions[0]]);
+    expect(selectionAreaDe.componentInstance.missions).toEqual(missions);
     expect(selectionAreaDe.componentInstance.aisles).toEqual(aisles);
     expect(selectionAreaDe.componentInstance.selectedMission).toEqual(component.selectedMission);
     expect(selectionAreaDe.componentInstance.selectedAisle).toEqual(component.selectedAisle);
@@ -152,7 +189,6 @@ describe('AisleViewComponent', () => {
     expect(panoramaDe.componentInstance.labels).toEqual(component.selectedAisle.labels);
     expect(panoramaDe.componentInstance.panoramaUrl).toEqual(component.selectedAisle.panoramaUrl);
     expect(panoramaDe.componentInstance.currentId).toEqual(component.currentId);
-    expect(panoramaDe.componentInstance.currentDisplay).toEqual(component.currentDisplay);
   });
 
   it('should set the product details component', () => {
@@ -160,6 +196,5 @@ describe('AisleViewComponent', () => {
     expect(productDetailsDe.componentInstance.outs).toEqual(component.selectedAisle.outs);
     expect(productDetailsDe.componentInstance.labels).toEqual(component.selectedAisle.labels);
     expect(productDetailsDe.componentInstance.currentId).toEqual(component.currentId);
-    expect(productDetailsDe.componentInstance.currentDisplay).toEqual(component.currentDisplay);
   });
 });

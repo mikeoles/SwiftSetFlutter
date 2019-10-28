@@ -1,15 +1,17 @@
 import Label from './label.model';
 
 export default class Aisle {
-  aisleId: number;
+  aisleId: string;
   aisleName: string;
-  panoramaUrl: string;
   coveragePercent: number;
-  aisleCoverage: string;
-  zone: string;
-  labels: Label[];
+  panoramaUrl: string;
+  createDateTime: Date;
   labelsCount: number;
-  outs: Label[];
   outsCount: number;
-  spreads: Label[];
+  aisleCoverage: string;
+  labels: Label[];
+  outs: Label[];
+  sectionLabels: Label[];
+  topStock: Label[];
+  sectionBreaks: number[];
 }

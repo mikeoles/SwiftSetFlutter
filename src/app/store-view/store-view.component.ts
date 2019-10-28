@@ -1,15 +1,15 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Params, ActivatedRoute, Router } from '@angular/router';
-import MissionSummary from '../missionSummary.model';
 import Store from '../store.model';
 import DaySummary from '../daySummary.model';
 import { DatepickerOptions } from 'ng2-datepicker';
 import { ApiService } from '../api.service';
 import { EnvironmentService } from '../environment.service';
-import { ODataApiService } from '../oDataApi.service';
-import { StaticApiService } from '../staticApi.service';
 import { BackService } from '../back.service';
 import { Subscription } from 'rxjs';
+import Mission from '../mission.model';
+import Aisle from '../aisle.model';
+import { ModalService } from '../modal/modal.service';
 
 @Component({
   selector: 'app-data-display',
@@ -18,13 +18,16 @@ import { Subscription } from 'rxjs';
 })
 
 export class StoreViewComponent implements OnInit {
-  missionSummaries: MissionSummary[];
+  missions: Mission[];
   store: Store;
-  storeId: number;
+  storeId: string;
   selectedIndex: string;
   selectedDate: Date;
-  graphEndDate: Date;
   graphStartDate: Date;
+  graphEndDate: Date;
+  requestStartDate: Date;
+  requestEndDate: Date;
+  missionHistoryLength: Date;
   options: DatepickerOptions = {
     displayFormat: 'MMMM D[,] YYYY',
     barTitleFormat: 'MMMM YYYY',
@@ -33,31 +36,44 @@ export class StoreViewComponent implements OnInit {
       'font-weight': 'bold', 'width': 'auto', 'text-align': 'center', 'cursor': 'pointer'
     }
   };
-  showCoverageAsPercent = false;
-
+  requestDateOptions: DatepickerOptions = {
+    displayFormat: 'MMMM D[,] YYYY',
+    barTitleFormat: 'MMMM YYYY',
+    dayNamesFormat: 'dd',
+    addStyle: {'border': '3px #2baae1 solid', 'border-radius': '30px', 'color': '#2baae1', 'font-size' : '12px', 'height' : '18px',
+      'font-weight': 'bold', 'width': 'auto', 'text-align': 'center', 'cursor': 'pointer'
+    }
+  };
+  coverageDisplayType = 'description';
+  error = false;
+  currentlyRequesting = false;
+  progress = 0;
   private backButtonSubscription: Subscription;
 
   constructor(@Inject('ApiService') private apiService: ApiService, private activatedRoute: ActivatedRoute,
-  private environmentService: EnvironmentService, private backService: BackService, private router: Router) {
-    this.showCoverageAsPercent = environmentService.config.showCoverageAsPercent;
+  private environmentService: EnvironmentService, private backService: BackService, private router: Router,
+  private modalService: ModalService) {
+    this.coverageDisplayType = environmentService.config.coverageDisplayType;
     this.graphEndDate = new Date();
-    this.graphEndDate.setDate(this.graphEndDate.getDate()); // Two weeks ago by default
-    this.graphEndDate.setHours(0, 0, 0, 0);
     this.graphStartDate = new Date();
-    this.graphStartDate.setDate(this.graphEndDate.getDate() - 13); // Two weeks ago by default
-    this.graphStartDate.setHours(0, 0, 0, 0);
+    this.graphStartDate.setDate(this.graphEndDate.getDate() - environmentService.config.missionHistoryDays + 1);
+    const start = new Date(this.graphStartDate);
+    const end = new Date(this.graphEndDate);
     this.activatedRoute.params.forEach((params: Params) => {
       if (params['storeId'] !== undefined) {
         this.storeId = params['storeId'];
       }
     });
-    this.apiService.getStore(this.storeId, this.graphStartDate, Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe(store => {
+    this.apiService.getStore(this.storeId, start, end).subscribe(store => {
       this.setAllSummaryValues(store);
     });
+    this.requestStartDate = new Date();
+    this.requestEndDate = new Date();
   }
 
   ngOnInit() {
     this.backButtonSubscription = this.backService.backClickEvent().subscribe(() => this.goBack());
+    this.missionHistoryLength = this.environmentService.config.missionHistoryDays;
   }
 
   goBack(): void {
@@ -67,10 +83,10 @@ export class StoreViewComponent implements OnInit {
   changeGraphDates(event) {
     this.graphEndDate = new Date(event);
     this.graphStartDate = new Date(event);
-    this.graphStartDate.setDate(this.graphStartDate.getDate() - 13); // Two weeks ago by default
-    this.graphEndDate.setHours(0, 0, 0 , 0);
-    this.graphStartDate.setHours(0, 0, 0 , 0);
-    this.apiService.getStore(this.storeId, this.graphStartDate, Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe(store => {
+    this.graphStartDate.setDate(this.graphStartDate.getDate() - this.environmentService.config.missionHistoryDays + 1);
+    const start = new Date(this.graphStartDate);
+    const end = new Date(this.graphEndDate);
+    this.apiService.getStore(this.storeId, start, end).subscribe(store => {
       this.setAllSummaryValues(store);
     });
   }
@@ -78,8 +94,11 @@ export class StoreViewComponent implements OnInit {
   setIndex(selectedValues) {
     this.selectedIndex = selectedValues.index;
     this.selectedDate = selectedValues.date;
-    this.apiService.getMissionSummaries(this.selectedDate, this.storeId, Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe(
-      missionSummaries => this.missionSummaries = missionSummaries
+    const indexDate: Date = new Date(selectedValues.date);
+    const end: Date = new Date(indexDate);
+    end.setDate(end.getDate() + 1);
+    this.apiService.getMissions(this.storeId, indexDate, end, this.store.timezone).subscribe(
+      missions => this.missions = missions
     );
   }
 
@@ -88,28 +107,22 @@ export class StoreViewComponent implements OnInit {
     this.store = store;
     const allSummaryOuts: Array<DaySummary> = [];
     const allSummaryLabels: Array<DaySummary> = [];
-    const d = new Date(this.graphStartDate.toDateString());
+    const d = new Date(new Date(this.graphStartDate.toDateString()).toLocaleString('en-US', {timeZone: store.timezone}));
 
-    for (let i = 0; i < 14; i++) {
+    for (let i = 0; i < this.environmentService.config.missionHistoryDays; i++) {
       const cur: Date = new Date(d.toDateString());
       d.setDate(d.getDate() + 1);
 
       let dailyLabelAverage = 0;
       for (let j = 0; j < this.store.summaryLabels.length; j++) {
-        if (this.environmentService.config.apiType === 'odata' &&
-          this.store.summaryLabels[j].date.toString() === cur.toISOString().substring(0, 10) ||
-          this.environmentService.config.apiType === 'static' &&
-          this.store.summaryLabels[j].date.toDateString() === cur.toDateString()) {
+        if (this.store.summaryLabels[j].date.toDateString() === cur.toDateString()) {
             dailyLabelAverage = this.store.summaryLabels[j].dailyAverage;
           }
         }
 
       let dailyOutAverage = 0;
       for (let j = 0; j < this.store.summaryOuts.length; j++) {
-        if (this.environmentService.config.apiType === 'odata' &&
-          this.store.summaryOuts[j].date.toString() === cur.toISOString().substring(0, 10) ||
-          this.environmentService.config.apiType === 'static' &&
-          this.store.summaryOuts[j].date.toDateString() === cur.toDateString()) {
+        if (this.store.summaryOuts[j].date.toDateString() === cur.toDateString()) {
             dailyOutAverage = this.store.summaryOuts[j].dailyAverage;
         }
       }
@@ -133,23 +146,22 @@ export class StoreViewComponent implements OnInit {
     const columnNames = ['Mission Date', 'Customer - Store', 'Total Aisles Scanned', 'Total # Of Labels', 'Total # Unread Labels',
     'Percentage Unread Labels', 'Percentage Read Labels', '# Read Labels With Matching Product', '# Read Labels Missing Product',
     'Total # OOS'];
-    this.apiService.getRangeMissionSummaries(this.graphStartDate, this.graphEndDate, this.storeId,
-      Intl.DateTimeFormat().resolvedOptions().timeZone)
+    this.apiService.getMissions(this.storeId, this.graphStartDate, this.graphEndDate, this.store.timezone)
     .subscribe(
-      missionSummaries => {
+      missions => {
         const body = [];
-        missionSummaries.forEach( missionSummary => {
+        missions.forEach( mission => {
           let row = [];
-          row = row.concat(missionSummary.missionDateTime.toLocaleString().replace(',', ''));
+          row = row.concat(mission.startDateTime.toLocaleString().replace(',', ''));
           row = row.concat(this.store.storeName);
-          row = row.concat(missionSummary.aislesScanned);
-          row = row.concat(missionSummary.labels);
-          row = row.concat(missionSummary.unreadLabels);
-          row = row.concat(missionSummary.percentageUnread);
-          row = row.concat(missionSummary.percentageRead);
-          row = row.concat(missionSummary.readLabelsMatchingProduct);
-          row = row.concat(missionSummary.readLabelsMissingProduct);
-          row = row.concat(missionSummary.outs);
+          row = row.concat(mission.aisleCount);
+          row = row.concat(mission.labels);
+          row = row.concat(mission.unreadLabels);
+          row = row.concat(mission.percentageUnread);
+          row = row.concat(mission.percentageRead);
+          row = row.concat(mission.readLabelsMatchingProduct);
+          row = row.concat(mission.readLabelsMissingProduct);
+          row = row.concat(mission.outs);
           body.push(row);
         });
         const filename = 'PerformanceData_' + this.graphStartDate.toDateString() + '-' +
@@ -161,9 +173,13 @@ export class StoreViewComponent implements OnInit {
 
   exportAisleScanData() {
     const columnNames = ['Date Span', 'Aisle', '# Of Scans', 'Average Aisle Coverage'];
-    this.apiService.getRangeAisles(this.graphStartDate, this.graphEndDate, this.storeId, Intl.DateTimeFormat().resolvedOptions().timeZone)
+    this.apiService.getMissions(this.storeId, this.graphStartDate, this.graphEndDate, this.store.timezone)
     .subscribe(
-      aisles => {
+      missions => {
+        let aisles: Aisle[] = [];
+        missions.forEach( mission => {
+          aisles = aisles.concat(mission.aisles);
+        });
         const coveragePercentages = new Map<string, number>();
         const scanCounts = new Map<string, number>();
         aisles.forEach( aisle => {
@@ -191,7 +207,7 @@ export class StoreViewComponent implements OnInit {
           } else if (coveragePercent >= 40) {
             avgAisleCoverage = 'Medium';
           }
-          if (this.showCoverageAsPercent) {
+          if (this.coverageDisplayType.toLowerCase() === 'percent') {
             avgAisleCoverage = coveragePercent.toString();
           }
           row = row.concat(avgAisleCoverage);
@@ -220,4 +236,31 @@ export class StoreViewComponent implements OnInit {
     link.remove();
   }
 
+  openModal(id: string) {
+    this.modalService.open(id);
+  }
+
+  closeModal(id: string) {
+    this.modalService.close(id);
+  }
+
+  requestData(modalId: string) {
+    const dateDifference = this.requestEndDate.getTime() - this.requestStartDate.getTime();
+    if (dateDifference > 0 && dateDifference < 1000 * 60 * 60 * 24 * 7) {
+      this.currentlyRequesting = true;
+      this.progress = 20;
+      // this.modalService.close(modalId);
+      this.error = false;
+    } else {
+      this.error = true;
+    }
+  }
+
+  changeRequestDates(request: string, newDate: string) {
+    if (request === 'start') {
+      this.requestStartDate = new Date(new Date(newDate).toLocaleString('en-US', {timeZone: this.store.timezone}));
+    } else {
+      this.requestEndDate = new Date(newDate);
+    }
+  }
 }

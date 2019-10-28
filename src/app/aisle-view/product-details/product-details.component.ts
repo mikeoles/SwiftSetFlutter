@@ -1,43 +1,54 @@
-import { Component, OnInit, Output, EventEmitter, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, OnChanges, Inject } from '@angular/core';
 import Label from '../../label.model';
 import { EnvironmentService } from 'src/app/environment.service';
+import { Permissions } from 'src/permissions/permissions';
+import { ApiService } from 'src/app/api.service';
+import { Roles } from 'src/permissions/roles';
 
 @Component({
   selector: 'app-product-details',
   templateUrl: './product-details.component.html',
-  styleUrls: ['./product-details.component.scss']
+  styleUrls: ['./product-details.component.scss'],
 })
 
 export class ProductDetailsComponent implements OnInit, OnChanges {
 
-  showPlugs: Boolean;
-  showSuppliers: Boolean;
   showDepartment: Boolean;
   showSection: Boolean;
+  showTopStock = false;
+  showSectionLabels = false;
+  showMisreadBarcodes = true;
 
   departmentsList: string[] = [];
   sectionsList: string[] = [];
-
   selectedDepts: string[] = [];
   selectedSects: string[] = [];
 
-  dropdownSettings = {};
-  @Output() gridId = new EventEmitter();
-  @Output() gridDisplay = new EventEmitter();
   @Input() outs: Label[] = [];
-  filteredOuts: Label[] = [];
   @Input() labels: Label[] = [];
+  @Input() misreadBarcodes: Label[] = [];
+  @Input() sectionLabels: Label[] = [];
+  @Input() topStock: Label[] = [];
+  filteredOuts: Label[] = [];
   filteredLabels: Label[] = [];
-  @Input() missingBarcodes: Label[] = [];
-  @Input() currentId: number;
-  @Input() currentDisplay: string;
-  @Input() panoMode: boolean;
 
-  constructor(private environment: EnvironmentService) {
-    this.showPlugs = environment.config.showPlugs;
-    this.showSuppliers = environment.config.showSuppliers;
+  @Input() currentId: number;
+  currentDisplay = 'outs';
+  @Input() panoMode: boolean;
+  @Output() gridId = new EventEmitter();
+  dropdownSettings = {};
+
+  constructor(private environment: EnvironmentService, @Inject('ApiService') private apiService: ApiService) {
     this.showDepartment = environment.config.productGridFields.includes('Department');
     this.showSection = environment.config.productGridFields.includes('Section');
+    const context = this;
+    this.apiService.getRoles(localStorage.getItem('id_token')).subscribe( role => {
+      if (typeof context.environment.setPermissions === 'function') {
+        context.environment.setPermissions(Roles[role]);
+      }
+      this.showTopStock = environment.config.permissions.indexOf(Permissions.topStock) > -1;
+      this.showSectionLabels = environment.config.permissions.indexOf(Permissions.sectionLabels) > -1;
+    });
   }
 
 
@@ -110,13 +121,11 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
 
   }
 
-  // Called when the user clicks one of the buttons to change tables
   selectGrid(type) {
-    this.gridDisplay.emit(type);
+    this.currentDisplay = type;
     this.gridId.emit(-1);    // Emit -1 to signal that no elements are selected
   }
 
-  // Called when the user clicks on one of the rows in the table
   productGridSelected(id) {
     if (id === this.currentId) {
       this.gridId.emit(-1);

@@ -5,12 +5,37 @@
 <div class="storeButton">
   <ng-datepicker [(ngModel)]="graphEndDate" (ngModelChange)="changeGraphDates($event)" [options]="options" [position]="'bottom-left'"></ng-datepicker>
 </div>
+<button class="storeButton" (click)="openModal('request-data-popup')">Request Data</button>
 <button class="storeButton" (click)="exportPerformanceData()">Performance Data</button>
 <button class="storeButton" (click)="exportAisleScanData()">Aisle Scan Data</button>
-<div class="title">Daily Statistics (Last 14 days)</div>
+<app-export-modal id="request-data-popup">
+  <div class="modal">
+      <div class="modal-body">
+        <div class="requestForm" [ngClass]="{'disabled': currentlyRequesting}">
+          <div class="exportTitle">Select Date Range To Request</div>
+          <div class="dateSelection">
+            <div class="requestText">Start: </div>
+            <ng-datepicker [(ngModel)]="requestStartDate" (ngModelChange)="changeRequestDates('start',$event)" [options]="requestDateOptions" [position]="'bottom-left'"></ng-datepicker>
+            <div class="requestText endText">End: </div>
+            <ng-datepicker [(ngModel)]="requestEndDate" (ngModelChange)="changeRequestDates('end',$event)" [options]="requestDateOptions" [position]="'bottom-left'"></ng-datepicker>
+            <div *ngIf="error" class="requestDateError">End date must be less than 7 days after start date</div>
+          </div>
+          <button (click)="requestData('request-data-popup')">Request Data</button>
+          <button class="cancel" (click)="closeModal('request-data-popup');">Close</button>
+        </div>
+        <div class="requestProgress" [ngClass]="{'disabled': !currentlyRequesting}">
+          <div class="exportTitle">Select Date Range To Request</div>
+          <progress-bar [progress]="progress" [color]="'#488aff'"></progress-bar>
+          <button class="cancel" (click)="closeModal('request-data-popup');">Close</button>
+        </div>
+      </div>
+  </div>
+  <div class="modal-background"></div>
+</app-export-modal>
+<div class="title">Daily Statistics (Last {{missionHistoryLength}} days)</div>
 <div *ngIf="store">
   <div class="graphDisplay"><app-daily-graphs [title]="'Out of Stocks Detected'" [data]="store.summaryOuts" [overallAverage]="store.totalAverageOuts" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>
   <div class="graphDisplay"><app-daily-graphs [title]="'Shelf Labels Detected'" [data]="store.summaryLabels" [overallAverage]="store.totalAverageLabels" [currentIndex]="selectedIndex" (selectedIndex)='setIndex($event)'></app-daily-graphs></div>
 </div>
-<app-missions-grid *ngIf="missionSummaries" [averageStoreOuts]="store.totalAverageOuts" [averageStoreLabels]="store.totalAverageLabels"
-[missionSummaries]="missionSummaries" [missionsDate]="selectedDate" [storeId]="storeId"></app-missions-grid>
+<app-missions-grid *ngIf="missions" [averageStoreOuts]="store.totalAverageOuts" [averageStoreLabels]="store.totalAverageLabels"
+[missions]="missions" [missionsDate]="selectedDate" [storeId]="storeId"></app-missions-grid>

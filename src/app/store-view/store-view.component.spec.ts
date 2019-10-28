@@ -6,12 +6,14 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ApiService } from '../api.service';
 import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import MissionSummary from '../missionSummary.model';
 import DaySummary from '../daySummary.model';
 import Store from '../store.model';
 import { NgDatepickerModule } from 'ng2-datepicker';
 import { EnvironmentService } from '../environment.service';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ProgressBarModule } from 'angular-progress-bar';
+import { ModalService } from 'src/app/modal/modal.service';
+import Mission from '../mission.model';
 
 @Component({selector: 'app-daily-graphs', template: ''})
 class AppDailyGraphsStubComponent {
@@ -21,11 +23,16 @@ class AppDailyGraphsStubComponent {
 }
 @Component({selector: 'app-missions-grid', template: ''})
 class AppMissionsGridStubComponent {
-  @Input() missionSummaries: any[];
+  @Input() missions: any[];
   @Input() missionsDate: any[];
   @Input() averageStoreOuts: number;
   @Input() averageStoreLabels: number;
   @Input() storeId: number;
+}
+
+@Component({selector: 'app-export-modal', template: ''})
+class ModalComponent {
+  @Input() id: string;
 }
 
 describe('StoreViewComponent', () => {
@@ -33,9 +40,10 @@ describe('StoreViewComponent', () => {
   let fixture: ComponentFixture<StoreViewComponent>;
   let apiService: jasmine.SpyObj<ApiService>;
 
-  const missions: MissionSummary[] = [
-    { missionId: 1, mission: '', storeId: 1, missionDateTime: new Date(), outs: 1, labels: 1, spreads: 1, aislesScanned: 1,
-      percentageRead: 1, percentageUnread: 1, unreadLabels: 1, readLabelsMissingProduct: 1, readLabelsMatchingProduct: 1 },
+  const missions: Mission[] = [
+    { missionId: '1', missionName: '', storeId: '1', startDateTime: new Date(), outs: 1, labels: 1, aisleCount: 1, endDateTime: new Date(),
+      percentageRead: 1, percentageUnread: 1, unreadLabels: 1, readLabelsMissingProduct: 1, readLabelsMatchingProduct: 1,
+      createDateTime: new Date(), aisles: [] },
   ];
   const daySummaries: DaySummary[] = [
     {
@@ -43,46 +51,48 @@ describe('StoreViewComponent', () => {
       dailyAverage: 1,
     }
   ];
-  const store: Store = {  storeId: 1,
+  const store: Store = {  storeId: '',
+    storeNumber: 1,
     storeName: '',
     storeAddress: '',
     totalAverageOuts: 1,
     totalAverageLabels: 1,
-    totalAverageSpreads: 1,
     summaryOuts: daySummaries,
     summaryLabels: daySummaries,
-    summarySpreads: daySummaries
+    timezone: ''
   };
 
   beforeEach(async(() => {
-    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getStore', 'getMissionSummaries']);
+    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getStore', 'getMissions']);
 
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
         NgDatepickerModule,
         RouterTestingModule.withRoutes([]),
+        ProgressBarModule
       ],
       declarations: [
         StoreViewComponent,
         AppDailyGraphsStubComponent,
         AppMissionsGridStubComponent,
+        ModalComponent
       ],
       providers: [
         { provide: 'ApiService', useValue: apiServiceSpy },
         { provide: ActivatedRoute, useValue: {
-          params: [{ storeId: 1 }],
+          params: [{ storeId: '1' }],
         }},
         { provide: EnvironmentService, useValue: { config: {
-          apiType: 'odata',
-          showCoverageAsPercent: false
-        }}}
+          coverageDisplayType: 'description'
+        }}},
+        { provide: ModalService},
       ],
     })
     .compileComponents();
 
     apiService = TestBed.get('ApiService');
-    apiService.getMissionSummaries.and.returnValue(of(missions));
+    apiService.getMissions.and.returnValue(of(missions));
     apiService.getStore.and.returnValue(of(store));
   }));
 
@@ -97,7 +107,7 @@ describe('StoreViewComponent', () => {
   });
 
   it('should set the store id', () => {
-    expect(component.storeId).toEqual(1);
+    expect(component.storeId).toEqual('1');
     expect(component.store).toEqual(store);
   });
 
@@ -108,7 +118,7 @@ describe('StoreViewComponent', () => {
     component.setIndex(index);
     expect(component.selectedIndex).toEqual(index.index);
     expect(component.selectedDate).toEqual(index.date);
-    expect(component.missionSummaries).toEqual(missions);
+    expect(component.missions).toEqual(missions);
   });
 
   it('should change date on selection', () => {
