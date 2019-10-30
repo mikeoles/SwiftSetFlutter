@@ -17,6 +17,8 @@ import AnnotationCategory from 'src/app/annotationCategory.model';
 import { ApiService } from 'src/app/api.service';
 import { KeyboardShortcutsService } from 'ng-keyboard-shortcuts';
 import MissedBarcode from 'src/app/missedBarcode.model';
+import { Location } from '@angular/common'
+import { Router, ActivatedRoute } from '@angular/router';
 
 enum AnnotationType {
   misread = 'misread',
@@ -59,11 +61,13 @@ export class PanoramaComponent implements OnInit, OnChanges {
   falseNegativeAnnotationCategories: AnnotationCategory[];
   missedBarcodeMarkers: MissedBarcode[] = [];
 
-  annotationMenu: AnnotationType = AnnotationType.none; // missing or misread
+  annotationMenu: AnnotationType = AnnotationType.none;
   annotationLeft = 0;
   annotationTop = 0;
   selectedAnnotation: Label;
   selectedMarkerCategory = '';
+  url = this.router.url;
+  positionSetByUrl = false;;
 
   qaUser = false;
   cancelZoom = false;
@@ -88,7 +92,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
   selectedColor = '#FFD54A';
 
   constructor(private environment: EnvironmentService, @Inject('ApiService') private apiService: ApiService,
-    private keyboard: KeyboardShortcutsService) {
+    private keyboard: KeyboardShortcutsService, private location: Location, private router: Router, private route: ActivatedRoute) {
     this.qaUser = environment.config.permissions.indexOf(Permissions.QA) > -1;
   }
 
@@ -124,6 +128,30 @@ export class PanoramaComponent implements OnInit, OnChanges {
         }
       },
       zoomDoubleClickSpeed: 1,
+    });
+
+    this.route.queryParams.subscribe(params => {
+      if (params['zoom'] && params['x'] && params['y']) {
+        const zoom: number = +params['zoom'];
+        const x: number = +params['x'];
+        const y: number = +params['y'];
+        this.positionSetByUrl = true;
+        this.panZoomApi.zoomAbs(0, 0, 1);
+        this.panZoomApi.moveTo(x * (1 / zoom), y * (1 / zoom));
+        this.panZoomApi.zoomAbs(0, 0, zoom);
+      }
+    });
+
+    this.url = this.router.url;
+    if (this.url.indexOf('?zoom') > -1) {
+      this.url = this.url.substr(0, this.url.indexOf('?zoom'));
+    }
+
+    this.panZoomApi.on('transform', function(e) { // Export current position for url
+      const p = context.panZoomApi.getTransform();
+      context.location.go(
+        context.url + '?zoom=' + parseFloat(p.scale).toFixed(2) + '&x=' + parseFloat(p.x).toFixed(2) + '&y=' + parseFloat(p.y).toFixed(2)
+      );
     });
 
     // Check if image is moved off screen and center it
@@ -224,14 +252,17 @@ export class PanoramaComponent implements OnInit, OnChanges {
 
         } else if (this.currentId === null) {
           const element = document.getElementById('pano-image');
-          const interval = setInterval(() => {
-            if (element.offsetWidth !== 0 && element.offsetWidth !== this.currentWidth) {
-              this.centerImage(element.offsetWidth, element.offsetHeight);
-              this.currentWidth = element.offsetWidth;
-              this.currentHeight = element.offsetHeight;
-              clearInterval(interval);
-            }
-          }, 10);
+          if (!this.positionSetByUrl) { // if pano positions hasnt already been set by url params
+            this.positionSetByUrl = false;
+            const interval = setInterval(() => {
+              if (element.offsetWidth !== 0 && element.offsetWidth !== this.currentWidth) {
+                this.centerImage(element.offsetWidth, element.offsetHeight);
+                this.currentWidth = element.offsetWidth;
+                this.currentHeight = element.offsetHeight;
+                clearInterval(interval);
+              }
+            }, 10);
+          }
         }
       }
       this.cancelZoom = false;
