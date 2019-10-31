@@ -93,7 +93,7 @@ describe('AisleViewComponent', () => {
   beforeEach(async(() => {
     const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getMissions', 'getMission', 'getAisle', 'getStore', 'getRoles',
     'getMisreadCategories', 'getMissedCategories', 'getFalseNegativeCategories', 'getFalsePositiveCategories']);
-    const locationSpy = jasmine.createSpyObj('Location', ['replaceState']);
+    const locationSpy = jasmine.createSpyObj('Location', ['replaceState', 'go']);
     const environmentServiceSpy = jasmine.createSpyObj('EnvironmentService', ['setPermissions']);
 
     TestBed.configureTestingModule({
@@ -117,12 +117,16 @@ describe('AisleViewComponent', () => {
         { provide: ModalService},
         { provide: Router },
         { provide: Location, useValue:  locationSpy},
+        { provide: Router, useValue: { url: '' }},
         { provide: ActivatedRoute, useValue: {
           params: [{
             missionId: '1',
             aisleId: '1',
             storeId: '1',
           }],
+          snapshot: {
+            queryParams: '1'
+          }
         }},
         { provide: EnvironmentService, useValue: { config: {
           productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price'],

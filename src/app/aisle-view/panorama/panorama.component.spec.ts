@@ -5,6 +5,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ApiService } from 'src/app/api.service';
 import { of } from 'rxjs';
 import { EnvironmentService } from 'src/app/environment.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 describe('PanoramaComponent', () => {
   let component: PanoramaComponent;
@@ -22,11 +23,17 @@ describe('PanoramaComponent', () => {
       providers: [
         { provide: 'ApiService', useValue: apiServiceSpy },
         { provide: EnvironmentService, useValue: {
-          config: {
-            permissions: ['topStock', 'QA', 'sectionLabels', 'sectionBreaks', 'misreadBarcodes']
+          config: { permissions: ['topStock', 'QA', 'sectionLabels', 'sectionBreaks', 'misreadBarcodes'] },
           },
+        },
+      { provide: Router, useValue: {
+          url: ''
+      } },
+      { provide: ActivatedRoute, useValue: {
+        snapshot: {
+          queryParams: '1'
         }
-      },
+      }},
       ]
     })
     .compileComponents();
