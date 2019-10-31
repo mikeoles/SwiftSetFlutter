@@ -17,7 +17,7 @@ import AnnotationCategory from 'src/app/annotationCategory.model';
 import { ApiService } from 'src/app/api.service';
 import { KeyboardShortcutsService } from 'ng-keyboard-shortcuts';
 import MissedBarcode from 'src/app/missedBarcode.model';
-import { Location } from '@angular/common'
+import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 
 enum AnnotationType {
