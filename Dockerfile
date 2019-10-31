@@ -17,11 +17,14 @@ WORKDIR /usr/src/app
 # add `/usr/src/app/node_modules/.bin` to $PATH
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
-# add app
-COPY . /usr/src/app
+# add package json
+COPY package*.json /usr/src/app/
 
 # install dependencies
 RUN npm install
+
+# add app
+COPY . /usr/src/app
 
 # lint
 RUN ng lint
