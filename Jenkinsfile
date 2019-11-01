@@ -4,7 +4,7 @@ def config = [
 
 def releaseBranch = 'master'
 def registry = 'bossanova-cloud-container.jfrog.io'
-def imageName = 'demo-images/demo-ui'
+def imageName = 'cloud-apps/data-products-viewer-ui'
 def artifactoryCredential = 'jenkins_build_jumpcloud'
 def tagName = "${BRANCH_NAME}-${BUILD_ID}"
 def fullImageTag = ""
