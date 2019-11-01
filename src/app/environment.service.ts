@@ -10,15 +10,15 @@ import { Observable, of } from 'rxjs';
 export class EnvironmentService {
   private appConfig;
 
-  constructor(private injector: Injector) { }
+  constructor(private handler: HttpBackend) { }
 
   loadAppConfig() {
-    const http = this.injector.get(HttpClient);
+    const http = new HttpClient(this.handler);
 
     return http.get('/assets/config.json')
     .toPromise()
     .then(data => {
-        this.appConfig = {...environment, ...data };
+      this.appConfig = {...environment, ...data };
     });
   }
 

@@ -74,12 +74,8 @@ import { ProgressBarModule } from 'angular-progress-bar';
     },
     ModalService,
     DataService,
+    ApiService,
     HttpClient,
-    {
-        provide: 'ApiService',
-        useFactory: apiFactory,
-        deps: [EnvironmentService, HttpClient]
-    },
   ],
   bootstrap: [AppComponent]
 })

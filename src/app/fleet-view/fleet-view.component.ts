@@ -12,7 +12,7 @@ export class FleetViewComponent implements OnInit {
 
   stores: Store[];
 
-  constructor(@Inject('ApiService') private apiService: ApiService, private router: Router) { }
+  constructor(private apiService: ApiService, private router: Router) { }
 
   ngOnInit() {
     this.apiService.getStores().subscribe(stores => {

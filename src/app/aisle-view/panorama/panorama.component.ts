@@ -87,7 +87,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
   topStockColor = '#FFC0CB';
   selectedColor = '#FFD54A';
 
-  constructor(private environment: EnvironmentService, @Inject('ApiService') private apiService: ApiService,
+  constructor(private environment: EnvironmentService, private apiService: ApiService,
     private keyboard: KeyboardShortcutsService) {
     this.qaUser = environment.config.permissions.indexOf(Permissions.QA) > -1;
   }

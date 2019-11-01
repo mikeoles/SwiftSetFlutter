@@ -44,7 +44,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   currentlyDisplayed: Array<string> = new Array<string>();
   qaModesTurnedOn: Array<string> = new Array<string>();
 
-  constructor(@Inject('ApiService') private apiService: ApiService,
+  constructor(private apiService: ApiService,
               private keyboard: KeyboardShortcutsService,
               private logoService: LogoService,
               private backService: BackService,
