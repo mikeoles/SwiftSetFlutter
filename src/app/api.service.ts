@@ -37,7 +37,7 @@ export class ApiService {
       aisleCoverage = 'Medium';
     }
 
-    if (this.coverageDisplayType.toLowerCase() === 'percent') {
+    if (this.coverageDisplayType && this.coverageDisplayType.toLowerCase() === 'percent') {
       aisleCoverage = aisle.coveragePercent;
     }
 
