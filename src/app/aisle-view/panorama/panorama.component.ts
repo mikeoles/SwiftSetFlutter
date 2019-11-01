@@ -15,8 +15,8 @@ import { EnvironmentService } from 'src/app/environment.service';
 import { Permissions } from 'src/permissions/permissions';
 import AnnotationCategory from 'src/app/annotationCategory.model';
 import { ApiService } from 'src/app/api.service';
-import { KeyboardShortcutsService } from 'ng-keyboard-shortcuts';
 import MissedBarcode from 'src/app/missedBarcode.model';
+import { ShortcutInput } from 'ng-keyboard-shortcuts';
 
 enum AnnotationType {
   misread = 'misread',
@@ -30,10 +30,11 @@ enum AnnotationType {
   selector: 'app-panorama',
   templateUrl: './panorama.component.html',
   styleUrls: ['./panorama.component.scss'],
-  providers: [ KeyboardShortcutsService ],
 })
 
 export class PanoramaComponent implements OnInit, OnChanges {
+  shortcuts: ShortcutInput[] = [];
+
   @Input() outs: Label[];
   @Input() labels: Label[];
   @Input() misreadBarcodes: Label[];
@@ -87,8 +88,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
   topStockColor = '#FFC0CB';
   selectedColor = '#FFD54A';
 
-  constructor(private environment: EnvironmentService, private apiService: ApiService,
-    private keyboard: KeyboardShortcutsService) {
+  constructor(private environment: EnvironmentService, private apiService: ApiService) {
     this.qaUser = environment.config.permissions.indexOf(Permissions.QA) > -1;
   }
 
@@ -152,13 +152,13 @@ export class PanoramaComponent implements OnInit, OnChanges {
 
   addCategories(categories: AnnotationCategory[]): any {
     categories.forEach( category => {
-      this.keyboard.add([
+      this.shortcuts.push(
         {
           key: category.hotkey,
           command: () => this.setCategory(category.categoryName),
           preventDefault: true
         }
-      ]);
+      );
     });
   }
 

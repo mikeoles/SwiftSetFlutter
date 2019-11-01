@@ -1,17 +1,14 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { KeyboardShortcutsService } from 'ng-keyboard-shortcuts';
 import { LogoService } from './logo.service';
 import { BackService } from './back.service';
 import { faArrowAltCircleLeft } from '@fortawesome/free-regular-svg-icons';
-import { EnvironmentService } from './environment.service';
 import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers: [ KeyboardShortcutsService ]
 })
 export class AppComponent implements OnInit {
 
