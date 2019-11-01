@@ -4,7 +4,7 @@
     <div class="backText">Back</div>
   </div>
   <div *ngIf="username" id="username">
-    {{username}}
+    {{username}} - <a [routerLink]="" (click)="logout()">log out</a>
   </div>
   <img id="logo" (click)="logoClicked()" src="../assets/logo.png"/>
 </header>
