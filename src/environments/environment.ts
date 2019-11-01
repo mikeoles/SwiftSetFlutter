@@ -6,7 +6,7 @@ import { labelScrollOptions } from 'src/app/labelScrollOptions';
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8080',
+  apiUrl: 'http://localhost/api',
   coveragePercent: false,
   coverageDisplayType: 'description',
   onHand: true,
@@ -16,9 +16,8 @@ export const environment = {
   labelScrolling: labelScrollOptions.vertical,
   missionHistoryDays: 14, // Number of days to display missions for
   permissions: ['topStock', 'QA', 'sectionLabels', 'sectionBreaks', 'misreadBarcodes'],
-  authUsers: false,
-  authUrl: 'http://localhost:5556/auth?',
-  authRedirectUrl: 'http://localhost/'
+  authUrl: 'http://localhost/dex/auth?',
+  authClientId: 'data-products-viewer',
 };
 
 /*

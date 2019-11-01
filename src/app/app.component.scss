@@ -2,11 +2,11 @@
 
 header {
   background-color: $primary;
+  font-size: 18px;
+  color: white;
 
   #backButton{
-    font-size: 18px;
-    color: white;
-    position: absolute;
+    // position: absolute;
     float: left;
     padding: 10px;
     font-weight: 900;
@@ -20,6 +20,11 @@ header {
       display: inline-block;
       vertical-align: middle;
     }
+  }
+
+  #username {
+    float: right;
+    padding: 20px;
   }
 
   #logo {
