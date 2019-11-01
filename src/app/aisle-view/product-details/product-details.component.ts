@@ -38,7 +38,7 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
   @Output() gridId = new EventEmitter();
   dropdownSettings = {};
 
-  constructor(private environment: EnvironmentService, @Inject('ApiService') private apiService: ApiService) {
+  constructor(private environment: EnvironmentService, private apiService: ApiService) {
     this.showDepartment = environment.config.productGridFields.includes('Department');
     this.showSection = environment.config.productGridFields.includes('Section');
     const context = this;

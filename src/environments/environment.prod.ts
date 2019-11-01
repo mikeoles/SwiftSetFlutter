@@ -12,7 +12,6 @@ export const environment = {
   productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price', 'On Hand'],
   missionHistoryDays: 14, // Number of days to display missions for
   permissions: ['topStock', 'debugging', 'sectionLabels', 'sectionBreaks'],
-  authUsers: false,
   authUrl: 'http://localhost:5556/auth?',
-  authRedirectUrl: 'http://localhost/'
+  authClientId: 'example-app',
 };

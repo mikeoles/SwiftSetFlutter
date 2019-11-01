@@ -1,8 +1,7 @@
-import { Injectable, Injector } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable, Injector, Type } from '@angular/core';
+import { HttpClient, HttpBackend } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { Permissions } from 'src/permissions/permissions';
-import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,15 +9,15 @@ import { Observable, of } from 'rxjs';
 export class EnvironmentService {
   private appConfig;
 
-  constructor(private injector: Injector) { }
+  constructor(private handler: HttpBackend) { }
 
   loadAppConfig() {
-    const http = this.injector.get(HttpClient);
+    const http = new HttpClient(this.handler);
 
     return http.get('/assets/config.json')
     .toPromise()
     .then(data => {
-        this.appConfig = {...environment, ...data };
+      this.appConfig = {...environment, ...data };
     });
   }
 
