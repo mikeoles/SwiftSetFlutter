@@ -1,19 +1,19 @@
 @import '../variables';
 
 header {
+  position: relative;
   background-color: $primary;
   font-size: 18px;
   color: white;
+  padding: 10px;
 
   #backButton{
-    // position: absolute;
-    float: left;
-    padding: 10px;
+    position: absolute;
     font-weight: 900;
     cursor: pointer;
     .backIcon{
-      font-size: 30px;
-      margin-left: 15px;
+      font-size: 27px;
+      line-height: 27px;
       margin-right: 10px;
     }
     .backIcon, .backText{
@@ -23,14 +23,21 @@ header {
   }
 
   #username {
+    position: absolute;
+    right: 10px;
+    font-size: .8em;
     float: right;
-    padding: 20px;
+    line-height: 27px;
+
+    a {
+      color: white;
+      font-size: .8em;
+    }
   }
 
   #logo {
     display: block;
     margin: auto;
-    padding: 20px;
     cursor: pointer;
   }
 }
