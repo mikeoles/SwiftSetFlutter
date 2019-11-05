@@ -50,9 +50,12 @@ export class StoreViewComponent implements OnInit {
   progress = 0;
   private backButtonSubscription: Subscription;
 
-  constructor(@Inject('ApiService') private apiService: ApiService, private activatedRoute: ActivatedRoute,
-  private environmentService: EnvironmentService, private backService: BackService, private router: Router,
-  private modalService: ModalService) {
+  constructor(private apiService: ApiService,
+              private activatedRoute: ActivatedRoute,
+              private environmentService: EnvironmentService,
+              private backService: BackService,
+              private router: Router,
+              private modalService: ModalService) {
     this.coverageDisplayType = environmentService.config.coverageDisplayType;
     this.graphEndDate = new Date();
     this.graphStartDate = new Date();

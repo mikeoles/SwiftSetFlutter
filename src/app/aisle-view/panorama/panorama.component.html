@@ -30,12 +30,12 @@
         [style.top.px]="annotationTop">
         <ng-container *ngFor="let category of categories(); let i = index">
           <li
-            [ngStyle]="setAnnotationStyles(category.categoryName, hovered, i, category.color)" (mouseover)="hovered = i" (mouseleave)="hovered = -1" 
+            [ngStyle]="setAnnotationStyles(category.categoryName, hovered, i, category.color)" (mouseover)="hovered = i" (mouseleave)="hovered = -1"
             (click)="setCategory(category.categoryName)">
             {{category.categoryName}} <span>{{category.hotkey | uppercase}}</span>
           </li>
         </ng-container>
-        <li *ngIf="(annotationMenu === 'missed' && selectedMarkerCategory) || (selectedAnnotation && (selectedAnnotation.annotations[annotationMenu]))" 
+        <li *ngIf="(annotationMenu === 'missed' && selectedMarkerCategory) || (selectedAnnotation && (selectedAnnotation.annotations[annotationMenu]))"
           class="delete" (click)="deleteCategory()">Delete</li>
       </ul>
 
@@ -49,16 +49,16 @@
         <svg>
           <ng-container *ngFor="let annotation of labels">
             <ng-container *ngFor="let productCoordinate of annotation.productCoordinates">
-              <line 
-              [attr.x1]="annotation.bounds.left+annotation.bounds.width/2+10" 
-              [attr.y1]="annotation.bounds.top" 
-              [attr.x2]="productCoordinate.left+productCoordinate.width/2+10" 
+              <line
+              [attr.x1]="annotation.bounds.left+annotation.bounds.width/2+10"
+              [attr.y1]="annotation.bounds.top"
+              [attr.x2]="productCoordinate.left+productCoordinate.width/2+10"
               [attr.y2]="productCoordinate.top+productCoordinate.height/2+10" />
             </ng-container>
           </ng-container>
         </svg>
       </ng-container>
-      
+
       <ng-container *ngIf="currentlyDisplayed.includes('sectionBreaks')">
         <ng-container *ngFor="let sectionBreak of sectionBreaks">
           <div class="break" [style.left.px]="sectionBreak"></div>
@@ -71,3 +71,4 @@
     <fa-icon id="zoomOut" class="zoomIcon" [icon]="faMinus" (click)="zoomOut()"></fa-icon>
   </div>
 </div>
+<ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>

@@ -61,8 +61,11 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
 
   currentlyExporting = false;
 
-  constructor(private eRef: ElementRef, private modalService: ModalService, private environment: EnvironmentService,
-    @Inject('ApiService') private apiService: ApiService, private router: Router) {
+  constructor(private eRef: ElementRef,
+              private modalService: ModalService,
+              private environment: EnvironmentService,
+              private apiService: ApiService,
+              private router: Router) {
     this.exportOnHand = environment.config.onHand;
     this.exportingPDF = environment.config.exportingPDF;
 

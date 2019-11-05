@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { ApiService } from './../api.service';
-import { KeyboardShortcutsService } from 'ng-keyboard-shortcuts';
 import Mission from './../mission.model';
 import Aisle from './../aisle.model';
 import Label from './../label.model';
@@ -10,13 +9,12 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import {Location} from '@angular/common';
 import { BackService } from '../back.service';
+import { ShortcutInput } from 'ng-keyboard-shortcuts';
 
 @Component({
   selector: 'app-aisle-view',
   templateUrl: './aisle-view.component.html',
   styleUrls: ['./aisle-view.component.scss'],
-  providers: [ KeyboardShortcutsService,
-  ],
   encapsulation: ViewEncapsulation.None
 })
 
@@ -43,9 +41,9 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   private backButtonSubscription: Subscription;
   currentlyDisplayed: Array<string> = new Array<string>();
   qaModesTurnedOn: Array<string> = new Array<string>();
+  shortcuts: ShortcutInput[] = [];
 
-  constructor(@Inject('ApiService') private apiService: ApiService,
-              private keyboard: KeyboardShortcutsService,
+  constructor(private apiService: ApiService,
               private logoService: LogoService,
               private backService: BackService,
               private activatedRoute: ActivatedRoute,
@@ -53,13 +51,14 @@ export class AisleViewComponent implements OnInit, OnDestroy {
               private router: Router
               ) {
     this.panoMode = false;
-    this.keyboard.add([
+
+    this.shortcuts.push(
       {
-        key: 'ctrl o',
+        key: 'ctrl + o',
         command: () => this.changePanoMode(),
         preventDefault: true
       }
-    ]);
+    );
   }
 
   ngOnInit() {

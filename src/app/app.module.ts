@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { ProductDetailsComponent } from './aisle-view/product-details/product-details.component';
 import { ProductGridComponent } from './aisle-view/product-details/product-grid/product-grid.component';
@@ -26,9 +26,13 @@ import { ModalComponent } from './modal/modal.component';
 import { ModalService } from './modal/modal.service';
 import { NgDatepickerModule } from 'ng2-datepicker';
 import { DataService } from './data.service';
-import { apiFactory } from './api.service';
 import { FleetViewComponent } from './fleet-view/fleet-view.component';
 import { ProgressBarModule } from 'angular-progress-bar';
+import { AuthComponent } from './auth/auth.component';
+import { AuthInterceptor } from './auth.interceptor';
+import { AuthService } from './auth.service';
+import { ApiService } from './api.service';
+import { UrlService } from './url.service';
 
 @NgModule({
   declarations: [
@@ -47,6 +51,7 @@ import { ProgressBarModule } from 'angular-progress-bar';
     AislesGridComponent,
     ModalComponent,
     FleetViewComponent,
+    AuthComponent,
   ],
   imports: [
     BrowserModule,
@@ -72,14 +77,18 @@ import { ProgressBarModule } from 'angular-progress-bar';
       multi: true,
       deps: [EnvironmentService]
     },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+      deps: [AuthService],
+    },
+    AuthService,
     ModalService,
     DataService,
+    ApiService,
+    UrlService,
     HttpClient,
-    {
-        provide: 'ApiService',
-        useFactory: apiFactory,
-        deps: [EnvironmentService, HttpClient]
-    },
   ],
   bootstrap: [AppComponent]
 })

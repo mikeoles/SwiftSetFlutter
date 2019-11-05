@@ -9,9 +9,9 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let store of stores" (click)="viewStore(store.storeId)">
+      <tr *ngFor="let store of stores">
         <td>
-          <a [routerLink]="" (click)="viewStore(store.storeId)">
+          <a [routerLink]="['/store', store.storeId]">
             {{store.storeName}}
           </a>
         </td>

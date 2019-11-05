@@ -5,7 +5,7 @@
   (toggleMode)='toggleMode($event)' [qaModesTurnedOn]='qaModesTurnedOn' [currentlyDisplayed]='currentlyDisplayed' (toggleDisplayed)='toggleDisplayed($event)'>
 </app-selection-area>
 <app-panorama [panoramaUrl]="panoramaUrl" [currentId]="currentId" [currentlyDisplayed]='currentlyDisplayed'
-  [outs]="outs" [labels]="labels" [sectionLabels]="sectionLabels" [sectionBreaks]="sectionBreaks" [topStock]="topStock" 
+  [outs]="outs" [labels]="labels" [sectionLabels]="sectionLabels" [sectionBreaks]="sectionBreaks" [topStock]="topStock"
   [panoMode]='panoMode' [qaModesTurnedOn]='qaModesTurnedOn'  [resetPano]='resetPano' [resetPanoAfterExport]='resetPanoAfterExport'
   [misreadBarcodes]="misreadBarcodes"  (panoramaTouched)='hideDropdowns()' (panoramaId)='setId($event)'
   (updateLabelCategory)='updateLabelCategory($event)' (updateMissedCategory)='updateMissedCategory($event)'>
@@ -13,3 +13,4 @@
 <app-product-details [outs]="outs" [labels]="labels" [sectionLabels]="sectionLabels" [topStock]="topStock"  [misreadBarcodes]="misreadBarcodes"
   (gridId)='setId($event)' [currentId]="currentId" [panoMode]='panoMode'>
 </app-product-details>
+<ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>

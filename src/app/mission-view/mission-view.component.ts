@@ -31,7 +31,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
 
   private backButtonSubscription: Subscription;
 
-  constructor(@Inject('ApiService') private apiService: ApiService, private activatedRoute: ActivatedRoute, private router: Router,
+  constructor(private apiService: ApiService, private activatedRoute: ActivatedRoute, private router: Router,
     private modalService: ModalService, private backService: BackService, private environment: EnvironmentService,
     public dataService: DataService) {
       this.exportOnHand = environment.config.onHand;

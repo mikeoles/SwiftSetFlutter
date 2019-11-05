@@ -19,6 +19,9 @@ fi
 if [[ ! -z "$COVERAGE_DISPLAY_TYPE" ]]; then
   echo "  \"coverageDisplayType\": \"$COVERAGE_DISPLAY_TYPE\"," >> /usr/share/nginx/html/assets/config.json
 fi
+if [[ ! -z "$DISPLAY_COVERAGE" ]]; then
+  echo "  \"coveragePercent\": \"$DISPLAY_COVERAGE\"," >> /usr/share/nginx/html/assets/config.json
+fi
 if [[ ! -z "$SHOW_TOP_STOCK" ]]; then
   echo "  \"showTopStock\": \"$SHOW_TOP_STOCK\"," >> /usr/share/nginx/html/assets/config.json
 fi
@@ -28,14 +31,11 @@ fi
 if [[ ! -z "$SHOW_SECTION_BREAK" ]]; then
   echo "  \"showSectionBreak\": \"$SHOW_SECTION_BREAK\"," >> /usr/share/nginx/html/assets/config.json
 fi
-if [[ ! -z "$AUTH_USERS" ]]; then
-  echo "  \"authUsers\": \"$AUTH_USERS\"," >> /usr/share/nginx/html/assets/config.json
-fi
 if [[ ! -z "$AUTH_URL" ]]; then
   echo "  \"authUrl\": \"$AUTH_URL\"," >> /usr/share/nginx/html/assets/config.json
 fi
-if [[ ! -z "$AUTH_REDIRECT_URL" ]]; then
-  echo "  \"authRedirectUrl\": \"$AUTH_REDIRECT_URL\"," >> /usr/share/nginx/html/assets/config.json
+if [[ ! -z "$AUTH_CLIENT_ID" ]]; then
+  echo "  \"authClientId\": \"$AUTH_CLIENT_ID\"," >> /usr/share/nginx/html/assets/config.json
 fi
 echo "  \"production\": true" >> /usr/share/nginx/html/assets/config.json
 echo "}" >> /usr/share/nginx/html/assets/config.json
