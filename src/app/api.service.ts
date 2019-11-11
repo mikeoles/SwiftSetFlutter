@@ -10,7 +10,6 @@ import DaySummary from './daySummary.model';
 import CustomField from './customField.model';
 import { EnvironmentService } from './environment.service';
 import ProductCoordinate from './productCoordinate.model';
-import keys from './keys.json';
 import AnnotationCategory from './annotationCategory.model';
 import AuthData from './auth.model';
 import moment from 'moment';
@@ -414,26 +413,30 @@ export class ApiService {
   }
 
   getMissedCategories(): Observable<AnnotationCategory[]> {
-    return this.http.get('http://localhost:4200/assets/mock/categoriesmissed.json').pipe(
-      map<any, AnnotationCategory[]>(o => o.map(c => this.createAnnotationCategory(c))),
+    return this.http.get(`${this.apiUrl}/categories/missed`)
+    .pipe(
+      map<any, AnnotationCategory[]>(o => o.categories.map(c => this.createAnnotationCategory(c))),
     );
   }
 
   getMisreadCategories(): Observable<AnnotationCategory[]> {
-    return this.http.get('http://localhost:4200/assets/mock/categoriesmisread.json').pipe(
-      map<any, AnnotationCategory[]>(o => o.map(c => this.createAnnotationCategory(c))),
+    return this.http.get(`${this.apiUrl}/categories/misread`)
+    .pipe(
+      map<any, AnnotationCategory[]>(o => o.categories.map(c => this.createAnnotationCategory(c))),
     );
   }
 
   getFalsePositiveCategories(): Observable<AnnotationCategory[]> {
-    return this.http.get('http://localhost:4200/assets/mock/categoriesfalsepositive.json').pipe(
-      map<any, AnnotationCategory[]>(o => o.map(c => this.createAnnotationCategory(c))),
+    return this.http.get(`${this.apiUrl}/categories/falsePositive`)
+    .pipe(
+      map<any, AnnotationCategory[]>(o => o.categories.map(c => this.createAnnotationCategory(c))),
     );
   }
 
   getFalseNegativeCategories(): Observable<AnnotationCategory[]> {
-    return this.http.get('http://localhost:4200/assets/mock/categoriesfalsenegative.json').pipe(
-      map<any, AnnotationCategory[]>(o => o.map(c => this.createAnnotationCategory(c))),
+    return this.http.get(`${this.apiUrl}/categories/falseNegative`)
+    .pipe(
+      map<any, AnnotationCategory[]>(o => o.categories.map(c => this.createAnnotationCategory(c))),
     );
   }
 
@@ -445,55 +448,102 @@ export class ApiService {
     };
   }
 
-  getAnnotations(storeId: string, missionId: string, aisleId: string) {
-    console.log('Method not implemented.');
+  getAnnotations(storeId: string, missionId: string, aisleId: string): any {
+    return this.http.get(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations`);
   }
 
+
+    // Missed
+
   createMissedLabelAnnotation(storeId: string, missionId: string, aisleId: string, top: string, left: string, category: string) {
-    console.log('Method not implemented.');
+    const data = new FormData();
+    data.set('top', top);
+    data.set('left', left);
+    data.set('category', category);
+    this.http.post(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/missed`,
+    data).subscribe();
   }
 
   updateMissedLabelAnnotation(storeId: string, missionId: string, aisleId: string, top: string, left: string, category: string) {
-    console.log('Method not implemented.');
+    const data = new FormData();
+    data.set('top', top);
+    data.set('left', left);
+    data.set('category', category);
+    this.http.put(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/missed`,
+    data).subscribe();
   }
 
   deleteMissedLabelAnnotation(storeId: string, missionId: string, aisleId: string, top: string, left: string) {
-    console.log('Method not implemented.');
+    this.http.delete(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/missed`,
+      {params: {'top': top, 'left': left}}).subscribe();
   }
 
+
+  // Misread
+
   createMisreadLabelAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string, category: string) {
-    console.log('Method not implemented.');
+    const data = new FormData();
+    data.set('labelId', labelId);
+    data.set('category', category);
+    this.http.post(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/misread`,
+    data).subscribe();
   }
 
   updateMisreadLabelAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string, category: string) {
-    console.log('Method not implemented.');
+    const data = new FormData();
+    data.set('category', category);
+    this.http.put(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/misread/${labelId}`,
+    data).subscribe();
   }
 
   deleteMisreadLabelAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string) {
-    console.log('Method not implemented.');
+    this.http.delete(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/misread/${labelId}`)
+    .subscribe();
   }
 
+
+  // False Negative
+
   createFalseNegativeAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string, category: string) {
-    console.log('Method not implemented.');
+    const data = new FormData();
+    data.set('labelId', labelId);
+    data.set('category', category);
+    this.http.post(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/falseNegative`,
+    data).subscribe();
   }
 
   updateFalseNegativeAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string, category: string) {
-    console.log('Method not implemented.');
+    const data = new FormData();
+    data.set('category', category);
+    this.http.put(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/falseNegative/${labelId}`,
+    data).subscribe();
   }
 
   deleteFalseNegativeAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string) {
-    console.log('Method not implemented.');
+    this.http.delete(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/falseNegative/${labelId}`)
+    .subscribe();
   }
 
+
+  // False Positive
+
   createFalsePositiveAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string, category: string) {
-    console.log('Method not implemented.');
+    const data = new FormData();
+    data.set('category', category);
+    data.set('labelId', labelId);
+    this.http.post(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/falsePositive`,
+    data).subscribe();
   }
 
   updateFalsePositiveAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string, category: string) {
-    console.log('Method not implemented.');
+    const data = new FormData();
+    data.set('category', category);
+    this.http.put(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/falsePositive/${labelId}`,
+    data).subscribe();
   }
 
   deleteFalsePositiveAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string) {
-    console.log('Method not implemented.');
+    this.http.delete(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/falsePositive/${labelId}`)
+    .subscribe();
   }
 }

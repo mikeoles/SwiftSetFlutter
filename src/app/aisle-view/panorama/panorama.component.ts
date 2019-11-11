@@ -48,17 +48,17 @@ export class PanoramaComponent implements OnInit, OnChanges {
   @Input() resetPanoAfterExport = false;
   @Input() qaModesTurnedOn: Array<string>;
   @Input() currentlyDisplayed: Array<string>;
+  @Input() missedBarcodeMarkers: MissedBarcode[];
 
   @Output() panoramaId = new EventEmitter();
   @Output() panoramaTouched = new EventEmitter();
   @Output() updateLabelCategory = new EventEmitter<{labelId: number, category: string, action: string, annotationType: AnnotationType}>();
-  @Output() updateMissedCategory = new EventEmitter<{barcode: MissedBarcode, action: string}>();
+  @Output() updateMissedCategory = new EventEmitter<{marker: MissedBarcode, action: string}>();
 
   misreadAnnotationCategories: AnnotationCategory[];
   missedAnnotationCategories: AnnotationCategory[];
   falsePositiveAnnotationCategories: AnnotationCategory[];
   falseNegativeAnnotationCategories: AnnotationCategory[];
-  missedBarcodeMarkers: MissedBarcode[] = [];
 
   annotationMenu: AnnotationType = AnnotationType.none; // missing or misread
   annotationLeft = 0;
@@ -241,19 +241,19 @@ export class PanoramaComponent implements OnInit, OnChanges {
   updateLabelBorders(labels: Label[], color: string, name: string): any {
     if (labels && this.currentlyDisplayed.includes(name)) {
       labels.forEach(label => {
-        const annotationModes = Object.keys(label.annotations);
-        if (label.labelId === this.currentId) { // selected color
-          label.annotationColor = this.selectedColor;
-        } else if (annotationModes.length > 0) { // annotated color
-          const categoriesList = this.categories(annotationModes[0]);
-          const categoryName = label.annotations[annotationModes[0]]; // pick first annotation if multiple
+        label.annotationColor = color;
+
+        Object.keys(label.annotations).forEach(mode => {
+          const categoriesList = this.categories(mode);
+          const categoryName = label.annotations[mode]; // pick first annotation if multiple
           categoriesList.forEach( category => {
-            if (category.categoryName === categoryName) {
+            if (category.categoryName === categoryName && this.qaModesTurnedOn.includes(mode)) {
               label.annotationColor = category.color;
             }
           });
-        } else { // regular color
-          label.annotationColor = color;
+        });
+        if (label.labelId === this.currentId) { // selected color
+          label.annotationColor = this.selectedColor;
         }
       });
     }
@@ -291,11 +291,12 @@ export class PanoramaComponent implements OnInit, OnChanges {
     const isMissingBarcode = this.misreadBarcodes.findIndex((label => label.labelId === annotation.labelId)) > -1;
     const isOut = this.outs.findIndex((label => label.labelId === annotation.labelId)) > -1;
     const isLabel = this.labels.findIndex((label => label.labelId === annotation.labelId)) > -1;
-    if (this.currentlyDisplayed.includes('misreadBarcodes') && isMissingBarcode && this.qaModesTurnedOn.includes('misreadBarcodes')) {
+    if (this.currentlyDisplayed.includes('misreadBarcodes') && isMissingBarcode && this.qaModesTurnedOn.includes(AnnotationType.misread)) {
       this.annotationMenu = AnnotationType.misread;
-    } else if (this.currentlyDisplayed.includes('outs') && isOut && this.qaModesTurnedOn.includes('falsePositives')) {
+    } else if (this.currentlyDisplayed.includes('outs') && isOut && this.qaModesTurnedOn.includes(AnnotationType.falsePositive)) {
       this.annotationMenu = AnnotationType.falsePositive;
-    } else if (this.currentlyDisplayed.includes('shelfLabels') && !isOut && isLabel && this.qaModesTurnedOn.includes('falseNegatives')) {
+    } else if (this.currentlyDisplayed.includes('shelfLabels') && !isOut && isLabel
+      && this.qaModesTurnedOn.includes(AnnotationType.falseNegative)) {
       this.annotationMenu = AnnotationType.falseNegative;
     }
     if (this.annotationMenu !== AnnotationType.none) {
@@ -372,7 +373,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
       const index = this.missedBarcodeMarkers.findIndex((obj => obj.left === this.annotationLeft && obj.top === this.annotationTop));
       if (index > -1) {
         this.updateMissedCategory.emit({
-          barcode: this.missedBarcodeMarkers[index],
+          marker: this.missedBarcodeMarkers[index],
           action: 'delete'
         });
         this.missedBarcodeMarkers.splice(index, 1);
@@ -405,7 +406,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
         }) - 1;
       }
       this.updateMissedCategory.emit({
-        barcode: this.missedBarcodeMarkers[index],
+        marker: this.missedBarcodeMarkers[index],
         action: action
       });
      } else {
