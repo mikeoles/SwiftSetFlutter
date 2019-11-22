@@ -72,6 +72,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
 
   qaUser = false;
   cancelZoom = false;
+  hovered = false;
 
   faPlus = faPlus;
   faMinus = faMinus;

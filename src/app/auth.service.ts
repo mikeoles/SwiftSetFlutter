@@ -68,7 +68,6 @@ export class AuthService {
 
     const helper = new JwtHelperService();
     const data = helper.decodeToken(authData.idToken);
-    console.log(data);
 
     return data.name;
   }
