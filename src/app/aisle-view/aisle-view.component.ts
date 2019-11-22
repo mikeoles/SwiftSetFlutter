@@ -10,6 +10,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import {Location} from '@angular/common';
 import { BackService } from '../back.service';
 import { ShortcutInput } from 'ng-keyboard-shortcuts';
+import MissedBarcode from '../missedBarcode.model';
 
 @Component({
   selector: 'app-aisle-view',
@@ -22,7 +23,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   title = 'aisle';
   outs: Label[];
   labels: Label[];
-
+  missedBarcodeMarkers: MissedBarcode[] = [];
   misreadBarcodes: Label[];
   sectionLabels: Label[];
   topStock: Label[];
@@ -171,6 +172,30 @@ export class AisleViewComponent implements OnInit, OnDestroy {
       this.sectionBreaks = fullAisle.sectionBreaks;
       this.panoramaUrl = fullAisle.panoramaUrl;
       this.currentId = null;
+      this.apiService.getAnnotations(this.selectedMission.storeId, this.selectedMission.missionId, aisle.aisleId).subscribe(annotations => {
+        if (annotations.missed) {
+          this.missedBarcodeMarkers = [];
+          annotations.missed.forEach(annotation => {
+            this.missedBarcodeMarkers.push({
+              categoryName: annotation.category,
+              top: annotation.top,
+              left: annotation.left
+            });
+          });
+          annotations.misread.forEach(annotation => {
+            const i = this.misreadBarcodes.findIndex((obj => obj.labelId.toString() === annotation.labelId));
+            this.misreadBarcodes[i].annotations['misread'] = annotation.category;
+          });
+          annotations.falsePositives.forEach(annotation => {
+            const i = this.outs.findIndex((obj => obj.labelId.toString() === annotation.labelId));
+            this.outs[i].annotations['falsePositive'] = annotation.category;
+          });
+          annotations.falseNegatives.forEach(annotation => {
+            const i = this.labels.findIndex((obj => obj.labelId.toString() === annotation.labelId));
+            this.labels[i].annotations['falseNegative'] = annotation.category;
+          });
+        }
+      });
     });
     this.location.replaceState(
       'store/' + this.selectedMission.storeId + '/mission/' + this.selectedMission.missionId + '/aisle/' + this.selectedAisle.aisleId);
@@ -188,12 +213,12 @@ export class AisleViewComponent implements OnInit, OnDestroy {
     if (info.action === 'update') {
       this.apiService.updateMissedLabelAnnotation(
         this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId,
-        info.barcode.top, info.barcode.left, info.barcode.category
+        info.marker.top, info.marker.left, info.marker.categoryName
       );
     } else if (info.action === 'add') {
       this.apiService.createMissedLabelAnnotation(
         this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId,
-        info.barcode.top, info.barcode.left, info.barcode.category
+        info.marker.top, info.marker.left, info.marker.categoryName
       );
     } else if (info.action === 'delete') {
       this.apiService.deleteMissedLabelAnnotation(
