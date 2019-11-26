@@ -40,19 +40,21 @@ RUN ng build --prod
 ##################
 
 # base image
-FROM nginx:1.15.6-alpine
+FROM nginxinc/nginx-unprivileged:1.16-alpine
 
 # copy artifact build from the builder
-COPY --from=builder /usr/src/app/dist/aisle /usr/share/nginx/html
-COPY ./nginx_app.conf /etc/nginx/conf.d/default.conf
-COPY ./nginx_auth.htpasswd /etc/nginx/conf.d/nginx_auth.htpasswd
+COPY --chown=101:101 --from=builder /usr/src/app/dist/aisle /usr/share/nginx/html
+COPY --chown=101:101 ./nginx_app.conf /etc/nginx/conf.d/default.conf
+COPY --chown=101:101 ./nginx_auth.htpasswd /etc/nginx/conf.d/nginx_auth.htpasswd
 COPY ./docker-run.sh /
 
+USER 0
 # Use iso8601 time format in access logs
 RUN sed -i "s/time_local/time_iso8601/" /etc/nginx/nginx.conf
+USER 101
 
-# expose port 80
-EXPOSE 80
+# expose port 8080
+EXPOSE 8080
 
 # run nginx
 CMD ["/bin/sh", "/docker-run.sh"]
