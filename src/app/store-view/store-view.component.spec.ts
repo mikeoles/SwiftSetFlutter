@@ -59,7 +59,8 @@ describe('StoreViewComponent', () => {
     totalAverageLabels: 1,
     summaryOuts: daySummaries,
     summaryLabels: daySummaries,
-    timezone: ''
+    timezone: '',
+    robots: []
   };
 
   beforeEach(async(() => {

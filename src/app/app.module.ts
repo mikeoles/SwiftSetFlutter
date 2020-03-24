@@ -33,6 +33,7 @@ import { AuthInterceptor } from './auth.interceptor';
 import { AuthService } from './auth.service';
 import { ApiService } from './api.service';
 import { UrlService } from './url.service';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { UrlService } from './url.service';
     NgMultiSelectDropDownModule.forRoot(),
     NgDatepickerModule,
     ProgressBarModule,
+    Ng2SearchPipeModule
   ],
   providers: [
     EnvironmentService,

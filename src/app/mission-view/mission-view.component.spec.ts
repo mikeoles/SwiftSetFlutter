@@ -12,6 +12,7 @@ import { ModalService } from '../modal/modal.service';
 import { EnvironmentService } from '../environment.service';
 import Mission from '../mission.model';
 import Aisle from '../aisle.model';
+import Store from '../store.model';
 
 @Component({selector: 'app-mission-stats', template: ''})
 class AppMissionStatsStubComponent {
@@ -55,8 +56,8 @@ describe('MissionViewComponent', () => {
   const mission: Mission = { missionId: '1', missionName: '', storeId: '1', startDateTime: new Date(), outs: 1, labels: 1,
     aisleCount: 1, endDateTime: new Date(), percentageRead: 1, percentageUnread: 1, unreadLabels: 1, readLabelsMissingProduct: 1,
     readLabelsMatchingProduct: 1, createDateTime: new Date(), aisles: aisles };
-  const store = { storeId: '1',   storeNumber: 1, storeName: '', storeAddress: '', totalAverageOuts: 0, totalAverageLabels: 0,
-    summaryOuts: [], summaryLabels: [], timezone: '' };
+  const store: Store = { storeId: '1',   storeNumber: 1, storeName: '', storeAddress: '', totalAverageOuts: 0, totalAverageLabels: 0,
+    summaryOuts: [], summaryLabels: [], timezone: '', robots: [] };
 
   beforeEach(async(() => {
     const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getStore', 'getMission', 'getMissions', 'getAisle']);

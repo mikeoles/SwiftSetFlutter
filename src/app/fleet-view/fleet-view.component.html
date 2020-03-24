@@ -1,20 +1,25 @@
 <div *ngIf="stores && stores.length === 0" class="title">No Stores Found</div>
 <div *ngIf="stores && stores.length>0">
   <div class="title">Stores</div>
+  <div class="storeSearch">
+    <input type="text" placeholder="Search By Store Or Robot" [(ngModel)]="searchTerm">
+  </div>
   <table>
     <thead>
       <tr>
         <th>Store Name</th>
+        <th>Robots</th>
         <th>Store Address</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let store of stores">
+      <tr *ngFor="let store of stores | filter:searchTerm">
         <td>
           <a [routerLink]="['/store', store.storeId]">
             {{store.storeName}}
           </a>
         </td>
+        <td>{{store.robots}}</td>
         <td>{{store.storeAddress}}</td>
       </tr>
     </tbody>

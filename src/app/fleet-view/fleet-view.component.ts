@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 export class FleetViewComponent implements OnInit {
 
   stores: Store[];
+  searchTerm: string;
 
   constructor(private apiService: ApiService, private router: Router) { }
 
