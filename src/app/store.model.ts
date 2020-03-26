@@ -6,6 +6,7 @@ export default class Store {
   storeName: string;
   storeAddress: string;
   timezone: string;
+  robots: Array<string>;
   totalAverageOuts: number;
   totalAverageLabels: number;
   summaryOuts: Array<DaySummary>;

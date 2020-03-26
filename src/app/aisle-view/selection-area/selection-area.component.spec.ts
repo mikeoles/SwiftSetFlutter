@@ -59,7 +59,7 @@ describe('SelectionAreaComponent', () => {
     startDateTime: new Date('2001-01-01'), endDateTime: new Date('2001-01-01'), aisleCount: 0, outs: 0, labels: 0,
     readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0, unreadLabels: 0, percentageRead: 0, percentageUnread: 0 , aisles: aisles };
     const store = { storeId: '1',   storeNumber: 1, storeName: '', storeAddress: '', totalAverageOuts: 0, totalAverageLabels: 0,
-    summaryOuts: [], summaryLabels: [], timezone: '' };
+    summaryOuts: [], summaryLabels: [], timezone: '', robots: [] };
 
   beforeEach(async(() => {
     const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getStore', 'getMission', 'getAisle', 'getRoles']);

@@ -2,7 +2,7 @@
 
 :host{
   display: block;
-  margin: 90px auto 40px auto;
+  margin: 10px auto 40px auto;
 }
 
 .title{
@@ -12,6 +12,17 @@
   margin-bottom: 20px;
 }
 
+.storeSearch {
+  width: 100%;
+  input {
+    display: block;
+    margin: 0px auto 20px auto;
+    height: 30px;
+    width: 50%;
+    text-align: center;
+  }
+}
+
 table {
   border-collapse: collapse;
   text-align: center;
@@ -19,6 +30,14 @@ table {
   width: calc(100% - 80px);
   table-layout: fixed;
 }
+
+table tbody {
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  height: 450px;
+}
+
 
 table tbody, table thead
 {
