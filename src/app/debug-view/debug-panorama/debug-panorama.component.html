@@ -1,0 +1,13 @@
+<div class="panorama">
+    <div class="image-owner" id="image-owner">
+      <div id="pano-image" class="image">
+        <img [src]="panoramaUrl" *ngIf="panoramaUrl"/>
+      </div>
+    </div>
+    
+    <div id="zoom">
+      <fa-icon id="zoomIn" class="zoomIcon" [icon]="faPlus" (click)="zoomIn()"></fa-icon>
+      <fa-icon id="zoomOut" class="zoomIcon" [icon]="faMinus" (click)="zoomOut()"></fa-icon>
+    </div>
+</div>
+  

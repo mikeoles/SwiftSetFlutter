@@ -7,8 +7,14 @@ import { MissionViewComponent } from './mission-view/mission-view.component';
 import { FleetViewComponent } from './fleet-view/fleet-view.component';
 import { AuthComponent } from './auth/auth.component';
 import { AuthGuard } from './auth.guard';
+import { DebugViewComponent } from './debug-view/debug-view.component';
 
 const routes: Routes = [
+  {
+    path: 'store/:storeId/mission/:missionId/aisle/:aisleId/debug',
+    component: DebugViewComponent,
+    canActivate: [AuthGuard],
+  },
   {
     path: 'store/:storeId/mission/:missionId/aisle/:aisleId',
     component: AisleViewComponent,

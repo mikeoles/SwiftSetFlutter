@@ -34,6 +34,9 @@ import { AuthService } from './auth.service';
 import { ApiService } from './api.service';
 import { UrlService } from './url.service';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { DebugViewComponent } from './debug-view/debug-view.component';
+import { DebugPanoramaComponent } from './debug-view/debug-panorama/debug-panorama.component';
+import { DebugFiltersComponent } from './debug-view/debug-filters/debug-filters.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +56,9 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
     ModalComponent,
     FleetViewComponent,
     AuthComponent,
+    DebugViewComponent,
+    DebugPanoramaComponent,
+    DebugFiltersComponent,
   ],
   imports: [
     BrowserModule,

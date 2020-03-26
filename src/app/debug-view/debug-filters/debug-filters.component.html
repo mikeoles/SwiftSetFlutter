@@ -1,0 +1,18 @@
+<div class="filters">
+    <div class="dropdown">
+        <button class="dropdownButton" (click)="dropdownClicked()">
+            Filters
+            <fa-icon *ngIf="!dropdownOpen" size="lg" class="marginLeft fa" [icon]="faAngleDown"></fa-icon>
+            <fa-icon *ngIf="dropdownOpen" size="lg" class="marginLeft fa" [icon]="faAngleUp"></fa-icon>
+        </button>
+        <ul class="displayDropdown" *ngIf="dropdownOpen">
+            <li (click)="selectFilter('debug')">
+                <fa-icon *ngIf="activeFilters.includes('debug')" size="lg" class="check" [icon]="faCheckSquare">
+                </fa-icon>
+                <fa-icon *ngIf="!activeFilters.includes('debug')" size="lg" class="check" [icon]="faSquare"></fa-icon>
+                Debug
+            </li>
+        </ul>
+        <div *ngIf="dropdownOpen" class="pointer displayPointer"></div>
+    </div>
+</div>

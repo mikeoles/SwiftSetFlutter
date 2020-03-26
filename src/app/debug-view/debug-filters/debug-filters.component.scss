@@ -1,0 +1,48 @@
+@import '../../../variables';
+
+.filters {
+    display: block;
+}
+
+.dropdownButton {
+    display: block;
+    margin: 20px auto 20px auto;
+}
+
+.dropdown {
+    margin: 0px -10px 0px -10px;
+    button{
+      width: auto;
+    }
+  }
+
+// for the filter dropdown
+ul {
+    width: 325px;
+    max-height: 350px;
+    overflow: auto;
+    size: 18px;
+    position: absolute;
+    display: block;
+    z-index: 2;
+    margin-top: -9px;
+    margin-left: 60px;
+    padding: 5px 0px 10px 20px;
+    border-radius: 30px;
+    box-shadow: 0px 0px 30px rgba(32, 32, 32, 0.411);
+    background: white;
+    text-align: left;
+    list-style-type: none;
+    li {
+      border-bottom: rgba(211, 211, 211, 0.5) 1px solid;
+      padding: 10px;
+      cursor:pointer;
+      color: $primary;
+    }
+    li:last-child {
+      border-bottom: 0px;
+    }
+    li:hover {
+      color: black;
+    }
+  }
