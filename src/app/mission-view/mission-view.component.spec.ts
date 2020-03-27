@@ -81,7 +81,7 @@ describe('MissionViewComponent', () => {
         { provide: ModalService},
         { provide: EnvironmentService, useValue: { config: {
           onHand: true,
-          exportingPDF: true,
+          showExportButtons: true,
         }}}
       ],
     })
@@ -98,7 +98,6 @@ describe('MissionViewComponent', () => {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
     fixture = TestBed.createComponent(MissionViewComponent);
     component = fixture.componentInstance;
-    component.exportOnHand = false;
     fixture.detectChanges();
   });
 

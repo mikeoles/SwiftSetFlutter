@@ -1,5 +1,5 @@
 <div *ngIf="mission" class="missionInfo">
-  <button class="exportButton" (click)="openModal('export-popup')"><img class="exportImage" src="../../assets/export-blue.png"> <span>Export</span></button>
+  <button *ngIf="showExportButtons" class="exportButton" (click)="openModal('export-popup')"><img class="exportImage" src="../../assets/export-blue.png"> <span>Export</span></button>
   <div *ngIf="store">{{store.storeName}}</div>
   <div class="headerInfo"> Scan: <span>{{mission.missionName}}</span></div>
   <div *ngIf="mission" class="headerInfo"> Aisles Scanned: <span> {{mission.aisleCount }}</span></div>
@@ -10,8 +10,8 @@
           <div class="exportTitle">Select File To Export</div>
           <button [disabled]="currentlyExporting" (click)="exportMission('outs','export-popup','csv')">Outs</button>
           <button [disabled]="currentlyExporting" (click)="exportMission('labels','export-popup','csv')">Labels</button>
-          <button *ngIf="exportOnHand" [disabled]="currentlyExporting" (click)="exportMission('onhand','export-popup','csv')">On Hand</button>
-          <button *ngIf="exportingPDF" [disabled]="currentlyExporting" (click)="exportMission('onhand','export-popup','pdf')">On Hand PDF</button>
+          <button [disabled]="currentlyExporting" (click)="exportMission('onhand','export-popup','csv')">On Hand</button>
+          <button [disabled]="currentlyExporting" (click)="exportMission('onhand','export-popup','pdf')">On Hand PDF</button>
           <button class="cancel" (click)="closeModal('export-popup');">Close</button>
       </div>
   </div>

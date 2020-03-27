@@ -25,17 +25,15 @@ export class MissionViewComponent implements OnInit, OnDestroy {
   averageStoreOuts: number;
   averageStoreLabels: number;
   service: ApiService;
-  exportOnHand = false;
   currentlyExporting = false;
-  exportingPDF = false;
+  showExportButtons = false;
 
   private backButtonSubscription: Subscription;
 
   constructor(private apiService: ApiService, private activatedRoute: ActivatedRoute, private router: Router,
     private modalService: ModalService, private backService: BackService, private environment: EnvironmentService,
     public dataService: DataService) {
-      this.exportOnHand = environment.config.onHand;
-      this.exportingPDF = environment.config.exportingPDF;
+      this.showExportButtons = environment.config.showExportButtons;
   }
 
   ngOnInit() {

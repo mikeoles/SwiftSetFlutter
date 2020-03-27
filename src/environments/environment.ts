@@ -7,17 +7,18 @@ import { labelScrollOptions } from 'src/app/labelScrollOptions';
 export const environment = {
   production: false,
   apiUrl: 'http://localhost/api',
+  authUrl: 'http://localhost/dex/auth?',
+  authClientId: 'data-products-viewer',
+  coverageDisplayType: 'description', // description or percent
   coveragePercent: false,
-  coverageDisplayType: 'description',
-  onHand: true,
-  exportingPDF: true,
   exportFields: ['Barcode', 'top', 'left', 'width', 'height'],
-  productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price'],
   labelScrolling: labelScrollOptions.vertical,
   missionHistoryDays: 14, // Number of days to display missions for
   permissions: ['topStock', 'QA', 'sectionLabels', 'sectionBreaks', 'misreadBarcodes'],
-  authUrl: 'http://localhost/dex/auth?',
-  authClientId: 'data-products-viewer',
+  productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price'],
+  onHand: true,
+  showExportButtons: false, // Hides: Request Data, Aisle Scan Data, Mission Export, Aisle Export (besides pano)
+  showMisreadBarcodes: false, // Hides misread barcodes button on pano view
 };
 
 /*

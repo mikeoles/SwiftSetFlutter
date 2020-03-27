@@ -72,7 +72,7 @@ describe('SelectionAreaComponent', () => {
         { provide: ModalService},
         { provide: EnvironmentService, useValue: { config: {
           onHand: true,
-          exportingPDF: true,
+          showExportButtons: true,
           permissions: ['topStock', 'QA', 'sectionLabels', 'sectionBreaks', 'misreadBarcodes']
         }}},
         { provide: Router },
@@ -87,7 +87,6 @@ describe('SelectionAreaComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SelectionAreaComponent);
     component = fixture.componentInstance;
-    component.exportOnHand = false;
     component.missions = missions;
     component.aisles = mission.aisles;
     component.selectedMission = missions[0];

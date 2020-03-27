@@ -24,8 +24,7 @@ import { Roles } from 'src/permissions/roles';
 export class SelectionAreaComponent implements OnInit, OnChanges {
   store: Store;
   currentDropdown = '';
-  exportOnHand = false;
-  exportingPDF = false;
+  showExportButtons = false;
 
   showTopStock = false;
   showSectionLabels = false;
@@ -66,8 +65,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
               private environment: EnvironmentService,
               private apiService: ApiService,
               private router: Router) {
-    this.exportOnHand = environment.config.onHand;
-    this.exportingPDF = environment.config.exportingPDF;
+    this.showExportButtons = environment.config.showExportButtons;
 
     const context = this;
     this.apiService.getRoles(localStorage.getItem('id_token')).subscribe( role => {

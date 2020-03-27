@@ -48,18 +48,19 @@ export class StoreViewComponent implements OnInit {
   error = false;
   currentlyRequesting = false;
   progress = 0;
+  showExportButtons = false;
   private backButtonSubscription: Subscription;
 
   constructor(private apiService: ApiService,
               private activatedRoute: ActivatedRoute,
-              private environmentService: EnvironmentService,
+              private environment: EnvironmentService,
               private backService: BackService,
               private router: Router,
               private modalService: ModalService) {
-    this.coverageDisplayType = environmentService.config.coverageDisplayType;
+    this.coverageDisplayType = environment.config.coverageDisplayType;
     this.graphEndDate = new Date();
     this.graphStartDate = new Date();
-    this.graphStartDate.setDate(this.graphEndDate.getDate() - environmentService.config.missionHistoryDays + 1);
+    this.graphStartDate.setDate(this.graphEndDate.getDate() - environment.config.missionHistoryDays + 1);
     const start = new Date(this.graphStartDate);
     const end = new Date(this.graphEndDate);
     this.activatedRoute.params.forEach((params: Params) => {
@@ -72,11 +73,12 @@ export class StoreViewComponent implements OnInit {
     });
     this.requestStartDate = new Date();
     this.requestEndDate = new Date();
+    this.showExportButtons = environment.config.showExportButtons;
   }
 
   ngOnInit() {
     this.backButtonSubscription = this.backService.backClickEvent().subscribe(() => this.goBack());
-    this.missionHistoryLength = this.environmentService.config.missionHistoryDays;
+    this.missionHistoryLength = this.environment.config.missionHistoryDays;
   }
 
   goBack(): void {
@@ -86,7 +88,7 @@ export class StoreViewComponent implements OnInit {
   changeGraphDates(event) {
     this.graphEndDate = new Date(event);
     this.graphStartDate = new Date(event);
-    this.graphStartDate.setDate(this.graphStartDate.getDate() - this.environmentService.config.missionHistoryDays + 1);
+    this.graphStartDate.setDate(this.graphStartDate.getDate() - this.environment.config.missionHistoryDays + 1);
     const start = new Date(this.graphStartDate);
     const end = new Date(this.graphEndDate);
     this.apiService.getStore(this.storeId, start, end).subscribe(store => {
@@ -112,7 +114,7 @@ export class StoreViewComponent implements OnInit {
     const allSummaryLabels: Array<DaySummary> = [];
     const d = new Date(new Date(this.graphStartDate.toDateString()).toLocaleString('en-US', {timeZone: store.timezone}));
 
-    for (let i = 0; i < this.environmentService.config.missionHistoryDays; i++) {
+    for (let i = 0; i < this.environment.config.missionHistoryDays; i++) {
       const cur: Date = new Date(d.toDateString());
       d.setDate(d.getDate() + 1);
 

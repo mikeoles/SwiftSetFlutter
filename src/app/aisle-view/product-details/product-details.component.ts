@@ -39,6 +39,7 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
   dropdownSettings = {};
 
   constructor(private environment: EnvironmentService, private apiService: ApiService) {
+    this.showMisreadBarcodes = environment.config.showMisreadBarcodes;
     this.showDepartment = environment.config.productGridFields.includes('Department');
     this.showSection = environment.config.productGridFields.includes('Section');
     const context = this;

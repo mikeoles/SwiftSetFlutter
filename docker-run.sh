@@ -13,8 +13,8 @@ fi
 if [[ ! -z "$ON_HAND" ]]; then
   echo "  \"onHand\": \"$ON_HAND\"," >> /usr/share/nginx/html/assets/config.json
 fi
-if [[ ! -z "$EXPORTING_PDF" ]]; then
-  echo "  \"exportingPDF\": \"$EXPORTING_PDF\"," >> /usr/share/nginx/html/assets/config.json
+if [[ ! -z "$SHOW_EXPORT_BUTTONS" ]]; then
+  echo "  \"showExportButtons\": \"$SHOW_EXPORT_BUTTONS\"," >> /usr/share/nginx/html/assets/config.json
 fi
 if [[ ! -z "$COVERAGE_DISPLAY_TYPE" ]]; then
   echo "  \"coverageDisplayType\": \"$COVERAGE_DISPLAY_TYPE\"," >> /usr/share/nginx/html/assets/config.json
@@ -30,6 +30,9 @@ if [[ ! -z "$SHOW_SECTION_LABELS" ]]; then
 fi
 if [[ ! -z "$SHOW_SECTION_BREAK" ]]; then
   echo "  \"showSectionBreak\": \"$SHOW_SECTION_BREAK\"," >> /usr/share/nginx/html/assets/config.json
+fi
+if [[ ! -z "$SHOW_MISREAD_BARCODES" ]]; then
+  echo "  \"showMisreadBarcodes\": \"$SHOW_MISREAD_BARCODES\"," >> /usr/share/nginx/html/assets/config.json
 fi
 if [[ ! -z "$AUTH_URL" ]]; then
   echo "  \"authUrl\": \"$AUTH_URL\"," >> /usr/share/nginx/html/assets/config.json
