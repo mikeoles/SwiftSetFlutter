@@ -382,6 +382,10 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/historicalData?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`);
   }
 
+  getDebugData(storeId: string, missionId: string, aisleId: string): Observable<string> {
+    throw new Error('Method not implemented.');
+  }
+
   getToken(accessCode: string, reduirectUrl: string): Observable<AuthData> {
     const formData = new FormData();
     formData.set('code', accessCode);

@@ -9,7 +9,7 @@ import { faAngleDown, faAngleUp, faArrowRight, faArrowLeft, faCheckSquare, faSqu
 export class DebugFiltersComponent implements OnInit {
 
   @Output() toggleFilter = new EventEmitter();
-  @Input() activeFilters = new Set<string>();
+  @Input() filters: Map<string, boolean>;
 
   dropdownOpen = false;
 

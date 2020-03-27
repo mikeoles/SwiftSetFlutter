@@ -1,2 +1,2 @@
-<app-debug-filters></app-debug-filters>
+<app-debug-filters [filters]="filters" (toggleFilters)='toggleFilters($event)'></app-debug-filters>
 <app-debug-panorama [panoramaUrl]="panoramaUrl"></app-debug-panorama>

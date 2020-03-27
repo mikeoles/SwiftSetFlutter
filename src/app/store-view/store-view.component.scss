@@ -27,10 +27,6 @@ button {
   margin-right: 50px !important;
 }
 
-button:focus {
-  outline:0;
-}
-
 .storeAddress span {
   font-weight: normal;
 }
@@ -52,8 +48,4 @@ button:focus {
 
 .endText {
   margin-left: 15px;
-}
-
-button{
-  cursor: pointer !important;
 }

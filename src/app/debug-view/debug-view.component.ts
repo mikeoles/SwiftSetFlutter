@@ -11,6 +11,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 export class DebugViewComponent implements OnInit {
 
   panoramaUrl: String;
+  filters = new Map<string, boolean>(); // todo
 
   constructor(private readonly apiService: ApiService,
     private readonly activatedRoute: ActivatedRoute) {
@@ -36,5 +37,12 @@ export class DebugViewComponent implements OnInit {
     this.apiService.getAisle(storeId, missionId, aisleId).subscribe(aisle => {
       this.panoramaUrl = aisle.panoramaUrl;
     });
+
+    this.apiService.getDebugData(storeId, missionId, aisleId).subscribe(debug => {
+    });
+  }
+
+  toggleFilters(filterName: string) {
+    this.filters.set(filterName, !this.filters.get(filterName));
   }
 }

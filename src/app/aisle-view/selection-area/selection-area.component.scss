@@ -1,13 +1,5 @@
 @import '../../../variables';
 
-.bottomBar {
-  padding: 20px;
-}
-
-.bottomBar{
-  display: block;
-}
-
 button{
     height: 55px;
     width: 285px;
@@ -27,9 +19,6 @@ button{
     color: $greyBorder !important;
     border: 3px $greyBorder solid !important;
     cursor: progress !important;
-  }
-  .cancel{
-    cursor: pointer !important;
   }
   cursor: progress !important;
 }
@@ -83,10 +72,6 @@ button{
   button {
     width: 375px;
   }
-}
-
-button{
-  cursor: pointer !important;
 }
 
 button > img,
@@ -158,10 +143,6 @@ button > span {
     margin-top: 0px !important;
     margin-left: 50px !important;
   }
-}
-
-button:focus{
-  outline:0;
 }
 
 .container{
