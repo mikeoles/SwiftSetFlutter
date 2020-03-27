@@ -9,7 +9,7 @@ export const environment = {
   exportFields: ['Barcode', 'Product Id', 'Description', 'Department', 'On Hand', 'Layout', 'S. Loc', 'Size', 'SRQ', 'PR', 'Status',
   'Last Recvd', 'DNO'],
   labelScrolling: labelScrollOptions.vertical,
-  productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price', 'On Hand'],
+  productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price'],
   missionHistoryDays: 14, // Number of days to display missions for
   permissions: ['topStock', 'debugging', 'sectionLabels', 'sectionBreaks'],
   authUrl: 'http://localhost:5556/auth?',

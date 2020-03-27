@@ -12,7 +12,7 @@ export const environment = {
   onHand: true,
   exportingPDF: true,
   exportFields: ['Barcode', 'top', 'left', 'width', 'height'],
-  productGridFields: ['Barcode', 'top', 'left', 'width', 'height'],
+  productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price'],
   labelScrolling: labelScrollOptions.vertical,
   missionHistoryDays: 14, // Number of days to display missions for
   permissions: ['topStock', 'QA', 'sectionLabels', 'sectionBreaks', 'misreadBarcodes'],

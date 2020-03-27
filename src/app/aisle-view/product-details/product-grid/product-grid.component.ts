@@ -99,8 +99,7 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
     if (this.onlyBarcode) {
       this.columnHeaders = ['Barcode'];
     } else {
-      this.columnHeaders = ['Label Name', 'Barcode', 'Product Id', 'Price'];
-      // this.columnHeaders = Object.assign([], this.environment.config.productGridFields);
+      this.columnHeaders = Object.assign([], this.environment.config.productGridFields);
     }
 
     this.annotationTypes.forEach(annotationType => {
