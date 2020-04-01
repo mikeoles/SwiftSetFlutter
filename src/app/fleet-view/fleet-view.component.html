@@ -1,6 +1,6 @@
 <div *ngIf="stores && stores.length === 0" class="title">No Stores Found</div>
 <div *ngIf="stores && stores.length>0">
-  <div class="title">Stores ({{stores.length}})</div>
+  <div class="title">Stores ({{(stores | filter:searchTerm)?.length }})</div>
   <div class="storeSearch">
     <input type="text" placeholder="Search By Store Or Robot" [(ngModel)]="searchTerm">
   </div>
