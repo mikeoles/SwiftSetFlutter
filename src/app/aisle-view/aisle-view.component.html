@@ -11,6 +11,6 @@
   (updateLabelCategory)='updateLabelCategory($event)' (updateMissedCategory)='updateMissedCategory($event)'>
 </app-panorama>
 <app-product-details [outs]="outs" [labels]="labels" [sectionLabels]="sectionLabels" [topStock]="topStock"  [misreadBarcodes]="misreadBarcodes"
-  [sectionBreaks]="sectionBreaks" (gridId)='setId($event)' [currentId]="currentId" [panoMode]='panoMode' [qaMode]='qaMode'>
+[currentlyDisplayed]='currentlyDisplayed' [sectionBreaks]="sectionBreaks" (gridId)='setId($event)' [currentId]="currentId" [panoMode]='panoMode' [qaMode]='qaMode'>
 </app-product-details>
 <ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
