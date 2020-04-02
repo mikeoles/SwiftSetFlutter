@@ -66,16 +66,15 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
               private router: Router) {
     this.showExportButtons = environment.config.showExportButtons;
     this.showMisreadBarcodes = environment.config.showMisreadBarcodes;
+    this.showSectionLabels = environment.config.showSectionLabels;
+    this.showTopStock = environment.config.showTopStock;
+    this.showSectionBreaks = environment.config.showSectionBreaks;
 
     const context = this;
     this.apiService.getRoles(localStorage.getItem('id_token')).subscribe( role => {
       if (typeof context.environment.setPermissions === 'function') {
         context.environment.setPermissions(Roles[role]);
       }
-      context.showTopStock = environment.config.permissions.indexOf(Permissions.topStock) > -1;
-      context.showSectionLabels = environment.config.permissions.indexOf(Permissions.sectionLabels) > -1;
-      context.showSectionBreaks = environment.config.permissions.indexOf(Permissions.sectionBreaks) > -1;
-      context.showQA = environment.config.permissions.indexOf(Permissions.QA) > -1;
     });
   }
 

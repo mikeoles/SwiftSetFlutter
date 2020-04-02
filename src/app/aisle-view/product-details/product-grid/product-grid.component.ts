@@ -34,7 +34,7 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
     }
 
     if (changes['allLabels'] || changes['qaMode']) {
-      if (this.allLabels.length > 0) {
+      if (this.allLabels.length > -1) {
         this.sortProductsByLocation();
         this.getGridData();
       }

@@ -31,6 +31,7 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
   @Input() sectionLabels: Label[] = [];
   @Input() topStock: Label[] = [];
   @Input() sectionBreaks: number[] = [];
+  @Input() currentlyDisplayed: Array<string>;
   filteredOuts: Label[] = [];
   filteredLabels: Label[] = [];
   allLabels: Label[] = [];
@@ -44,6 +45,8 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
 
   constructor(private environment: EnvironmentService, private apiService: ApiService) {
     this.showMisreadBarcodes = environment.config.showMisreadBarcodes;
+    this.showSectionLabels = environment.config.showSectionLabels;
+    this.showTopStock = environment.config.showTopStock;
     this.showSectionBreaks = environment.config.showSectionBreaks;
     this.showDepartment = environment.config.productGridFields.includes('Department');
     this.showSection = environment.config.productGridFields.includes('Section');
@@ -52,8 +55,6 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
       if (typeof context.environment.setPermissions === 'function') {
         context.environment.setPermissions(Roles[role]);
       }
-      this.showTopStock = environment.config.permissions.indexOf(Permissions.topStock) > -1;
-      this.showSectionLabels = environment.config.permissions.indexOf(Permissions.sectionLabels) > -1;
     });
   }
 
@@ -92,13 +93,22 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
       this.runFilters();
     }
 
+    // only display labels selected in the selection area dropdown
     this.allLabels = new Array<Label>();
-    this.allLabels = this.allLabels.concat(this.filteredOuts);
-    this.allLabels = this.allLabels.concat(this.filteredLabels);
-    this.allLabels = this.allLabels.concat(this.sectionLabels);
-    this.allLabels = this.allLabels.concat(this.topStock);
-    if (this.showMisreadBarcodes) {
+    if (this.currentlyDisplayed.includes('outs')) {
+      this.allLabels = this.allLabels.concat(this.filteredOuts);
+    }
+    if (this.currentlyDisplayed.includes('shelfLabels')) {
+      this.allLabels = this.allLabels.concat(this.filteredLabels);
+    }
+    if (this.currentlyDisplayed.includes('topStock')) {
+      this.allLabels = this.allLabels.concat(this.topStock);
+    }
+    if (this.currentlyDisplayed.includes('misreadBarcodes') && this.showMisreadBarcodes) {
       this.allLabels = this.allLabels.concat(this.misreadBarcodes);
+    }
+    if (this.currentlyDisplayed.includes('sectionLabels')) {
+      this.allLabels = this.allLabels.concat(this.sectionLabels);
     }
   }
 

@@ -18,8 +18,10 @@ export const environment = {
   productGridFields: ['Barcode', 'Price'],
   onHand: true,
   showExportButtons: false, // Hides: Request Data, Aisle Scan Data, Mission Export, Aisle Export (besides pano)
-  showMisreadBarcodes: false, // Hides misread barcodes button on pano view
+  showMisreadBarcodes: true,
   showSectionBreaks: true,
+  showSectionLabels: true,
+  showTopStock: true,
 };
 
 /*

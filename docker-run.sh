@@ -23,7 +23,7 @@ if [[ ! -z "$DISPLAY_COVERAGE" ]]; then
   echo "  \"coveragePercent\": $DISPLAY_COVERAGE," >> /usr/share/nginx/html/assets/config.json
 fi
 if [[ ! -z "$SHOW_TOP_STOCK" ]]; then
-  echo "  \"showTopStock\": \"$SHOW_TOP_STOCK\"," >> /usr/share/nginx/html/assets/config.json
+  echo "  \"showTopStock\": $SHOW_TOP_STOCK," >> /usr/share/nginx/html/assets/config.json
 fi
 if [[ ! -z "$SHOW_SECTION_LABELS" ]]; then
   echo "  \"showSectionLabels\": $SHOW_SECTION_LABELS," >> /usr/share/nginx/html/assets/config.json
