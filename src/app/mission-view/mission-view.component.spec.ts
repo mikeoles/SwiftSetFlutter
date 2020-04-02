@@ -55,7 +55,7 @@ describe('MissionViewComponent', () => {
     coveragePercent: 0, aisleCoverage: '0', labelsCount: 0, outsCount: 0 };
   const mission: Mission = { missionId: '1', missionName: '', storeId: '1', startDateTime: new Date(), outs: 1, labels: 1,
     aisleCount: 1, endDateTime: new Date(), percentageRead: 1, percentageUnread: 1, unreadLabels: 1, readLabelsMissingProduct: 1,
-    readLabelsMatchingProduct: 1, createDateTime: new Date(), aisles: aisles };
+    readLabelsMatchingProduct: 1, createDateTime: new Date(), aisles: aisles, storeName: '' };
   const store: Store = { storeId: '1',   storeNumber: 1, storeName: '', storeAddress: '', totalAverageOuts: 0, totalAverageLabels: 0,
     summaryOuts: [], summaryLabels: [], timezone: '', robots: [] };
 

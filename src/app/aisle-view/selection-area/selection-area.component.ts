@@ -30,7 +30,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   showSectionLabels = false;
   showSectionBreaks = false;
   showQA = false;
-  showMisreadBarcodes = true;
+  showMisreadBarcodes = false;
 
   @Input() missions: Mission[];
   @Input() aisles: Aisle[];
@@ -40,15 +40,14 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   @Input() panoramaUrl: string;
   @Input() outs: Label[] = [];
   @Input() labels: Label[] = [];
-
   @Input() currentlyDisplayed: Set<string>;
-  @Input() qaModesTurnedOn: Set<string>;
+  @Input() qaMode: boolean;
 
   @Output() missionSelected = new EventEmitter();
   @Output() aisleSelected = new EventEmitter();
   @Output() resetPano = new EventEmitter();
   @Output() resetPanoAfterExport = new EventEmitter();
-  @Output() toggleMode = new EventEmitter();
+  @Output() toggleQAMode = new EventEmitter();
   @Output() toggleDisplayed = new EventEmitter();
 
   faAngleDown = faAngleDown;
@@ -66,6 +65,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
               private apiService: ApiService,
               private router: Router) {
     this.showExportButtons = environment.config.showExportButtons;
+    this.showMisreadBarcodes = environment.config.showMisreadBarcodes;
 
     const context = this;
     this.apiService.getRoles(localStorage.getItem('id_token')).subscribe( role => {
@@ -131,8 +131,8 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
     this.toggleDisplayed.emit(display);
   }
 
-  qaModeSelected(mode: string) {
-    this.toggleMode.emit(mode);
+  qaModeClick() {
+    this.toggleQAMode.emit();
   }
 
   openDropdown(name: string) {

@@ -13,8 +13,8 @@ import { ApiService } from 'src/app/api.service';
 describe('ProductDetailsComponent', () => {
   let component: ProductDetailsComponent;
   let fixture: ComponentFixture<ProductDetailsComponent>;
-  let buttonsEl: HTMLElement;
-  let buttons: HTMLCollection;
+  let countsEl: HTMLElement;
+  let children: HTMLCollection;
   let apiService: jasmine.SpyObj<ApiService>;
   let environmentService: jasmine.SpyObj<EnvironmentService>;
 
@@ -90,64 +90,26 @@ describe('ProductDetailsComponent', () => {
     component.topStock = topStock;
 
     fixture.detectChanges();
-    buttonsEl = fixture.debugElement.query(By.css('#tableSelection')).nativeElement;
-    buttons = buttonsEl.children;
+    countsEl = fixture.debugElement.query(By.css('#tableSelection')).nativeElement;
+    children = countsEl.children;
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should emit -1 ID when display type clicked', () => {
-    spyOn(component.gridId, 'emit');
-    // Send any string to selected grid
-    component.selectGrid('labels');
-    fixture.detectChanges();
-    expect(component.gridId.emit).toHaveBeenCalledWith(-1);
+  it('displays types of labels', () => {
+    expect(countsEl.childElementCount).toEqual(5);
+    expect(children[0].textContent).toContain('Outs');
+    expect(children[1].textContent).toContain('Shelf Labels');
+    expect(children[2].textContent).toContain('Misread Barcodes');
+    expect(children[3].textContent).toContain('Section Labels');
+    expect(children[4].textContent).toContain('Top Stock');
+    expect(children[5].textContent).toContain('Section Breaks');
   });
 
-  it('should emit ID when a new row is clicked', () => {
-    component.currentId = 1;
-    spyOn(component.gridId, 'emit');
-    component.productGridSelected(0);
-    fixture.detectChanges();
-    expect(component.gridId.emit).toHaveBeenCalledWith(0);
-  });
-
-  it('should emit ID when a row is clicked and no row is selected', () => {
-    spyOn(component.gridId, 'emit');
-    component.productGridSelected(3);
-    fixture.detectChanges();
-    expect(component.gridId.emit).toHaveBeenCalledWith(3);
-  });
-
-  it('should emit -1 ID when selected row is clicked again', () => {
-    component.currentId = 2;
-    spyOn(component.gridId, 'emit');
-    component.productGridSelected(2);
-    fixture.detectChanges();
-    expect(component.gridId.emit).toHaveBeenCalledWith(-1);
-  });
-
-  it('displays buttons', () => {
-    expect(buttonsEl.childElementCount).toEqual(5);
-    expect(buttons[0].textContent).toContain('Outs');
-    expect(buttons[1].textContent).toContain('Shelf Labels');
-    expect(buttons[2].textContent).toContain('Misread Barcodes');
-    expect(buttons[3].textContent).toContain('Section Labels');
-    expect(buttons[4].textContent).toContain('Top Stock');
-  });
-
-  it('displays counts on buttons', () => {
-    expect(buttons[0].textContent).toContain('(5)');
-    expect(buttons[1].textContent).toContain('(5)');
-  });
-
-  it('button can be selected', () => {
-    component.currentDisplay = 'labels';
-    fixture.detectChanges();
-    buttons = buttonsEl.children;
-    expect(buttons[0].getAttribute('class') === 'selectedButton').toBeFalsy();
-    expect(buttons[1].getAttribute('class')).toEqual('selectedButton');
+  it('displays counts', () => {
+    expect(children[0].textContent).toContain('5');
+    expect(children[1].textContent).toContain('5');
   });
 });

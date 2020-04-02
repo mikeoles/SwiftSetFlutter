@@ -41,7 +41,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   private logoSubscription: Subscription;
   private backButtonSubscription: Subscription;
   currentlyDisplayed: Array<string> = new Array<string>();
-  qaModesTurnedOn: Array<string> = new Array<string>();
+  qaMode = false;
   shortcuts: ShortcutInput[] = [];
 
   constructor(private apiService: ApiService,
@@ -111,13 +111,8 @@ export class AisleViewComponent implements OnInit, OnDestroy {
     this.resetPano = !this.resetPano;
   }
 
-  toggleMode(mode: string) {
-    if (this.qaModesTurnedOn.indexOf(mode) !== -1) {
-      this.qaModesTurnedOn.splice(this.qaModesTurnedOn.indexOf(mode), 1);
-    } else {
-      this.qaModesTurnedOn.push(mode);
-    }
-    this.qaModesTurnedOn = Object.assign([], this.qaModesTurnedOn);
+  toggleQAMode() {
+    this.qaMode = !this.qaMode;
   }
 
   // If the element is in the list remove it, if not add it.  Move shelf labels to the front so they arent written over outs in the UI

@@ -1,15 +1,7 @@
 @import '../../../variables';
 
-button {
-  text-align: center;
-  padding: 0px 15px;
-  width: 270px;
-  margin-right: 30px;
-  cursor: pointer !important;
-}
 
 //Some dropdown specific styles are in styles.scss
-
 .dropdown {
   display: inline-block;
   width: 167px;
@@ -36,10 +28,35 @@ button:focus {
 }
 
 #tableSelection{
-    margin-left: 60px;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    float: left;
+    margin: 10px auto;
+    display: block;
+    width: 970px;
+    border: 2px $primary solid;
+    padding: 5px;
+    text-align: center;
+    div:first-child {
+      margin-left: 0px;
+    }
+    div {
+      display: inline-block;
+      text-align: center;
+      padding: 0px 15px;
+      color:  $primary;
+      margin: 10px 25px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+}
+
+@media (max-width: 975px) {
+  #tableSelection{
+    width: 550px;
+    div {
+      padding: 0px 2px;
+      margin: 10px 2px;
+      font-size: 13px;
+    }
+}
 }
 
 #filterButtons{

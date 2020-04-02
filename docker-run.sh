@@ -26,10 +26,10 @@ if [[ ! -z "$SHOW_TOP_STOCK" ]]; then
   echo "  \"showTopStock\": \"$SHOW_TOP_STOCK\"," >> /usr/share/nginx/html/assets/config.json
 fi
 if [[ ! -z "$SHOW_SECTION_LABELS" ]]; then
-  echo "  \"showSectionLabels\": \"$SHOW_SECTION_LABELS\"," >> /usr/share/nginx/html/assets/config.json
+  echo "  \"showSectionLabels\": $SHOW_SECTION_LABELS," >> /usr/share/nginx/html/assets/config.json
 fi
-if [[ ! -z "$SHOW_SECTION_BREAK" ]]; then
-  echo "  \"showSectionBreak\": \"$SHOW_SECTION_BREAK\"," >> /usr/share/nginx/html/assets/config.json
+if [[ ! -z "$SHOW_SECTION_BREAKS" ]]; then
+  echo "  \"showSectionBreaks\": $SHOW_SECTION_BREAKS," >> /usr/share/nginx/html/assets/config.json
 fi
 if [[ ! -z "$SHOW_MISREAD_BARCODES" ]]; then
   echo "  \"showMisreadBarcodes\": $SHOW_MISREAD_BARCODES," >> /usr/share/nginx/html/assets/config.json

@@ -15,10 +15,11 @@ export const environment = {
   labelScrolling: labelScrollOptions.vertical,
   missionHistoryDays: 14, // Number of days to display missions for
   permissions: ['topStock', 'QA', 'sectionLabels', 'sectionBreaks', 'misreadBarcodes'],
-  productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price'],
+  productGridFields: ['Barcode', 'Price'],
   onHand: true,
   showExportButtons: false, // Hides: Request Data, Aisle Scan Data, Mission Export, Aisle Export (besides pano)
   showMisreadBarcodes: false, // Hides misread barcodes button on pano view
+  showSectionBreaks: true,
 };
 
 /*

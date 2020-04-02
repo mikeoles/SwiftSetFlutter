@@ -18,7 +18,7 @@ table tbody
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
-    height: calc(100vh - 67px - 135px - 365px - 95px - 48px)
+    height: calc(100vh - 67px - 87px - 365px - 58px - 48px)
 }
 
 th{
@@ -63,35 +63,7 @@ tbody :first-child{
   border-right: 3px solid $selected;
 }
 
-//Scrollbar
-::-webkit-scrollbar {
-    width: 16px;
-}
-
-::-webkit-scrollbar-track {
-    background: white;
-    border-right: solid 1px $primary;
-    border-bottom: solid 1px $primary;
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: $primary;
-    border: 5px solid transparent;
-    border-radius: 9px;
-    background-clip: content-box;
-}
-
-@media (max-width: 1700px) {
-  tbody{
-    height: calc(100vh - 67px - 115px - 365px - 95px - 48px) !important;
-  }
-}
-
 @media (max-width: 1500px) {
-  tbody  {
-    height: calc(100vh - 67px - 93px - 320px - 88px - 33px) !important;
-  }
-
   th{
     height: 33px !important;
   }

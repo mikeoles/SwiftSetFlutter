@@ -17,7 +17,8 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
   showSection: Boolean;
   showTopStock = false;
   showSectionLabels = false;
-  showMisreadBarcodes = true;
+  showMisreadBarcodes = false;
+  showSectionBreaks = false;
 
   departmentsList: string[] = [];
   sectionsList: string[] = [];
@@ -29,17 +30,21 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
   @Input() misreadBarcodes: Label[] = [];
   @Input() sectionLabels: Label[] = [];
   @Input() topStock: Label[] = [];
+  @Input() sectionBreaks: number[] = [];
   filteredOuts: Label[] = [];
   filteredLabels: Label[] = [];
+  allLabels: Label[] = [];
 
   @Input() currentId: number;
   currentDisplay = 'outs';
   @Input() panoMode: boolean;
+  @Input() qaMode: boolean;
   @Output() gridId = new EventEmitter();
   dropdownSettings = {};
 
   constructor(private environment: EnvironmentService, private apiService: ApiService) {
     this.showMisreadBarcodes = environment.config.showMisreadBarcodes;
+    this.showSectionBreaks = environment.config.showSectionBreaks;
     this.showDepartment = environment.config.productGridFields.includes('Department');
     this.showSection = environment.config.productGridFields.includes('Section');
     const context = this;
@@ -86,6 +91,15 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
     if (this.outs || this.labels) {
       this.runFilters();
     }
+
+    this.allLabels = new Array<Label>();
+    this.allLabels = this.allLabels.concat(this.filteredOuts);
+    this.allLabels = this.allLabels.concat(this.filteredLabels);
+    this.allLabels = this.allLabels.concat(this.sectionLabels);
+    this.allLabels = this.allLabels.concat(this.topStock);
+    if (this.showMisreadBarcodes) {
+      this.allLabels = this.allLabels.concat(this.misreadBarcodes);
+    }
   }
 
   runFilters() {
@@ -119,7 +133,6 @@ export class ProductDetailsComponent implements OnInit, OnChanges {
       this.filteredLabels = this.labels;
       this.filteredOuts = this.outs;
     }
-
   }
 
   selectGrid(type) {

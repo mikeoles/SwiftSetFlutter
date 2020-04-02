@@ -41,7 +41,7 @@ describe('PanoramaComponent', () => {
     fixture = TestBed.createComponent(PanoramaComponent);
     component = fixture.componentInstance;
 
-    component.qaModesTurnedOn = [];
+    component.qaMode = false;
     apiService = TestBed.get('ApiService');
     apiService.getMisreadCategories.and.returnValue(of([]));
     apiService.getMissedCategories.and.returnValue(of([]));

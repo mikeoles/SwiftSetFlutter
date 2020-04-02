@@ -2,7 +2,6 @@
 
 :host{
   display: block;
-  margin: 10px auto 40px auto;
 }
 
 .title{
@@ -26,44 +25,38 @@
 table {
   border-collapse: collapse;
   text-align: center;
-  margin: auto 40px;
-  width: calc(100% - 80px);
+  margin: auto 60px;
+  width: calc(100% - 120px);
   table-layout: fixed;
 }
-
-table tbody {
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-  height: 450px;
-}
-
 
 table tbody, table thead
 {
   display: block;
 }
 
+table tbody
+{
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  height: calc(100vh - 212px)
+}
+
 th{
   border: 1px solid $primary;
   color: $primary;
-  font-size: 12px;
   height: 44px;
 }
 
-td, td a{
-  height: 53px;
-  font-weight: normal;
-  font-size: 18px;
+td{
+  height: 55px;
 }
 
-td a{
-  color: $primary;
-}
 
 th, td{
-  width: 1000px;
-  }
+  width: 2000px;
+}
 
 tr{
   border: 1px solid $greyBorder;

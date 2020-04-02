@@ -52,33 +52,8 @@ export class ApiService {
       sectionLabels: (aisle.sectionLabels || []).map(l => this.createSectionLabel(l)),
       topStock: (aisle.topStock || []).map(l => this.createSectionLabel(l)),
       sectionBreaks: aisle.sectionBreaks,
-      // sectionLabels: ([600, 4500, 10000]).map(l => this.createSectionLabelFake(l)),
-      // topStock: ([500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000]).map(l => this.createTopStock(l)),
-      // sectionBreaks: [600, 4500, 10000],
       coveragePercent: aisle.coveragePercent,
       aisleCoverage: aisleCoverage,
-    };
-  }
-
-  createSectionLabelFake(l: number): any {
-    return {
-      labelId: this.labelId++,
-      labelName: 'Section Label',
-      barcode: '000000' + l.toString(),
-      productId: '',
-      price: 0.0,
-      department: '',
-      onHand: 0,
-      bounds: {
-        top: 2000,
-        left: l - 130,
-        width: 100,
-        height: 30,
-      },
-      productCoordinates: [],
-      section: '',
-      customFields: [],
-      annotations: {},
     };
   }
 
@@ -200,6 +175,7 @@ export class ApiService {
       missionId: mission.id,
       missionName: mission.name,
       storeId: mission.store.id,
+      storeName: mission.store.name,
       startDateTime: new Date(adjStartDateString),
       endDateTime: new Date(adjEndDateString),
       createDateTime: new Date(adjCreateDateString),
