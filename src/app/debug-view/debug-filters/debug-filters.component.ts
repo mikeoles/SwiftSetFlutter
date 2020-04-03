@@ -8,10 +8,14 @@ import { faAngleDown, faAngleUp, faArrowRight, faArrowLeft, faCheckSquare, faSqu
 })
 export class DebugFiltersComponent implements OnInit {
 
-  @Output() toggleFilter = new EventEmitter();
-  @Input() filters: Map<string, boolean>;
+  @Output() toggleFilters = new EventEmitter<{filterName: string, filterValue: string}>();
+  @Input() classifications: Map<string, boolean>;
+  @Input() detectionTypes: Map<string, boolean>;
+  @Input() tags: Map<string, boolean>;
 
-  dropdownOpen = false;
+  detectionsTypesDropdown = false;
+  classificationsDropdown = false;
+  tagsDropdown = false;
 
   faAngleDown = faAngleDown;
   faAngleUp = faAngleUp;
@@ -26,11 +30,30 @@ export class DebugFiltersComponent implements OnInit {
   ngOnInit() {
   }
 
-  dropdownClicked() {
-    this.dropdownOpen = !this.dropdownOpen;
+  dropdownClicked(filterName: string) {
+    switch (filterName) {
+      case 'detectionTypes':
+        this.detectionsTypesDropdown = !this.detectionsTypesDropdown;
+        this.tagsDropdown = false;
+        this.classificationsDropdown = false;
+        break;
+      case 'tags':
+        this.tagsDropdown = !this.tagsDropdown;
+        this.detectionsTypesDropdown = false;
+        this.classificationsDropdown = false;
+        break;
+      case 'classifications':
+        this.classificationsDropdown = !this.classificationsDropdown;
+        this.tagsDropdown = false;
+        this.detectionsTypesDropdown = false;
+        break;
+    }
   }
 
-  selectFilter(filterName: string) {
-    this.toggleFilter.emit(filterName);
+  selectFilter(filterName: string, filterValue: string) {
+    this.toggleFilters.emit({
+      filterName: filterName,
+      filterValue: filterValue
+    });
   }
 }

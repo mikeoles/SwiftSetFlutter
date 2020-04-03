@@ -11,7 +11,9 @@ import { ActivatedRoute, Params } from '@angular/router';
 export class DebugViewComponent implements OnInit {
 
   panoramaUrl: String;
-  filters = new Map<string, boolean>(); // todo
+  detectionTypes = new Map<string, boolean>();
+  tags = new Map<string, boolean>();
+  classifications = new Map<string, boolean>();
 
   constructor(private readonly apiService: ApiService,
     private readonly activatedRoute: ActivatedRoute) {
@@ -38,11 +40,27 @@ export class DebugViewComponent implements OnInit {
       this.panoramaUrl = aisle.panoramaUrl;
     });
 
-    this.apiService.getDebugData(storeId, missionId, aisleId).subscribe(debug => {
-    });
+    // this.apiService.getDebugData(storeId, missionId, aisleId).subscribe(debug => {
+    // });
+    this.detectionTypes.set('dt 1', false);
+    this.detectionTypes.set('dt 2', false);
+    this.tags.set('t 1', false);
+    this.tags.set('t 2', false);
+    this.classifications.set('c 1', false);
+    this.classifications.set('c 2', false);
   }
 
-  toggleFilters(filterName: string) {
-    this.filters.set(filterName, !this.filters.get(filterName));
+  toggleFilters(toggleInfo: any) {
+    switch (toggleInfo.filterName) {
+      case 'detectionTypes':
+        this.detectionTypes.set(toggleInfo.filterValue, !this.detectionTypes.get(toggleInfo.filterValue));
+        break;
+      case 'tags':
+        this.tags.set(toggleInfo.filterValue, !this.tags.get(toggleInfo.filterValue));
+        break;
+      case 'classifications':
+        this.classifications.set(toggleInfo.filterValue, !this.classifications.get(toggleInfo.filterValue));
+        break;
+    }
   }
 }
