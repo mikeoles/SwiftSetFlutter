@@ -43,7 +43,7 @@ describe('StoreViewComponent', () => {
   const missions: Mission[] = [
     { missionId: '1', missionName: '', storeId: '1', startDateTime: new Date(), outs: 1, labels: 1, aisleCount: 1, endDateTime: new Date(),
       percentageRead: 1, percentageUnread: 1, unreadLabels: 1, readLabelsMissingProduct: 1, readLabelsMatchingProduct: 1,
-      createDateTime: new Date(), aisles: [], storeName: '' },
+      createDateTime: new Date(), aisles: [], storeName: '', storeNumber: 1 },
   ];
   const daySummaries: DaySummary[] = [
     {
