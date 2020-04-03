@@ -13,6 +13,8 @@ import ProductCoordinate from './productCoordinate.model';
 import AnnotationCategory from './annotationCategory.model';
 import AuthData from './auth.model';
 import moment from 'moment';
+import Detection from './detection.model';
+import detectionJson from '../assets/mock/detections.json';
 
 @Injectable({
   providedIn: 'root'
@@ -382,10 +384,6 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/historicalData?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`);
   }
 
-  getDebugData(storeId: string, missionId: string, aisleId: string): Observable<string> {
-    throw new Error('Method not implemented.');
-  }
-
   getToken(accessCode: string, reduirectUrl: string): Observable<AuthData> {
     const formData = new FormData();
     formData.set('code', accessCode);
@@ -458,6 +456,28 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations`);
   }
 
+  getDetections(storeId: string, missionId: string, aisleId: string): Observable<Detection[]> {
+    // return this.http.get(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/detections`)
+    return of(detectionJson)
+    .pipe(map<any, Detection[]>(o => o.detections.map(d => this.createDetection(d))), );
+  }
+
+  createDetection(detection: any): Detection {
+    return {
+      detectionId: detection.id,
+      bounds: {
+        top: detection.bounds.top,
+        left: detection.bounds.left,
+        width: detection.bounds.width,
+        height: detection.bounds.height,
+      },
+      detectionType: detection.detectionType,
+      tags: detection.tags,
+      classifications: detection.classifications,
+      associations: detection.associations,
+      color: ''
+    };
+  }
 
     // Missed
 

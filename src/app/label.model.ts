@@ -1,6 +1,5 @@
 import CustomField from './customField.model';
 import ProductCoordinate from './productCoordinate.model';
-import AnnotationCategory from './annotationCategory.model';
 
 export default class Label {
   labelId: number;

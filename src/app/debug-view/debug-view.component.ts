@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
 import { ActivatedRoute, Params } from '@angular/router';
+import Detection from '../detection.model';
 
 @Component({
   selector: 'app-debug-view',
@@ -11,9 +12,18 @@ import { ActivatedRoute, Params } from '@angular/router';
 export class DebugViewComponent implements OnInit {
 
   panoramaUrl: String;
+  detections = Array<Detection>();
+  displayedDetections = new Map<number, Detection>();
+
+  // keep track of which filters are enabled
   detectionTypes = new Map<string, boolean>();
   tags = new Map<string, boolean>();
   classifications = new Map<string, boolean>();
+
+  // map detection types, classifications, and tags to colors
+  detectionTypeColors = new Map<string, string>();
+  tagColors = new Map<string, string>();
+  classificationColors = new Map<string, string>();
 
   constructor(private readonly apiService: ApiService,
     private readonly activatedRoute: ActivatedRoute) {
@@ -40,14 +50,26 @@ export class DebugViewComponent implements OnInit {
       this.panoramaUrl = aisle.panoramaUrl;
     });
 
-    // this.apiService.getDebugData(storeId, missionId, aisleId).subscribe(debug => {
-    // });
-    this.detectionTypes.set('dt 1', false);
-    this.detectionTypes.set('dt 2', false);
-    this.tags.set('t 1', false);
-    this.tags.set('t 2', false);
-    this.classifications.set('c 1', false);
-    this.classifications.set('c 2', false);
+    this.apiService.getDetections(storeId, missionId, aisleId).subscribe(detections => {
+      this.detections = detections;
+
+      // set the filters to all of the unique values in the detection types and turn them all off by default
+      detections.forEach(detection => {
+        this.detectionTypes.set(detection.detectionType, false);
+      });
+      detections.forEach(detection => {
+        detection.tags.forEach(tag => {
+          this.tags.set(tag, false);
+        });
+      });
+      detections.forEach(detection => {
+        detection.classifications.forEach(classification => {
+          this.classifications.set(classification, false);
+        });
+      });
+
+      // todo get colors from environment
+    });
   }
 
   toggleFilters(toggleInfo: any) {
@@ -62,5 +84,29 @@ export class DebugViewComponent implements OnInit {
         this.classifications.set(toggleInfo.filterValue, !this.classifications.get(toggleInfo.filterValue));
         break;
     }
+    this.updateDisplayedDetections();
+  }
+
+  // Create a list of detections that should be displayed based on which filters are checked and set the colors for each of those detections
+  updateDisplayedDetections() {
+    this.displayedDetections.clear();
+    this.detections.forEach( detection => {
+      if (this.detectionTypes.get(detection.detectionType)) {
+        detection.color = this.detectionTypeColors.get(detection.detectionType);
+        this.displayedDetections.set(detection.detectionId, detection);
+      }
+      detection.classifications.forEach( classification => {
+        if (this.classifications.get(classification)) {
+          detection.color = this.classificationColors.get(classification);
+          this.displayedDetections.set(detection.detectionId, detection);
+        }
+      });
+      detection.tags.forEach( tag => {
+        if (this.tags.get(tag)) {
+          detection.color = this.tagColors.get(tag);
+          this.displayedDetections.set(detection.detectionId, detection);
+        }
+      });
+    });
   }
 }
