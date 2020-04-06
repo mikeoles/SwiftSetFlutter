@@ -1,5 +1,10 @@
 @import '../../../variables';
 
+.bottomBar {
+  padding: 20px;
+  display: block;
+}
+
 button{
     height: 45px;
     padding: 0px 20px;
@@ -52,7 +57,7 @@ button > span {
   display: inline-block;
 }
 
-@media (max-width: 1350px) {
+@media (max-width: 1450px) {
   .storeInfo {
     font-size: 18px;
   }
@@ -68,13 +73,13 @@ button > span {
   }
 }
 
-@media (min-width: 976px) {
+@media (min-width: 1075px) {
   #collapsedContainer{
     display: none;
   }
 }
 
-@media (max-width: 975px) {
+@media (max-width: 1075px) {
   .hideSmallScreen, .storeInfo  {
     display: none;
   }

@@ -38,8 +38,8 @@
     </div>
     <button class="panoChangeButton" (click)="previousPano()"><fa-icon size="lg" class="fa" [icon]="faArrowLeft"></fa-icon></button>
     <button class="panoChangeButton" (click)="nextPano()"><fa-icon size="lg" class="fa" [icon]="faArrowRight"></fa-icon></button>
-    <button class="rightButton hideSmallScreen" target="_blank" [routerLink]="['debug']">Debug</button>
     <button class="rightButton hideSmallScreen" (click)="openModal('export-popup')"><img class="exportImage" src="../../assets/export-blue.png"> <span>Export</span></button>
+    <button class="rightButton hideSmallScreen" (click)="debugClick()">Debug</button>
     <button class="rightButton hideSmallScreen" (click)="resetPanoClick()">Reset Pano</button>
     <button class="rightButton hideSmallScreen"  [ngClass]="{'selectedButton': qaMode}" (click)="qaModeClick()">QA Mode</button>
 
