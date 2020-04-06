@@ -2,6 +2,33 @@
     <div class="image-owner" id="image-owner">
       <div id="pano-image" class="image">
         <img [src]="panoramaUrl" *ngIf="panoramaUrl"/>
+
+        <ng-container *ngFor="let detection of displayedDetections | keyvalue">
+          <div class="detection"
+          [style.left.px] = "detection.value.bounds.left"
+          [style.top.px] = "detection.value.bounds.top"
+          [style.width.px] = "detection.value.bounds.width"
+          [style.height.px] = "detection.value.bounds.height"
+          [style.border-color] = "detection.value.color"></div>
+        </ng-container>
+        <!-- <line
+        [attr.x1]="annotation.bounds.left+annotation.bounds.width/2+10"
+        [attr.y1]="annotation.bounds.top"
+        [attr.x2]="productCoordinate.left+productCoordinate.width/2+10"
+        [attr.y2]="productCoordinate.top+productCoordinate.height/2+10" /> -->
+        <ng-container>
+          <svg>
+            <ng-container *ngFor="let detection of displayedDetections | keyvalue">
+              <ng-container *ngFor="let coordinate of getLineCoordinates(detection.key, detection.value.associations)">
+                <line
+                [attr.x1]="coordinate.x1"
+                [attr.y1]="coordinate.y1"
+                [attr.x2]="coordinate.x2"
+                [attr.y2]="coordinate.y2" />
+              </ng-container>
+            </ng-container>
+          </svg>
+        </ng-container>
       </div>
     </div>
     

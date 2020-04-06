@@ -7,23 +7,39 @@
     {
       "id": 1,
       "bounds": {
-        "top": 1,
-        "left": 2,
-        "width": 10,
-        "height": 20
+        "top": 200,
+        "left": 400,
+        "width": 50,
+        "height": 30
       },
       "detectionType": "label",
       "classifications": [
         "shelf",
         "peg"
       ],
-      "associations": [
-        1,
-        2,
-        3
-      ],
+      "associations": [],
       "tags": [
         "outOfStock"
+      ]
+    },
+    {
+      "id": 2,
+      "bounds": {
+        "top": 600,
+        "left": 400,
+        "width": 50,
+        "height": 30
+      },
+      "detectionType": "label",
+      "classifications": [
+        "top",
+        "peg"
+      ],
+      "associations": [
+        1
+      ],
+      "tags": [
+        "special"
       ]
     }
   ]

@@ -45,20 +45,6 @@
         </ng-container>
       </ng-container>
 
-      <ng-container *ngIf="qaModesTurnedOn.includes('debug') && currentlyDisplayed.includes('shelfLabels')">
-        <svg>
-          <ng-container *ngFor="let annotation of labels">
-            <ng-container *ngFor="let productCoordinate of annotation.productCoordinates">
-              <line
-              [attr.x1]="annotation.bounds.left+annotation.bounds.width/2+10"
-              [attr.y1]="annotation.bounds.top"
-              [attr.x2]="productCoordinate.left+productCoordinate.width/2+10"
-              [attr.y2]="productCoordinate.top+productCoordinate.height/2+10" />
-            </ng-container>
-          </ng-container>
-        </svg>
-      </ng-container>
-
       <ng-container *ngIf="currentlyDisplayed.includes('sectionBreaks')">
         <ng-container *ngFor="let sectionBreak of sectionBreaks">
           <div class="break" [style.left.px]="sectionBreak"></div>

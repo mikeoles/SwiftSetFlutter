@@ -18,6 +18,9 @@ export const environment = {
   permissions: ['topStock', 'QA', 'sectionLabels', 'sectionBreaks', 'misreadBarcodes'],
   authUrl: 'http://localhost/dex/auth?',
   authClientId: 'data-products-viewer',
+  detectionTypeColors: ['label:#00FF00' , 'product:#00FFFF'],
+  classificationColors: ['top:#FFFF00' , 'shelf:#FF0000', 'peg:#0000FF'],
+  tagColors: ['outOfStock:#FFFFFF' , 'special:#FF00FF']
 };
 
 /*

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import Detection from '../detection.model';
+import { EnvironmentService } from '../environment.service';
 
 @Component({
   selector: 'app-debug-view',
@@ -26,7 +27,8 @@ export class DebugViewComponent implements OnInit {
   classificationColors = new Map<string, string>();
 
   constructor(private readonly apiService: ApiService,
-    private readonly activatedRoute: ActivatedRoute) {
+    private readonly activatedRoute: ActivatedRoute,
+    private environment: EnvironmentService) {
   }
 
   ngOnInit() {
@@ -68,7 +70,17 @@ export class DebugViewComponent implements OnInit {
         });
       });
 
-      // todo get colors from environment
+      this.setColorsFromConfig(this.detectionTypeColors, this.environment.config.detectionTypeColors);
+      this.setColorsFromConfig(this.classificationColors, this.environment.config.classificationColors);
+      this.setColorsFromConfig(this.tagColors, this.environment.config.tagColors);
+    });
+  }
+
+  // set colors from environment cofig
+  setColorsFromConfig(colorsMap: Map<string, string>, configString: string[]) {
+    configString.forEach(config => {
+      const configValues = config.split(':');
+      colorsMap.set(configValues[0], configValues[1]);
     });
   }
 
@@ -91,19 +103,23 @@ export class DebugViewComponent implements OnInit {
   updateDisplayedDetections() {
     this.displayedDetections.clear();
     this.detections.forEach( detection => {
+      detection.color = this.detectionTypeColors.get(detection.detectionType); // set to detectionType color by default
       if (this.detectionTypes.get(detection.detectionType)) {
-        detection.color = this.detectionTypeColors.get(detection.detectionType);
         this.displayedDetections.set(detection.detectionId, detection);
       }
       detection.classifications.forEach( classification => {
         if (this.classifications.get(classification)) {
-          detection.color = this.classificationColors.get(classification);
+          if (this.classificationColors.has(classification)) { // overwrite with classificaiton color
+            detection.color = this.classificationColors.get(classification);
+          }
           this.displayedDetections.set(detection.detectionId, detection);
         }
       });
       detection.tags.forEach( tag => {
         if (this.tags.get(tag)) {
-          detection.color = this.tagColors.get(tag);
+          if (this.tagColors.has(tag)) { // overwrite with tag color
+            detection.color = this.tagColors.get(tag);
+          }
           this.displayedDetections.set(detection.detectionId, detection);
         }
       });

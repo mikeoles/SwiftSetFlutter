@@ -6,7 +6,7 @@
   position: relative;
 
   .image-owner {
-    height: calc(100vh - 47px);
+    height: calc(100vh - 47px - 95px);
     position: relative;
 
     .image {
@@ -16,9 +16,8 @@
         height: 100%;
       }
 
-      .label{
+      .detection{
         position: absolute;
-        color: white;
         border: 10px solid;
       }
     }
@@ -55,5 +54,17 @@
       &#zoomIn { top: -3px; }
       &#zoomOut { top: 44px; }
     }
+  }
+}
+
+svg{
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  line{
+    stroke: $associationLines;
+    stroke-width: 8px;
   }
 }
