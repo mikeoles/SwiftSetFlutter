@@ -1,17 +1,12 @@
 @import '../../../variables';
 
 button{
-    height: 55px;
-    width: 285px;
-    padding: 0px 30px;
-    margin: 20px 20px;
-    background-color: white;
-    border-radius: 30px;
-    font-size: 18px;
-    font-weight: bold;
-    text-align: left;
-    color: $primary;
-    border: 3px $primary solid;
+    height: 45px;
+    padding: 0px 20px;
+    cursor: pointer !important;
+    width: auto;
+    margin: 0px 5px;
+    font-size: 15px;
 }
 
 .disabled {
@@ -23,15 +18,18 @@ button{
   cursor: progress !important;
 }
 
-.rightButton{
+.rightButton {
   float: right;
-  text-align: center;
-  width: auto;
-  margin: 20px 10px 20px 10px;
+}
+
+.storeInfo {
+  float: left;
+  font-size: 24px;
+  font-weight: bold;
+  margin: 7px 10px 0px 0px;
 }
 
 .rightDropdown{
-  margin: 0px -10px 0px -10px;
   button{
     width: auto;
   }
@@ -42,36 +40,8 @@ button{
 }
 
 .panoChangeButton{
-  margin: 20px 5px;
-  text-align: center;
-  width: auto;
-  padding-left: 16px;
-  padding-right: 16px;
+  padding: 0px 16px;
   border-radius: 100px;
-}
-
-.pdfButton{
-  text-align: center;
-  width: auto;
-  position: absolute;
-  right: 25px;
-  height: 35px;
-  width: 200px;
-  margin: 38px 0px;
-  padding: 1px 20px;
-}
-
-.resetPanoButton, .pdfButton {
-  float: right;
-  margin-right: 20px;
-}
-
-#missionsContainer {
-  margin-left: 10px;
-  margin-right: 40px;
-  button {
-    width: 375px;
-  }
 }
 
 button > img,
@@ -82,66 +52,39 @@ button > span {
   display: inline-block;
 }
 
-#missionsContainer button {
-  width: 375px;
-}
-
-#aislesContainer {
-  button {
-    width: 285px;
+@media (max-width: 1350px) {
+  .storeInfo {
+    font-size: 18px;
   }
-}
-
-
-@media (max-width: 1700px) {
-  button {
-    font-size: 16px !important;
-    margin: 10px !important;
-    padding: 0px 20px !important;
+  button{
+    font-size: 13px !important;
+    padding: 0px 8px !important;
   }
-}
-
-@media (max-width: 1500px) {
-  button {
-    font-size: 14px !important;
-    margin: 2px !important;
-    padding: 0px 15px !important;
-    height: 45px !important;
-  }
-  #missionsContainer {
-    margin: 0px !important;
-    button {
-      width: 270px !important;
-    }
+  #missionsContainer button {
+    width: 180px !important;
   }
   #aislesContainer button {
-    width: 170px !important;
-  }
-  .bottomBar {
-    padding: 10px;
+    width: 110px !important;
   }
 }
 
-@media (min-width: 769px) {
+@media (min-width: 976px) {
   #collapsedContainer{
     display: none;
   }
 }
 
-@media (max-width: 768px) {
-  .rightButton {
+@media (max-width: 975px) {
+  .hideSmallScreen, .storeInfo  {
     display: none;
   }
-  #collapsedContainer ul {
-    width: 160px !important;
+
+  .bottomBar {
+    padding: 20px 10px
   }
-  ul{
-    margin-left: 0px !important;
-    margin-top: 15px !important;
-  }
-  .pointer{
-    margin-top: 0px !important;
-    margin-left: 50px !important;
+
+  button {
+    margin: 0px 1px;
   }
 }
 
@@ -154,6 +97,13 @@ button > span {
   width: auto;
 }
 
+#missionsContainer button {
+  width: 275px;
+}
+#aislesContainer button {
+  width: 175px;
+}
+
 #collapsedContainer{
   float: right;
   width: auto;
@@ -163,16 +113,16 @@ button > span {
 }
 
 ul{
-  width: 325px;
+  width: auto;
+  min-width: 200px;
   max-height: 350px;
   overflow: auto;
   size: 18px;
   position: absolute;
   display: block;
   z-index: 2;
-  margin-top: -9px;
-  margin-left: 60px;
-  padding: 5px 0px 10px 20px;
+  margin-left: 6px;
+  padding: 5px 20px 10px 20px;
   border-radius: 30px;
   box-shadow: 0px 0px 30px rgba(32, 32, 32, 0.411);
   background: white;
@@ -221,22 +171,12 @@ ul{
 .pointer{
   position: absolute;
   z-index: 2;
-  margin-top: -28px;
-  margin-left: 200px;
+  margin-left: 50px;
   width: 0;
   height: 0;
   border-style: solid;
   border-width: 0 20px 20px 20px;
   border-color: transparent transparent white transparent;
-}
-
-.displayPointer{
-  margin-left: 70px;
-}
-
-.displayDropdown{
-  margin-left: 0px;
-  width: 200px;
 }
 
 .selectedButton{

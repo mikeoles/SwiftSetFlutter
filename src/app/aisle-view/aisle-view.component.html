@@ -2,15 +2,15 @@
   [selectedMission]="selectedMission" [selectedAisle]="selectedAisle" [panoramaUrl]="panoramaUrl" [outs]="outs" [labels]="labels"
   (missionSelected)='changeMission($event)' (aisleSelected)='setAisle($event)' [panoTouched]=panoTouched
   (panoSwitch)='changePanoMode()' (resetPano)='resetPanoClicked()' (resetPanoAfterExport)='resetPanoAfterExportClicked()'
-  (toggleMode)='toggleMode($event)' [qaModesTurnedOn]='qaModesTurnedOn' [currentlyDisplayed]='currentlyDisplayed' (toggleDisplayed)='toggleDisplayed($event)'>
+  (toggleQAMode)='toggleQAMode()' [qaMode]='qaMode' [currentlyDisplayed]='currentlyDisplayed' (toggleDisplayed)='toggleDisplayed($event)'>
 </app-selection-area>
 <app-panorama [panoramaUrl]="panoramaUrl" [currentId]="currentId" [currentlyDisplayed]='currentlyDisplayed' [missedBarcodeMarkers]="missedBarcodeMarkers"
   [outs]="outs" [labels]="labels" [sectionLabels]="sectionLabels" [sectionBreaks]="sectionBreaks" [topStock]="topStock"
-  [panoMode]='panoMode' [qaModesTurnedOn]='qaModesTurnedOn'  [resetPano]='resetPano' [resetPanoAfterExport]='resetPanoAfterExport'
+  [panoMode]='panoMode' [qaMode]='qaMode'  [resetPano]='resetPano' [resetPanoAfterExport]='resetPanoAfterExport'
   [misreadBarcodes]="misreadBarcodes"  (panoramaTouched)='hideDropdowns()' (panoramaId)='setId($event)'
   (updateLabelCategory)='updateLabelCategory($event)' (updateMissedCategory)='updateMissedCategory($event)'>
 </app-panorama>
 <app-product-details [outs]="outs" [labels]="labels" [sectionLabels]="sectionLabels" [topStock]="topStock"  [misreadBarcodes]="misreadBarcodes"
-  (gridId)='setId($event)' [currentId]="currentId" [panoMode]='panoMode'>
+[currentlyDisplayed]='currentlyDisplayed' [sectionBreaks]="sectionBreaks" (gridId)='setId($event)' [currentId]="currentId" [panoMode]='panoMode' [qaMode]='qaMode'>
 </app-product-details>
 <ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>

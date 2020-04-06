@@ -24,14 +24,13 @@ import { Roles } from 'src/permissions/roles';
 export class SelectionAreaComponent implements OnInit, OnChanges {
   store: Store;
   currentDropdown = '';
-  exportOnHand = false;
-  exportingPDF = false;
+  showExportButtons = false;
 
   showTopStock = false;
   showSectionLabels = false;
   showSectionBreaks = false;
   showQA = false;
-  showMisreadBarcodes = true;
+  showMisreadBarcodes = false;
 
   @Input() missions: Mission[];
   @Input() aisles: Aisle[];
@@ -41,15 +40,14 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   @Input() panoramaUrl: string;
   @Input() outs: Label[] = [];
   @Input() labels: Label[] = [];
-
   @Input() currentlyDisplayed: Set<string>;
-  @Input() qaModesTurnedOn: Set<string>;
+  @Input() qaMode: boolean;
 
   @Output() missionSelected = new EventEmitter();
   @Output() aisleSelected = new EventEmitter();
   @Output() resetPano = new EventEmitter();
   @Output() resetPanoAfterExport = new EventEmitter();
-  @Output() toggleMode = new EventEmitter();
+  @Output() toggleQAMode = new EventEmitter();
   @Output() toggleDisplayed = new EventEmitter();
 
   faAngleDown = faAngleDown;
@@ -66,18 +64,17 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
               private environment: EnvironmentService,
               private apiService: ApiService,
               private router: Router) {
-    this.exportOnHand = environment.config.onHand;
-    this.exportingPDF = environment.config.exportingPDF;
+    this.showExportButtons = environment.config.showExportButtons;
+    this.showMisreadBarcodes = environment.config.showMisreadBarcodes;
+    this.showSectionLabels = environment.config.showSectionLabels;
+    this.showTopStock = environment.config.showTopStock;
+    this.showSectionBreaks = environment.config.showSectionBreaks;
 
     const context = this;
     this.apiService.getRoles(localStorage.getItem('id_token')).subscribe( role => {
       if (typeof context.environment.setPermissions === 'function') {
         context.environment.setPermissions(Roles[role]);
       }
-      context.showTopStock = environment.config.permissions.indexOf(Permissions.topStock) > -1;
-      context.showSectionLabels = environment.config.permissions.indexOf(Permissions.sectionLabels) > -1;
-      context.showSectionBreaks = environment.config.permissions.indexOf(Permissions.sectionBreaks) > -1;
-      context.showQA = environment.config.permissions.indexOf(Permissions.QA) > -1;
     });
   }
 
@@ -133,8 +130,8 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
     this.toggleDisplayed.emit(display);
   }
 
-  qaModeSelected(mode: string) {
-    this.toggleMode.emit(mode);
+  qaModeClick() {
+    this.toggleQAMode.emit();
   }
 
   openDropdown(name: string) {

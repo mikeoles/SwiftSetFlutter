@@ -4,6 +4,7 @@ export default class Mission {
   missionId: string;
   missionName: string;
   storeId: string;
+  storeName: string;
   startDateTime: Date;
   endDateTime: Date;
   createDateTime: Date;

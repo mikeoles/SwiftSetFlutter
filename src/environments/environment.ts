@@ -7,20 +7,24 @@ import { labelScrollOptions } from 'src/app/labelScrollOptions';
 export const environment = {
   production: false,
   apiUrl: 'http://localhost/api',
+  authUrl: 'http://localhost/dex/auth?',
+  authClientId: 'data-products-viewer',
+  classificationColors: ['top:#FFFF00' , 'shelf:#FF0000', 'peg:#0000FF'],
+  coverageDisplayType: 'description', // description or percent
   coveragePercent: false,
-  coverageDisplayType: 'description',
-  onHand: true,
-  exportingPDF: true,
+  detectionTypeColors: ['label:#00FF00' , 'product:#00FFFF'],
   exportFields: ['Barcode', 'top', 'left', 'width', 'height'],
-  productGridFields: ['Barcode', 'top', 'left', 'width', 'height'],
   labelScrolling: labelScrollOptions.vertical,
   missionHistoryDays: 14, // Number of days to display missions for
   permissions: ['topStock', 'QA', 'sectionLabels', 'sectionBreaks', 'misreadBarcodes'],
-  authUrl: 'http://localhost/dex/auth?',
-  authClientId: 'data-products-viewer',
-  detectionTypeColors: ['label:#00FF00' , 'product:#00FFFF'],
-  classificationColors: ['top:#FFFF00' , 'shelf:#FF0000', 'peg:#0000FF'],
-  tagColors: ['outOfStock:#FFFFFF' , 'special:#FF00FF']
+  productGridFields: ['Barcode', 'Price'],
+  onHand: true,
+  showExportButtons: false, // Hides: Request Data, Aisle Scan Data, Mission Export, Aisle Export (besides pano)
+  showMisreadBarcodes: true,
+  showSectionBreaks: true,
+  showSectionLabels: true,
+  showTopStock: true,
+  tagColors: ['outOfStock:#FFFFFF' , 'special:#FF00FF'],
 };
 
 /*

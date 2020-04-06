@@ -5,9 +5,9 @@
 <div class="storeButton">
   <ng-datepicker [(ngModel)]="graphEndDate" (ngModelChange)="changeGraphDates($event)" [options]="options" [position]="'bottom-left'"></ng-datepicker>
 </div>
-<button class="storeButton" (click)="openModal('request-data-popup')">Request Data</button>
+<button class="storeButton" *ngIf="showExportButtons" (click)="openModal('request-data-popup')">Request Data</button>
 <button class="storeButton" (click)="exportPerformanceData()">Performance Data</button>
-<button class="storeButton" (click)="exportAisleScanData()">Aisle Scan Data</button>
+<button class="storeButton" *ngIf="showExportButtons" (click)="exportAisleScanData()">Aisle Scan Data</button>
 <app-export-modal id="request-data-popup">
   <div class="modal">
       <div class="modal-body">

@@ -4,6 +4,7 @@ import { LogoService } from './logo.service';
 import { BackService } from './back.service';
 import { faArrowAltCircleLeft } from '@fortawesome/free-regular-svg-icons';
 import { AuthService } from './auth.service';
+import { version } from '../../package.json';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,7 @@ export class AppComponent implements OnInit {
 
   displayBackButton: boolean;
   faArrowAltCircleLeft = faArrowAltCircleLeft;
+  version: string = version;
 
   constructor(private router: Router,
               private logoService: LogoService,

@@ -48,9 +48,9 @@ export class PanoramaComponent implements OnInit, OnChanges {
   @Input() panoMode: boolean;
   @Input() resetPano = false;
   @Input() resetPanoAfterExport = false;
-  @Input() qaModesTurnedOn: Array<string>;
   @Input() currentlyDisplayed: Array<string>;
   @Input() missedBarcodeMarkers: MissedBarcode[];
+  @Input() qaMode: boolean;
 
   @Output() panoramaId = new EventEmitter();
   @Output() panoramaTouched = new EventEmitter();
@@ -69,8 +69,8 @@ export class PanoramaComponent implements OnInit, OnChanges {
   selectedMarkerCategory = '';
   url = '';
   positionSetByUrl = false;
+  missingBarocdes = false; // Toggle qa user ability to add missing barcodes based on config
 
-  qaUser = false;
   cancelZoom = false;
   hovered = false;
 
@@ -95,7 +95,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
 
   constructor(private environment: EnvironmentService, private apiService: ApiService,
     private location: Location, private router: Router, private activatedRoute: ActivatedRoute) {
-    this.qaUser = environment.config.permissions.indexOf(Permissions.QA) > -1;
+    this.missingBarocdes = environment.config.misreadBarcodes;
   }
 
   ngOnInit() {
@@ -122,7 +122,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
       maxZoom: 10,
       minZoom: 0.12,
       onDoubleClick: function(e: any) {
-        if (context.qaModesTurnedOn.includes('missingBarcodes')) {
+        if (context.missingBarocdes && context.qaMode) {
           context.selectedMarkerCategory = '';
           context.annotationLeft = e.offsetX;
           context.annotationTop = e.offsetY;
@@ -193,18 +193,12 @@ export class PanoramaComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['outs'] || changes['misreadBarcodes'] || changes['labels'] ||
-      changes['currentId'] || changes['currentlyDisplayed'] || changes['qaModesTurnedOn']) {
+      changes['currentId'] || changes['currentlyDisplayed'] || changes['qaMode']) {
         this.updateLabelBorders(this.outs, this.outsColor, 'outs');
         this.updateLabelBorders(this.labels, this.labelsColor, 'shelfLabels');
         this.updateLabelBorders(this.misreadBarcodes, this.misreadBarcodesColor, 'misreadBarcodes');
         this.updateLabelBorders(this.topStock, this.topStockColor, 'topStock');
         this.updateLabelBorders(this.sectionLabels, this.sectionLabelsColor, 'sectionLabels');
-    }
-
-    if (changes['qaModesTurnedOn']) {
-      if (!changes['qaModesTurnedOn'].currentValue.includes('missingBarcodes')) {
-        this.annotationMenu = AnnotationType.none;
-      }
     }
 
     if (this.panZoomApi) {
@@ -279,7 +273,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
           const categoriesList = this.categories(mode);
           const categoryName = label.annotations[mode]; // pick first annotation if multiple
           categoriesList.forEach( category => {
-            if (category.categoryName === categoryName && this.qaModesTurnedOn.includes(mode)) {
+            if (category.categoryName === categoryName && this.qaMode) {
               label.annotationColor = category.color;
             }
           });
@@ -323,12 +317,11 @@ export class PanoramaComponent implements OnInit, OnChanges {
     const isMissingBarcode = this.misreadBarcodes.findIndex((label => label.labelId === annotation.labelId)) > -1;
     const isOut = this.outs.findIndex((label => label.labelId === annotation.labelId)) > -1;
     const isLabel = this.labels.findIndex((label => label.labelId === annotation.labelId)) > -1;
-    if (this.currentlyDisplayed.includes('misreadBarcodes') && isMissingBarcode && this.qaModesTurnedOn.includes(AnnotationType.misread)) {
+    if (this.currentlyDisplayed.includes('misreadBarcodes') && isMissingBarcode && this.qaMode) {
       this.annotationMenu = AnnotationType.misread;
-    } else if (this.currentlyDisplayed.includes('outs') && isOut && this.qaModesTurnedOn.includes(AnnotationType.falsePositive)) {
+    } else if (this.currentlyDisplayed.includes('outs') && isOut && this.qaMode) {
       this.annotationMenu = AnnotationType.falsePositive;
-    } else if (this.currentlyDisplayed.includes('shelfLabels') && !isOut && isLabel
-      && this.qaModesTurnedOn.includes(AnnotationType.falseNegative)) {
+    } else if (this.currentlyDisplayed.includes('shelfLabels') && !isOut && isLabel && this.qaMode) {
       this.annotationMenu = AnnotationType.falseNegative;
     }
     if (this.annotationMenu !== AnnotationType.none) {

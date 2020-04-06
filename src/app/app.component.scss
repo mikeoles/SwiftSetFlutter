@@ -35,6 +35,15 @@ header {
     }
   }
 
+  #version {
+    position: absolute;
+    right: 150px;
+    color: $primary;
+    font-size: .8em;
+    float: right;
+    line-height: 27px;
+  }
+
   #logo {
     display: block;
     margin: auto;

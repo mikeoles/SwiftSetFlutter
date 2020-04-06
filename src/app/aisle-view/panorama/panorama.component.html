@@ -12,16 +12,6 @@
           [style.height.px] = "annotation.bounds.height"
           [style.border-color] = "annotation.annotationColor"
           (click)="annotationClicked(annotation)"></div>
-          <ng-container *ngIf="qaModesTurnedOn.includes('debug') && currentlyDisplayed.includes('shelfLabels')">
-            <ng-container *ngFor="let productCoordinate of annotation.productCoordinates">
-              <div class="productAnnotation annotation"
-              [style.left.px]="productCoordinate.left"
-              [style.top.px]="productCoordinate.top"
-              [style.width.px]="productCoordinate.width"
-              [style.height.px]="productCoordinate.height"
-              (click)="annotationClicked(annotation)"></div>
-            </ng-container>
-          </ng-container>
         </ng-container>
       </ng-container>
 
@@ -39,7 +29,7 @@
           class="delete" (click)="deleteCategory()">Delete</li>
       </ul>
 
-      <ng-container *ngIf="qaModesTurnedOn.includes('missingBarcodes')">
+      <ng-container *ngIf="qaMode">
         <ng-container *ngFor="let marker of missedBarcodeMarkers; let i = index">
           <div class="marker" [ngStyle]="setMarkerStyles(marker.top, marker.left, marker.categoryName)" (click)="editMarker(i)"></div>
         </ng-container>

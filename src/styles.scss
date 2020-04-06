@@ -179,3 +179,21 @@ canvas{
   border-top-left-radius: 5px !important;
   border-top-right-radius: 5px !important;
 }
+
+//Scrollbar
+::-webkit-scrollbar {
+  width: 16px;
+}
+
+::-webkit-scrollbar-track {
+  background: white;
+  border-right: solid 1px $primary;
+  border-bottom: solid 1px $primary;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: $primary;
+  border: 5px solid transparent;
+  border-radius: 9px;
+  background-clip: content-box;
+}

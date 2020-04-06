@@ -16,72 +16,67 @@ export enum KEY_CODE {
 export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges {
 
   @Output() gridClicked = new EventEmitter();
-  @Input() products: Label[];
-  @Input() onlyBarcode: boolean; // Displays only the barcode in the grid, used for top stock and shelf labels
-  @Input() annotationTypes: string[];
+  @Input() allLabels: Label[];
   @Input() selectedId: number;
-  showDepartment: Boolean;
-  showSection: Boolean;
+  @Input() qaMode: boolean;
   columnHeaders: String[];
   rows: Array<Array<String>> = [];
 
   constructor(private environment: EnvironmentService) {
-    // this.showDepartment = this.environment.config.productGridFields.includes('Department');
-    // this.showSection = this.environment.config.productGridFields.includes('Section');
   }
 
   ngOnInit() {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!this.products || !changes['products']) {
+    if (!this.allLabels || !(changes['allLabels'] || changes['qaMode'])) {
       return;
     }
 
-    if (changes['products']) {
-      if (this.products.length > 0) {
+    if (changes['allLabels'] || changes['qaMode']) {
+      if (this.allLabels.length > -1) {
         this.sortProductsByLocation();
+        this.getGridData();
       }
-      this.getGridData();
     }
   }
 
   sortProductsByLocation() {
     if (this.environment.config.labelScrolling === labelScrollOptions.horizontal) {
-      this.products.sort(this.horizontal);
+      this.allLabels.sort(this.horizontal);
       return;
     }
     if (this.environment.config.labelScrolling === labelScrollOptions.vertical) {
-      this.products.sort(this.horizontal);
+      this.allLabels.sort(this.horizontal);
     } else {
-      this.products.sort(this.vertical);
+      this.allLabels.sort(this.vertical);
     }
 
-    let sortedProducts: Label[] = [];
-    let currentProduct = this.products[0];
+    let sortedLabels: Label[] = [];
+    let currentLabel = this.allLabels[0];
     let currentRow: Label[] = [];
-    let nextProduct = currentProduct;
-    currentRow.push(currentProduct);
+    let nextLabel = currentLabel;
+    currentRow.push(currentLabel);
 
-    for (let i = 1; i < this.products.length - 1; i++) {
-      nextProduct = this.products[i];
-      if (this.isSameLevel(currentProduct, nextProduct)) {
+    for (let i = 1; i < this.allLabels.length - 1; i++) {
+      nextLabel = this.allLabels[i];
+      if (this.isSameLevel(currentLabel, nextLabel)) {
         if (this.environment.config.labelScrolling === labelScrollOptions.vertical) {
           currentRow.sort(this.vertical);
         } else {
           currentRow.sort(this.horizontal);
         }
-        sortedProducts = sortedProducts.concat(currentRow);
+        sortedLabels = sortedLabels.concat(currentRow);
         currentRow = [];
-        currentRow.push(nextProduct);
+        currentRow.push(nextLabel);
       } else {
-        currentRow.push(nextProduct);
+        currentRow.push(nextLabel);
       }
-      currentProduct = nextProduct;
+      currentLabel = nextLabel;
     }
 
-    if (this.products.length > 1) {
-      currentRow.push(this.products[this.products.length - 1]);
+    if (this.allLabels.length > 1) {
+      currentRow.push(this.allLabels[this.allLabels.length - 1]);
     }
 
     if (this.environment.config.labelScrolling === labelScrollOptions.vertical) {
@@ -90,49 +85,51 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
       currentRow.sort(this.horizontal);
     }
 
-    sortedProducts = sortedProducts.concat(currentRow);
-    this.products = sortedProducts;
+    sortedLabels = sortedLabels.concat(currentRow);
+    this.allLabels = sortedLabels;
   }
 
   getGridData() {
     this.rows = [];
-    if (this.onlyBarcode) {
-      this.columnHeaders = ['Barcode'];
-    } else {
-      this.columnHeaders = ['Label Name', 'Barcode', 'Product Id', 'Price'];
-      // this.columnHeaders = Object.assign([], this.environment.config.productGridFields);
+    this.columnHeaders = Object.assign([], this.environment.config.productGridFields);
+    if (this.qaMode) {
+      this.columnHeaders.push('QA Annotations');
     }
 
-    this.annotationTypes.forEach(annotationType => {
-      if (this.annotationTypes && !this.columnHeaders.includes(annotationType)) {
-        this.columnHeaders.push(annotationType);
-      }
-    });
-
-    for (let i = 0; i < this.products.length; i++) {
-      const product: Label = this.products[i];
+    for (let i = 0; i < this.allLabels.length; i++) {
+      const label: Label = this.allLabels[i];
       let row: Array<String> = Array<String>();
       for (let j = 0; j < this.columnHeaders.length; j++) {
         this.columnHeaders[j] = this.columnHeaders[j].replace(/(^")|("$)/g, '');
         const field: String = this.columnHeaders[j];
         let fieldLowercase = field.charAt(0).toLowerCase() + field.slice(1);
-        fieldLowercase = fieldLowercase.replace(/\s/g, '');
+        fieldLowercase = fieldLowercase.replace(/\s/g, ''); // remove spaces and make first letter lowercase
         if (fieldLowercase === 'description') {
           fieldLowercase = 'labelName';
         }
         let cellValue: any = '';
-        if (fieldLowercase === 'price' && (product.price === 0 || product.price)) {
-          cellValue = `$${product.price.toFixed(2)}`;
-        } else if (product[fieldLowercase]) {
-          cellValue = product[fieldLowercase];
-        } else if (product.bounds[fieldLowercase]) {
-          cellValue = product.bounds[fieldLowercase];
-        } else if (product.annotations[fieldLowercase]) {
-          cellValue = product.annotations[fieldLowercase];
+        if (fieldLowercase === 'price' && (label.price === 0 || label.price)) {
+          cellValue = `$${label.price.toFixed(2)}`;
+        }
+        if (fieldLowercase === 'qAAnnotations') { // check the label for annotations and display the first one in the grid
+          cellValue = '';
+          const annotations: string[] = Object.keys(label.annotations);
+          if (annotations.length > 0) {
+            // convert annotation category into more readable name by converting camel case to sentence case
+            let category = annotations[0].replace( /([A-Z])/g, ' $1' );
+            category = category.charAt(0).toUpperCase() + category.slice(1);
+            cellValue = category + ': ' + label.annotations[annotations[0]];
+          }
+        } else if (label[fieldLowercase]) {
+          cellValue = label[fieldLowercase];
+        } else if (label.bounds[fieldLowercase]) {
+          cellValue = label.bounds[fieldLowercase];
+        } else if (label.annotations[fieldLowercase]) {
+          cellValue = label.annotations[fieldLowercase];
         } else {
-          for (let k = 0; k < product.customFields.length; k++) {
-            if (product.customFields[k].name === field || product.customFields[k].name === '"' + field + '"') {
-              cellValue = product.customFields[k].value;
+          for (let k = 0; k < label.customFields.length; k++) {
+            if (label.customFields[k].name === field || label.customFields[k].name === '"' + field + '"') {
+              cellValue = label.customFields[k].value;
             }
           }
         }
@@ -144,13 +141,13 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
   }
 
   // check if labels are on same row or column
-  isSameLevel(currentProduct: Label, nextProduct: Label) {
+  isSameLevel(currentLabel: Label, nextLabel: Label) {
     if (this.environment.config.labelScrolling === labelScrollOptions.horizontal
-      && currentProduct.bounds.top + currentProduct.bounds.height < nextProduct.bounds.top) {
+      && currentLabel.bounds.top + currentLabel.bounds.height < nextLabel.bounds.top) {
       return true;
     }
     if (this.environment.config.labelScrolling === labelScrollOptions.vertical
-      && currentProduct.bounds.left + currentProduct.bounds.width < nextProduct.bounds.left) {
+      && currentLabel.bounds.left + currentLabel.bounds.width < nextLabel.bounds.left) {
       return true;
     }
     return false;
@@ -195,20 +192,20 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
     if (event.keyCode === KEY_CODE.UP && this.selectedId >= 0) {
       const index = this.findIndexById(this.selectedId);
       if (index > 0) {
-        this.gridClicked.emit( this.products[index - 1].labelId);
+        this.gridClicked.emit( this.allLabels[index - 1].labelId);
       }
     } else if (event.keyCode === KEY_CODE.DOWN && this.selectedId >= 0) {
       const index = this.findIndexById(this.selectedId);
-      if (index < (this.products.length - 1)) {
-        this.gridClicked.emit( this.products[index + 1].labelId );
+      if (index < (this.allLabels.length - 1)) {
+        this.gridClicked.emit( this.allLabels[index + 1].labelId );
       }
     }
   }
 
   // Return the table index based on a product id
   findIndexById(id: number) {
-    for (let i = 0; i < this.products.length; i++) {
-      if (this.products[i].labelId === id) {
+    for (let i = 0; i < this.allLabels.length; i++) {
+      if (this.allLabels[i].labelId === id) {
         return i;
       }
     }
