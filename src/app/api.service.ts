@@ -14,7 +14,6 @@ import AnnotationCategory from './annotationCategory.model';
 import AuthData from './auth.model';
 import moment from 'moment';
 import Detection from './detection.model';
-import detectionJson from '../assets/mock/detections.json';
 
 @Injectable({
   providedIn: 'root'
@@ -433,8 +432,7 @@ export class ApiService {
   }
 
   getDetections(storeId: string, missionId: string, aisleId: string): Observable<Detection[]> {
-    // return this.http.get(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/detections`)
-    return of(detectionJson)
+    return this.http.get(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/detections`)
     .pipe(map<any, Detection[]>(o => o.detections.map(d => this.createDetection(d))), );
   }
 

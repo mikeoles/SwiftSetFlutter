@@ -39,13 +39,15 @@ export class DebugPanoramaComponent implements OnInit {
     const coordinates = new Array<AssociationCoordinate>();
     const fromDetection = this.displayedDetections.get(detectionId);
     associations.forEach(associationId => {
-      const toDetection = this.displayedDetections.get(associationId);
-      coordinates.push({
-        x1: fromDetection.bounds.left + fromDetection.bounds.width / 2 + 10, // add 10px for border width
-        y1: fromDetection.bounds.top + fromDetection.bounds.height / 2 + 10,
-        x2: toDetection.bounds.left + toDetection.bounds.width / 2 + 10,
-        y2: toDetection.bounds.top + toDetection.bounds.height / 2 + 10,
-      });
+      if (this.displayedDetections.has(associationId)) {
+        const toDetection = this.displayedDetections.get(associationId);
+        coordinates.push({
+          x1: fromDetection.bounds.left + fromDetection.bounds.width / 2 + 10, // add 10px for border width
+          y1: fromDetection.bounds.top + fromDetection.bounds.height / 2 + 10,
+          x2: toDetection.bounds.left + toDetection.bounds.width / 2 + 10,
+          y2: toDetection.bounds.top + toDetection.bounds.height / 2 + 10,
+        });
+      }
     });
     return coordinates;
   }
