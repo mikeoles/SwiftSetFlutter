@@ -51,7 +51,7 @@ export class DebugFiltersComponent implements OnInit {
   }
 
   selectFilter(filterName: string, filterValue: string) {
-    this.toggleFilters.emit({
+  this.toggleFilters.emit({
       filterName: filterName,
       filterValue: filterValue
     });

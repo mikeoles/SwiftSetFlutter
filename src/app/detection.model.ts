@@ -1,5 +1,5 @@
 export default class Detection {
-  detectionId: number;
+  detectionId: string;
   bounds: {
     top: number;
     left: number;
@@ -7,7 +7,7 @@ export default class Detection {
     height: number;
   };
   detectionType: string;
-  associations: number[];
+  associations: string[];
   tags: string[];
   classifications: string[];
   color: string;

@@ -12,7 +12,7 @@ import AssociationCoordinate from 'src/app/associationCoordinate.model';
 export class DebugPanoramaComponent implements OnInit {
 
   @Input() panoramaUrl: string;
-  @Input() displayedDetections = new Map<number, Detection>();
+  @Input() displayedDetections = new Map<string, Detection>();
 
 
   panZoomApi: any;
@@ -35,7 +35,7 @@ export class DebugPanoramaComponent implements OnInit {
   }
 
   // Return start and end coorinates for each association line for a detection
-  getLineCoordinates(detectionId: number, associations: number[]): Array<AssociationCoordinate> {
+  getLineCoordinates(detectionId: string, associations: string[]): Array<AssociationCoordinate> {
     const coordinates = new Array<AssociationCoordinate>();
     const fromDetection = this.displayedDetections.get(detectionId);
     associations.forEach(associationId => {

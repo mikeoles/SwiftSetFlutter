@@ -14,7 +14,7 @@ export class DebugViewComponent implements OnInit {
 
   panoramaUrl: String;
   detections = Array<Detection>();
-  displayedDetections = new Map<number, Detection>();
+  displayedDetections = new Map<string, Detection>();
 
   // keep track of which filters are enabled
   detectionTypes = new Map<string, boolean>();
