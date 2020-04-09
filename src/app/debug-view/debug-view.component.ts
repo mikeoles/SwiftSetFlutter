@@ -26,6 +26,14 @@ export class DebugViewComponent implements OnInit {
   tagColors = new Map<string, string>();
   classificationColors = new Map<string, string>();
 
+
+  // determine which color are shown if two detectionTypes, tags, classifications are applied to the same detection
+  // highest index in the array has priority
+  detectionTypeColorOrder = new Array<string>();
+  classificationColorOrder = new Array<string>();
+  tagColorOrder = new Array<string>();
+
+
   constructor(private readonly apiService: ApiService,
     private readonly activatedRoute: ActivatedRoute,
     private environment: EnvironmentService) {
@@ -70,17 +78,18 @@ export class DebugViewComponent implements OnInit {
         });
       });
 
-      this.setColorsFromConfig(this.detectionTypeColors, this.environment.config.detectionTypeColors);
-      this.setColorsFromConfig(this.classificationColors, this.environment.config.classificationColors);
-      this.setColorsFromConfig(this.tagColors, this.environment.config.tagColors);
+      this.setColorsFromConfig(this.detectionTypeColors, this.detectionTypeColorOrder, this.environment.config.detectionTypeColors);
+      this.setColorsFromConfig(this.classificationColors, this.classificationColorOrder, this.environment.config.classificationColors);
+      this.setColorsFromConfig(this.tagColors, this.tagColorOrder, this.environment.config.tagColors);
     });
   }
 
   // set colors from environment cofig
-  setColorsFromConfig(colorsMap: Map<string, string>, configString: string[]) {
+  setColorsFromConfig(colorsMap: Map<string, string>, colorsOrder: Array<string>, configString: string[]) {
     configString.forEach(config => {
       const configValues = config.split(':');
       colorsMap.set(configValues[0], configValues[1]);
+      colorsOrder.unshift(configValues[0]);
     });
   }
 
@@ -103,32 +112,37 @@ export class DebugViewComponent implements OnInit {
   updateDisplayedDetections() {
     this.displayedDetections.clear();
     this.detections.forEach( detection => {
-      // all labels are set to detection type color by default and white if not detection type color
+      // all labels are set to detection type color by default and gray if not detection type color
       if (this.detectionTypeColors.has(detection.detectionType)) {
         detection.color = this.detectionTypeColors.get(detection.detectionType);
       } else {
-        detection.color = '#FFFFFF';
+        detection.color = '#C0C0C0';
       }
       if (this.detectionTypes.get(detection.detectionType)) {
         this.displayedDetections.set(detection.detectionId, detection);
       }
+
+      let currentColorOrder = -1; // colors are only set if no classification listed first in the config was already used
       detection.classifications.forEach( classification => {
         if (this.classifications.get(classification)) {
-          if (this.classificationColors.has(classification)) { // overwrite with classificaiton color
-            detection.color = this.classificationColors.get(classification);
+          if (this.classificationColors.has(classification) && this.classificationColorOrder.indexOf(classification) > currentColorOrder) {
+            currentColorOrder = this.classificationColorOrder.indexOf(classification);
+            detection.color = this.classificationColors.get(classification);  // overwrite with classification color
           }
           this.displayedDetections.set(detection.detectionId, detection);
         }
       });
+
+      currentColorOrder = -1; // colors are only set if no tag listed first in the config was already used
       detection.tags.forEach( tag => {
         if (this.tags.get(tag)) {
-          if (this.tagColors.has(tag)) { // overwrite with tag color
+          if (this.tagColors.has(tag) && this.tagColorOrder.indexOf(tag) > currentColorOrder) { // overwrite with tag color
+            currentColorOrder = this.tagColorOrder.indexOf(tag);
             detection.color = this.tagColors.get(tag);
           }
           this.displayedDetections.set(detection.detectionId, detection);
         }
       });
-      console.log(detection.color);
     });
   }
 }
