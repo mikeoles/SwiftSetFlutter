@@ -23,7 +23,6 @@ header {
   }
 
   #username {
-    position: absolute;
     right: 10px;
     font-size: .8em;
     float: right;
@@ -36,10 +35,9 @@ header {
   }
 
   #version {
-    position: absolute;
-    right: 150px;
     color: $primary;
     font-size: .8em;
+    padding-right: 10px;
     float: right;
     line-height: 27px;
   }
