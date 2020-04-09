@@ -9,7 +9,7 @@ export const environment = {
   apiUrl: 'http://localhost/api',
   authUrl: 'http://localhost/dex/auth?',
   authClientId: 'data-products-viewer',
-  classificationColors: ['top:#FFFF00' , 'shelf:#FF0000', 'peg:#0000FF'],
+  classificationColors: ['peg:#0000FF', 'top:#FFFF00' , 'shelf:#FF0000'],
   coverageDisplayType: 'description', // description or percent
   coveragePercent: false,
   detectionTypeColors: ['label:#00FF00' , 'product:#00FFFF'],
