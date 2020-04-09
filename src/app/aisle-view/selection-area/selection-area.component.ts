@@ -282,9 +282,10 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
       minZoom: 1,
     });
     setTimeout(() => {
-      htmlToImage.toBlob(document.getElementById('pano-image'))
+      htmlToImage.toJpeg(document.getElementById('pano-image'))
       .then(function (blob) {
-        saveAs(blob, 'pano.jpg');
+        saveAs(blob,
+          context.selectedMission.storeNumber + ' ' + context.selectedMission.missionName + ' ' + context.selectedAisle.aisleName + '.jpg');
         context.currentlyExporting = false;
         context.modalService.close(modalId);
         context.resetPanoAfterExport.emit();

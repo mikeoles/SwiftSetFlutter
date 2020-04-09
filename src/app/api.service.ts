@@ -176,6 +176,7 @@ export class ApiService {
       missionId: mission.id,
       missionName: mission.name,
       storeId: mission.store.id,
+      storeNumber: mission.store.number,
       storeName: mission.store.name,
       startDateTime: new Date(adjStartDateString),
       endDateTime: new Date(adjEndDateString),
