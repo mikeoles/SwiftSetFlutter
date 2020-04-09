@@ -103,7 +103,12 @@ export class DebugViewComponent implements OnInit {
   updateDisplayedDetections() {
     this.displayedDetections.clear();
     this.detections.forEach( detection => {
-      detection.color = this.detectionTypeColors.get(detection.detectionType); // set to detectionType color by default
+      // all labels are set to detection type color by default and white if not detection type color
+      if (this.detectionTypeColors.has(detection.detectionType)) {
+        detection.color = this.detectionTypeColors.get(detection.detectionType);
+      } else {
+        detection.color = '#FFFFFF';
+      }
       if (this.detectionTypes.get(detection.detectionType)) {
         this.displayedDetections.set(detection.detectionId, detection);
       }
@@ -123,6 +128,7 @@ export class DebugViewComponent implements OnInit {
           this.displayedDetections.set(detection.detectionId, detection);
         }
       });
+      console.log(detection.color);
     });
   }
 }
