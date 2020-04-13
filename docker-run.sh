@@ -40,6 +40,15 @@ fi
 if [[ ! -z "$AUTH_CLIENT_ID" ]]; then
   echo "  \"authClientId\": \"$AUTH_CLIENT_ID\"," >> /usr/share/nginx/html/assets/config.json
 fi
+if [[ ! -z "$DETECTION_TYPE_COLORS" ]]; then
+  echo "  \"detectionTypeColors\": [$DETECTION_TYPE_COLORS]," >> /usr/share/nginx/html/assets/config.json
+fi
+if [[ ! -z "$CLASSIFICATION_COLORS" ]]; then
+  echo "  \"classificationColors\": [$CLASSIFICATION_COLORS]," >> /usr/share/nginx/html/assets/config.json
+fi
+if [[ ! -z "$TAG_COLORS" ]]; then
+  echo "  \"tagColors\": [$TAG_COLORS]," >> /usr/share/nginx/html/assets/config.json
+fi
 echo "  \"production\": true" >> /usr/share/nginx/html/assets/config.json
 echo "}" >> /usr/share/nginx/html/assets/config.json
 

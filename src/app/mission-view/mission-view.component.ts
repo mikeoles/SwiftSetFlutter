@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { ApiService } from '../api.service';
 import { Params, ActivatedRoute, Router } from '@angular/router';
-import Aisle from '../aisle.model';
 import Mission from '../mission.model';
 import Label from '../label.model';
 import Store from '../store.model';

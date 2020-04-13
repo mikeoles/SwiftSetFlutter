@@ -1,0 +1,48 @@
+<div class="filter">
+    <div class="dropdownContainer">
+        <button class="dropdownButton" (click)="dropdownClicked('detectionTypes')">
+            Detection Type
+            <fa-icon *ngIf="!detectionsTypesDropdown" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
+            <fa-icon *ngIf="detectionsTypesDropdown" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
+        </button>
+        <ul *ngIf="detectionsTypesDropdown" class="displayDropdown">
+            <li *ngFor="let filter of detectionTypes | keyvalue" (click)="selectFilter('detectionTypes',filter.key)">
+                <fa-icon *ngIf="filter.value" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
+                <fa-icon *ngIf="!filter.value" size="lg" class="check" [icon]="faSquare"></fa-icon>
+                {{filter.key}}
+            </li>
+        </ul>
+        <div *ngIf="detectionsTypesDropdown" class="pointer displayPointer"></div>
+    </div> 
+    <div class="dropdownContainer">
+        <button class="dropdownButton" (click)="dropdownClicked('classifications')">
+            Classification
+            <fa-icon *ngIf="!classificationsDropdown" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
+            <fa-icon *ngIf="classificationsDropdown" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
+        </button>
+        <ul *ngIf="classificationsDropdown" class="displayDropdown">
+            <li *ngFor="let filter of classifications | keyvalue" (click)="selectFilter('classifications',filter.key)">
+                <fa-icon *ngIf="filter.value" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
+                <fa-icon *ngIf="!filter.value" size="lg" class="check" [icon]="faSquare"></fa-icon>
+                {{filter.key}}
+            </li>
+        </ul>
+        <div *ngIf="classificationsDropdown" class="pointer displayPointer"></div>
+    </div> 
+    <div class="dropdownContainer">
+        <button class="dropdownButton" (click)="dropdownClicked('tags')">
+            Tag
+            <fa-icon *ngIf="!tagsDropdown" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
+            <fa-icon *ngIf="tagsDropdown" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
+        </button>
+        <ul *ngIf="tagsDropdown" class="displayDropdown">
+            <li *ngFor="let filter of tags | keyvalue" (click)="selectFilter('tags',filter.key)">
+                <fa-icon *ngIf="filter.value" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
+                <fa-icon *ngIf="!filter.value" size="lg" class="check" [icon]="faSquare"></fa-icon>
+                {{filter.key}}
+            </li>
+        </ul>
+        <div *ngIf="tagsDropdown" class="pointer displayPointer"></div>
+    </div> 
+</div>
+  

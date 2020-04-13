@@ -1,17 +1,5 @@
 @import '../../../variables';
 
-svg{
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 100%;
-  width: 100%;
-  line{
-    stroke: $productLines;
-    stroke-width: 4px;
-  }
-}
-
 #annotationSelector{
   position: absolute;
   width: auto + 20px;

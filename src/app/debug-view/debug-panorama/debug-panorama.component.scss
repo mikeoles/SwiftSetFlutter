@@ -1,0 +1,70 @@
+@import '../../../variables';
+
+.panorama {
+  overflow: hidden;
+  text-align: center;
+  position: relative;
+
+  .image-owner {
+    height: calc(100vh - 47px - 95px);
+    position: relative;
+
+    .image {
+      display: inline-block;
+
+      img {
+        height: 100%;
+      }
+
+      .detection{
+        position: absolute;
+        border: 10px solid;
+      }
+    }
+  }
+
+  #zoom {
+    position: absolute;
+    right: 38px;
+    top: 29px;
+    width: 44px;
+    height: 91px;
+    background-color: white;
+    border: 3px solid $primary;
+    border-radius: 5px;
+    font-size: 24px;
+    user-select: none;
+
+    .zoomIcon {
+      color: $primary;
+      display: block;
+      position: absolute;
+      left: -3px;
+      width: 44px;
+      height: 44px;
+      line-height: 44px;
+      border: 3px solid $primary;
+      border-radius: 5px;
+      cursor: pointer;
+
+      &:active {
+        background-color: #cdd9f3;
+      }
+
+      &#zoomIn { top: -3px; }
+      &#zoomOut { top: 44px; }
+    }
+  }
+}
+
+svg{
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  line{
+    stroke: $associationLines;
+    stroke-width: 8px;
+  }
+}

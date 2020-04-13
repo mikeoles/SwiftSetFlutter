@@ -13,7 +13,6 @@ import panzoom from 'panzoom';
 import htmlToImage from 'html-to-image';
 import { saveAs } from 'file-saver';
 import { Router } from '@angular/router';
-import { Permissions } from 'src/permissions/permissions';
 import { Roles } from 'src/permissions/roles';
 
 @Component({
@@ -132,6 +131,14 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
 
   qaModeClick() {
     this.toggleQAMode.emit();
+  }
+
+  // open debug view in new tab
+  debugClick() {
+    let url = this.router.url;
+    const hasParameters = url.indexOf('?');
+    url = url.substring(0, hasParameters !== -1 ? hasParameters : url.length);
+    window.open(url + '/debug', '_blank');
   }
 
   openDropdown(name: string) {

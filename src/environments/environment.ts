@@ -9,8 +9,10 @@ export const environment = {
   apiUrl: 'http://localhost/api',
   authUrl: 'http://localhost/dex/auth?',
   authClientId: 'data-products-viewer',
+  classificationColors: ['peg:#0000FF', 'top:#FFFF00' , 'shelf:#FF0000'],
   coverageDisplayType: 'description', // description or percent
   coveragePercent: false,
+  detectionTypeColors: ['label:#00FF00' , 'product:#00FFFF'],
   exportFields: ['Barcode', 'top', 'left', 'width', 'height'],
   labelScrolling: labelScrollOptions.vertical,
   missionHistoryDays: 14, // Number of days to display missions for
@@ -22,6 +24,7 @@ export const environment = {
   showSectionBreaks: true,
   showSectionLabels: true,
   showTopStock: true,
+  tagColors: ['outOfStock:#FFFFFF' , 'special:#FF00FF'],
 };
 
 /*

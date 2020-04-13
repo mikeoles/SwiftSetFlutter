@@ -46,10 +46,6 @@
   display: inline-block;
 }
 
-button{
-  cursor: pointer !important;
-}
-
 .exportButton{
   margin-top: 20px;
   float: right;
@@ -60,10 +56,6 @@ button{
 button > img,
 button > span {
   vertical-align: middle;
-}
-
-button:focus{
-  outline:0;
 }
 
 .statRings{
@@ -81,9 +73,6 @@ button:focus{
     color: $greyBorder !important;
     border: 3px $greyBorder solid !important;
     cursor: progress !important;
-  }
-  .cancel{
-    cursor: pointer !important;
   }
   cursor: progress !important;
 }
