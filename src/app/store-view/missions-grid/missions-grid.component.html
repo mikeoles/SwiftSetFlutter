@@ -12,7 +12,8 @@
   <tbody>
     <tr *ngFor="let mission of missions; let i = index" (click)="viewMission(mission.missionId)">
       <td>
-        <a [routerLink]="" (click)="viewMission(mission.missionId)">
+        <!-- <a [routerLink]="['/store', storeId, 'mission', mission.missionId]" (click)="viewMission()"> -->
+        <a [routerLink]="['/store', storeId, 'mission', mission.missionId]" (click)="viewMission(mission.missionId)">
           {{mission.missionName}}
         </a>
       </td>

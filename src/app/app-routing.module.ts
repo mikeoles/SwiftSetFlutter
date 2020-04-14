@@ -8,6 +8,7 @@ import { FleetViewComponent } from './fleet-view/fleet-view.component';
 import { AuthComponent } from './auth/auth.component';
 import { AuthGuard } from './auth/auth.guard';
 import { DebugViewComponent } from './debug-view/debug-view.component';
+import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   { path: 'auth', component: AuthComponent },
+  { path: 'unauthorized', component: UnauthorizedComponent },
   {
     path: '',
     component: FleetViewComponent,

@@ -88,7 +88,7 @@ describe('AisleViewComponent', () => {
   totalAverageLabels: 1,
   summaryOuts: [],
   summaryLabels: [],
-  timezone: ''
+  zoneId: ''
 };
 
   beforeEach(async(() => {

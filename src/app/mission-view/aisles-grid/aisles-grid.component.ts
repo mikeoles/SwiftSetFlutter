@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Router } from '@angular/router';
 import Aisle from '../../models/aisle.model';
 import { EnvironmentService } from 'src/app/services/environment.service';
 
@@ -15,15 +14,10 @@ export class AislesGridComponent implements OnInit {
   @Input() storeId: number;
   showAisleCoverage: boolean;
 
-  constructor( private router: Router, private environment: EnvironmentService) {
-    this.showAisleCoverage = environment.config.coveragePercent;
+  constructor(private environment: EnvironmentService) {
+    this.showAisleCoverage = this.environment.config.coveragePercent;
   }
 
   ngOnInit() {
   }
-
-  viewAisle(aisleId: string) {
-    this.router.navigate(['store/' + this.storeId + '/mission/' + this.missionId + '/aisle/' + aisleId]);
-  }
-
 }

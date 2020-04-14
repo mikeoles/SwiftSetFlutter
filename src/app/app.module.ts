@@ -37,6 +37,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { DebugViewComponent } from './debug-view/debug-view.component';
 import { DebugPanoramaComponent } from './debug-view/debug-panorama/debug-panorama.component';
 import { DebugFiltersComponent } from './debug-view/debug-filters/debug-filters.component';
+import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { DebugFiltersComponent } from './debug-view/debug-filters/debug-filters.
     DebugViewComponent,
     DebugPanoramaComponent,
     DebugFiltersComponent,
+    UnauthorizedComponent,
   ],
   imports: [
     BrowserModule,

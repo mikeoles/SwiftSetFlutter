@@ -1,4 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
+import { Router } from '@angular/router';
 import { HttpInterceptor, HttpHandler, HttpRequest, HttpEvent, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { AuthService } from './auth.service';
@@ -13,7 +14,7 @@ export class AuthInterceptor implements HttpInterceptor {
   refreshing = false;
   refreshSubject = new BehaviorSubject<AuthData>(null);
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // Don't intercept auth requests
@@ -46,6 +47,9 @@ export class AuthInterceptor implements HttpInterceptor {
             })
           );
         }
+      }
+      if (e instanceof HttpErrorResponse && e.status === 403) {
+        window.location.href = 'unauthorized';
       }
       return throwError(e);
     }));

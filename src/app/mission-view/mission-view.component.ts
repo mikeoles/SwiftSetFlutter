@@ -52,7 +52,9 @@ export class MissionViewComponent implements OnInit, OnDestroy {
     });
     this.apiService.getMission(storeId, missionId, Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe(mission => {
       this.mission = mission;
-      this.apiService.getStore(mission.storeId, new Date(), new Date()).subscribe(store => {
+      const startDate = new Date();
+      startDate.setDate(startDate.getDate() - this.environment.config.missionHistoryDays + 1);
+      this.apiService.getStore(mission.storeId, startDate, new Date()).subscribe(store => {
         this.store = store;
         // If this page was nagivates to from the store view, show the two week average from there, if not show the last two weeks average
         this.averageStoreLabels = this.dataService.averageStoreLabels

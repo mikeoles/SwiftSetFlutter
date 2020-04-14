@@ -255,7 +255,7 @@ export class ApiService {
       storeNumber: store.number,
       storeName: store.name,
       storeAddress: store.address,
-      timezone: store.timezone,
+      zoneId: store.zoneId,
       robots: store.robots,
       totalAverageOuts: totalOuts / daysAdded,
       totalAverageLabels: totalLabels / daysAdded,
@@ -280,7 +280,7 @@ export class ApiService {
       storeNumber: store.number,
       storeName: store.name,
       storeAddress: store.address,
-      timezone: store.timezone,
+      zoneId: store.zoneId,
       robots: store.robots,
       totalAverageOuts: 0,
       totalAverageLabels: 0,
@@ -306,7 +306,7 @@ export class ApiService {
       .pipe(
         switchMap((store: Store) =>
           forkJoin([
-            this.getMissions(storeId, start, end, store.timezone),
+            this.getMissions(storeId, start, end, store.zoneId),
             this.http.get(`${this.apiUrl}/stores/${storeId}`)
           ])
         ),
