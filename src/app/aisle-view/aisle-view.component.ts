@@ -187,6 +187,9 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   }
 
   setMissedAnnotations(annotations): any {
+    if (annotations === undefined) {
+      annotations = [];
+    }
     const annotationsList: Array<Annotation> = [];
     annotations.forEach(annotation => {
       const annotationObj = new Annotation();
@@ -200,6 +203,9 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   }
 
   setLabelAnnotations(annotations, annotationType: AnnotationType): any {
+    if (annotations === undefined) {
+      annotations = [];
+    }
     const annotationsList: Array<Annotation> = [];
     annotations.forEach(annotation => {
       const annotationObj = new Annotation();
