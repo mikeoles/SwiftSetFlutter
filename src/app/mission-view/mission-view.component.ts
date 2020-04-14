@@ -1,14 +1,14 @@
-import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
-import { ApiService } from '../api.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ApiService } from '../services/api.service';
 import { Params, ActivatedRoute, Router } from '@angular/router';
-import Mission from '../mission.model';
-import Label from '../label.model';
-import Store from '../store.model';
+import Mission from '../models/mission.model';
+import Label from '../models/label.model';
+import Store from '../models/store.model';
 import { ModalService } from '../modal/modal.service';
-import { BackService } from '../back.service';
+import { BackService } from '../services/back.service';
 import { Subscription } from 'rxjs';
-import { EnvironmentService } from '../environment.service';
-import { DataService } from '../data.service';
+import { EnvironmentService } from '../services/environment.service';
+import { DataService } from '../services/data.service';
 import * as jsPDF from 'jspdf';
 
 @Component({

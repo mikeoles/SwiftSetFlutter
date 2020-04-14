@@ -7,19 +7,19 @@ import { SelectionAreaComponent } from './selection-area/selection-area.componen
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HttpClientModule } from '@angular/common/http';
-import { ApiService } from '../api.service';
-import Mission from '../mission.model';
-import Aisle from '../aisle.model';
+import { ApiService } from '../services/api.service';
+import Mission from '../models/mission.model';
+import Aisle from '../models/aisle.model';
 import { of } from 'rxjs';
-import Label from '../label.model';
+import Label from '../models/label.model';
 import { By } from '@angular/platform-browser';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { Component, Input } from '@angular/core';
 import { ModalService } from '../modal/modal.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { EnvironmentService } from '../environment.service';
-import Store from '../store.model';
+import { EnvironmentService } from '../services/environment.service';
+import Store from '../models/store.model';
 
 
 @Component({selector: 'app-export-modal', template: ''})
@@ -32,18 +32,17 @@ describe('AisleViewComponent', () => {
   let component: AisleViewComponent;
   let apiService: jasmine.SpyObj<ApiService>;
   let environmentService: jasmine.SpyObj<EnvironmentService>;
-
   const labels: Label[] = [
     { labelId: 1, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], annotations: [], annotationColor: '' },
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], color: '' },
     { labelId: 2, labelName: 'label name', barcode: '55037', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], annotations: [], annotationColor: '' },
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], color: '' },
     { labelId: 3, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], annotations: [], annotationColor: '' },
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], color: '' },
     { labelId: 4, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], annotations: [], annotationColor: '' },
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], color: '' },
     { labelId: 5, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], annotations: [], annotationColor: '' },
+      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], color: '' },
   ];
 
   const sectionBreaks: number[] = [19, 200];
@@ -158,11 +157,6 @@ describe('AisleViewComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'aisle'`, () => {
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('aisle');
-  });
-
   it('should load the missions', () => {
     expect(fixture.componentInstance.missions).toEqual(missions);
   });
@@ -172,7 +166,6 @@ describe('AisleViewComponent', () => {
   });
 
   it('should load the outs and labels', () => {
-    expect(fixture.componentInstance.outs).toEqual(labels);
     expect(fixture.componentInstance.labels).toEqual(labels);
   });
 

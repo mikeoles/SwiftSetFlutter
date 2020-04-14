@@ -1,9 +1,10 @@
-import { Component, OnInit, Output, EventEmitter, Input, OnChanges, Inject } from '@angular/core';
-import Label from '../../label.model';
-import { EnvironmentService } from 'src/app/environment.service';
-import { Permissions } from 'src/permissions/permissions';
-import { ApiService } from 'src/app/api.service';
-import { Roles } from 'src/permissions/roles';
+import { Component, Output, EventEmitter, Input, OnChanges } from '@angular/core';
+import Label from '../../models/label.model';
+import Annotation from 'src/app/models/annotation.model';
+import { EnvironmentService } from '../../services/environment.service';
+import { ApiService } from 'src/app/services/api.service';
+import { LabelType } from '../label-type';
+import { AnnotationType } from '../annotation-type';
 
 @Component({
   selector: 'app-product-details',
@@ -11,150 +12,61 @@ import { Roles } from 'src/permissions/roles';
   styleUrls: ['./product-details.component.scss'],
 })
 
-export class ProductDetailsComponent implements OnInit, OnChanges {
+export class ProductDetailsComponent implements OnChanges {
 
-  showDepartment: Boolean;
-  showSection: Boolean;
-  showTopStock = false;
-  showSectionLabels = false;
-  showMisreadBarcodes = false;
-  showSectionBreaks = false;
-
-  departmentsList: string[] = [];
-  sectionsList: string[] = [];
-  selectedDepts: string[] = [];
-  selectedSects: string[] = [];
-
-  @Input() outs: Label[] = [];
-  @Input() labels: Label[] = [];
-  @Input() misreadBarcodes: Label[] = [];
-  @Input() sectionLabels: Label[] = [];
-  @Input() topStock: Label[] = [];
+  @Input() labelsDictionary = new Map<LabelType, Array<Label>>();
+  @Input() annotationsDictionary = new Map<AnnotationType, Array<Annotation>>();
   @Input() sectionBreaks: number[] = [];
+  @Input() labelsChanged: boolean;
   @Input() currentlyDisplayed: Array<string>;
-  filteredOuts: Label[] = [];
-  filteredLabels: Label[] = [];
-  allLabels: Label[] = [];
-
   @Input() currentId: number;
-  currentDisplay = 'outs';
   @Input() panoMode: boolean;
   @Input() qaMode: boolean;
+
   @Output() gridId = new EventEmitter();
-  dropdownSettings = {};
+
+  allLabels: Array<Label> = [];
+  allAnnotations: Array<Annotation> = [];
+
+  showSectionLabels = false;
+  showSectionBreaks = false;
+  showTopStock = false;
+  showMisreadBarcodes = false;
+  labelType = LabelType;
 
   constructor(private environment: EnvironmentService, private apiService: ApiService) {
     this.showMisreadBarcodes = environment.config.showMisreadBarcodes;
     this.showSectionLabels = environment.config.showSectionLabels;
     this.showTopStock = environment.config.showTopStock;
     this.showSectionBreaks = environment.config.showSectionBreaks;
-    this.showDepartment = environment.config.productGridFields.includes('Department');
-    this.showSection = environment.config.productGridFields.includes('Section');
-    const context = this;
-    this.apiService.getRoles(localStorage.getItem('id_token')).subscribe( role => {
-      if (typeof context.environment.setPermissions === 'function') {
-        context.environment.setPermissions(Roles[role]);
+  }
+
+  ngOnChanges(): void {
+    this.allLabels = [];
+    this.allAnnotations = [];
+    this.labelsDictionary.forEach((labels: Label[], type: LabelType) => {
+      if (this.currentlyDisplayed.includes(type)) { // only display labels selected in the selection area dropdown
+        this.allLabels = this.allLabels.concat(labels);
       }
+    });
+    this.annotationsDictionary.forEach((annotations: Annotation[]) => {
+      this.allAnnotations = this.allAnnotations.concat(annotations);
     });
   }
 
-
-  ngOnInit() {
-    this.dropdownSettings = {
-      singleSelection: false,
-      selectAllText: 'Select All',
-      unSelectAllText: 'Unselect All',
-      itemsShowLimit: 1,
-    };
-  }
-
-  ngOnChanges() {
-    if (this.labels) {
-      const tempSet: Set<string> = new Set<string>();
-      this.labels.forEach(label => {
-        label.customFields.forEach(field => {
-          if (field.name === 'Department') {
-            tempSet.add(field.value);
-          }
-        });
-      });
-      this.departmentsList = Array.from(tempSet);
-
-      tempSet.clear();
-      this.labels.forEach(label => {
-        if (label.section != null) {
-          tempSet.add(label.section);
-        }
-      });
-      this.sectionsList = Array.from(tempSet);
-    }
-
-    if (this.outs || this.labels) {
-      this.runFilters();
-    }
-
-    // only display labels selected in the selection area dropdown
-    this.allLabels = new Array<Label>();
-    if (this.currentlyDisplayed.includes('outs')) {
-      this.allLabels = this.allLabels.concat(this.filteredOuts);
-    }
-    if (this.currentlyDisplayed.includes('shelfLabels')) {
-      this.allLabels = this.allLabels.concat(this.filteredLabels);
-    }
-    if (this.currentlyDisplayed.includes('topStock')) {
-      this.allLabels = this.allLabels.concat(this.topStock);
-    }
-    if (this.currentlyDisplayed.includes('misreadBarcodes') && this.showMisreadBarcodes) {
-      this.allLabels = this.allLabels.concat(this.misreadBarcodes);
-    }
-    if (this.currentlyDisplayed.includes('sectionLabels')) {
-      this.allLabels = this.allLabels.concat(this.sectionLabels);
-    }
-  }
-
-  runFilters() {
-    if (this.selectedDepts.length + this.selectedSects.length  >= 1) {
-      this.filteredLabels = [];
-      this.filteredOuts = [];
-
-      const selectedDepts = this.selectedDepts.length > 0 ? new Set<string>(this.selectedDepts) : new Set<string>(this.departmentsList);
-      const selectedSects = this.selectedSects.length > 0 ? new Set<string>(this.selectedSects) : new Set<string>(this.sectionsList);
-
-      this.labels.forEach(label => {
-        label.customFields.forEach(field => {
-          if (field.name === 'Department') {
-            if (selectedDepts.has(field.value) && selectedSects.has(label.section)) {
-              this.filteredLabels.push(label);
-            }
-          }
-        });
-      });
-
-      this.outs.forEach(out => {
-        out.customFields.forEach(field => {
-          if (field.name === 'Department') {
-            if (selectedDepts.has(field.value) && selectedSects.has(out.section)) {
-              this.filteredLabels.push(out);
-            }
-          }
-        });
-      });
-    } else {
-      this.filteredLabels = this.labels;
-      this.filteredOuts = this.outs;
-    }
-  }
-
-  selectGrid(type) {
-    this.currentDisplay = type;
-    this.gridId.emit(-1);    // Emit -1 to signal that no elements are selected
-  }
-
+  // if an item is clied on the grid
   productGridSelected(id) {
     if (id === this.currentId) {
       this.gridId.emit(-1);
     } else {
       this.gridId.emit(id);
     }
+  }
+
+  getCount(labelType: LabelType): number {
+    if (this.labelsDictionary.has(labelType)) {
+      return this.labelsDictionary.get(labelType).length;
+    }
+    return 0;
   }
 }

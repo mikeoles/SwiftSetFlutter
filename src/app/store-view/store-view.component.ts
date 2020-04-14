@@ -1,14 +1,14 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Params, ActivatedRoute, Router } from '@angular/router';
-import Store from '../store.model';
-import DaySummary from '../daySummary.model';
+import Store from '../models/store.model';
+import DaySummary from '../models/daySummary.model';
 import { DatepickerOptions } from 'ng2-datepicker';
-import { ApiService } from '../api.service';
-import { EnvironmentService } from '../environment.service';
-import { BackService } from '../back.service';
+import { ApiService } from '../services/api.service';
+import { EnvironmentService } from '../services/environment.service';
+import { BackService } from '../services/back.service';
 import { Subscription } from 'rxjs';
-import Mission from '../mission.model';
-import Aisle from '../aisle.model';
+import Mission from '../models/mission.model';
+import Aisle from '../models/aisle.model';
 import { ModalService } from '../modal/modal.service';
 
 @Component({

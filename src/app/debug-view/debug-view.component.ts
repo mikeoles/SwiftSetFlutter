@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../api.service';
+import { ApiService } from '../services/api.service';
 import { ActivatedRoute, Params } from '@angular/router';
-import Detection from '../detection.model';
-import { EnvironmentService } from '../environment.service';
+import Detection from '../models/detection.model';
+import { EnvironmentService } from '../services/environment.service';
 
 @Component({
   selector: 'app-debug-view',

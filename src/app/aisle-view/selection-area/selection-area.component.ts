@@ -1,19 +1,20 @@
 import { Component, OnInit, Input, EventEmitter, Output, HostListener, ElementRef, OnChanges, SimpleChanges, Inject } from '@angular/core';
 import { faAngleDown, faAngleUp, faArrowRight, faArrowLeft, faCheckSquare, faSquare } from '@fortawesome/free-solid-svg-icons';
-import Mission from '../../mission.model';
-import Aisle from '../../aisle.model';
+import Mission from '../../models/mission.model';
+import Aisle from '../../models/aisle.model';
 import * as jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import Label from 'src/app/label.model';
+import Label from 'src/app/models/label.model';
 import { ModalService } from '../../modal/modal.service';
-import { EnvironmentService } from 'src/app/environment.service';
-import { ApiService } from 'src/app/api.service';
-import Store from 'src/app/store.model';
+import { EnvironmentService } from 'src/app/services/environment.service';
+import { ApiService } from 'src/app/services/api.service';
+import Store from 'src/app/models/store.model';
 import panzoom from 'panzoom';
 import htmlToImage from 'html-to-image';
 import { saveAs } from 'file-saver';
 import { Router } from '@angular/router';
 import { Roles } from 'src/permissions/roles';
+import { LabelType } from '../label-type';
 
 @Component({
   selector: 'app-selection-area',
@@ -37,15 +38,14 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   @Input() selectedAisle: Aisle;
   @Input() panoTouched: boolean;
   @Input() panoramaUrl: string;
-  @Input() outs: Label[] = [];
-  @Input() labels: Label[] = [];
+  @Input() labels = new Map<LabelType, Array<Label>>();
+  @Input() labelsChanged: boolean;
   @Input() currentlyDisplayed: Set<string>;
   @Input() qaMode: boolean;
 
   @Output() missionSelected = new EventEmitter();
   @Output() aisleSelected = new EventEmitter();
   @Output() resetPano = new EventEmitter();
-  @Output() resetPanoAfterExport = new EventEmitter();
   @Output() toggleQAMode = new EventEmitter();
   @Output() toggleDisplayed = new EventEmitter();
 
@@ -154,8 +154,8 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
     const exportFields: string[] = this.environment.config.exportFields;
     let csvContent = exportFields.join(',') + '\n';
 
-    const exportData: Label[] = exportType === 'labels' ? this.labels : this.outs;
-    exportData.sort(this.labelLocationSort);
+    const labelsToExport: LabelType = exportType === 'shelfLabels' ? LabelType.shelfLabels : LabelType.outs;
+    const exportData: Array<Label> = this.labels.get(labelsToExport);    exportData.sort(this.labelLocationSort);
     for (let j = 0; j < exportData.length; j++) {
       const label: Label = exportData[j];
       if (exportType === 'onhand' && (label.onHand === null || label.onHand < 1)) {
@@ -219,7 +219,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
       const head = [this.environment.config.exportFields];
       const body = [];
 
-      const exportData: Label[] = this.outs;
+      const exportData: Array<Label> = this.labels.get(LabelType.outs);
       exportData.sort(this.labelLocationSort);
       for (let j = 0; j < exportData.length; j++) {
         const label: Label = exportData[j];
@@ -288,7 +288,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
           context.selectedMission.storeNumber + ' ' + context.selectedMission.missionName + ' ' + context.selectedAisle.aisleName + '.jpg');
         context.currentlyExporting = false;
         context.modalService.close(modalId);
-        context.resetPanoAfterExport.emit();
+        context.resetPano.emit();
       });
     },
     1000);

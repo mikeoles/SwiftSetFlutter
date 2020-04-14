@@ -18,6 +18,5 @@ export default class Label {
   };
   productCoordinates: ProductCoordinate[];
   customFields: Array<CustomField>;
-  annotations: {};
-  annotationColor: string;
+  color: string;
 }

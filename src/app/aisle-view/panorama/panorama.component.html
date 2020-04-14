@@ -3,39 +3,55 @@
     <div id="pano-image" class="image">
       <img [src]="panoramaUrl" *ngIf="panoramaUrl" (click)="panoTouched()"/>
 
+       <!-- Labels -->
       <ng-container *ngFor="let displayType of currentlyDisplayed">
-        <ng-container *ngFor="let annotation of annotations(displayType)">
-          <div class="annotation"
-          [style.left.px] = "annotation.bounds.left"
-          [style.top.px] = "annotation.bounds.top"
-          [style.width.px] = "annotation.bounds.width"
-          [style.height.px] = "annotation.bounds.height"
-          [style.border-color] = "annotation.annotationColor"
-          (click)="annotationClicked(annotation)"></div>
+        <ng-container *ngFor="let label of labels.get(displayType)">
+          <div class="label"
+          [ngClass] = "displayType"
+          [style.left.px] = "label.bounds.left"
+          [style.top.px] = "label.bounds.top"
+          [style.width.px] = "label.bounds.width"
+          [style.height.px] = "label.bounds.height"
+          [style.border-color] = "label.color"
+          (click)="labelClicked(label)"></div>
         </ng-container>
       </ng-container>
 
+      <!-- Annotations -->
+      <ng-container *ngFor="let annotation of getAnnotations()">
+        <div class="label"
+        [style.left.px] = "annotation.bounds.left"
+        [style.top.px] = "annotation.bounds.top"
+        [style.width.px] = "annotation.bounds.width"
+        [style.height.px] = "annotation.bounds.height"
+        [style.border-color] = "annotation.color"
+        (click)="annotationClicked(annotation)"></div>
+      </ng-container>
+
+      <!-- Annotation Selection Menu -->
       <ul id="annotationSelector" *ngIf="annotationMenu !== 'none'"
         [style.left.px]="annotationLeft"
         [style.top.px]="annotationTop">
         <ng-container *ngFor="let category of categories(); let i = index">
           <li
             [ngStyle]="setAnnotationStyles(category.categoryName, hovered, i, category.color)" (mouseover)="hovered = i" (mouseleave)="hovered = -1"
-            (click)="setCategory(category.categoryName)">
+            (click)="changeAnnotation(category.categoryName)">
             {{category.categoryName}} <span>{{category.hotkey | uppercase}}</span>
           </li>
         </ng-container>
-        <li *ngIf="(annotationMenu === 'missed' && selectedMarkerCategory) || (selectedAnnotation && (selectedAnnotation.annotations[annotationMenu]))"
-          class="delete" (click)="deleteCategory()">Delete</li>
+        <li *ngIf="showDeleteOption"
+          class="delete" (click)="changeAnnotation()">Delete</li>
       </ul>
 
+      <!-- Missing Barcodes Circles -->
       <ng-container *ngIf="qaMode">
-        <ng-container *ngFor="let marker of missedBarcodeMarkers; let i = index">
-          <div class="marker" [ngStyle]="setMarkerStyles(marker.top, marker.left, marker.categoryName)" (click)="editMarker(i)"></div>
+        <ng-container *ngFor="let missedAnnotation of annotations.get('missed'); let i = index">
+          <div class="marker" [ngStyle]="setMarkerStyles(missedAnnotation)" (click)="editMarker(i)"></div>
         </ng-container>
       </ng-container>
 
-      <ng-container *ngIf="currentlyDisplayed.includes('sectionBreaks')">
+      <!-- Section Breaks -->
+      <ng-container *ngIf="currentlyDisplayed.includes(labelType.sectionBreaks)">
         <ng-container *ngFor="let sectionBreak of sectionBreaks">
           <div class="break" [style.left.px]="sectionBreak"></div>
         </ng-container>

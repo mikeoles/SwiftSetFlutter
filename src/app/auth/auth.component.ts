@@ -1,8 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { EnvironmentService } from '../environment.service';
-import { AuthService } from '../auth.service';
-import { UrlService } from '../url.service';
+import { EnvironmentService } from '../services/environment.service';
+import { AuthService } from './auth.service';
+import { UrlService } from '../services/url.service';
 
 @Component({
   selector: 'app-auth',

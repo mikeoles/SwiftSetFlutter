@@ -2,17 +2,17 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MissionViewComponent } from './mission-view.component';
 import { HttpClientModule } from '@angular/common/http';
-import { ApiService } from '../api.service';
+import { ApiService } from '../services/api.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Component, Input } from '@angular/core';
 import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import Label from '../label.model';
+import Label from '../models/label.model';
 import { ModalService } from '../modal/modal.service';
-import { EnvironmentService } from '../environment.service';
-import Mission from '../mission.model';
-import Aisle from '../aisle.model';
-import Store from '../store.model';
+import { EnvironmentService } from '../services/environment.service';
+import Mission from '../models/mission.model';
+import Aisle from '../models/aisle.model';
+import Store from '../models/store.model';
 
 @Component({selector: 'app-mission-stats', template: ''})
 class AppMissionStatsStubComponent {
@@ -38,10 +38,10 @@ describe('MissionViewComponent', () => {
 
   const labels: Label[] = [
     { labelName: 'label name', labelId: 1, barcode: '12345', productId: '12345', price: 0.0,
-    bounds: { top: 0, left: 0, width: 0, height: 0}, annotations: [], annotationColor: '',
+    bounds: { top: 0, left: 0, width: 0, height: 0}, color: '',
     customFields: [], section: '', department: '', onHand: 0, productCoordinates: [] },
     { labelName: 'label name', labelId: 1, barcode: '550376332', productId: '12345', price: 0.0,
-    bounds: { top: 0, left: 0, width: 0, height: 0 }, annotations: [], annotationColor: '',
+    bounds: { top: 0, left: 0, width: 0, height: 0 }, color: '',
     customFields: [], section: '', department: '', onHand: 0, productCoordinates: [] },
   ];
 

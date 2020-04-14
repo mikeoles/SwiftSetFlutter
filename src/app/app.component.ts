@@ -1,9 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { LogoService } from './logo.service';
-import { BackService } from './back.service';
+import { LogoService } from './services/logo.service';
+import { BackService } from './services/back.service';
 import { faArrowAltCircleLeft } from '@fortawesome/free-regular-svg-icons';
-import { AuthService } from './auth.service';
+import { AuthService } from './auth/auth.service';
 import { version } from '../../package.json';
 
 @Component({

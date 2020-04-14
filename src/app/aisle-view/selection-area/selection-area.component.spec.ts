@@ -3,14 +3,14 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SelectionAreaComponent } from './selection-area.component';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import Aisle from '../../aisle.model';
-import Mission from '../../mission.model';
+import Aisle from '../../models/aisle.model';
+import Mission from '../../models/mission.model';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DatePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { ModalService } from 'src/app/modal/modal.service';
-import { EnvironmentService } from 'src/app/environment.service';
-import { ApiService } from 'src/app/api.service';
+import { EnvironmentService } from 'src/app/services/environment.service';
+import { ApiService } from 'src/app/services/api.service';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
 

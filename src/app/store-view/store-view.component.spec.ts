@@ -3,17 +3,17 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { StoreViewComponent } from './store-view.component';
 import { Component, Input } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ApiService } from '../api.service';
+import { ApiService } from '../services/api.service';
 import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import DaySummary from '../daySummary.model';
-import Store from '../store.model';
+import DaySummary from '../models/daySummary.model';
+import Store from '../models/store.model';
 import { NgDatepickerModule } from 'ng2-datepicker';
-import { EnvironmentService } from '../environment.service';
+import { EnvironmentService } from '../services/environment.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ProgressBarModule } from 'angular-progress-bar';
 import { ModalService } from 'src/app/modal/modal.service';
-import Mission from '../mission.model';
+import Mission from '../models/mission.model';
 
 @Component({selector: 'app-daily-graphs', template: ''})
 class AppDailyGraphsStubComponent {

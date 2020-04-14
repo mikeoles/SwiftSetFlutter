@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from './api.service';
-import AuthData from './auth.model';
+import { ApiService } from '../services/api.service';
+import AuthData from '../models/auth.model';
 import { Observable, of, throwError } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import moment from 'moment';

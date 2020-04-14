@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { EnvironmentService } from 'src/app/environment.service';
+import { EnvironmentService } from 'src/app/services/environment.service';
 
 @Component({
   selector: 'app-daily-graphs',

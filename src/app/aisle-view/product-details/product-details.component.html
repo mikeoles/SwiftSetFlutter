@@ -2,38 +2,27 @@
   <div>
     <div id="tableSelection">
       <div>
-        Outs: {{(outs || []).length}}
+        Outs: {{getCount(labelType.outs)}}
       </div>
       <div>
-        Labels: {{(labels || []).length}}
+        Labels: {{getCount(labelType.shelfLabels)}}
       </div>
       <div *ngIf="showMisreadBarcodes">
-        Misread: {{(misreadBarcodes || []).length}}
+        Misread: {{getCount(labelType.misreadBarcodes)}}
       </div>
       <div *ngIf="showSectionLabels">
-        Section Labels: {{(sectionLabels || []).length}}
+        Section Labels: {{getCount(labelType.sectionLabels)}}
       </div>
       <div *ngIf="showTopStock">
-        Top Stock: {{(topStock || []).length}}
+        Top Stock: {{getCount(labelType.topStock)}}
       </div>
       <div *ngIf="showSectionBreaks">
         Section Breaks: {{(sectionBreaks || []).length}}
       </div>
     </div>
   </div>
-  <div *ngIf="showDepartment || showSection" id="filterButtons">
-    <div id="filterTitle">Filter</div>
-    <ng-multiselect-dropdown *ngIf="showDepartment" class="dropdown" [placeholder]="'Department'"
-      [data]="departmentsList" [(ngModel)]="selectedDepts" [settings]="dropdownSettings" (onSelect)="runFilters()"
-      (onSelectAll)="runFilters()" (onDeSelect)="runFilters()" (onDeSelectAll)="runFilters()">
-    </ng-multiselect-dropdown>
-    <ng-multiselect-dropdown *ngIf="showSection" class="dropdown" [placeholder]="'Section'" [data]="sectionsList"
-      [(ngModel)]="selectedSects" [settings]="dropdownSettings" (onSelect)="runFilters()" (onSelectAll)="runFilters()"
-      (onDeSelect)="runFilters()" (onDeSelectAll)="runFilters()">
-    </ng-multiselect-dropdown>
-  </div>
 </div>
 
 <div *ngIf='!panoMode'>
-  <app-product-grid [allLabels]="allLabels" [selectedId]="currentId" (gridClicked)='productGridSelected($event)' [qaMode]="qaMode"></app-product-grid>
+  <app-product-grid [allLabels]="allLabels" [allAnnotations]="allAnnotations" [selectedId]="currentId" (gridClicked)='productGridSelected($event)' [qaMode]="qaMode"></app-product-grid>
 </div>

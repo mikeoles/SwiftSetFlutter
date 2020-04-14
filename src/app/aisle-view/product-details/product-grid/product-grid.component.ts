@@ -1,7 +1,8 @@
 import { Component, OnInit, AfterViewChecked, EventEmitter, Output, Input, HostListener, OnChanges, SimpleChanges } from '@angular/core';
-import Label from 'src/app/label.model';
-import { labelScrollOptions } from 'src/app/labelScrollOptions';
-import { EnvironmentService } from 'src/app/environment.service';
+import Label from 'src/app/models/label.model';
+import { labelScrollOptions } from 'src/app/aisle-view/product-details/product-grid/labelScrollOptions';
+import { EnvironmentService } from '../../../services/environment.service';
+import Annotation from 'src/app/models/annotation.model';
 
 export enum KEY_CODE {
   UP = 38,
@@ -16,7 +17,8 @@ export enum KEY_CODE {
 export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges {
 
   @Output() gridClicked = new EventEmitter();
-  @Input() allLabels: Label[];
+  @Input() allAnnotations: Array<Annotation>;
+  @Input() allLabels: Array<Label>;
   @Input() selectedId: number;
   @Input() qaMode: boolean;
   columnHeaders: String[];
@@ -86,7 +88,9 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
     }
 
     sortedLabels = sortedLabels.concat(currentRow);
-    this.allLabels = sortedLabels;
+    if (this.allLabels.length > 0) {
+      this.allLabels = sortedLabels;
+    }
   }
 
   getGridData() {
@@ -111,21 +115,17 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
         if (fieldLowercase === 'price' && (label.price === 0 || label.price)) {
           cellValue = `$${label.price.toFixed(2)}`;
         }
+
         if (fieldLowercase === 'qAAnnotations') { // check the label for annotations and display the first one in the grid
           cellValue = '';
-          const annotations: string[] = Object.keys(label.annotations);
-          if (annotations.length > 0) {
-            // convert annotation category into more readable name by converting camel case to sentence case
-            let category = annotations[0].replace( /([A-Z])/g, ' $1' );
-            category = category.charAt(0).toUpperCase() + category.slice(1);
-            cellValue = category + ': ' + label.annotations[annotations[0]];
+          const annotation: Annotation = this.allAnnotations.find((a => String(a.labelId) === String(label.labelId)));
+          if (annotation) {
+            cellValue = annotation.annotationType + ': ' + annotation.annotationCategory;
           }
         } else if (label[fieldLowercase]) {
           cellValue = label[fieldLowercase];
         } else if (label.bounds[fieldLowercase]) {
           cellValue = label.bounds[fieldLowercase];
-        } else if (label.annotations[fieldLowercase]) {
-          cellValue = label.annotations[fieldLowercase];
         } else {
           for (let k = 0; k < label.customFields.length; k++) {
             if (label.customFields[k].name === field || label.customFields[k].name === '"' + field + '"') {

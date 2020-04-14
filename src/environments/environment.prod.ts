@@ -1,4 +1,4 @@
-import { labelScrollOptions } from 'src/app/labelScrollOptions';
+import { labelScrollOptions } from 'src/app/aisle-view/product-details/product-grid/labelScrollOptions';
 
 export const environment = {
   production: true,

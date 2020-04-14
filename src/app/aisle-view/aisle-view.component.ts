@@ -1,16 +1,18 @@
-import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
-import { ApiService } from './../api.service';
-import Mission from './../mission.model';
-import Aisle from './../aisle.model';
-import Label from './../label.model';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ApiService } from '../services/api.service';
+import Mission from '../models/mission.model';
+import Aisle from '../models/aisle.model';
+import Label from '../models/label.model';
+import Annotation from '../models/annotation.model';
 import { ViewEncapsulation } from '@angular/core';
-import { LogoService } from '../logo.service';
+import { LogoService } from '../services/logo.service';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import {Location} from '@angular/common';
-import { BackService } from '../back.service';
+import { BackService } from '../services/back.service';
 import { ShortcutInput } from 'ng-keyboard-shortcuts';
-import MissedBarcode from '../missedBarcode.model';
+import { LabelType } from './label-type';
+import { AnnotationType } from './annotation-type';
 
 @Component({
   selector: 'app-aisle-view',
@@ -20,13 +22,8 @@ import MissedBarcode from '../missedBarcode.model';
 })
 
 export class AisleViewComponent implements OnInit, OnDestroy {
-  title = 'aisle';
-  outs: Label[];
-  labels: Label[];
-  missedBarcodeMarkers: MissedBarcode[] = [];
-  misreadBarcodes: Label[];
-  sectionLabels: Label[];
-  topStock: Label[];
+  labels = new Map<LabelType, Array<Label>>();
+  annotations = new Map<AnnotationType, Array<Annotation>>();
   sectionBreaks: number[];
   missions: Mission[];
   selectedMission: Mission;
@@ -36,13 +33,14 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   panoMode: boolean;
   panoTouched: boolean;
   resetPano: boolean;
-  resetPanoAfterExport: boolean;
 
   private logoSubscription: Subscription;
   private backButtonSubscription: Subscription;
   currentlyDisplayed: Array<string> = new Array<string>();
   qaMode = false;
   shortcuts: ShortcutInput[] = [];
+  labelsChanged = false;
+  currentlyDisplayedToggled: boolean;
 
   constructor(private apiService: ApiService,
               private logoService: LogoService,
@@ -126,11 +124,8 @@ export class AisleViewComponent implements OnInit, OnDestroy {
         this.currentlyDisplayed.push(d);
       }
     }
-    this.currentlyDisplayed = Object.assign([], this.currentlyDisplayed);
-  }
-
-  resetPanoAfterExportClicked() {
-    this.resetPanoAfterExport = !this.resetPanoAfterExport;
+    this.currentlyDisplayedToggled = !this.currentlyDisplayedToggled;
+    this.labelsChanged = !this.labelsChanged;
   }
 
   changeMission(mission: Mission) {
@@ -146,50 +141,37 @@ export class AisleViewComponent implements OnInit, OnDestroy {
     });
   }
 
+  // Barcodes with all zeroes are considered missing barcodes
+  getMissingBarcodes(labels: Array<Label>): Array<Label> {
+    const misreadBarcodes: Array<Label> = [];
+    labels.forEach(label => {
+      if (/^0*$/.test(label.barcode)) {
+        misreadBarcodes.push(label);
+      }
+    });
+    return misreadBarcodes;
+  }
+
   setAisle(aisle: Aisle) {
     this.selectedAisle = aisle;
     this.apiService.getAisle(this.selectedMission.storeId, this.selectedMission.missionId, aisle.aisleId).subscribe(fullAisle => {
-      this.outs = fullAisle.outs;
-      this.labels = fullAisle.labels;
-      this.misreadBarcodes = [];
-      this.labels.forEach(label => {
-        if (/^0*$/.test(label.barcode)) {
-          this.misreadBarcodes.push(label);
-        }
-      });
-      this.outs.forEach(out => {
-        if (/^0*$/.test(out.barcode)) {
-          this.misreadBarcodes.push(out);
-        }
-      });
-      this.sectionLabels = fullAisle.sectionLabels;
-      this.topStock = fullAisle.topStock;
+      const misreadBarcodes: Array<Label> = this.getMissingBarcodes(fullAisle.labels);
+      misreadBarcodes.concat(this.getMissingBarcodes(fullAisle.outs));
+
+      this.labels.set(LabelType.misreadBarcodes, misreadBarcodes);
+      this.labels.set(LabelType.outs, fullAisle.outs);
+      this.labels.set(LabelType.shelfLabels, fullAisle.labels);
+      this.labels.set(LabelType.sectionLabels, fullAisle.sectionLabels);
+      this.labels.set(LabelType.topStock, fullAisle.topStock);
+      this.labelsChanged = !this.labelsChanged;
       this.sectionBreaks = fullAisle.sectionBreaks;
       this.panoramaUrl = fullAisle.panoramaUrl;
       this.currentId = null;
       this.apiService.getAnnotations(this.selectedMission.storeId, this.selectedMission.missionId, aisle.aisleId).subscribe(annotations => {
-        if (annotations.missed) {
-          this.missedBarcodeMarkers = [];
-          annotations.missed.forEach(annotation => {
-            this.missedBarcodeMarkers.push({
-              categoryName: annotation.category,
-              top: annotation.top,
-              left: annotation.left
-            });
-          });
-          annotations.misread.forEach(annotation => {
-            const i = this.misreadBarcodes.findIndex((obj => obj.labelId.toString() === annotation.labelId));
-            this.misreadBarcodes[i].annotations['misread'] = annotation.category;
-          });
-          annotations.falsePositives.forEach(annotation => {
-            const i = this.outs.findIndex((obj => obj.labelId.toString() === annotation.labelId));
-            this.outs[i].annotations['falsePositive'] = annotation.category;
-          });
-          annotations.falseNegatives.forEach(annotation => {
-            const i = this.labels.findIndex((obj => obj.labelId.toString() === annotation.labelId));
-            this.labels[i].annotations['falseNegative'] = annotation.category;
-          });
-        }
+        this.setMissedAnnotations(annotations.missed);
+        this.setLabelAnnotations(annotations.misread, AnnotationType.misread);
+        this.setLabelAnnotations(annotations.falsePositives, AnnotationType.falsePositive);
+        this.setLabelAnnotations(annotations.falseNegatives, AnnotationType.falseNegative);
       });
     });
     this.location.replaceState(
@@ -204,104 +186,119 @@ export class AisleViewComponent implements OnInit, OnDestroy {
     this.panoTouched = true;
   }
 
-  updateMissedCategory(info) {
-    if (info.action === 'update') {
-      this.apiService.updateMissedLabelAnnotation(
-        this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId,
-        info.marker.top, info.marker.left, info.marker.categoryName
-      );
-    } else if (info.action === 'add') {
-      this.apiService.createMissedLabelAnnotation(
-        this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId,
-        info.marker.top, info.marker.left, info.marker.categoryName
-      );
-    } else if (info.action === 'delete') {
-      this.apiService.deleteMissedLabelAnnotation(
-        this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.barcode.top, info.barcode.left
-      );
-    }
+  setMissedAnnotations(annotations): any {
+    const annotationsList: Array<Annotation> = [];
+    annotations.forEach(annotation => {
+      const annotationObj = new Annotation();
+      annotationObj.annotationType = AnnotationType.missed;
+      annotationObj.annotationCategory = annotation.category;
+      annotationObj.top = annotation.top;
+      annotationObj.left = annotation.left;
+      annotationsList.push(annotationObj);
+    });
+    this.annotations.set(AnnotationType.missed, annotationsList);
   }
 
-  updateLabelCategory(info) {
-    switch (info.annotationType) {
-      case 'misread':
-        return this.updateMisread(info);
-      case 'falsePositive':
-        return this.updateFalsePositive(info);
-      case 'falseNegative':
-        return this.updateFalseNegative(info);
-    }
+  setLabelAnnotations(annotations, annotationType: AnnotationType): any {
+    const annotationsList: Array<Annotation> = [];
+    annotations.forEach(annotation => {
+      const annotationObj = new Annotation();
+      // Get bounds by finding label associated with annotation
+      this.labels.forEach((labels: Array<Label>, labelType: LabelType) => {
+        labels.forEach(label => {
+          if (label.labelId.toString() === annotation.labelId) {
+            annotationObj.bounds = label.bounds;
+          }
+        });
+      });
+      annotationObj.annotationType = annotationType;
+      annotationObj.annotationCategory = annotation.category;
+      annotationObj.labelId = annotation.labelId;
+      annotationsList.push(annotationObj);
+    });
+    this.annotations.set(annotationType, annotationsList);
   }
 
-  updateMisread(info: any): any {
-    const i = this.misreadBarcodes.findIndex((obj => obj.labelId === info.labelId));
-    if (info.action === 'delete') {
-      delete this.misreadBarcodes[i].annotations['misread'];
+  // When a labels annotation is changed
+  updateLabelCategory(info): any {
+    const annotationType: AnnotationType = info.annotationType;
+    const annotationsToUpdate: Annotation[] = this.annotations.get(annotationType); // Based on annotationType emitted
+
+    const i = annotationsToUpdate.findIndex((annotation => annotation.labelId === info.labelId));
+    let action = '';
+    if (info.category === undefined) {
+      action = 'delete';
+      delete annotationsToUpdate[i];
+    } else if (i > -1) {
+      action = 'update';
+      annotationsToUpdate[i].annotationCategory = info.category;
     } else {
-      this.misreadBarcodes[i].annotations['misread'] = info.category;
+      action = 'create';
+      let bounds;
+      // Get bounds by finding label associated with annotation
+      this.labels.forEach((labels: Array<Label>, labelType: LabelType) => {
+        labels.forEach(label => {
+          if (label.labelId === info.labelId) {
+            bounds = label.bounds;
+          }
+        });
+      });
+      annotationsToUpdate.push({
+        annotationType: info.annotationType,
+        annotationCategory: info.category,
+        labelId: info.labelId,
+        bounds: bounds,
+        top: undefined,
+        left: undefined,
+        color: undefined,
+      });
     }
-    this.misreadBarcodes = Object.assign([], this.misreadBarcodes);
+    this.annotations.set(annotationType, annotationsToUpdate);
+    this.labelsChanged = !this.labelsChanged;
+    this.apiService.updateLabelAnnotation(
+      this.selectedMission.storeId,
+      this.selectedMission.missionId,
+      this.selectedAisle.aisleId,
+      info.labelId, info.category, info.annotationType, action
+    );
+  }
 
-    if (info.action === 'update') {
-      this.apiService.updateMisreadLabelAnnotation(
-        this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.labelId, info.category
-      );
-    } else if (info.action === 'add') {
-      this.apiService.createMisreadLabelAnnotation(
-        this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.labelId, info.category
-      );
-    } else if (info.action === 'delete') {
-      this.apiService.deleteMisreadLabelAnnotation(
-        this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.labelId
-      );
+  getLabelTypeFromAnnotationType(annotationType: string): LabelType {
+    switch (annotationType) {
+      case AnnotationType.misread:
+        return LabelType.misreadBarcodes;
+      case AnnotationType.falsePositive:
+        return LabelType.outs;
+      case AnnotationType.falseNegative:
+        return LabelType.shelfLabels;
     }
   }
 
-  updateFalsePositive(info: any): any {
-    const i = this.outs.findIndex((obj => obj.labelId === info.labelId));
-    if (info.action === 'delete') {
-      delete this.outs[i].annotations['falsePositive'];
+  // When a missed category marker is created updated or deleted
+  updateMissedCategory(info): void {
+    const missedBarcodes: Array<Annotation> = this.annotations.get(AnnotationType.missed);
+    const i = missedBarcodes.findIndex((obj => obj.left === info.left && obj.top === info.top));
+    let action: string;
+
+    if (info.category === undefined) {
+      action = 'delete';
+      delete missedBarcodes[i];
+    } else if (i > -1) {
+      action = 'update';
+      missedBarcodes[i].annotationCategory = info.category;
     } else {
-      this.outs[i].annotations['falsePositive'] = info.category;
+      action = 'create';
+      const annotation: Annotation = new Annotation();
+      annotation.annotationType = AnnotationType.missed;
+      annotation.annotationCategory = info.category;
+      annotation.top = info.top;
+      annotation.left = info.left;
+    missedBarcodes.push(annotation);
     }
-    this.outs = Object.assign([], this.outs);
 
-    if (info.action === 'update') {
-      this.apiService.updateFalsePositiveAnnotation(
-        this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.labelId, info.category
-      );
-    } else if (info.action === 'add') {
-      this.apiService.createFalsePositiveAnnotation(
-        this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.labelId, info.category
-      );
-    } else if (info.action === 'delete') {
-      this.apiService.deleteFalsePositiveAnnotation(
-        this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.labelId
-      );
-    }
-  }
-
-  updateFalseNegative(info: any): any {
-    const i = this.labels.findIndex((obj => obj.labelId === info.labelId));
-    if (info.action === 'delete') {
-      delete this.labels[i].annotations['falseNegative'];
-    } else {
-      this.labels[i].annotations['falseNegative'] = info.category;
-    }
-    this.labels = Object.assign([], this.labels);
-
-    if (info.action === 'update') {
-      this.apiService.updateFalseNegativeAnnotation(
-        this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.labelId, info.category
-      );
-    } else if (info.action === 'add') {
-      this.apiService.createFalseNegativeAnnotation(
-        this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.labelId, info.category
-      );
-    } else if (info.action === 'delete') {
-      this.apiService.deleteFalseNegativeAnnotation(
-        this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId, info.labelId
-      );
-    }
+    this.apiService.updateMissedAnnotation(
+      this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId,
+      info.top, info.left, info.category, action
+    );
   }
 }

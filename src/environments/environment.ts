@@ -1,4 +1,4 @@
-import { labelScrollOptions } from 'src/app/labelScrollOptions';
+import { labelScrollOptions } from 'src/app/aisle-view/product-details/product-grid/labelScrollOptions';
 
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
@@ -20,6 +20,7 @@ export const environment = {
   productGridFields: ['Barcode', 'Price'],
   onHand: true,
   showExportButtons: false, // Hides: Request Data, Aisle Scan Data, Mission Export, Aisle Export (besides pano)
+  showMissingBarcodes: true,
   showMisreadBarcodes: true,
   showSectionBreaks: true,
   showSectionLabels: true,

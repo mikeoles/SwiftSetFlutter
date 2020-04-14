@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
 import { map, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import Mission from './mission.model';
-import Aisle from './aisle.model';
-import Label from './label.model';
+import Mission from '../models/mission.model';
+import Aisle from '../models/aisle.model';
+import Label from '../models/label.model';
 import { Observable, forkJoin, of } from 'rxjs';
-import Store from './store.model';
-import DaySummary from './daySummary.model';
-import CustomField from './customField.model';
+import Store from '../models/store.model';
+import DaySummary from '../models/daySummary.model';
+import CustomField from '../models/customField.model';
 import { EnvironmentService } from './environment.service';
-import ProductCoordinate from './productCoordinate.model';
-import AnnotationCategory from './annotationCategory.model';
-import AuthData from './auth.model';
+import ProductCoordinate from '../models/productCoordinate.model';
+import AnnotationCategory from '../models/annotationCategory.model';
+import AuthData from '../models/auth.model';
 import moment from 'moment';
-import Detection from './detection.model';
+import Detection from '../models/detection.model';
 
 @Injectable({
   providedIn: 'root'
@@ -76,8 +76,7 @@ export class ApiService {
       productCoordinates: [],
       section: '',
       customFields: [],
-      annotations: {},
-      annotationColor: ''
+      color: ''
     };
   }
 
@@ -100,8 +99,7 @@ export class ApiService {
       productCoordinates: [],
       section: '',
       customFields: [],
-      annotations: {},
-      annotationColor: ''
+      color: ''
     };
   }
 
@@ -146,8 +144,7 @@ export class ApiService {
       productCoordinates: (prc || []).map(pc => this.createProductCoordinate(label.bounds, pc)),
       section: label.section,
       customFields: (customFields || []).map(cf => this.createCustomField(cf)),
-      annotations: {},
-      annotationColor: ''
+      color: ''
     };
   }
 
@@ -454,97 +451,46 @@ export class ApiService {
     };
   }
 
-    // Missed
-
-  createMissedLabelAnnotation(storeId: string, missionId: string, aisleId: string, top: string, left: string, category: string) {
+  updateMissedAnnotation(storeId: string, missionId: string, aisleId: string,
+    top: string, left: string, category: string, action: string): void {
     const data = new FormData();
     data.set('top', top);
     data.set('left', left);
     data.set('category', category);
-    this.http.post(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/missed`,
-    data).subscribe();
+    if (action === 'update') {
+      this.http.put(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/missed`,
+      data).subscribe();
+    }
+    if (action === 'delete') {
+      this.http.delete(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/missed`,
+      {params: {top, left}}).subscribe();
+    }
+    if (action === 'create') {
+      this.http.post(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/missed`,
+      data).subscribe();
+    }
   }
 
-  updateMissedLabelAnnotation(storeId: string, missionId: string, aisleId: string, top: string, left: string, category: string) {
-    const data = new FormData();
-    data.set('top', top);
-    data.set('left', left);
-    data.set('category', category);
-    this.http.put(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/missed`,
-    data).subscribe();
-  }
-
-  deleteMissedLabelAnnotation(storeId: string, missionId: string, aisleId: string, top: string, left: string) {
-    this.http.delete(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/missed`,
-      {params: {'top': top, 'left': left}}).subscribe();
-  }
-
-
-  // Misread
-
-  createMisreadLabelAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string, category: string) {
-    const data = new FormData();
-    data.set('labelId', labelId);
-    data.set('category', category);
-    this.http.post(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/misread`,
-    data).subscribe();
-  }
-
-  updateMisreadLabelAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string, category: string) {
-    const data = new FormData();
-    data.set('category', category);
-    this.http.put(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/misread/${labelId}`,
-    data).subscribe();
-  }
-
-  deleteMisreadLabelAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string) {
-    this.http.delete(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/misread/${labelId}`)
-    .subscribe();
-  }
-
-
-  // False Negative
-
-  createFalseNegativeAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string, category: string) {
-    const data = new FormData();
-    data.set('labelId', labelId);
-    data.set('category', category);
-    this.http.post(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/falseNegative`,
-    data).subscribe();
-  }
-
-  updateFalseNegativeAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string, category: string) {
-    const data = new FormData();
-    data.set('category', category);
-    this.http.put(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/falseNegative/${labelId}`,
-    data).subscribe();
-  }
-
-  deleteFalseNegativeAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string) {
-    this.http.delete(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/falseNegative/${labelId}`)
-    .subscribe();
-  }
-
-
-  // False Positive
-
-  createFalsePositiveAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string, category: string) {
-    const data = new FormData();
-    data.set('category', category);
-    data.set('labelId', labelId);
-    this.http.post(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/falsePositive`,
-    data).subscribe();
-  }
-
-  updateFalsePositiveAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string, category: string) {
-    const data = new FormData();
-    data.set('category', category);
-    this.http.put(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/falsePositive/${labelId}`,
-    data).subscribe();
-  }
-
-  deleteFalsePositiveAnnotation(storeId: string, missionId: string, aisleId: string, labelId: string) {
-    this.http.delete(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/falsePositive/${labelId}`)
-    .subscribe();
+  updateLabelAnnotation(storeId: string, missionId: string, aisleId: string,
+    labelId: string, category: string, typeOfAnnotation: string, action: string): void {
+    if (action === 'update') {
+      const data = new FormData();
+      data.set('category', category);
+      this.http.put(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/${typeOfAnnotation}/${labelId}`,
+      data).subscribe();
+    }
+    if (action === 'create') {
+      const data = new FormData();
+      data.set('labelId', labelId);
+      data.set('category', category);
+      this.http.post(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/${typeOfAnnotation}`,
+      data).subscribe();
+    }
+    if (action === 'delete') {
+      this.http.delete(
+        `${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/${typeOfAnnotation}/${labelId}`
+      )
+      .subscribe();
+    }
   }
 }

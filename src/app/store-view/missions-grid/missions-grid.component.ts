@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { DataService } from 'src/app/data.service';
-import Mission from 'src/app/mission.model';
+import { DataService } from 'src/app/services/data.service';
+import Mission from 'src/app/models/mission.model';
 
 @Component({
   selector: 'app-missions-grid',

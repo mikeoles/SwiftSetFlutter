@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import Aisle from '../../aisle.model';
-import { EnvironmentService } from 'src/app/environment.service';
+import Aisle from '../../models/aisle.model';
+import { EnvironmentService } from 'src/app/services/environment.service';
 
 @Component({
   selector: 'app-aisles-grid',

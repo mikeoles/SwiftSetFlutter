@@ -1,6 +1,6 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { ApiService } from '../api.service';
-import Store from '../store.model';
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../services/api.service';
+import Store from '../models/store.model';
 import { Router } from '@angular/router';
 
 @Component({

@@ -2,9 +2,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PanoramaComponent } from './panorama.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ApiService } from 'src/app/api.service';
+import { ApiService } from '../../services/api.service';
 import { of } from 'rxjs';
-import { EnvironmentService } from 'src/app/environment.service';
+import { EnvironmentService } from '../../services/environment.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 describe('PanoramaComponent', () => {

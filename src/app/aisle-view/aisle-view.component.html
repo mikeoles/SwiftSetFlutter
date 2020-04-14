@@ -1,16 +1,15 @@
 <app-selection-area *ngIf="selectedMission" [missions]="missions" [aisles]="selectedMission.aisles"
-  [selectedMission]="selectedMission" [selectedAisle]="selectedAisle" [panoramaUrl]="panoramaUrl" [outs]="outs" [labels]="labels"
+  [selectedMission]="selectedMission" [selectedAisle]="selectedAisle" [panoramaUrl]="panoramaUrl" [labelsChanged]="labelsChanged" [labels]="labels"
   (missionSelected)='changeMission($event)' (aisleSelected)='setAisle($event)' [panoTouched]=panoTouched
-  (panoSwitch)='changePanoMode()' (resetPano)='resetPanoClicked()' (resetPanoAfterExport)='resetPanoAfterExportClicked()'
-  (toggleQAMode)='toggleQAMode()' [qaMode]='qaMode' [currentlyDisplayed]='currentlyDisplayed' (toggleDisplayed)='toggleDisplayed($event)'>
+  (resetPano)='resetPanoClicked()'(toggleQAMode)='toggleQAMode()' [qaMode]='qaMode' [currentlyDisplayed]='currentlyDisplayed' (toggleDisplayed)='toggleDisplayed($event)'>
 </app-selection-area>
-<app-panorama [panoramaUrl]="panoramaUrl" [currentId]="currentId" [currentlyDisplayed]='currentlyDisplayed' [missedBarcodeMarkers]="missedBarcodeMarkers"
-  [outs]="outs" [labels]="labels" [sectionLabels]="sectionLabels" [sectionBreaks]="sectionBreaks" [topStock]="topStock"
-  [panoMode]='panoMode' [qaMode]='qaMode'  [resetPano]='resetPano' [resetPanoAfterExport]='resetPanoAfterExport'
-  [misreadBarcodes]="misreadBarcodes"  (panoramaTouched)='hideDropdowns()' (panoramaId)='setId($event)'
+<app-panorama [panoramaUrl]="panoramaUrl" [currentId]="currentId" [currentlyDisplayed]='currentlyDisplayed' [annotations]="annotations"
+  [labels]="labels" [sectionBreaks]="sectionBreaks" [currentlyDisplayedToggled]="currentlyDisplayedToggled" 
+  [panoMode]='panoMode' [qaMode]='qaMode'  [resetPano]='resetPano' [labelsChanged]="labelsChanged"
+  (panoramaTouched)='hideDropdowns()' (panoramaId)='setId($event)'
   (updateLabelCategory)='updateLabelCategory($event)' (updateMissedCategory)='updateMissedCategory($event)'>
 </app-panorama>
-<app-product-details [outs]="outs" [labels]="labels" [sectionLabels]="sectionLabels" [topStock]="topStock"  [misreadBarcodes]="misreadBarcodes"
-[currentlyDisplayed]='currentlyDisplayed' [sectionBreaks]="sectionBreaks" (gridId)='setId($event)' [currentId]="currentId" [panoMode]='panoMode' [qaMode]='qaMode'>
+<app-product-details [labelsDictionary]="labels" [annotationsDictionary]="annotations" [labelsChanged]="labelsChanged" [sectionBreaks]="sectionBreaks"
+[currentlyDisplayed]='currentlyDisplayed' (gridId)='setId($event)' [currentId]="currentId" [panoMode]='panoMode' [qaMode]='qaMode'>
 </app-product-details>
 <ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>

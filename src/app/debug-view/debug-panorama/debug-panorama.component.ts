@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import panzoom from 'panzoom';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
-import Detection from 'src/app/detection.model';
-import AssociationCoordinate from 'src/app/associationCoordinate.model';
+import Detection from 'src/app/models/detection.model';
+import AssociationCoordinate from 'src/app/models/associationCoordinate.model';
 
 @Component({
   selector: 'app-debug-panorama',

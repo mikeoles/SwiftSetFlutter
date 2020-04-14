@@ -1,9 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProductGridComponent } from './product-grid.component';
 import { By } from '@angular/platform-browser';
-import Label from 'src/app/label.model';
+import Label from 'src/app/models/label.model';
 import { SimpleChanges, SimpleChange } from '@angular/core';
-import { EnvironmentService } from 'src/app/environment.service';
+import { EnvironmentService } from '../../../services/environment.service';
 
 describe('ProductGridComponent', () => {
   let component: ProductGridComponent;
@@ -12,15 +12,15 @@ describe('ProductGridComponent', () => {
   let gridEl: HTMLElement;
   const labels: Label[] = [
     { labelId: 1, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      }, department: '', section: '', customFields: [], onHand: 0, annotations: [], annotationColor: '', productCoordinates: []},
+      }, department: '', section: '', customFields: [], onHand: 0, color: '', productCoordinates: []},
     { labelId: 2, labelName: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0,
-      height: 0, }, department: '', section: '', customFields: [], onHand: 0, annotations: [], annotationColor: '', productCoordinates: []},
+      height: 0, }, department: '', section: '', customFields: [], onHand: 0, color: '', productCoordinates: []},
     { labelId: 3, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      }, department: '', section: '', customFields: [], onHand: 0, annotations: [], annotationColor: '', productCoordinates: []},
+      }, department: '', section: '', customFields: [], onHand: 0, color: '', productCoordinates: []},
     { labelId: 4, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      }, department: '', section: '', customFields: [], onHand: 0, annotations: [], annotationColor: '', productCoordinates: []},
+      }, department: '', section: '', customFields: [], onHand: 0, color: '', productCoordinates: []},
     { labelId: 5, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      }, department: '', section: '', customFields: [], onHand: 0, annotations: [], annotationColor: '', productCoordinates: []},
+      }, department: '', section: '', customFields: [], onHand: 0, color: '', productCoordinates: []},
   ];
 
   beforeEach(async(() => {
@@ -38,9 +38,6 @@ describe('ProductGridComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductGridComponent);
     component = fixture.componentInstance;
-    component.products = labels;
-    component.onlyBarcode = false;
-    component.annotationTypes = [];
     const changesObj: SimpleChanges = {
       products: new SimpleChange([], labels, false)
     };
