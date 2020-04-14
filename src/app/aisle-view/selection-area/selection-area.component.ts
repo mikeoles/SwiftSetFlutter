@@ -24,13 +24,14 @@ import { LabelType } from '../label-type';
 export class SelectionAreaComponent implements OnInit, OnChanges {
   store: Store;
   currentDropdown = '';
-  showExportButtons = false;
 
+  showExportButtons = false;
   showTopStock = false;
   showSectionLabels = false;
   showSectionBreaks = false;
   showQA = false;
   showMisreadBarcodes = false;
+  showDebugButton = false;
 
   @Input() missions: Mission[];
   @Input() aisles: Aisle[];
@@ -68,6 +69,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
     this.showSectionLabels = environment.config.showSectionLabels;
     this.showTopStock = environment.config.showTopStock;
     this.showSectionBreaks = environment.config.showSectionBreaks;
+    this.showDebugButton = environment.config.showDebugButton;
 
     const context = this;
     this.apiService.getRoles(localStorage.getItem('id_token')).subscribe( role => {

@@ -12,6 +12,7 @@ export const environment = {
   permissions: ['topStock', 'debugging', 'sectionLabels', 'sectionBreaks'],
   productGridFields: ['Label Name', 'Barcode', 'Product Id', 'Price'],
   onHand: true,
+  showDebugButton: false,
   showExportButtons: false, // Hides: Request Data, Aisle Scan Data, Mission Export, Aisle Export (besides pano)
   showMisreadBarcodes: false,
   showSectionBreaks: false,
