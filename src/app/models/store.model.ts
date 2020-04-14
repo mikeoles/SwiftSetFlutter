@@ -5,7 +5,7 @@ export default class Store {
   storeNumber: number;
   storeName: string;
   storeAddress: string;
-  timezone: string;
+  zoneId: string;
   robots: Array<string>;
   totalAverageOuts: number;
   totalAverageLabels: number;

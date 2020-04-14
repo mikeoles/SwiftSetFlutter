@@ -104,7 +104,7 @@ export class StoreViewComponent implements OnInit {
     const indexDate: Date = new Date(selectedValues.date);
     const end: Date = new Date(indexDate);
     end.setDate(end.getDate() + 1);
-    this.apiService.getMissions(this.storeId, indexDate, end, this.store.timezone).subscribe(
+    this.apiService.getMissions(this.storeId, indexDate, end, this.store.zoneId).subscribe(
       missions => this.missions = missions
     );
   }
@@ -114,7 +114,7 @@ export class StoreViewComponent implements OnInit {
     this.store = store;
     const allSummaryOuts: Array<DaySummary> = [];
     const allSummaryLabels: Array<DaySummary> = [];
-    const d = new Date(new Date(this.graphStartDate.toDateString()).toLocaleString('en-US', {timeZone: store.timezone}));
+    const d = new Date(this.graphStartDate.toLocaleString('en-US', {timeZone: store.zoneId}));
 
     for (let i = 0; i < this.environment.config.missionHistoryDays; i++) {
       const cur: Date = new Date(d.toDateString());
@@ -153,7 +153,7 @@ export class StoreViewComponent implements OnInit {
     const columnNames = ['Mission Date', 'Customer - Store', 'Total Aisles Scanned', 'Total # Of Labels', 'Total # Unread Labels',
     'Percentage Unread Labels', 'Percentage Read Labels', '# Read Labels With Matching Product', '# Read Labels Missing Product',
     'Total # OOS'];
-    this.apiService.getMissions(this.storeId, this.graphStartDate, this.graphEndDate, this.store.timezone)
+    this.apiService.getMissions(this.storeId, this.graphStartDate, this.graphEndDate, this.store.zoneId)
     .subscribe(
       missions => {
         const body = [];
@@ -180,7 +180,7 @@ export class StoreViewComponent implements OnInit {
 
   exportAisleScanData() {
     const columnNames = ['Date Span', 'Aisle', '# Of Scans', 'Average Aisle Coverage'];
-    this.apiService.getMissions(this.storeId, this.graphStartDate, this.graphEndDate, this.store.timezone)
+    this.apiService.getMissions(this.storeId, this.graphStartDate, this.graphEndDate, this.store.zoneId)
     .subscribe(
       missions => {
         let aisles: Aisle[] = [];
@@ -265,7 +265,7 @@ export class StoreViewComponent implements OnInit {
 
   changeRequestDates(request: string, newDate: string) {
     if (request === 'start') {
-      this.requestStartDate = new Date(new Date(newDate).toLocaleString('en-US', {timeZone: this.store.timezone}));
+      this.requestStartDate = new Date(new Date(newDate).toLocaleString('en-US', {timeZone: this.store.zoneId}));
     } else {
       this.requestEndDate = new Date(newDate);
     }

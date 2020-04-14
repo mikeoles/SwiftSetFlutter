@@ -59,7 +59,7 @@ describe('StoreViewComponent', () => {
     totalAverageLabels: 1,
     summaryOuts: daySummaries,
     summaryLabels: daySummaries,
-    timezone: '',
+    zoneId: '',
     robots: []
   };
 

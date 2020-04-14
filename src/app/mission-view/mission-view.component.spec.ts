@@ -57,7 +57,7 @@ describe('MissionViewComponent', () => {
     aisleCount: 1, endDateTime: new Date(), percentageRead: 1, percentageUnread: 1, unreadLabels: 1, readLabelsMissingProduct: 1,
     readLabelsMatchingProduct: 1, createDateTime: new Date(), aisles: aisles, storeName: '', storeNumber: 1 };
   const store: Store = { storeId: '1',   storeNumber: 1, storeName: '', storeAddress: '', totalAverageOuts: 0, totalAverageLabels: 0,
-    summaryOuts: [], summaryLabels: [], timezone: '', robots: [] };
+    summaryOuts: [], summaryLabels: [], zoneId: '', robots: [] };
 
   beforeEach(async(() => {
     const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getStore', 'getMission', 'getMissions', 'getAisle']);
