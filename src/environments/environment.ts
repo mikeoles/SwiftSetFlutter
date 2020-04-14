@@ -6,6 +6,7 @@ import { labelScrollOptions } from 'src/app/aisle-view/product-details/product-g
 
 export const environment = {
   production: false,
+  auditReportUrl: '',
   apiUrl: 'http://localhost/api',
   authUrl: 'http://localhost/dex/auth?',
   authClientId: 'data-products-viewer',

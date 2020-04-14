@@ -49,6 +49,9 @@ fi
 if [[ ! -z "$TAG_COLORS" ]]; then
   echo "  \"tagColors\": [$TAG_COLORS]," >> /usr/share/nginx/html/assets/config.json
 fi
+if [[ ! -z "$AUDIT_REPORT_URL" ]]; then
+  echo "  \"auditReportUrl\": \"$AUDIT_REPORT_URL\"," >> /usr/share/nginx/html/assets/config.json
+fi
 echo "  \"production\": true" >> /usr/share/nginx/html/assets/config.json
 echo "}" >> /usr/share/nginx/html/assets/config.json
 

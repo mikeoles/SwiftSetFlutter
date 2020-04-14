@@ -2,6 +2,7 @@ import { labelScrollOptions } from 'src/app/aisle-view/product-details/product-g
 
 export const environment = {
   production: true,
+  auditReportUrl: '',
   authUrl: 'http://localhost:5556/auth?',
   authClientId: 'example-app',
   coveragePercent: true,

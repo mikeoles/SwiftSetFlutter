@@ -49,6 +49,7 @@ export class StoreViewComponent implements OnInit {
   currentlyRequesting = false;
   progress = 0;
   showExportButtons = false;
+  auditReportUrl = '';
   private backButtonSubscription: Subscription;
 
   constructor(private apiService: ApiService,
@@ -74,6 +75,7 @@ export class StoreViewComponent implements OnInit {
     this.requestStartDate = new Date();
     this.requestEndDate = new Date();
     this.showExportButtons = environment.config.showExportButtons;
+    this.auditReportUrl = environment.config.auditReportUrl;
   }
 
   ngOnInit() {
@@ -267,5 +269,10 @@ export class StoreViewComponent implements OnInit {
     } else {
       this.requestEndDate = new Date(newDate);
     }
+  }
+
+  // open audit report in new tab
+  openAuditReport() {
+    window.open(this.environment.config.auditReportUrl, '_blank');
   }
 }
