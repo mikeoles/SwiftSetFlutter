@@ -255,7 +255,7 @@ export class ApiService {
       storeNumber: store.number,
       storeName: store.name,
       storeAddress: store.address,
-      zoneId: store.zoneId,
+      zoneId: this.getValidTimezone(store.zoneId),
       robots: store.robots,
       totalAverageOuts: totalOuts / daysAdded,
       totalAverageLabels: totalLabels / daysAdded,
@@ -280,7 +280,7 @@ export class ApiService {
       storeNumber: store.number,
       storeName: store.name,
       storeAddress: store.address,
-      zoneId: store.zoneId,
+      zoneId: this.getValidTimezone(store.zoneId),
       robots: store.robots,
       totalAverageOuts: 0,
       totalAverageLabels: 0,
@@ -306,7 +306,7 @@ export class ApiService {
       .pipe(
         switchMap((store: Store) =>
           forkJoin([
-            this.getMissions(storeId, start, end, store.zoneId),
+            this.getMissions(storeId, start, end, this.getValidTimezone(store.zoneId)),
             this.http.get(`${this.apiUrl}/stores/${storeId}`)
           ])
         ),
@@ -491,6 +491,18 @@ export class ApiService {
         `${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/${typeOfAnnotation}/${labelId}`
       )
       .subscribe();
+    }
+  }
+
+  // checks for valid timezone, if not return browsers local timezone
+  getValidTimezone(tz: string): string {
+    try {
+        Intl.DateTimeFormat(undefined, {timeZone: tz});
+        return tz;
+    } catch (ex) {
+      console.error('Invalid timezone configured for store: ' + tz +
+      ' timezone set to : ' + new Intl.DateTimeFormat().resolvedOptions().timeZone);
+      return new Intl.DateTimeFormat().resolvedOptions().timeZone;
     }
   }
 }

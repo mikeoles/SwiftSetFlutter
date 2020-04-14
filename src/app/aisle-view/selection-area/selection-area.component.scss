@@ -57,19 +57,18 @@ button > span {
   display: inline-block;
 }
 
-@media (max-width: 1450px) {
+@media (max-width: 1600px) {
   .storeInfo {
     font-size: 18px;
   }
   button{
-    font-size: 13px !important;
-    padding: 0px 8px !important;
+    font-size: 14px !important;
   }
   #missionsContainer button {
     width: 180px !important;
   }
   #aislesContainer button {
-    width: 110px !important;
+    width: 120px !important;
   }
 }
 
@@ -79,7 +78,7 @@ button > span {
   }
 }
 
-@media (max-width: 1075px) {
+@media (max-width: 1400px) {
   .hideSmallScreen, .storeInfo  {
     display: none;
   }
