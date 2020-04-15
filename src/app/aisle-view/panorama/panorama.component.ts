@@ -369,13 +369,13 @@ export class PanoramaComponent implements OnInit, OnChanges {
   getAnnotations(): Array<Annotation> {
     let labelAnnotations = [];
     if (this.qaMode) {
-      if (this.misreadBarcodes) {
+      if (this.misreadBarcodes && this.annotations.has(AnnotationType.misread)) {
         labelAnnotations = labelAnnotations.concat(this.annotations.get(AnnotationType.misread));
       }
-      if (this.currentlyDisplayed.includes(LabelType.shelfLabels)) {
+      if (this.currentlyDisplayed.includes(LabelType.shelfLabels) && this.annotations.has(AnnotationType.falseNegative)) {
         labelAnnotations = labelAnnotations.concat(this.annotations.get(AnnotationType.falseNegative));
       }
-      if (this.currentlyDisplayed.includes(LabelType.outs)) {
+      if (this.currentlyDisplayed.includes(LabelType.outs)  && this.annotations.has(AnnotationType.falsePositive)) {
         labelAnnotations = labelAnnotations.concat(this.annotations.get(AnnotationType.falsePositive));
       }
     }

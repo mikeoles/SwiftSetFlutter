@@ -153,6 +153,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
 
   setAisle(aisle: Aisle) {
     this.selectedAisle = aisle;
+    this.annotations = new Map<AnnotationType, Array<Annotation>>();
     this.apiService.getAisle(this.selectedMission.storeId, this.selectedMission.missionId, aisle.aisleId).subscribe(fullAisle => {
       const misreadBarcodes: Array<Label> = this.getMissingBarcodes(fullAisle.labels);
       misreadBarcodes.concat(this.getMissingBarcodes(fullAisle.outs));
@@ -171,6 +172,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
         this.setLabelAnnotations(annotations.misread, AnnotationType.misread);
         this.setLabelAnnotations(annotations.falsePositives, AnnotationType.falsePositive);
         this.setLabelAnnotations(annotations.falseNegatives, AnnotationType.falseNegative);
+        this.labelsChanged = !this.labelsChanged;
       });
     });
     this.location.replaceState(
@@ -198,6 +200,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   }
 
   setLabelAnnotations(annotations, annotationType: AnnotationType): any {
+    console.log('set label annotations')
     if (annotations === undefined) {
       annotations = [];
     }
