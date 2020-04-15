@@ -1,12 +1,11 @@
 <app-selection-area *ngIf="selectedMission" [missions]="missions" [aisles]="selectedMission.aisles"
   [selectedMission]="selectedMission" [selectedAisle]="selectedAisle" [panoramaUrl]="panoramaUrl" [labelsChanged]="labelsChanged" [labels]="labels"
-  (missionSelected)='changeMission($event)' (aisleSelected)='setAisle($event)' [panoTouched]=panoTouched
+  (missionSelected)='changeMission($event)' (aisleSelected)='setAisle($event)'
   (resetPano)='resetPanoClicked()'(toggleQAMode)='toggleQAMode()' [qaMode]='qaMode' [currentlyDisplayed]='currentlyDisplayed' (toggleDisplayed)='toggleDisplayed($event)'>
 </app-selection-area>
 <app-panorama [panoramaUrl]="panoramaUrl" [currentId]="currentId" [currentlyDisplayed]='currentlyDisplayed' [annotations]="annotations"
   [labels]="labels" [sectionBreaks]="sectionBreaks" [currentlyDisplayedToggled]="currentlyDisplayedToggled" 
-  [panoMode]='panoMode' [qaMode]='qaMode'  [resetPano]='resetPano' [labelsChanged]="labelsChanged"
-  (panoramaTouched)='hideDropdowns()' (panoramaId)='setId($event)'
+  [panoMode]='panoMode' [qaMode]='qaMode'  [resetPano]='resetPano' [labelsChanged]="labelsChanged" (panoramaId)='setId($event)'
   (updateLabelCategory)='updateLabelCategory($event)' (updateMissedCategory)='updateMissedCategory($event)'>
 </app-panorama>
 <app-product-details [labelsDictionary]="labels" [annotationsDictionary]="annotations" [labelsChanged]="labelsChanged" [sectionBreaks]="sectionBreaks"

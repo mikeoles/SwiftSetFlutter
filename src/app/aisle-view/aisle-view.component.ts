@@ -31,7 +31,6 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   currentId: number;
   panoramaUrl: string;
   panoMode: boolean;
-  panoTouched: boolean;
   resetPano: boolean;
 
   private logoSubscription: Subscription;
@@ -180,10 +179,6 @@ export class AisleViewComponent implements OnInit, OnDestroy {
 
   setId(id: number) {
     this.currentId = id;
-  }
-
-  hideDropdowns() {
-    this.panoTouched = true;
   }
 
   setMissedAnnotations(annotations): any {

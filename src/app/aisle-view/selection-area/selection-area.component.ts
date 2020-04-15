@@ -37,7 +37,6 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   @Input() aisles: Aisle[];
   @Input() selectedMission: Mission;
   @Input() selectedAisle: Aisle;
-  @Input() panoTouched: boolean;
   @Input() panoramaUrl: string;
   @Input() labels = new Map<LabelType, Array<Label>>();
   @Input() labelsChanged: boolean;
@@ -83,10 +82,6 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['panoTouched']) {
-      this.panoTouched = false;
-      this.currentDropdown = '';
-    }
     if (changes['missions'] && this.missions) {
       this.missions.sort(this.missionSort);
     }
@@ -100,13 +95,6 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
       return -1;
     }
     return 0;
-  }
-
-  @HostListener('document:click', ['$event'])
-  clickout(event) {
-    if (!event.target.classList.contains('dropdownButton')) {
-      this.currentDropdown = '';
-    }
   }
 
   openModal(id: string) {
