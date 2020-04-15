@@ -93,6 +93,7 @@ export class StoreViewComponent implements OnInit {
     this.graphStartDate.setDate(this.graphStartDate.getDate() - this.environment.config.missionHistoryDays + 1);
     const start = new Date(this.graphStartDate);
     const end = new Date(this.graphEndDate);
+    end.setDate(end.getDate() + 1); // make sure to include all missions from the last day
     this.apiService.getStore(this.storeId, start, end).subscribe(store => {
       this.setAllSummaryValues(store);
     });
