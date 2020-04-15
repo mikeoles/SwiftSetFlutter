@@ -431,6 +431,8 @@ export class PanoramaComponent implements OnInit, OnChanges {
  // Css styles for annotation dropdown
   setAnnotationStyles(category: string, hovered: number, i: number, color: string) {
     const styles = {};
+    const fontsize = 24 / Number(this.panZoomApi.getTransform().scale);
+    styles['font-size'] = fontsize.toString() + 'px';
     styles['background-color'] = 'white';
     styles['color'] = color;
     if (this.annotationMenu === AnnotationType.missed && this.selectedMarkerCategory === category) {

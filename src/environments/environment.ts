@@ -20,7 +20,7 @@ export const environment = {
   permissions: ['topStock', 'QA', 'sectionLabels', 'sectionBreaks', 'misreadBarcodes'],
   productGridFields: ['Barcode', 'Price'],
   onHand: true,
-  showDebugButton: false,
+  showDebugButton: true,
   showExportButtons: false, // Hides: Request Data, Aisle Scan Data, Mission Export, Aisle Export (besides pano)
   showMissingBarcodes: true,
   showMisreadBarcodes: true,

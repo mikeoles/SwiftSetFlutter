@@ -34,6 +34,9 @@ fi
 if [[ ! -z "$SHOW_MISREAD_BARCODES" ]]; then
   echo "  \"showMisreadBarcodes\": $SHOW_MISREAD_BARCODES," >> /usr/share/nginx/html/assets/config.json
 fi
+if [[ ! -z "$SHOW_MISSING_BARCODES" ]]; then
+  echo "  \"showMissingBarcodes\": $SHOW_MISSING_BARCODES," >> /usr/share/nginx/html/assets/config.json
+fi
 if [[ ! -z "$SHOW_DEBUG_BUTTON" ]]; then
   echo "  \"showDebugButton\": $SHOW_DEBUG_BUTTON," >> /usr/share/nginx/html/assets/config.json
 fi

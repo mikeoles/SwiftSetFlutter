@@ -10,7 +10,7 @@ button{
     padding: 0px 20px;
     cursor: pointer !important;
     width: auto;
-    margin: 0px 5px;
+    margin: 0px 2px;
     font-size: 15px;
 }
 
@@ -67,16 +67,12 @@ button > span {
     margin-left: 2px;
   }
   #missionsContainer button {
-    width: 250px !important;
+    min-width: 250px;
+    width: auto !important;
   }
   #aislesContainer button {
-    width: 120px !important;
-  }
-}
-
-@media (min-width: 1075px) {
-  #collapsedContainer{
-    display: none;
+    min-width: 130px;
+    width: auto !important;
   }
 }
 
