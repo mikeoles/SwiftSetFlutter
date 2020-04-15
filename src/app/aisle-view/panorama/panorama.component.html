@@ -29,7 +29,7 @@
       </ng-container>
 
       <!-- Annotation Selection Menu -->
-      <ul id="annotationSelector" *ngIf="annotationMenu !== 'none'"
+      <ul id="annotationSelector" *ngIf="annotationMenu !== 'none'" [ngStyle]="setAnnotationSize()" 
         [style.left.px]="annotationLeft"
         [style.top.px]="annotationTop">
         <ng-container *ngFor="let category of categories(); let i = index">

@@ -429,8 +429,6 @@ export class PanoramaComponent implements OnInit, OnChanges {
  // Css styles for annotation dropdown
   setAnnotationStyles(category: string, hovered: number, i: number, color: string) {
     const styles = {};
-    const fontsize = 24 / Number(this.panZoomApi.getTransform().scale);
-    styles['font-size'] = fontsize.toString() + 'px';
     styles['background-color'] = 'white';
     styles['color'] = color;
     if (this.annotationMenu === AnnotationType.missed && this.selectedMarkerCategory === category) {
@@ -442,6 +440,14 @@ export class PanoramaComponent implements OnInit, OnChanges {
       styles['color'] = 'white';
       styles['background-color'] = color;
     }
+    return styles;
+  }
+
+   // Resize dropdown to avoid being too small when pano is zoomed out
+   setAnnotationSize() {
+    const styles = {};
+    const fontsize = 20 / Number(this.panZoomApi.getTransform().scale);
+    styles['font-size'] = fontsize.toString() + 'px';
     return styles;
   }
 
