@@ -15,7 +15,6 @@ export const environment = {
   showDebugButton: false,
   showExportButtons: false, // Hides: Request Data, Aisle Scan Data, Mission Export, Aisle Export (besides pano)
   showMisreadBarcodes: false,
-  showMissingBarcodes: true,
   showSectionBreaks: false,
   showSectionLabels: false,
   showTopStock: false,

@@ -60,7 +60,6 @@ export class PanoramaComponent implements OnInit, OnChanges {
   selectedMarkerCategory = '';
   showDeleteOption = false;
   baseUrl = '';
-  missingBarcodes = false; // Toggle qa user ability to add missing barcodes based on config
   misreadBarcodes = false; // Toggle qa user ability to add misread barcodes based on config
   hovered = false;
 
@@ -82,7 +81,6 @@ export class PanoramaComponent implements OnInit, OnChanges {
 
   constructor(private environment: EnvironmentService, private apiService: ApiService,
     private location: Location, private router: Router, private activatedRoute: ActivatedRoute) {
-    this.missingBarcodes = environment.config.showMissingBarcodes;
     this.misreadBarcodes = environment.config.showMisreadBarcodes;
   }
 
@@ -96,7 +94,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
       maxZoom: 10,
       minZoom: 0.12,
       onDoubleClick: function(e: any) {
-        if (context.missingBarcodes && context.qaMode) {
+        if (context.qaMode) {
           context.showDeleteOption = false;
           context.selectedMarkerCategory = '';
           context.annotationLeft = e.offsetX;

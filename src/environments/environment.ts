@@ -22,7 +22,6 @@ export const environment = {
   onHand: true,
   showDebugButton: true,
   showExportButtons: false, // Hides: Request Data, Aisle Scan Data, Mission Export, Aisle Export (besides pano)
-  showMissingBarcodes: true,
   showMisreadBarcodes: true,
   showSectionBreaks: true,
   showSectionLabels: true,
