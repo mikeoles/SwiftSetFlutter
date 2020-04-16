@@ -200,7 +200,6 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   }
 
   setLabelAnnotations(annotations, annotationType: AnnotationType): any {
-    console.log('set label annotations')
     if (annotations === undefined) {
       annotations = [];
     }
