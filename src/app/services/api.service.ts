@@ -45,6 +45,7 @@ export class ApiService {
       aisleId: aisle.id,
       aisleName: aisle.name,
       panoramaUrl: aisle.panoramaUrl,
+      scanDateTime: aisle.scanDateTime,
       createDateTime: aisle.createDateTime,
       labelsCount: aisle.labelCount,
       labels: (aisle.labels || []).map(l => this.createLabel(l)),

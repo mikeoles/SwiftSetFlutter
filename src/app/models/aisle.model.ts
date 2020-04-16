@@ -6,6 +6,7 @@ export default class Aisle {
   coveragePercent: number;
   panoramaUrl: string;
   createDateTime: Date;
+  scanDateTime: Date;
   labelsCount: number;
   outsCount: number;
   aisleCoverage: string;

@@ -47,10 +47,10 @@ describe('MissionViewComponent', () => {
 
   const sectionBreaks: number[] = [19, 200];
 
-  const aisles: Aisle[] = [{  aisleId: '1', aisleName: '', panoramaUrl: '', createDateTime: new Date(),
+  const aisles: Aisle[] = [{  aisleId: '1', aisleName: '', panoramaUrl: '', createDateTime: new Date(), scanDateTime: new Date(),
   labels: labels, outs: labels, sectionLabels: labels, topStock: labels, sectionBreaks: sectionBreaks,
   coveragePercent: 0, aisleCoverage: '0', labelsCount: 0, outsCount: 0 }];
-  const aisle: Aisle = {  aisleId: '1', aisleName: '', panoramaUrl: '', createDateTime: new Date(),
+  const aisle: Aisle = {  aisleId: '1', aisleName: '', panoramaUrl: '', createDateTime: new Date(), scanDateTime: new Date(),
     labels: labels, outs: labels, sectionLabels: labels, topStock: labels, sectionBreaks: sectionBreaks,
     coveragePercent: 0, aisleCoverage: '0', labelsCount: 0, outsCount: 0 };
   const mission: Mission = { missionId: '1', missionName: '', storeId: '1', startDateTime: new Date(), outs: 1, labels: 1,
