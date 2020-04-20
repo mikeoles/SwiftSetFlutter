@@ -1,6 +1,6 @@
 {
   "name": "single-store",
-  "version": "2.1.6",
+  "version": "2.1.7",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -42,7 +42,7 @@
     "jspdf": "^1.5.3",
     "jspdf-autotable": "^3.2.10",
     "moment": "^2.24.0",
-    "ng-keyboard-shortcuts": "^8.0.0",
+    "ng-keyboard-shortcuts": "^8.2.6",
     "ng-multiselect-dropdown": "^0.2.6",
     "ng2-charts": "^2.3.0",
     "ng2-datepicker": "^3.1.1",

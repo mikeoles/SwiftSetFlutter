@@ -21,8 +21,6 @@ import Detection from '../models/detection.model';
 export class ApiService {
   apiUrl: String;
   coverageDisplayType = 'Description';
-  private labelId = 0;
-
 
   constructor(private http: HttpClient, private environment: EnvironmentService) {
     this.apiUrl = environment.config.apiUrl;
@@ -59,32 +57,10 @@ export class ApiService {
     };
   }
 
-  createTopStock(l: number): Label {
-    return {
-      labelId: this.labelId++,
-      labelName: 'Section Label',
-      barcode: '000000' + l.toString(),
-      productId: '',
-      price: 0.0,
-      department: '',
-      onHand: 0,
-      bounds: {
-        top: 900,
-        left: l * 2.5,
-        width: 100,
-        height: 30,
-      },
-      productCoordinates: [],
-      section: '',
-      customFields: [],
-      color: ''
-    };
-  }
-
     // Section label and top stock only contains a barcode and bound
   createSectionLabel(label: any): Label {
     return {
-      labelId: this.labelId++,
+      labelId: label.id,
       labelName: 'Section Label',
       barcode: label.barcode || '000000000000',
       productId: '',
@@ -97,7 +73,6 @@ export class ApiService {
         width: label.bounds.width,
         height: label.bounds.height,
       },
-      productCoordinates: [],
       section: '',
       customFields: [],
       color: ''
@@ -125,11 +100,8 @@ export class ApiService {
       );
     }
 
-    const prc = [0, 120];
-
-
     return {
-      labelId: this.labelId++,
+      labelId: label.id,
       labelName: product.description,
       barcode: label.barcode || '000000000000',
       productId: product.itemId || '000000',
@@ -142,7 +114,6 @@ export class ApiService {
         width: label.bounds.width,
         height: label.bounds.height,
       },
-      productCoordinates: (prc || []).map(pc => this.createProductCoordinate(label.bounds, pc)),
       section: label.section,
       customFields: (customFields || []).map(cf => this.createCustomField(cf)),
       color: ''

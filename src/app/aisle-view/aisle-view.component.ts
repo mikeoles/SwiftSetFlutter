@@ -13,6 +13,7 @@ import { BackService } from '../services/back.service';
 import { ShortcutInput } from 'ng-keyboard-shortcuts';
 import { LabelType } from './label-type';
 import { AnnotationType } from './annotation-type';
+import AnnotationCategory from '../models/annotationCategory.model';
 
 @Component({
   selector: 'app-aisle-view',
@@ -24,11 +25,12 @@ import { AnnotationType } from './annotation-type';
 export class AisleViewComponent implements OnInit, OnDestroy {
   labels = new Map<LabelType, Array<Label>>();
   annotations = new Map<AnnotationType, Array<Annotation>>();
+  categories = new Map<AnnotationType, Array<AnnotationCategory>>();
   sectionBreaks: number[];
   missions: Mission[];
   selectedMission: Mission;
   selectedAisle: Aisle;
-  currentId: number;
+  currentId: string;
   panoramaUrl: string;
   panoMode: boolean;
   resetPano: boolean;
@@ -154,6 +156,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   setAisle(aisle: Aisle) {
     this.selectedAisle = aisle;
     this.annotations = new Map<AnnotationType, Array<Annotation>>();
+    this.categories = new Map<AnnotationType, Array<AnnotationCategory>>();
     this.apiService.getAisle(this.selectedMission.storeId, this.selectedMission.missionId, aisle.aisleId).subscribe(fullAisle => {
       const misreadBarcodes: Array<Label> = this.getMissingBarcodes(fullAisle.labels);
       misreadBarcodes.concat(this.getMissingBarcodes(fullAisle.outs));
@@ -174,12 +177,24 @@ export class AisleViewComponent implements OnInit, OnDestroy {
         this.setLabelAnnotations(annotations.falseNegatives, AnnotationType.falseNegative);
         this.labelsChanged = !this.labelsChanged;
       });
+      this.apiService.getMisreadCategories().subscribe(categories => {
+        this.categories.set(AnnotationType.misread, categories);
+    });
+      this.apiService.getMissedCategories().subscribe(categories => {
+        this.categories.set(AnnotationType.missed, categories);
+      });
+      this.apiService.getFalsePositiveCategories().subscribe(categories => {
+        this.categories.set(AnnotationType.falsePositive, categories);
+      });
+      this.apiService.getFalseNegativeCategories().subscribe(categories => {
+        this.categories.set(AnnotationType.falseNegative, categories);
+      });
     });
     this.location.replaceState(
       'store/' + this.selectedMission.storeId + '/mission/' + this.selectedMission.missionId + '/aisle/' + this.selectedAisle.aisleId);
   }
 
-  setId(id: number) {
+  setId(id: string) {
     this.currentId = id;
   }
 
@@ -206,14 +221,6 @@ export class AisleViewComponent implements OnInit, OnDestroy {
     const annotationsList: Array<Annotation> = [];
     annotations.forEach(annotation => {
       const annotationObj = new Annotation();
-      // Get bounds by finding label associated with annotation
-      this.labels.forEach((labels: Array<Label>, labelType: LabelType) => {
-        labels.forEach(label => {
-          if (label.labelId.toString() === annotation.labelId) {
-            annotationObj.bounds = label.bounds;
-          }
-        });
-      });
       annotationObj.annotationType = annotationType;
       annotationObj.annotationCategory = annotation.category;
       annotationObj.labelId = annotation.labelId;
@@ -227,7 +234,9 @@ export class AisleViewComponent implements OnInit, OnDestroy {
     const annotationType: AnnotationType = info.annotationType;
     const annotationsToUpdate: Annotation[] = this.annotations.get(annotationType); // Based on annotationType emitted
 
-    const i = annotationsToUpdate.findIndex((annotation => annotation.labelId === info.labelId));
+    const i = annotationsToUpdate.findIndex(annotation => {
+      return annotation !== undefined && annotation.labelId === info.labelId;
+    });
     let action = '';
     if (info.category === undefined) {
       action = 'delete';
@@ -237,20 +246,10 @@ export class AisleViewComponent implements OnInit, OnDestroy {
       annotationsToUpdate[i].annotationCategory = info.category;
     } else {
       action = 'create';
-      let bounds;
-      // Get bounds by finding label associated with annotation
-      this.labels.forEach((labels: Array<Label>, labelType: LabelType) => {
-        labels.forEach(label => {
-          if (label.labelId === info.labelId) {
-            bounds = label.bounds;
-          }
-        });
-      });
       annotationsToUpdate.push({
         annotationType: info.annotationType,
         annotationCategory: info.category,
         labelId: info.labelId,
-        bounds: bounds,
         top: undefined,
         left: undefined,
         color: undefined,

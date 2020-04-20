@@ -115,7 +115,7 @@ export class StoreViewComponent implements OnInit {
     this.store = store;
     const allSummaryOuts: Array<DaySummary> = [];
     const allSummaryLabels: Array<DaySummary> = [];
-    const d = new Date(this.graphStartDate.toLocaleString('en-US', {timeZone: store.zoneId}));
+    const d = new Date(this.graphStartDate);
 
     for (let i = 0; i < this.environment.config.missionHistoryDays; i++) {
       const cur: Date = new Date(d.toDateString());
