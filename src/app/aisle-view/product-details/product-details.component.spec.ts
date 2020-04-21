@@ -18,41 +18,6 @@ describe('ProductDetailsComponent', () => {
   let apiService: jasmine.SpyObj<ApiService>;
   let environmentService: jasmine.SpyObj<EnvironmentService>;
 
-  const labels: Label[] = [
-    { labelId: 1, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
-      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], color: ''},
-    { labelId: 2, labelName: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0,
-      height: 0}, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], color: ''},
-    { labelId: 3, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
-      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], color: ''},
-    { labelId: 4, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
-      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], color: ''},
-    { labelId: 5, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
-      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], color: ''},
-  ];
-  const outs: Label[] = [
-    { labelId: 6, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
-      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], color: '' },
-    { labelId: 7, labelName: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0,
-      height: 0 }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], color: '' },
-    { labelId: 8, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
-      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], color: '' },
-    { labelId: 9, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
-      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], color: '' },
-    { labelId: 10, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0,
-      height: 0 }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], color: '' },
-  ];
-  const topStock: Label[] = [
-    { labelId: 6, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
-      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], color: '' },
-    { labelId: 7, labelName: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0,
-      height: 0 }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], color: '' },
-    { labelId: 8, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
-      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], color: '' },
-    { labelId: 9, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0
-      }, department: '', section: '', customFields: [], onHand: 0, productCoordinates: [], color: '' },
-  ];
-
   beforeEach(async(() => {
     const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getRoles']);
     const environmentServiceSpy = jasmine.createSpyObj('EnvironmentService', ['setPermissions']);

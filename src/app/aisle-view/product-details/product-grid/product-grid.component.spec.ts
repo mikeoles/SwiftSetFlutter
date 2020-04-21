@@ -11,16 +11,10 @@ describe('ProductGridComponent', () => {
   let secondRowEl: HTMLElement;
   let gridEl: HTMLElement;
   const labels: Label[] = [
-    { labelId: 1, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      }, department: '', section: '', customFields: [], onHand: 0, color: '', productCoordinates: []},
-    { labelId: 2, labelName: 'label name', barcode: '550376332', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0,
-      height: 0, }, department: '', section: '', customFields: [], onHand: 0, color: '', productCoordinates: []},
-    { labelId: 3, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      }, department: '', section: '', customFields: [], onHand: 0, color: '', productCoordinates: []},
-    { labelId: 4, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      }, department: '', section: '', customFields: [], onHand: 0, color: '', productCoordinates: []},
-    { labelId: 5, labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0, bounds: { top: 0, left: 0, width: 0, height: 0,
-      }, department: '', section: '', customFields: [], onHand: 0, color: '', productCoordinates: []},
+    { labelId: '1', labelName: 'label name', barcode: '12345', productId: '12345', price: 0.0,
+    bounds: { top: 0, left: 0, width: 0, height: 0 }, department: '', section: '', customFields: [], onHand: 0, color: ''},
+    { labelId: '2', labelName: 'label name', barcode: '550376332', productId: '12345', price: 0.0,
+    bounds: { top: 0, left: 0, width: 0, height: 0, }, department: '', section: '', customFields: [], onHand: 0, color: ''}
   ];
 
   beforeEach(async(() => {
@@ -56,28 +50,6 @@ describe('ProductGridComponent', () => {
   it('emits id when row is clicked', () => {
     secondRowEl.click();
     expect(component.gridClicked.emit).toHaveBeenCalledWith(2);
-  });
-
-  it('highlights row when clicked', () => {
-    component.selectedId = 2;
-    fixture.detectChanges();
-    expect(secondRowEl.getAttribute('class')).toEqual('selected');
-  });
-
-  it('doesn\'t highlight when different row when clicked', () => {
-    component.selectedId = 1;
-    fixture.detectChanges();
-    expect(secondRowEl.getAttribute('class') === 'selected').toBeFalsy();
-  });
-
-  it('doesn\'t highlight when no row is selected', () => {
-    component.selectedId = 2;
-    fixture.detectChanges();
-    expect(secondRowEl.getAttribute('class')).toEqual('selected');
-
-    component.selectedId = -1;
-    fixture.detectChanges();
-    expect(secondRowEl.getAttribute('class') === 'selected').toBeFalsy();
   });
 
   it('displays correct number of rows', () => {

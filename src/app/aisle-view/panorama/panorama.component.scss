@@ -1,29 +1,5 @@
 @import '../../../variables';
 
-#annotationSelector{
-  margin-block-start: 60px;
-  position: absolute;
-  background-color: white;
-  border: 10px solid #2baae1;
-  padding: 0px 0px 0px 0px;
-  border-top-left-radius: 0px;
-  box-shadow: 0px 0px 30px rgba(32, 32, 32, 0.411);
-  text-align: left;
-  list-style-type: none;
-  li{
-    padding: 10px;
-    border-bottom: rgba(211, 211, 211, 0.5) 1px solid;
-    cursor:pointer;
-    span{
-      float: right;
-      margin-left: 20px;
-      border-left: 1px solid #2baaf1;
-      min-width: 25px;
-      padding-left: 5px;
-    }
-  }
-}
-
 .panorama {
   overflow: hidden;
   text-align: center;
@@ -40,9 +16,15 @@
         height: 100%;
       }
 
-      .label{
+      .label {
         position: absolute;
         color: white;
+        border: 10px solid;
+      }
+
+      .annotation {
+        position: absolute;
+        color: #3399ff;
         border: 10px solid;
       }
 
@@ -55,22 +37,13 @@
         top: 0px;
       }
 
-      .productAnnotation {
-        border-color:  $product;
-      }
-
-      .delete {
-        background-color: red;
-        text-align: center;
-      }
-
       .marker {
+        position: absolute;
         height: 70px;
         width: 70px;
         background-color: rgba(0, 0, 0, 0);
         border-radius: 50%;
-        border: 10px white solid;
-        position: absolute;
+        border: 10px #3399ff solid;
       }
     }
   }
@@ -106,6 +79,41 @@
       &#zoomIn { top: -3px; }
       &#zoomOut { top: 44px; }
     }
+  }
+}
+
+#annotationSelector {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  max-height: 365px;
+  font-size: 15px;
+  margin-block-start: 00px;
+  overflow: auto;
+  background-color: white;
+  padding: 0px 0px 0px 0px;
+  border-top-left-radius: 0px;
+  box-shadow: 0px 0px 30px rgba(32, 32, 32, 0.411);
+  text-align: left;
+  list-style-type: none;
+  
+  li {
+    padding: 1px;
+    border-bottom: rgba(211, 211, 211, 0.5) 1px solid;
+    cursor:pointer;
+    
+    span {
+      float: right;
+      margin-left: 20px;
+      border-left: 1px solid #2baaf1;
+      min-width: 25px;
+      padding-left: 5px;
+    }
+
+  }
+  .delete {
+    background-color: red;
+    text-align: center;
   }
 }
 

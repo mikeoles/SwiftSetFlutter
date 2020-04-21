@@ -285,27 +285,17 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   }
 
   nextPano() {
-    const index: number = this.findAisleIndex();
+    const index = this.aisles.findIndex(a => a.aisleId === this.selectedAisle.aisleId);
     if (index >= 0 && index < this.aisles.length - 1) {
       this.aisleSelected.emit(this.aisles[index + 1]);
     }
   }
 
   previousPano() {
-    const index: number = this.findAisleIndex();
+    const index = this.aisles.findIndex(a => a.aisleId === this.selectedAisle.aisleId);
     if (index > 0) {
       this.aisleSelected.emit(this.aisles[index - 1]);
     }
-  }
-
-  findAisleIndex() {
-    let index = -1;
-    this.aisles.forEach((aisle, i) => {
-      if (aisle.aisleId === this.selectedAisle.aisleId) {
-        index = i;
-      }
-    });
-    return index;
   }
 
   labelLocationSort(a: Label, b: Label) {

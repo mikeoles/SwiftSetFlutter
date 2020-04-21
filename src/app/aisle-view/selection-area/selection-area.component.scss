@@ -159,15 +159,17 @@ ul{
 
 //Scrollbar
 ::-webkit-scrollbar {
-  width: 1px;
+  width: 30px;
 }
 
 ::-webkit-scrollbar-track {
   background: transparent;
+  border-width: 0px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: transparent;
+  border: 12px solid transparent;
+  border-radius: 20px;
 }
 
 .pointer{

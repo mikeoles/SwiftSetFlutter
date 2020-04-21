@@ -16,10 +16,10 @@ export enum KEY_CODE {
 })
 export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges {
 
-  @Output() gridClicked = new EventEmitter();
+  @Output() gridClicked = new EventEmitter<string>();
   @Input() allAnnotations: Array<Annotation>;
   @Input() allLabels: Array<Label>;
-  @Input() selectedId: number;
+  @Input() selectedId: string;
   @Input() qaMode: boolean;
   columnHeaders: String[];
   rows: Array<Array<String>> = [];
@@ -118,7 +118,9 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
 
         if (fieldLowercase === 'qAAnnotations') { // check the label for annotations and display the first one in the grid
           cellValue = '';
-          const annotation: Annotation = this.allAnnotations.find((a => String(a.labelId) === String(label.labelId)));
+          const annotation: Annotation = this.allAnnotations.find(a => {
+            return a !== undefined && a.labelId === label.labelId;
+          });
           if (annotation) {
             cellValue = annotation.annotationType + ': ' + annotation.annotationCategory;
           }
@@ -189,12 +191,12 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
   // Change selected row on keyup and keydown
   @HostListener('window:keyup', ['$event'])
   keyscroll(event) {
-    if (event.keyCode === KEY_CODE.UP && this.selectedId >= 0) {
+    if (event.keyCode === KEY_CODE.UP && this.selectedId && this.selectedId !== '-1') {
       const index = this.findIndexById(this.selectedId);
       if (index > 0) {
         this.gridClicked.emit( this.allLabels[index - 1].labelId);
       }
-    } else if (event.keyCode === KEY_CODE.DOWN && this.selectedId >= 0) {
+    } else if (event.keyCode === KEY_CODE.DOWN && this.selectedId && this.selectedId !== '-1') {
       const index = this.findIndexById(this.selectedId);
       if (index < (this.allLabels.length - 1)) {
         this.gridClicked.emit( this.allLabels[index + 1].labelId );
@@ -203,7 +205,7 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
   }
 
   // Return the table index based on a product id
-  findIndexById(id: number) {
+  findIndexById(id: string) {
     for (let i = 0; i < this.allLabels.length; i++) {
       if (this.allLabels[i].labelId === id) {
         return i;

@@ -67,7 +67,7 @@ import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
     ChartsModule,
     FormsModule,
     FontAwesomeModule,
-    KeyboardShortcutsModule,
+    KeyboardShortcutsModule.forRoot(),
     HttpClientModule,
     FormsModule,
     RoundProgressModule,

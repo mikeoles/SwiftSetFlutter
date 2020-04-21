@@ -32,7 +32,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
   @Input() labels = new Map<LabelType, Array<Label>>();
   @Input() labelsChanged: boolean;
   @Input() sectionBreaks: number[];
-  @Input() currentId: number;
+  @Input() currentId: string;
   @Input() panoramaUrl: string;
   @Input() panoMode: boolean;
   @Input() resetPano = false;
@@ -40,22 +40,17 @@ export class PanoramaComponent implements OnInit, OnChanges {
   @Input() currentlyDisplayedToggled: boolean;
   @Input() qaMode: boolean;
   @Input() annotations = new Map<AnnotationType, Array<Annotation>>();
+  @Input() categories = new Map<AnnotationType, Array<AnnotationCategory>>();
 
-  @Output() panoramaId = new EventEmitter();
+  @Output() panoramaId = new EventEmitter<string>();
   @Output() panoramaTouched = new EventEmitter();
-  @Output() updateLabelCategory = new EventEmitter<{labelId: number, category: string, annotationType: AnnotationType}>();
+  @Output() updateLabelCategory = new EventEmitter<{labelId: string, category: string, annotationType: AnnotationType}>();
   @Output() updateMissedCategory = new EventEmitter<{top: number, left: number, category: string}>();
-
-  misreadAnnotationCategories: AnnotationCategory[];
-  missedAnnotationCategories: AnnotationCategory[];
-  falsePositiveAnnotationCategories: AnnotationCategory[];
-  falseNegativeAnnotationCategories: AnnotationCategory[];
 
   // annotations
   annotationMenu: AnnotationType = AnnotationType.none;
   annotationLeft = 0;
   annotationTop = 0;
-  selectedAnnotation: Annotation;
   selectedColor = '#FFD54A';
   selectedMarkerCategory = '';
   showDeleteOption = false;
@@ -85,8 +80,6 @@ export class PanoramaComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.getAnnotationCategories();
-
     const owner = document.getElementById('image-owner');
     this.panoImageElement = document.getElementById('pano-image');
     const context = this;
@@ -159,38 +152,21 @@ export class PanoramaComponent implements OnInit, OnChanges {
     });
   }
 
-  getAnnotationCategories() {
-    this.apiService.getMisreadCategories().subscribe(categories => {
-      this.setHotkeys(this.misreadAnnotationCategories = categories);
-    });
-
-    this.apiService.getMissedCategories().subscribe(categories => {
-      this.setHotkeys(this.missedAnnotationCategories = categories);
-    });
-
-    this.apiService.getFalsePositiveCategories().subscribe(categories => {
-      this.setHotkeys(this.falsePositiveAnnotationCategories = categories);
-    });
-
-    this.apiService.getFalseNegativeCategories().subscribe(categories => {
-      this.setHotkeys(this.falseNegativeAnnotationCategories = categories);
-    });
-  }
-
   ngOnChanges(changes: SimpleChanges) {
-    if ((changes.labels || changes.qaMode || changes.currentlyDisplayedToggled || changes.currentId || changes.labelsChanged)) {
+    if (changes.labels || changes.qaMode || changes.currentlyDisplayedToggled || changes.currentId || changes.labelsChanged) {
       this.updateLabelBorderColors();
       if (this.qaMode) {
         this.updateAnnotationBorderColors();
+        this.setHotkeys();
       }
-      this.showOrHideAnnotationOptions(undefined);
+      this.showOrHideAnnotationOptions();
     }
 
     if (this.panZoomApi && (changes['panoMode'] || changes['resetPano'] !== undefined)) {
       setTimeout(() => {
         this.centerImage(this.currentWidth, this.currentHeight);
       }, 10);
-    } else if (this.panZoomApi && this.currentId && this.currentId !== -1 && !this.cancelZoom) {
+    } else if (this.panZoomApi && this.currentId && this.currentId !== '-1' && !this.cancelZoom) {
       this.zoomToLabel();
     }
     this.cancelZoom = false;
@@ -244,21 +220,6 @@ export class PanoramaComponent implements OnInit, OnChanges {
     this.panZoomApi.zoomAbs(0, 0, this.labelZoomLevel);
   }
 
-  // Shortcut hotkeys to select cateogry
-  setHotkeys(categories: Array<AnnotationCategory>): any {
-    categories.forEach(category => {
-      this.shortcuts.push(
-        {
-          key: category.hotkey,
-          command: () => {
-            this.changeAnnotation(category.categoryName);
-          },
-          preventDefault: true,
-        },
-      );
-    });
-  }
-
   // Sets border colors labels
   updateLabelBorderColors(): any {
     this.currentlyDisplayed.forEach(labelType => {
@@ -289,10 +250,10 @@ export class PanoramaComponent implements OnInit, OnChanges {
 
   // Changes border colors for labels that have annotations attached to them
   updateAnnotationBorderColors(): any {
-    this.annotations.forEach((annotations: Array<Annotation>, annotationType: AnnotationType) => {
-      if (annotations) {
+    if (this.annotations && this.annotations.size > 0 && this.categories && this.categories.size > 0) {
+      this.annotations.forEach((annotations: Array<Annotation>, annotationType: AnnotationType) => {
         annotations.forEach(annotation => {
-          const categoriesList = this.categories(annotation.annotationType);
+          const categoriesList = this.categories.get(annotation.annotationType);
           const categoryName = annotation.annotationCategory;
           categoriesList.forEach(category => {
             if (category.categoryName === categoryName) {
@@ -300,26 +261,22 @@ export class PanoramaComponent implements OnInit, OnChanges {
             }
           });
         });
-      }
-    });
-  }
-
-  categories(annotationName: AnnotationType) {
-    if (annotationName === AnnotationType.missed || this.annotationMenu === AnnotationType.missed) {
-      return this.missedAnnotationCategories;
-    } else if (annotationName === AnnotationType.misread || this.annotationMenu === AnnotationType.misread) {
-      return this.misreadAnnotationCategories;
-    } else if (annotationName === AnnotationType.falsePositive || this.annotationMenu === AnnotationType.falsePositive) {
-      return this.falsePositiveAnnotationCategories;
-    } else if (annotationName === AnnotationType.falseNegative || this.annotationMenu === AnnotationType.falseNegative) {
-      return this.falseNegativeAnnotationCategories;
+      });
     }
   }
 
   // Determines which popup to show for annotation options
-  showOrHideAnnotationOptions(annotation: Annotation): void {
+  showOrHideAnnotationOptions(): void {
     this.annotationMenu = AnnotationType.none;
-    if (this.labels.size > 0 && annotation === undefined && this.qaMode) { // If label was clicked
+    if (!this.qaMode || this.currentId === '-1') {
+      return;
+    }
+    const annotation = this.getAnnotationById(this.currentId);
+    if (annotation) {
+      this.showDeleteOption = true;
+      this.annotationMenu = annotation.annotationType;
+      this.currentId = annotation.labelId;
+    } else { // If label was clicked
       this.showDeleteOption = false;
       let misread: Label = null;
       if (this.misreadBarcodes) {
@@ -327,31 +284,66 @@ export class PanoramaComponent implements OnInit, OnChanges {
       }
       const out: Label = this.labels.get(LabelType.outs).find((l => l.labelId === this.currentId));
       const shelfLabel: Label = this.labels.get(LabelType.shelfLabels).find((l => l.labelId === this.currentId));
-      let label: Label;
-
       if (misread) {
         this.annotationMenu = AnnotationType.misread;
-        label = misread;
       } else if (out) {
         this.annotationMenu = AnnotationType.falsePositive;
-        label = out;
-      } else if (!out && shelfLabel) {
+      } else if (shelfLabel) {
         this.annotationMenu = AnnotationType.falseNegative;
-        label = shelfLabel;
-      }
-      if (label) {
-        this.annotationLeft = label.bounds.left + label.bounds.width + 20; // Set bounds for annotation options pane
-        this.annotationTop = label.bounds.top - label.bounds.height;
       }
     }
+  }
 
-    if (annotation !== undefined) { // If annotation was clicked
-      this.showDeleteOption = true;
-      this.annotationMenu = annotation.annotationType;
-      this.selectedAnnotation = annotation;
-      this.annotationLeft = annotation.bounds.left + annotation.bounds.width + 20; // Set bounds for annotation options pane
-      this.annotationTop = annotation.bounds.top - annotation.bounds.height;
-    }
+  // Set shortcuts based on categories info
+  setHotkeys() {
+    const newShortcuts = [];
+    this.categories.forEach((annotationCategories: Array<AnnotationCategory>) => {
+      annotationCategories.forEach(category => {
+        newShortcuts.push(
+          {
+            key: category.hotkey,
+            command: () => {
+              this.changeAnnotation(category.categoryName);
+            },
+            preventDefault: true,
+          },
+        );
+      });
+    });
+    newShortcuts.push(
+      {
+        key: 'del',
+        command: () => {
+          this.changeAnnotation(undefined);
+        },
+        preventDefault: true,
+      },
+    );
+    this.shortcuts = newShortcuts;
+  }
+
+  getAnnotationById(labelId: string): Annotation {
+    let matchingAnnotation;
+    this.annotations.forEach((annotations: Array<Annotation>) => {
+      annotations.forEach(annotation => {
+        if (annotation.labelId === labelId) {
+          matchingAnnotation = annotation;
+        }
+      });
+    });
+    return matchingAnnotation;
+  }
+
+  getLabelById(labelId: string): Label {
+    let matchingLabel;
+    this.labels.forEach((labels: Array<Label>) => {
+      labels.forEach(label => {
+        if (label.labelId === labelId) {
+          matchingLabel = label;
+        }
+      });
+    });
+    return matchingLabel;
   }
 
   labelClicked(label: Label) {
@@ -361,7 +353,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
       if (this.currentId !== label.labelId) {
         this.panoramaId.emit(label.labelId);
       } else {
-        this.panoramaId.emit(-1);
+        this.panoramaId.emit('-1');
       }
     }
   }
@@ -383,7 +375,13 @@ export class PanoramaComponent implements OnInit, OnChanges {
   }
 
   annotationClicked(annotation: Annotation) {
-    this.showOrHideAnnotationOptions(annotation);
+    this.annotationMenu = AnnotationType.none;
+    this.cancelZoom = true;
+    if (this.currentId !== annotation.labelId) {
+      this.panoramaId.emit(annotation.labelId);
+    } else {
+      this.panoramaId.emit('-1');
+    }
   }
 
   zoomIn() {
@@ -399,10 +397,10 @@ export class PanoramaComponent implements OnInit, OnChanges {
   panoTouched() {
     this.annotationMenu = AnnotationType.none;
     this.selectedMarkerCategory = '';
-    this.panoramaId.emit(-1);
+    this.panoramaId.emit('-1');
   }
 
-  // When any anntation is created, updated, or deleted on the pano
+  // When a user chooses an annotation from the dropdown
   changeAnnotation(category: string) {
     this.cancelZoom = true;
 
@@ -415,9 +413,8 @@ export class PanoramaComponent implements OnInit, OnChanges {
         category: category,
       });
     } else {
-      const labelId = this.selectedAnnotation ? this.selectedAnnotation.labelId : this.currentId;
       this.updateLabelCategory.emit({
-        labelId: labelId,
+        labelId: this.currentId,
         category: category,
         annotationType: this.annotationMenu,
       });
@@ -427,13 +424,14 @@ export class PanoramaComponent implements OnInit, OnChanges {
   }
 
  // Css styles for annotation dropdown
-  setAnnotationStyles(category: string, hovered: number, i: number, color: string) {
+  setMenuOptionStyles(category: string, hovered: number, i: number, color: string) {
     const styles = {};
     styles['background-color'] = 'white';
     styles['color'] = color;
+    const annotation = this.getAnnotationById(this.currentId);
     if (this.annotationMenu === AnnotationType.missed && this.selectedMarkerCategory === category) {
       styles['background-color'] = 'lightgray'; // highlight the currently selected color light gray
-    } else if (this.selectedAnnotation && this.selectedAnnotation.annotationCategory === category) {
+    } else if (annotation && annotation.annotationCategory === category) {
       styles['background-color'] = 'lightgray'; // highlight the currently selected color light gray
     }
     if (hovered === i) {
@@ -443,11 +441,28 @@ export class PanoramaComponent implements OnInit, OnChanges {
     return styles;
   }
 
-   // Resize dropdown to avoid being too small when pano is zoomed out
-   setAnnotationSize() {
+   // Css styles for annotations
+   setAnnotationStyles(labelId: string, color: string) {
     const styles = {};
-    const fontsize = 20 / Number(this.panZoomApi.getTransform().scale);
-    styles['font-size'] = fontsize.toString() + 'px';
+    const label = this.getLabelById(labelId);
+    if (label !== undefined) {
+      styles['left.px'] = label.bounds.left;
+      styles['top.px'] = label.bounds.top;
+      styles['width.px'] = label.bounds.width;
+      styles['height.px'] = label.bounds.height;
+      styles['border-color'] = color;
+    }
+    return styles;
+  }
+
+  // Display QA Selction Options
+  setMenuStyles() {
+    const styles = {};
+    if (this.annotationMenu === AnnotationType.none) {
+      styles['display'] = 'none';
+    } else {
+      styles['display'] = 'block';
+    }
     return styles;
   }
 
@@ -456,7 +471,8 @@ export class PanoramaComponent implements OnInit, OnChanges {
     const styles = {};
     styles['top.px'] = annotation.top - 35;
     styles['left.px'] = annotation.left - 35;
-    styles['border-color'] = this.missedAnnotationCategories.find((obj => obj.categoryName === annotation.annotationCategory)).color;
+    styles['border-color'] = this.categories.get(AnnotationType.missed)
+      .find((obj => obj.categoryName === annotation.annotationCategory)).color;
     return styles;
   }
 
