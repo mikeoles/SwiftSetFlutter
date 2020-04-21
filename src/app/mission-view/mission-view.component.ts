@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { EnvironmentService } from '../services/environment.service';
 import { DataService } from '../services/data.service';
 import * as jsPDF from 'jspdf';
+import Aisle from '../models/aisle.model';
 
 @Component({
   selector: 'app-mission-view',
@@ -18,11 +19,13 @@ import * as jsPDF from 'jspdf';
 })
 
 export class MissionViewComponent implements OnInit, OnDestroy {
-  mission: Mission;
   store: Store;
+  mission: Mission;
+  aisles: Aisle[];
   averageLabels: number;
   averageStoreOuts: number;
   averageStoreLabels: number;
+  searchTerm: string;
   service: ApiService;
   currentlyExporting = false;
   showExportButtons = false;
@@ -52,6 +55,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
     });
     this.apiService.getMission(storeId, missionId, Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe(mission => {
       this.mission = mission;
+      this.aisles = mission.aisles;
       const startDate = new Date();
       startDate.setDate(startDate.getDate() - this.environment.config.missionHistoryDays + 1);
       this.apiService.getStore(mission.storeId, startDate, new Date()).subscribe(store => {
@@ -73,6 +77,17 @@ export class MissionViewComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.backButtonSubscription.unsubscribe();
   }
+
+  searchBarcodeClicked() {
+    if (this.searchTerm.length > 0) {
+      this.apiService.getAislesByLabels(this.store.storeId, this.mission.missionId, 'barcode', this.searchTerm).subscribe(aisles => {
+        this.aisles = aisles;
+      });
+    } else {
+      this.aisles = this.mission.aisles;
+    }
+  }
+
   openModal(id: string) {
     this.modalService.open(id);
   }
@@ -89,7 +104,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
   }
 
   addAisles(i: number, exportType: string, exportFields: string[], modalId: string, body: any[], fileType: string) {
-    if (i === this.mission.aisles.length) {
+    if (i === this.aisles.length) {
       if (fileType === 'pdf') {
         this.exportPDF(body);
       } else {
@@ -97,7 +112,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
       }
       this.modalService.close(modalId);
     } else {
-      this.apiService.getAisle(this.mission.storeId, this.mission.missionId, this.mission.aisles[i].aisleId).subscribe(aisle => {
+      this.apiService.getAisle(this.mission.storeId, this.mission.missionId, this.aisles[i].aisleId).subscribe(aisle => {
         const outs: Label[] = aisle.outs;
         const labels: Label[]  = aisle.labels;
         const exportData: Label[] = exportType === 'labels' ? labels : outs;
