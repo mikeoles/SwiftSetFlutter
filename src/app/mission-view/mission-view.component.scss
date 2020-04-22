@@ -5,37 +5,27 @@
   font-weight: bold;
 }
 
-.left{
-  float: left;
-  margin-left: 250px;
-}
-
-.right{
-  float: right;
-  margin-right: 250px;
-}
-
-@media (max-width: 1500px) {
-  .right {
-    margin-right: 100px !important;
-  }
-  .left {
-    margin-left: 100px !important;
-  }
-}
-
-@media (max-width: 768px) {
-  .right {
-    margin-right: 0px !important;
-  }
-  .left {
-    margin-left: 0px !important;
-  }
-}
-
 .missionInfo{
   padding: 20px 40px;
   border-bottom: 1px solid black;
+}
+
+.storeSearch {
+  display: block;
+  text-align: left;
+  margin: 10px 45px;  
+  input {
+    display: inline-block;
+    text-align: center;
+    height: 30px;
+    width: 200px;
+    margin-left: 20px;
+  }
+  button {
+    display: inline-block;
+    height: 45px;
+    font-size: 16px;
+  }
 }
 
 .headerInfo span{
@@ -43,29 +33,10 @@
 }
 
 .exportButton{
-  display: inline-block;
-}
-
-.exportButton{
   margin-top: 20px;
   float: right;
   border-radius: 25px;
   padding: 1px 20px;
-}
-
-button > img,
-button > span {
-  vertical-align: middle;
-}
-
-.statRings{
-  width:calc(100%-80px);
-  text-align:center;
-}
-
-.grid, .statRings{
-  margin-left: 40px;
-  margin-right: 40px;
 }
 
 .disabled {

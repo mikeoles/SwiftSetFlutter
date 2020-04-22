@@ -1,20 +1,19 @@
 :host {
   display: inline-block;
-  margin: 50px auto 50px auto;
+  width: 50%;
+  text-align: center;
 }
 
-.title{
-
+.title {
   display: block;
   margin: auto;
-  text-align: left;
 }
 
 .stat {
   font-weight: 200;
   display: inline-block;
   margin-right: 20px;
-  span{
+  span {
     font-style:  italic;
     font-weight: 900;
   }

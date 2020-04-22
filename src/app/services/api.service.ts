@@ -325,6 +325,13 @@ export class ApiService {
       );
   }
 
+  getAislesByLabels(storeId: string, missionId: string, searchFor: string, term: string): Observable<Aisle[]> {
+    return this.http.get(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/?${searchFor}=${term}`)
+      .pipe(
+        map<any, Aisle[]>(o => o.map(a => this.createAisle(a))), // Map the result to an array of Aisle objects
+      );
+  }
+
   getHistorialData(startDate: Date, endDate: Date): any {
     return this.http.get(`${this.apiUrl}/historicalData?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`);
   }
