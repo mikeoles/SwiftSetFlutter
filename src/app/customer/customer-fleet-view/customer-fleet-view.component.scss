@@ -1,0 +1,67 @@
+@import "../../../variables";
+
+:host{
+  display: block;
+}
+
+.title{
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.storeSearch {
+  width: 100%;
+  input {
+    display: block;
+    margin: 0px auto 20px auto;
+    height: 30px;
+    width: 50%;
+    text-align: center;
+  }
+}
+
+table {
+  border-collapse: collapse;
+  text-align: center;
+  margin: auto 60px;
+  width: calc(100% - 120px);
+  table-layout: fixed;
+}
+
+table tbody, table thead
+{
+  display: block;
+}
+
+table tbody
+{
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  height: calc(100vh - 220px)
+}
+
+th{
+  border: 1px solid $primary;
+  color: $primary;
+  height: 44px;
+}
+
+td{
+  height: 55px;
+}
+
+
+th, td{
+  width: 2000px;
+}
+
+tr{
+  border: 1px solid $greyBorder;
+}
+
+tbody :first-child{
+  border-top: 0px;
+}

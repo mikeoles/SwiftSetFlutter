@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FleetViewComponent } from './fleet-view.component';
+import { BossanovaFleetViewComponent } from './bossanova-fleet-view.component';
 
-describe('FleetViewComponent', () => {
-  let component: FleetViewComponent;
-  let fixture: ComponentFixture<FleetViewComponent>;
+describe('BossanovaFleetViewComponent', () => {
+  let component: BossanovaFleetViewComponent;
+  let fixture: ComponentFixture<BossanovaFleetViewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FleetViewComponent ]
+      declarations: [ BossanovaFleetViewComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FleetViewComponent);
+    fixture = TestBed.createComponent(BossanovaFleetViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

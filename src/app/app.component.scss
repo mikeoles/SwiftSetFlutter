@@ -6,6 +6,7 @@ header {
   font-size: 18px;
   color: white;
   padding: 10px;
+  text-align: center;
 
   #backButton{
     position: absolute;
@@ -43,8 +44,14 @@ header {
   }
 
   #logo {
-    display: block;
-    margin: auto;
+    display: inline-block;
     cursor: pointer;
+  }
+
+  #login {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    padding: 10px;
   }
 }

@@ -229,6 +229,7 @@ export class ApiService {
       storeAddress: store.address,
       zoneId: this.getValidTimezone(store.zoneId),
       robots: store.robots,
+      canary: (store.canary || false),
       totalAverageOuts: totalOuts / daysAdded,
       totalAverageLabels: totalLabels / daysAdded,
       summaryOuts: (outsSummaries || []).map(o => this.createDaySummary(o)),
@@ -254,6 +255,7 @@ export class ApiService {
       storeAddress: store.address,
       zoneId: this.getValidTimezone(store.zoneId),
       robots: store.robots,
+      canary: (store.canary || false),
       totalAverageOuts: 0,
       totalAverageLabels: 0,
       summaryOuts: [],
@@ -270,7 +272,10 @@ export class ApiService {
 
   getStores(): Observable<Store[]> {
     return this.http.get(`${this.apiUrl}/stores`)
-      .pipe(map<any, Store[]>(o => o.map(s => this.createStore(s))), );
+      .pipe(
+        map<any, Store[]>(o => o.map(s => this.createStore(s))),
+        map(stores => stores.sort((a, b) => a.storeName.localeCompare(b.storeName))) // Sort by create date time
+      );
   }
 
   getStore(storeId: string, start: Date, end: Date): Observable<Store> {

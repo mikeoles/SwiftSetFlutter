@@ -76,6 +76,7 @@ describe('AisleViewComponent', () => {
   const store: Store = {  storeId: '',
   storeNumber: 1,
   robots: [],
+  canary: false,
   storeName: '',
   storeAddress: '',
   totalAverageOuts: 1,

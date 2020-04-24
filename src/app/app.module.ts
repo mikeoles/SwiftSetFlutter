@@ -26,7 +26,6 @@ import { ModalComponent } from './modal/modal.component';
 import { ModalService } from './modal/modal.service';
 import { NgDatepickerModule } from 'ng2-datepicker';
 import { DataService } from './services/data.service';
-import { FleetViewComponent } from './fleet-view/fleet-view.component';
 import { ProgressBarModule } from 'angular-progress-bar';
 import { AuthComponent } from './auth/auth.component';
 import { AuthInterceptor } from './auth/auth.interceptor';
@@ -38,6 +37,9 @@ import { DebugViewComponent } from './debug-view/debug-view.component';
 import { DebugPanoramaComponent } from './debug-view/debug-panorama/debug-panorama.component';
 import { DebugFiltersComponent } from './debug-view/debug-filters/debug-filters.component';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
+import { CustomerModule } from './customer/customer.module';
+import { BossanovaModule } from './bossanova/bossanova.module';
+import { FleetViewComponent } from './fleet-view/fleet-view.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +77,9 @@ import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
     NgMultiSelectDropDownModule.forRoot(),
     NgDatepickerModule,
     ProgressBarModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    CustomerModule,
+    BossanovaModule
   ],
   providers: [
     EnvironmentService,

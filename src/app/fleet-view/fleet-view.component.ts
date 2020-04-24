@@ -1,7 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../services/api.service';
-import Store from '../models/store.model';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-fleet-view',
@@ -10,23 +7,10 @@ import { Router } from '@angular/router';
 })
 export class FleetViewComponent implements OnInit {
 
-  stores: Store[];
-  searchTerm: string;
+  bossanovaUser = false;
+  customerUser = true;
 
-  constructor(private apiService: ApiService, private router: Router) { }
+  constructor() { }
 
-  ngOnInit() {
-    this.apiService.getStores().subscribe(stores => {
-      this.stores = stores;
-      if (this.stores.length === 1) {
-        this.router.navigate(['store/' + this.stores[0].storeId]);
-      }
-    });
-  }
-
-  viewStore(storeId: number) {
-    this.router.navigate(['store/' + storeId]);
-  }
-
-
+  ngOnInit() {}
 }
