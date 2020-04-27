@@ -1,2 +1,2 @@
-<app-customer-fleet-view *ngIf="customerUser"></app-customer-fleet-view>
-<app-bossanova-fleet-view *ngIf="bossanovaUser"></app-bossanova-fleet-view>
+<app-customer-fleet-view *ngIf="customer()"></app-customer-fleet-view>
+<app-bossanova-fleet-view *ngIf="!customer() && bossanova()"></app-bossanova-fleet-view>

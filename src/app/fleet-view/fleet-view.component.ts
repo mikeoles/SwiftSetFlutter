@@ -1,16 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { AuthService } from '../auth/auth.service';
+import { Role } from '../auth/role';
 
 @Component({
   selector: 'app-fleet-view',
   templateUrl: './fleet-view.component.html',
   styleUrls: ['./fleet-view.component.scss']
 })
-export class FleetViewComponent implements OnInit {
+export class FleetViewComponent {
 
-  bossanovaUser = false;
-  customerUser = true;
+  constructor(private authService: AuthService) {
+  }
 
-  constructor() { }
+  customer(): boolean {
+    return this.authService.hasRole(Role.CUSTOMER);
+  }
 
-  ngOnInit() {}
+  bossanova(): boolean {
+    return this.authService.hasRole(Role.BOSSANOVA);
+  }
 }
