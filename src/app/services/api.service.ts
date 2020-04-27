@@ -364,10 +364,6 @@ export class ApiService {
     };
   }
 
-  getRoles(idToken: string): Observable<string> {
-    return of('bossanova');
-  }
-
   getMissedCategories(): Observable<AnnotationCategory[]> {
     return this.http.get(`${this.apiUrl}/categories/missed`)
     .pipe(

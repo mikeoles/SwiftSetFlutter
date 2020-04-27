@@ -86,7 +86,7 @@ describe('AisleViewComponent', () => {
 };
 
   beforeEach(async(() => {
-    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getMissions', 'getMission', 'getAisle', 'getStore', 'getRoles',
+    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getMissions', 'getMission', 'getAisle', 'getStore',
     'getMisreadCategories', 'getMissedCategories', 'getFalseNegativeCategories', 'getFalsePositiveCategories']);
     const locationSpy = jasmine.createSpyObj('Location', ['replaceState', 'go']);
     const environmentServiceSpy = jasmine.createSpyObj('EnvironmentService', ['setPermissions']);
@@ -136,7 +136,6 @@ describe('AisleViewComponent', () => {
     apiService.getMissions.and.returnValue(of(missions));
     apiService.getAisle.and.returnValue(of(aisles[0]));
     apiService.getStore.and.returnValue(of(store));
-    apiService.getRoles.and.returnValue(of('bossanova'));
     apiService.getMisreadCategories.and.returnValues(of([]));
     apiService.getMissedCategories.and.returnValues(of([]));
     apiService.getFalseNegativeCategories.and.returnValues(of([]));
