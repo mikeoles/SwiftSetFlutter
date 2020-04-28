@@ -9,6 +9,7 @@ import { AuthComponent } from './auth/auth.component';
 import { AuthGuard } from './auth/auth.guard';
 import { DebugViewComponent } from './debug-view/debug-view.component';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
+import { Role } from './auth/role';
 
 const routes: Routes = [
   {
@@ -37,6 +38,7 @@ const routes: Routes = [
     path: '',
     component: FleetViewComponent,
     canActivate: [AuthGuard],
+    data: {roles: [Role.BOSSANOVA, Role.CUSTOMER]}
   },
   { path: '**', component: PageNotFoundComponent }
 ];

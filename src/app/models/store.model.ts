@@ -7,6 +7,7 @@ export default class Store {
   storeAddress: string;
   zoneId: string;
   robots: Array<string>;
+  canary: boolean;
   totalAverageOuts: number;
   totalAverageLabels: number;
   summaryOuts: Array<DaySummary>;

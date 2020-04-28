@@ -3,10 +3,12 @@
     <fa-icon class="backIcon" [icon]="faArrowAltCircleLeft"></fa-icon>
     <div class="backText">Back</div>
   </div>
-  <div *ngIf="username" id="username">
-    {{username}} - <a [routerLink]="" (click)="logout()">log out</a>
-  </div>
-  <div id="version">{{version}}</div>
   <img id="logo" (click)="logoClicked()" src="../assets/logo.png"/>
+  <div id="login">
+    <div *ngIf="username" id="username">
+      {{username}} - <a [routerLink]="" (click)="logout()">log out</a>
+    </div>
+    <div id="version">{{version}}</div>
+  </div>
 </header>
 <router-outlet></router-outlet>
