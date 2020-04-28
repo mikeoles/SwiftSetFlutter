@@ -13,7 +13,6 @@ import panzoom from 'panzoom';
 import htmlToImage from 'html-to-image';
 import { saveAs } from 'file-saver';
 import { Router } from '@angular/router';
-import { Roles } from 'src/permissions/roles';
 import { LabelType } from '../label-type';
 
 @Component({
@@ -69,13 +68,6 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
     this.showTopStock = environment.config.showTopStock;
     this.showSectionBreaks = environment.config.showSectionBreaks;
     this.showDebugButton = environment.config.showDebugButton;
-
-    const context = this;
-    this.apiService.getRoles(localStorage.getItem('id_token')).subscribe( role => {
-      if (typeof context.environment.setPermissions === 'function') {
-        context.environment.setPermissions(Roles[role]);
-      }
-    });
   }
 
   ngOnInit() {

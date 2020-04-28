@@ -6,4 +6,5 @@ export default class AuthData {
   accessToken: string;
   refreshToken: string;
   expiresAt: Moment;
+  roles: string[];
 }

@@ -63,7 +63,7 @@ describe('SelectionAreaComponent', () => {
     summaryOuts: [], summaryLabels: [], zoneId: '', robots: [] };
 
   beforeEach(async(() => {
-    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getStore', 'getMission', 'getAisle', 'getRoles']);
+    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getStore', 'getMission', 'getAisle']);
 
     TestBed.configureTestingModule({
       imports: [FormsModule, FontAwesomeModule],
@@ -83,7 +83,6 @@ describe('SelectionAreaComponent', () => {
 
     apiService = TestBed.get('ApiService');
     apiService.getStore.and.returnValue(of(store));
-    apiService.getRoles.and.returnValue(of('bossanova'));
   }));
   beforeEach(() => {
     fixture = TestBed.createComponent(SelectionAreaComponent);

@@ -72,6 +72,15 @@ export class AuthService {
     return data.name;
   }
 
+  public hasRole(role: string): boolean {
+    const authData = this.getAuthData();
+    if (!authData || !authData.roles) {
+      return false;
+    }
+
+    return authData.roles.includes(role);
+  }
+
   private saveAuthData(authData: AuthData) {
     localStorage.setItem('authData', JSON.stringify(authData));
   }

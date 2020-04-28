@@ -361,11 +361,8 @@ export class ApiService {
       idToken: data.id_token,
       accessToken: data.access_token,
       refreshToken: data.refresh_token,
+      roles: data.roles,
     };
-  }
-
-  getRoles(idToken: string): Observable<string> {
-    return of('bossanova');
   }
 
   getMissedCategories(): Observable<AnnotationCategory[]> {

@@ -19,7 +19,7 @@ describe('ProductDetailsComponent', () => {
   let environmentService: jasmine.SpyObj<EnvironmentService>;
 
   beforeEach(async(() => {
-    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getRoles']);
+    const apiServiceSpy = jasmine.createSpyObj('ApiService', []);
     const environmentServiceSpy = jasmine.createSpyObj('EnvironmentService', ['setPermissions']);
 
     TestBed.configureTestingModule({
@@ -43,7 +43,6 @@ describe('ProductDetailsComponent', () => {
 
     environmentService = TestBed.get(EnvironmentService);
     apiService = TestBed.get('ApiService');
-    apiService.getRoles.and.returnValue(of('bossanova'));
   }));
 
   beforeEach(() => {
