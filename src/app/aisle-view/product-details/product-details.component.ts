@@ -22,6 +22,7 @@ export class ProductDetailsComponent implements OnChanges {
   @Input() currentId: number;
   @Input() panoMode: boolean;
   @Input() qaMode: boolean;
+  @Input() coverageDelta: number;
 
   @Output() gridId = new EventEmitter();
 

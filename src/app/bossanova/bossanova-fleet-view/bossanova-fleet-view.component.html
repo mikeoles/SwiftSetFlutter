@@ -1,9 +1,12 @@
 <div *ngIf="stores && stores.length === 0" class="title">No Stores Found</div>
 <div *ngIf="stores && stores.length>0">
-  <div class="title">Stores ({{(stores | filter:searchTerm)?.length }})</div>
+  <div *ngIf="!displayingFlaggedStores" class="title">Stores ({{(stores | filter:searchTerm)?.length }})</div>
+  <div *ngIf="displayingFlaggedStores" class="title">Coverage Issue Stores ({{(stores | filter:searchTerm)?.length }})</div>
   <div class="storeSearch">
     <input type="text" placeholder="Search By Store Or Robot" [(ngModel)]="searchTerm">
   </div>
+  <button *ngIf="!displayingFlaggedStores" class="flaggedButton" (click)="clickFlaggedStores()">Show Flagged Stores</button>
+  <button *ngIf="displayingFlaggedStores" class="flaggedButton" (click)="clickFlaggedStores()">Show All Stores</button>
   <table>
     <thead>
       <tr>
