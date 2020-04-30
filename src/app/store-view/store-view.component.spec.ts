@@ -9,7 +9,6 @@ import { ActivatedRoute } from '@angular/router';
 import DaySummary from '../models/daySummary.model';
 import Store from '../models/store.model';
 import { NgDatepickerModule } from 'ng2-datepicker';
-import { EnvironmentService } from '../services/environment.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ProgressBarModule } from 'angular-progress-bar';
 import { ModalService } from 'src/app/modal/modal.service';
@@ -84,9 +83,6 @@ describe('StoreViewComponent', () => {
         { provide: ActivatedRoute, useValue: {
           params: [{ storeId: '1' }],
         }},
-        { provide: EnvironmentService, useValue: { config: {
-          coverageDisplayType: 'description'
-        }}},
         { provide: ModalService},
       ],
     })

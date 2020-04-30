@@ -16,7 +16,7 @@
 #tableSelection{
     margin: 10px auto;
     display: block;
-    width: 1100px;
+    width: 80%;
     border: 2px $primary solid;
     padding: 5px;
     text-align: center;
@@ -35,24 +35,10 @@
 }
 
 @media (max-width: 1450px) {
-  #tableSelection{
-    width: 960px;
-    div {
-      padding: 0px 2px;
-      font-size: 13px;
-    }
+  #tableSelection div{
+    margin: 10px;
+    font-size: 13px;
   }
-}
-
-@media (max-width: 1075px) {
-  #tableSelection{
-    width: 550px;
-    div {
-      padding: 0px 2px;
-      margin: 10px 2px;
-      font-size: 13px;
-    }
-}
 }
 
 #filterButtons{

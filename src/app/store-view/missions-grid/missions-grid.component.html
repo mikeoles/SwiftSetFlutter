@@ -3,6 +3,7 @@
 <table *ngIf="missions.length > 0">
   <thead>
     <tr>
+      <th class="coverageIssue"></th>
       <th>Scan</th>
       <th>Outs</th>
       <th>Labels</th>
@@ -11,6 +12,9 @@
   </thead>
   <tbody>
     <tr *ngFor="let mission of missions; let i = index" (click)="viewMission(mission.missionId)">
+      <td class="coverageIssue">
+        <fa-icon *ngIf="mission.hasCoverageIssue" size="lg" class="fa" [icon]="faExclamationTriangle"></fa-icon>
+      </td>
       <td>
         <!-- <a [routerLink]="['/store', storeId, 'mission', mission.missionId]" (click)="viewMission()"> -->
         <a [routerLink]="['/store', storeId, 'mission', mission.missionId]" (click)="viewMission(mission.missionId)">

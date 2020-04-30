@@ -32,19 +32,19 @@ describe('SelectionAreaComponent', () => {
   const aisles: Aisle[] = [
     { aisleId: '1', aisleName: '1111', panoramaUrl: '', createDateTime: new Date(), scanDateTime: new Date(),
       labels: [], outs: [], sectionLabels: [], sectionBreaks: [], topStock: [],
-      coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
+      coverageDelta: 0, historicalAverageDetected: 0, historicalAverageSampleSize: 0, outsCount: 0, labelsCount: 0},
     { aisleId: '2', aisleName: '2222', panoramaUrl: '', createDateTime: new Date(), scanDateTime: new Date(),
       labels: [], outs: [], sectionLabels: [], sectionBreaks: [], topStock: [],
-      coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
+      coverageDelta: 0, historicalAverageDetected: 0, historicalAverageSampleSize: 0, outsCount: 0, labelsCount: 0},
     { aisleId: '3', aisleName: '3333', panoramaUrl: '', createDateTime: new Date(), scanDateTime: new Date(),
       labels: [], outs: [], sectionLabels: [], sectionBreaks: [], topStock: [],
-      coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
+      coverageDelta: 0, historicalAverageDetected: 0, historicalAverageSampleSize: 0, outsCount: 0, labelsCount: 0},
     { aisleId: '4', aisleName: '4444', panoramaUrl: '', createDateTime: new Date(), scanDateTime: new Date(),
       labels: [], outs: [], sectionLabels: [], sectionBreaks: [], topStock: [],
-      coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: ''},
+      coverageDelta: 0, historicalAverageDetected: 0, historicalAverageSampleSize: 0, outsCount: 0, labelsCount: 0},
     { aisleId: '5', aisleName: '5555', panoramaUrl: '', createDateTime: new Date(), scanDateTime: new Date(),
       labels: [], outs: [], sectionLabels: [], sectionBreaks: [], topStock: [],
-      coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: '' },
+      coverageDelta: 0, historicalAverageDetected: 0, historicalAverageSampleSize: 0, outsCount: 0, labelsCount: 0 },
   ];
 
   const missions: Mission[] = [

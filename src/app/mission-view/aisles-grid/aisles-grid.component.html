@@ -11,11 +11,6 @@
         <fa-icon *ngIf="sortType === 'scanDateTime' && !sortReverse" size="sm" class="fa" [icon]="faAngleDown"></fa-icon>
         <fa-icon *ngIf="sortType === 'scanDateTime' && sortReverse" size="sm" class="fa" [icon]="faAngleUp"></fa-icon>
       </th>
-      <th *ngIf="showAisleCoverage" (click)="sortBy('aisleCoverage')">
-        Aisle Coverage
-        <fa-icon *ngIf="sortType === 'aisleCoverage' && !sortReverse" size="sm" class="fa" [icon]="faAngleDown"></fa-icon>
-        <fa-icon *ngIf="sortType === 'aisleCoverage' && sortReverse" size="sm" class="fa" [icon]="faAngleUp"></fa-icon>
-      </th>
       <th (click)="sortBy('outsCount')">
         Outs
         <fa-icon *ngIf="sortType === 'outsCount' && !sortReverse" size="sm" class="fa" [icon]="faAngleDown"></fa-icon>
@@ -26,6 +21,16 @@
         <fa-icon *ngIf="sortType === 'labelsCount' && !sortReverse" size="sm" class="fa" [icon]="faAngleDown"></fa-icon>
         <fa-icon *ngIf="sortType === 'labelsCount' && sortReverse" size="sm" class="fa" [icon]="faAngleUp"></fa-icon>
       </th>
+      <th (click)="sortBy('historicalAverageDetected')">
+        Historical Average
+        <fa-icon *ngIf="sortType === 'historicalAverageDetected' && !sortReverse" size="sm" class="fa" [icon]="faAngleDown"></fa-icon>
+        <fa-icon *ngIf="sortType === 'historicalAverageDetected' && sortReverse" size="sm" class="fa" [icon]="faAngleUp"></fa-icon>
+      </th>
+      <th (click)="sortBy('coverageDelta')">
+        Coverage Delta
+        <fa-icon *ngIf="sortType === 'coverageDelta' && !sortReverse" size="sm" class="fa" [icon]="faAngleDown"></fa-icon>
+        <fa-icon *ngIf="sortType === 'coverageDelta' && sortReverse" size="sm" class="fa" [icon]="faAngleUp"></fa-icon>
+      </th>
     </tr>
   </thead>
   <tbody>
@@ -35,10 +40,13 @@
           {{aisle.aisleName}}
         </a>
       </td>
-      <td *ngIf="showAisleCoverage">{{aisle.aisleCoverage}}</td>
-      <td>{{aisle.scanDateTime | date:'medium'}}</td>
+      <td>{{aisle.scanDateTime | date:'MMM d h:mm:ss a'}}</td>
       <td>{{aisle.outsCount}}</td>
       <td>{{aisle.labelsCount}}</td>
+      <td *ngIf="aisle.historicalAverageDetected && aisle.historicalAverageSampleSize">{{aisle.historicalAverageDetected}} in last {{aisle.historicalAverageSampleSize}} missions</td>
+      <td *ngIf="!aisle.historicalAverageDetected || !aisle.historicalAverageSampleSize">N/A</td>
+      <td *ngIf="aisle.coverageDelta" [ngStyle]="setDeltaStyle(aisle.coverageDelta)">{{aisle.coverageDelta * 100}}%</td>
+      <td *ngIf="!aisle.coverageDelta">N/A</td>
     </tr>
   </tbody>
 </table>
