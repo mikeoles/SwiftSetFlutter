@@ -31,16 +31,9 @@
   cursor: pointer;
 }
 
-@media (max-width: 1500px) {
+@media (max-width: 1450px) {
   .dayGraph {
     width: 55px !important;
-  }
-}
-
-@media (max-width: 768px) {
-  .dayGraph {
-    width: 67px !important;
-    margin: 20px 10px 15px 10px !important;
   }
 }
 
