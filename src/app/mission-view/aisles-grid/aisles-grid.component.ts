@@ -14,7 +14,7 @@ export class AislesGridComponent implements OnInit {
   @Input() missionId: number;
   @Input() storeId: number;
 
-  flaggedCoverageDelta: number;
+  showAisleCoverage: boolean;
   sortType = 'aisleName';
   sortReverse = false;
 
@@ -22,7 +22,7 @@ export class AislesGridComponent implements OnInit {
   faAngleUp = faAngleUp;
 
   constructor(private environment: EnvironmentService) {
-    this.flaggedCoverageDelta = this.environment.config.flaggedCoverageDelta;
+    this.showAisleCoverage = this.environment.config.coveragePercent;
   }
 
   ngOnInit() {
@@ -40,15 +40,5 @@ export class AislesGridComponent implements OnInit {
       return this.aisles.sort((a, b) => a[this.sortType] < b[this.sortType] ? 1 : a[this.sortType] === b[this.sortType] ? 0 : -1);
     }
     return this.aisles.sort((a, b) => a[this.sortType] > b[this.sortType] ? 1 : a[this.sortType] === b[this.sortType] ? 0 : -1);
-  }
-
-  // Change the display color of aisles with coverage deltas lower than the configured flagged coverage delta
-  setDeltaStyle(coverageDelta: number) {
-    const styles = {};
-    styles['color'] = 'black';
-    if (coverageDelta <= this.flaggedCoverageDelta) {
-      styles['color'] = 'red';
-    }
-    return styles;
   }
 }

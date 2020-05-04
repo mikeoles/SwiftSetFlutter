@@ -18,5 +18,4 @@ export default class Mission {
   percentageUnread: number;
   percentageRead: number;
   aisles: Aisle[];
-  hasCoverageIssue: boolean;
 }

@@ -5,6 +5,7 @@ export const environment = {
   auditReportUrl: '',
   authUrl: 'http://localhost:5556/auth?',
   authClientId: 'example-app',
+  coveragePercent: true,
   exportFields: ['Barcode', 'top', 'left', 'width', 'height'],
   labelScrolling: labelScrollOptions.vertical,
   missionHistoryDays: 14, // Number of days to display missions for

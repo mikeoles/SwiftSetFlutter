@@ -16,6 +16,12 @@ fi
 if [[ ! -z "$SHOW_EXPORT_BUTTONS" ]]; then
   echo "  \"showExportButtons\": $SHOW_EXPORT_BUTTONS," >> /usr/share/nginx/html/assets/config.json
 fi
+if [[ ! -z "$COVERAGE_DISPLAY_TYPE" ]]; then
+  echo "  \"coverageDisplayType\": \"$COVERAGE_DISPLAY_TYPE\"," >> /usr/share/nginx/html/assets/config.json
+fi
+if [[ ! -z "$DISPLAY_COVERAGE" ]]; then
+  echo "  \"coveragePercent\": $DISPLAY_COVERAGE," >> /usr/share/nginx/html/assets/config.json
+fi
 if [[ ! -z "$SHOW_TOP_STOCK" ]]; then
   echo "  \"showTopStock\": $SHOW_TOP_STOCK," >> /usr/share/nginx/html/assets/config.json
 fi

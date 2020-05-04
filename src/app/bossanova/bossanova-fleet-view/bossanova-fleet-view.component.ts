@@ -13,7 +13,6 @@ export class BossanovaFleetViewComponent implements OnInit {
 
   stores: Store[];
   searchTerm: string;
-  displayingFlaggedStores = false;
   faCopyright = faCopyright;
 
   constructor(private apiService: ApiService, private router: Router) { }
@@ -29,19 +28,5 @@ export class BossanovaFleetViewComponent implements OnInit {
 
   viewStore(storeId: number) {
     this.router.navigate(['store/' + storeId]);
-  }
-
-  // Display only stores that have missions which contain aisles flagged for low coverage deltas
-  clickFlaggedStores() {
-    this.displayingFlaggedStores = !this.displayingFlaggedStores;
-    if (this.displayingFlaggedStores) {
-      this.apiService.getFlaggedStores().subscribe(stores => {
-        this.stores = stores;
-      });
-    } else {
-      this.apiService.getStores().subscribe(stores => {
-        this.stores = stores;
-      });
-    }
   }
 }
