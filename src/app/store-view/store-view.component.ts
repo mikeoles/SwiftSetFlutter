@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 import Mission from '../models/mission.model';
 import Aisle from '../models/aisle.model';
 import { ModalService } from '../modal/modal.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-data-display',
@@ -57,7 +58,8 @@ export class StoreViewComponent implements OnInit {
               private environment: EnvironmentService,
               private backService: BackService,
               private router: Router,
-              private modalService: ModalService) {
+              private modalService: ModalService,
+              private titleService: Title) {
     this.coverageDisplayType = environment.config.coverageDisplayType;
     this.graphEndDate = new Date();
     this.graphStartDate = new Date();
@@ -70,6 +72,7 @@ export class StoreViewComponent implements OnInit {
       }
     });
     this.apiService.getStore(this.storeId, start, end).subscribe(store => {
+      this.titleService.setTitle(store.storeName);
       this.setAllSummaryValues(store);
     });
     this.requestStartDate = new Date();

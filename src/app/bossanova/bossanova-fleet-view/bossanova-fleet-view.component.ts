@@ -3,6 +3,7 @@ import Store from '../../models/store.model';
 import { ApiService } from '../../services/api.service';
 import { Router } from '@angular/router';
 import { faCopyright } from '@fortawesome/free-solid-svg-icons';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-bossanova-fleet-view',
@@ -15,9 +16,10 @@ export class BossanovaFleetViewComponent implements OnInit {
   searchTerm: string;
   faCopyright = faCopyright;
 
-  constructor(private apiService: ApiService, private router: Router) { }
+  constructor(private apiService: ApiService, private router: Router, private titleService: Title) { }
 
   ngOnInit() {
+    this.titleService.setTitle('Bossa Nova - Store Viewer');
     this.apiService.getStores().subscribe(stores => {
       this.stores = stores;
       this.stores.sort(function(x, y) {

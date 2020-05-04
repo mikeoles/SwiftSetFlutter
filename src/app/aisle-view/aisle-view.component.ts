@@ -14,6 +14,7 @@ import { ShortcutInput } from 'ng-keyboard-shortcuts';
 import { LabelType } from './label-type';
 import { AnnotationType } from './annotation-type';
 import AnnotationCategory from '../models/annotationCategory.model';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-aisle-view',
@@ -48,7 +49,8 @@ export class AisleViewComponent implements OnInit, OnDestroy {
               private backService: BackService,
               private activatedRoute: ActivatedRoute,
               private location: Location,
-              private router: Router
+              private router: Router,
+              private titleService: Title,
               ) {
     this.panoMode = false;
 
@@ -158,6 +160,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
     this.annotations = new Map<AnnotationType, Array<Annotation>>();
     this.categories = new Map<AnnotationType, Array<AnnotationCategory>>();
     this.apiService.getAisle(this.selectedMission.storeId, this.selectedMission.missionId, aisle.aisleId).subscribe(fullAisle => {
+      this.titleService.setTitle(this.selectedMission.storeName + ' - ' + fullAisle.aisleName);
       const misreadBarcodes: Array<Label> = this.getMissingBarcodes(fullAisle.labels);
       misreadBarcodes.concat(this.getMissingBarcodes(fullAisle.outs));
 
