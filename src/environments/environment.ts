@@ -11,10 +11,10 @@ export const environment = {
   authUrl: 'http://localhost/dex/auth?',
   authClientId: 'data-products-viewer',
   classificationColors: ['peg:#0000FF', 'top:#FFFF00' , 'shelf:#FF0000'],
-  coverageIssueDateSpan: 3,
+  coverageDisplayType: 'description', // description or percent
+  coveragePercent: false,
   detectionTypeColors: ['label:#00FF00' , 'product:#00FFFF'],
   exportFields: ['Barcode', 'top', 'left', 'width', 'height'],
-  flaggedCoverageDelta: -0.05,
   labelScrolling: labelScrollOptions.vertical,
   missionHistoryDays: 14, // Number of days to display missions for
   permissions: ['topStock', 'QA', 'sectionLabels', 'sectionBreaks', 'misreadBarcodes'],

@@ -5,7 +5,7 @@
         Outs: {{getCount(labelType.outs)}}
       </div>
       <div>
-        Labels: {{getCount(labelType.shelfLabels)}} ({{coverageDelta * 100 | number : '1.0-1'}}%)
+        Labels: {{getCount(labelType.shelfLabels)}}
       </div>
       <div *ngIf="showMisreadBarcodes">
         Misread: {{getCount(labelType.misreadBarcodes)}}

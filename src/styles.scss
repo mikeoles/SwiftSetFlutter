@@ -197,34 +197,3 @@ canvas{
   border-radius: 9px;
   background-clip: content-box;
 }
-
-// grids
-table {
-  border-collapse: collapse;
-  text-align: center;
-  margin: auto 40px;
-  table-layout: fixed;
-  width: calc(100% - 80px);
-
-  th{
-    border: 1px solid $primary;
-    color: $primary;
-    font-size: 12px;
-    height: 44px;
-    cursor: pointer;
-  }
-
-  td, td a{
-    height: 53px;
-    font-weight: normal;
-    font-size: 18px;
-  }
-
-  td a{
-    color: $primary;
-  }
-
-  tr{
-    border: 1px solid $greyBorder;
-  }
-}

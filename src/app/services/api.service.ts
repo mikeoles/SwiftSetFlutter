@@ -20,12 +20,25 @@ import Detection from '../models/detection.model';
 })
 export class ApiService {
   apiUrl: String;
+  coverageDisplayType = 'Description';
 
   constructor(private http: HttpClient, private environment: EnvironmentService) {
     this.apiUrl = environment.config.apiUrl;
+    this.coverageDisplayType = environment.config.coverageDisplayType;
   }
 
   createAisle(aisle: any): Aisle {
+    let aisleCoverage = 'Low';
+    if (aisle.coveragePercent >= 70) {
+      aisleCoverage = 'High';
+    } else if (aisle.coveragePercent >= 40) {
+      aisleCoverage = 'Medium';
+    }
+
+    if (this.coverageDisplayType && this.coverageDisplayType.toLowerCase() === 'percent') {
+      aisleCoverage = aisle.coveragePercent;
+    }
+
     return {
       aisleId: aisle.id,
       aisleName: aisle.name,
@@ -39,9 +52,8 @@ export class ApiService {
       sectionLabels: (aisle.sectionLabels || []).map(l => this.createSectionLabel(l)),
       topStock: (aisle.topStock || []).map(l => this.createSectionLabel(l)),
       sectionBreaks: aisle.sectionBreaks,
-      coverageDelta: aisle.coverageDelta,
-      historicalAverageDetected: aisle.historicalAverageDetected,
-      historicalAverageSampleSize: aisle.historicalAverageSampleSize
+      coveragePercent: aisle.coveragePercent,
+      aisleCoverage: aisleCoverage,
     };
   }
 
@@ -147,7 +159,6 @@ export class ApiService {
       percentageUnread: mission.labelUnreadPercentage,
       percentageRead: mission.labelReadPercentage,
       aisles: (mission.aisles || []).map(a => this.createAisle(a)),
-      hasCoverageIssue: mission.hasCoverageIssue || false
     };
   }
 
@@ -263,21 +274,7 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/stores`)
       .pipe(
         map<any, Store[]>(o => o.map(s => this.createStore(s))),
-        map(stores => stores.sort((a, b) => a.storeName.localeCompare(b.storeName))) // Sort store name
-      );
-  }
-
-  getFlaggedStores(): Observable<Store[]> {
-    const config = {
-      params: {
-          delta: this.environment.config.flaggedCoverageDelta,
-          coverageIssueDateSpan: this.environment.config.coverageIssueDateSpan,
-      }
-    };
-    return this.http.get(`${this.apiUrl}/stores/coverage_issue`, config)
-      .pipe(
-        map<any, Store[]>(o => o.map(s => this.createStore(s))),
-        map(stores => stores.sort((a, b) => a.storeName.localeCompare(b.storeName))) // Sort store name
+        map(stores => stores.sort((a, b) => a.storeName.localeCompare(b.storeName))) // Sort by create date time
       );
   }
 
