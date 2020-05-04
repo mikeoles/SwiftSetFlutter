@@ -5,7 +5,14 @@
   display: block;
 }
 
+@media (max-height: 750px) {
+  .bottomBar {
+    padding: 10px;
+  }
+}
+
 button{
+    font-size: 14px !important;
     height: 45px;
     padding: 0px 20px;
     cursor: pointer !important;
@@ -29,7 +36,7 @@ button{
 
 .storeInfo {
   float: left;
-  font-size: 24px;
+  font-size: 18px;
   font-weight: bold;
   margin: 7px 10px 0px 0px;
 }
@@ -57,36 +64,14 @@ button > span {
   display: inline-block;
 }
 
-@media (max-width: 1600px) {
-  .storeInfo {
-    font-size: 18px;
-  }
-  button{
-    font-size: 14px !important;
-    margin-right: 2px;
-    margin-left: 2px;
-  }
-  #missionsContainer button {
-    min-width: 250px;
-    width: auto !important;
-  }
-  #aislesContainer button {
-    min-width: 130px;
-    width: auto !important;
-  }
-}
-
-@media (max-width: 1400px) {
+@media (max-width: 1450px) {
   .hideSmallScreen, .storeInfo  {
     display: none;
   }
 
   .bottomBar {
-    padding: 20px 10px
-  }
-
-  button {
-    margin: 0px 1px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 }
 

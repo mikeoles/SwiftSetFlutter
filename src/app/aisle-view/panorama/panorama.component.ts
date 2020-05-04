@@ -349,7 +349,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
   labelClicked(label: Label) {
     this.annotationMenu = AnnotationType.none;
     this.cancelZoom = true;
-    if (!this.panoMode) {
+    if (!this.panoMode  || this.qaMode) {
       if (this.currentId !== label.labelId) {
         this.panoramaId.emit(label.labelId);
       } else {
