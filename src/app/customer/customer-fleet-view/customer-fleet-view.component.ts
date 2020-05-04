@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import Store from '../../models/store.model';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-customer-fleet-view',
@@ -13,9 +14,10 @@ export class CustomerFleetViewComponent implements OnInit {
   stores: Store[];
   searchTerm: string;
 
-  constructor(private apiService: ApiService, private router: Router) { }
+  constructor(private apiService: ApiService, private router: Router, private titleService: Title) { }
 
   ngOnInit() {
+    this.titleService.setTitle('Bossa Nova - Store Viewer');
     this.apiService.getStores().subscribe(stores => {
       this.stores = stores;
       if (this.stores.length === 1) {

@@ -11,6 +11,7 @@ import { EnvironmentService } from '../services/environment.service';
 import { DataService } from '../services/data.service';
 import * as jsPDF from 'jspdf';
 import Aisle from '../models/aisle.model';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-mission-view',
@@ -34,7 +35,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
 
   constructor(private apiService: ApiService, private activatedRoute: ActivatedRoute, private router: Router,
     private modalService: ModalService, private backService: BackService, private environment: EnvironmentService,
-    public dataService: DataService) {
+    public dataService: DataService, private titleService: Title) {
       this.showExportButtons = environment.config.showExportButtons;
   }
 
@@ -54,6 +55,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
       }
     });
     this.apiService.getMission(storeId, missionId, Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe(mission => {
+      this.titleService.setTitle(mission.storeName + ' - ' + mission.missionName);
       this.mission = mission;
       this.aisles = mission.aisles;
       const startDate = new Date();

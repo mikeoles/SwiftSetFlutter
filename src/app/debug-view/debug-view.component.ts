@@ -3,6 +3,7 @@ import { ApiService } from '../services/api.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import Detection from '../models/detection.model';
 import { EnvironmentService } from '../services/environment.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-debug-view',
@@ -36,7 +37,8 @@ export class DebugViewComponent implements OnInit {
 
   constructor(private readonly apiService: ApiService,
     private readonly activatedRoute: ActivatedRoute,
-    private environment: EnvironmentService) {
+    private environment: EnvironmentService,
+    private titleService: Title) {
   }
 
   ngOnInit() {
@@ -57,6 +59,7 @@ export class DebugViewComponent implements OnInit {
     });
 
     this.apiService.getAisle(storeId, missionId, aisleId).subscribe(aisle => {
+      this.titleService.setTitle(aisle.aisleName + ' - Debug');
       this.panoramaUrl = aisle.panoramaUrl;
     });
 
