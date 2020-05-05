@@ -12,7 +12,7 @@ import { NgDatepickerModule } from 'ng2-datepicker';
 import { EnvironmentService } from '../services/environment.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ProgressBarModule } from 'angular-progress-bar';
-import { ModalService } from 'src/app/modal/modal.service';
+import { ModalService } from 'src/app/services/modal.service';
 import Mission from '../models/mission.model';
 
 @Component({selector: 'app-daily-graphs', template: ''})
@@ -60,7 +60,8 @@ describe('StoreViewComponent', () => {
     summaryOuts: daySummaries,
     summaryLabels: daySummaries,
     zoneId: '',
-    robots: []
+    robots: [],
+    canary: false,
   };
 
   beforeEach(async(() => {

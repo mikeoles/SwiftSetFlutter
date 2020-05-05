@@ -9,7 +9,6 @@ import { SelectionAreaComponent } from './aisle-view/selection-area/selection-ar
 import { FormsModule } from '@angular/forms';
 import { ChartsModule } from 'ng2-charts';
 import { StoreViewComponent } from './store-view/store-view.component';
-import { MissionStatsComponent } from './mission-view/mission-stats/mission-stats.component';
 import { MissionsGridComponent } from './store-view/missions-grid/missions-grid.component';
 import { RoundProgressModule } from 'angular-svg-round-progressbar';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
@@ -17,13 +16,12 @@ import { AisleViewComponent } from './aisle-view/aisle-view.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DailyGraphsComponent } from './store-view/daily-graphs/daily-graphs.component';
 import { MissionViewComponent } from './mission-view/mission-view.component';
-import { AislesGridComponent } from './mission-view/aisles-grid/aisles-grid.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
 import { EnvironmentService } from './services/environment.service';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { ModalComponent } from './modal/modal.component';
-import { ModalService } from './modal/modal.service';
+import { ModalComponent } from './shared/modal/modal.component';
+import { ModalService } from './services/modal.service';
 import { NgDatepickerModule } from 'ng2-datepicker';
 import { DataService } from './services/data.service';
 import { ProgressBarModule } from 'angular-progress-bar';
@@ -40,6 +38,7 @@ import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { CustomerModule } from './customer/customer.module';
 import { BossanovaModule } from './bossanova/bossanova.module';
 import { FleetViewComponent } from './fleet-view/fleet-view.component';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -49,14 +48,11 @@ import { FleetViewComponent } from './fleet-view/fleet-view.component';
     PanoramaComponent,
     SelectionAreaComponent,
     StoreViewComponent,
-    MissionStatsComponent,
     MissionsGridComponent,
     PageNotFoundComponent,
     AisleViewComponent,
     DailyGraphsComponent,
     MissionViewComponent,
-    AislesGridComponent,
-    ModalComponent,
     FleetViewComponent,
     AuthComponent,
     DebugViewComponent,
@@ -79,7 +75,8 @@ import { FleetViewComponent } from './fleet-view/fleet-view.component';
     ProgressBarModule,
     Ng2SearchPipeModule,
     CustomerModule,
-    BossanovaModule
+    BossanovaModule,
+    SharedModule
   ],
   providers: [
     EnvironmentService,

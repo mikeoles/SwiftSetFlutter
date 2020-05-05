@@ -1,0 +1,44 @@
+<table>
+  <thead>
+    <tr>
+      <th (click)="sortBy('aisleName')">
+        Aisle
+        <fa-icon *ngIf="sortType === 'aisleName' && !sortReverse" size="sm" class="fa" [icon]="faAngleDown"></fa-icon>
+        <fa-icon *ngIf="sortType === 'aisleName' && sortReverse" size="sm" class="fa" [icon]="faAngleUp"></fa-icon>
+      </th>
+      <th (click)="sortBy('scanDateTime')">
+        Capture Time 
+        <fa-icon *ngIf="sortType === 'scanDateTime' && !sortReverse" size="sm" class="fa" [icon]="faAngleDown"></fa-icon>
+        <fa-icon *ngIf="sortType === 'scanDateTime' && sortReverse" size="sm" class="fa" [icon]="faAngleUp"></fa-icon>
+      </th>
+      <th *ngIf="showAisleCoverage" (click)="sortBy('aisleCoverage')">
+        Aisle Coverage
+        <fa-icon *ngIf="sortType === 'aisleCoverage' && !sortReverse" size="sm" class="fa" [icon]="faAngleDown"></fa-icon>
+        <fa-icon *ngIf="sortType === 'aisleCoverage' && sortReverse" size="sm" class="fa" [icon]="faAngleUp"></fa-icon>
+      </th>
+      <th (click)="sortBy('outsCount')">
+        Outs
+        <fa-icon *ngIf="sortType === 'outsCount' && !sortReverse" size="sm" class="fa" [icon]="faAngleDown"></fa-icon>
+        <fa-icon *ngIf="sortType === 'outsCount' && sortReverse" size="sm" class="fa" [icon]="faAngleUp"></fa-icon>
+      </th>
+      <th (click)="sortBy('labelsCount')">
+        Labels
+        <fa-icon *ngIf="sortType === 'labelsCount' && !sortReverse" size="sm" class="fa" [icon]="faAngleDown"></fa-icon>
+        <fa-icon *ngIf="sortType === 'labelsCount' && sortReverse" size="sm" class="fa" [icon]="faAngleUp"></fa-icon>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let aisle of sortAisles()">
+      <td>
+        <a [routerLink]="['/store', storeId, 'mission', missionId, 'aisle', aisle.aisleId]">
+          {{aisle.aisleName}}
+        </a>
+      </td>
+      <td *ngIf="showAisleCoverage">{{aisle.aisleCoverage}}</td>
+      <td>{{aisle.scanDateTime | date:'medium'}}</td>
+      <td>{{aisle.outsCount}}</td>
+      <td>{{aisle.labelsCount}}</td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,28 @@
+<div *ngIf="mission" class="missionInfo">
+  <button *ngIf="showExportButtons" class="exportButton" (click)="openModal('export-popup')"><img class="exportImage" src="../../assets/export-blue.png"> <span>Export</span></button>
+  <div *ngIf="store">{{store.storeName}}</div>
+  <div class="headerInfo"> Scan: <span>{{mission.missionName}}</span></div>
+  <div *ngIf="mission" class="headerInfo"> Aisles Scanned: <span> {{mission.aisleCount }}</span></div>
+</div>
+<app-mission-stats *ngIf="mission" [title]="'Out of Stocks Detected'" [average]="averageStoreOuts" [total]="mission.outs"></app-mission-stats>
+<app-mission-stats *ngIf="mission" [title]="'Shelf Labels Detected'" [average]="averageStoreLabels" [total]="mission.labels"></app-mission-stats>
+<div class="storeSearch">
+  <button (click)="searchBarcodeClicked()">Search</button>
+  <input type="text" placeholder="Search By Barcode" [(ngModel)]="searchTerm">
+</div>
+<div class="grid">
+  <app-aisles-grid *ngIf="store" [aisles]="aisles" [missionId]="mission.missionId" [storeId]="store.storeId"></app-aisles-grid>
+</div>
+<app-export-modal id="export-popup">
+  <div class="modal">
+      <div class="modal-body" [ngClass]="{'disabled': currentlyExporting}">
+          <div class="exportTitle">Select File To Export</div>
+          <button [disabled]="currentlyExporting" (click)="exportMission('outs','export-popup','csv')">Outs</button>
+          <button [disabled]="currentlyExporting" (click)="exportMission('labels','export-popup','csv')">Labels</button>
+          <button [disabled]="currentlyExporting" (click)="exportMission('onhand','export-popup','csv')">On Hand</button>
+          <button [disabled]="currentlyExporting" (click)="exportMission('onhand','export-popup','pdf')">On Hand PDF</button>
+          <button class="cancel" (click)="closeModal('export-popup');">Close</button>
+      </div>
+  </div>
+  <div class="modal-background"></div>
+</app-export-modal>

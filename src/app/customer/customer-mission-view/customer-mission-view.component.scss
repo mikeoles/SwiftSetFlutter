@@ -1,0 +1,49 @@
+@import "../../../variables";
+
+:host{
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.missionInfo{
+  padding: 20px 40px;
+  border-bottom: 1px solid black;
+}
+
+.storeSearch {
+  display: block;
+  text-align: left;
+  margin: 10px 45px;  
+  input {
+    display: inline-block;
+    text-align: center;
+    height: 30px;
+    width: 200px;
+    margin-left: 20px;
+  }
+  button {
+    display: inline-block;
+    height: 45px;
+    font-size: 16px;
+  }
+}
+
+.headerInfo span{
+  font-weight: normal;
+}
+
+.exportButton{
+  margin-top: 20px;
+  float: right;
+  border-radius: 25px;
+  padding: 1px 20px;
+}
+
+.disabled {
+  button{
+    color: $greyBorder !important;
+    border: 3px $greyBorder solid !important;
+    cursor: progress !important;
+  }
+  cursor: progress !important;
+}

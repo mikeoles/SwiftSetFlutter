@@ -9,7 +9,7 @@ import { BackService } from '../services/back.service';
 import { Subscription } from 'rxjs';
 import Mission from '../models/mission.model';
 import Aisle from '../models/aisle.model';
-import { ModalService } from '../modal/modal.service';
+import { ModalService } from '../services/modal.service';
 import { Title } from '@angular/platform-browser';
 
 @Component({

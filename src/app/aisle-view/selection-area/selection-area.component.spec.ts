@@ -8,11 +8,12 @@ import Mission from '../../models/mission.model';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DatePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { ModalService } from 'src/app/modal/modal.service';
+import { ModalService } from 'src/app/services/modal.service';
 import { EnvironmentService } from 'src/app/services/environment.service';
 import { ApiService } from 'src/app/services/api.service';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
+import Store from 'src/app/models/store.model';
 
 @Component({selector: 'app-export-modal', template: ''})
 class ModalComponent {
@@ -59,8 +60,8 @@ describe('SelectionAreaComponent', () => {
     startDateTime: new Date('2001-01-01'), endDateTime: new Date('2001-01-01'), aisleCount: 0, outs: 0, labels: 0,
     readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0, unreadLabels: 0, percentageRead: 0, percentageUnread: 0 ,
     aisles: aisles, storeName: '', storeNumber: 1 };
-    const store = { storeId: '1',   storeNumber: 1, storeName: '', storeAddress: '', totalAverageOuts: 0, totalAverageLabels: 0,
-    summaryOuts: [], summaryLabels: [], zoneId: '', robots: [] };
+  const store: Store = { storeId: '1',   storeNumber: 1, storeName: '', storeAddress: '', totalAverageOuts: 0, totalAverageLabels: 0,
+    summaryOuts: [], summaryLabels: [], zoneId: '', robots: [], canary: false };
 
   beforeEach(async(() => {
     const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getStore', 'getMission', 'getAisle']);

@@ -5,7 +5,7 @@ import Aisle from '../../models/aisle.model';
 import * as jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import Label from 'src/app/models/label.model';
-import { ModalService } from '../../modal/modal.service';
+import { ModalService } from '../../services/modal.service';
 import { EnvironmentService } from 'src/app/services/environment.service';
 import { ApiService } from 'src/app/services/api.service';
 import Store from 'src/app/models/store.model';
