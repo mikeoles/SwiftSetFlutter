@@ -15,7 +15,7 @@ import Label from '../models/label.model';
 import { By } from '@angular/platform-browser';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { Component, Input } from '@angular/core';
-import { ModalService } from '../modal/modal.service';
+import { ModalService } from '../services/modal.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { EnvironmentService } from '../services/environment.service';

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import Aisle from '../../models/aisle.model';
+import Aisle from '../../../models/aisle.model';
 import { EnvironmentService } from 'src/app/services/environment.service';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 
