@@ -54,6 +54,7 @@ export class ApiService {
       sectionBreaks: aisle.sectionBreaks,
       coveragePercent: aisle.coveragePercent,
       aisleCoverage: aisleCoverage,
+      auditQueueStatus: aisle.auditQueueStatus || 'not-queued'
     };
   }
 
@@ -485,5 +486,11 @@ export class ApiService {
       ' timezone set to : ' + new Intl.DateTimeFormat().resolvedOptions().timeZone);
       return new Intl.DateTimeFormat().resolvedOptions().timeZone;
     }
+  }
+
+  // Add an aisle to the audit queue
+  queueAisle(storeId: number, missionId: number, aisleId: string): any {
+    return this.http.put(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/queueAisle`,
+    new FormData());
   }
 }

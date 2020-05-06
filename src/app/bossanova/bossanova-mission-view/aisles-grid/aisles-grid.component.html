@@ -26,6 +26,11 @@
         <fa-icon *ngIf="sortType === 'labelsCount' && !sortReverse" size="sm" class="fa" [icon]="faAngleDown"></fa-icon>
         <fa-icon *ngIf="sortType === 'labelsCount' && sortReverse" size="sm" class="fa" [icon]="faAngleUp"></fa-icon>
       </th>
+      <th *ngIf="auditManager()" (click)="sortBy('auditQueueStatus')">
+        Audit Status
+        <fa-icon *ngIf="sortType === 'auditQueueStatus' && !sortReverse" size="sm" class="fa" [icon]="faAngleDown"></fa-icon>
+        <fa-icon *ngIf="sortType === 'auditQueueStatus' && sortReverse" size="sm" class="fa" [icon]="faAngleUp"></fa-icon>
+      </th>
     </tr>
   </thead>
   <tbody>
@@ -39,6 +44,10 @@
       <td>{{aisle.scanDateTime | date:'medium'}}</td>
       <td>{{aisle.outsCount}}</td>
       <td>{{aisle.labelsCount}}</td>
+      <td *ngIf="auditManager()">
+        <button *ngIf="aisle.auditQueueStatus === 'not-queued'" (click)="queueAisle(aisle.aisleId)">Queue</button>
+        <ng-container *ngIf="aisle.auditQueueStatus !== 'not-queued'">{{aisle.auditQueueStatus.replace('-', ' ') | titlecase}}</ng-container>
+      </td>
     </tr>
   </tbody>
 </table>
