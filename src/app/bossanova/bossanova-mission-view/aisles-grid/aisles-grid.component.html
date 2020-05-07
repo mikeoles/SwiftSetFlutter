@@ -45,8 +45,8 @@
       <td>{{aisle.outsCount}}</td>
       <td>{{aisle.labelsCount}}</td>
       <td *ngIf="auditManager()">
-        <button *ngIf="aisle.auditQueueStatus === 'not-queued'" (click)="queueAisle(aisle.aisleId)">Queue</button>
-        <ng-container *ngIf="aisle.auditQueueStatus !== 'not-queued'">{{aisle.auditQueueStatus.replace('-', ' ') | titlecase}}</ng-container>
+        <button *ngIf="!aisle.auditQueueStatus" (click)="queueAisle(aisle.aisleId)">Queue</button>
+        <ng-container *ngIf="aisle.auditQueueStatus">{{aisle.auditQueueStatus.replace('-', ' ') | titlecase}}</ng-container>
       </td>
     </tr>
   </tbody>
