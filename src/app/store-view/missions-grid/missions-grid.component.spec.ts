@@ -11,17 +11,21 @@ describe('MissionsGridComponent', () => {
   let fixture: ComponentFixture<MissionsGridComponent>;
   const aisles: Aisle[] = [
     { aisleId: '1', aisleName: '1111', panoramaUrl: '', labels: [], outs: [], sectionLabels: [], sectionBreaks: [], topStock: [],
-    createDateTime: new Date(), outsCount: 0, labelsCount: 0, scanDateTime: new Date(), auditQueueStatus: null },
+    createDateTime: new Date(), coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: '', scanDateTime: new Date(),
+      auditQueueStatus: null, previouslySeenBarcodeCount: 0, previouslySeenBarcodeSampleSize: 0, missingPreviouslySeenBarcodeCount: 0,
+      missingPreviouslySeenBarcodePercentage: 0, missingPreviouslySeenBarcodes: []  },
     { aisleId: '2', aisleName: '2222', panoramaUrl: '', labels: [], outs: [], sectionLabels: [], sectionBreaks: [], topStock: [],
-    createDateTime: new Date(), outsCount: 0, labelsCount: 0, scanDateTime: new Date(), auditQueueStatus: null }
+    createDateTime: new Date(), coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: '', scanDateTime: new Date(),
+      auditQueueStatus: null, previouslySeenBarcodeCount: 0, previouslySeenBarcodeSampleSize: 0, missingPreviouslySeenBarcodeCount: 0,
+      missingPreviouslySeenBarcodePercentage: 0, missingPreviouslySeenBarcodes: []  },
   ];
   const missions: Mission[] = [
     { missionId: '1', missionName: '1111', storeId: '1', createDateTime: new Date('2018-12-12'), startDateTime: new Date('2018-12-12'),
       endDateTime: new Date('2018-12-12'), aisleCount: 0, outs: 0, labels: 0, readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0,
-      unreadLabels: 0, percentageRead: 0, percentageUnread: 0, aisles: aisles, storeName: '', storeNumber: 1 },
+      unreadLabels: 0, percentageRead: 0, percentageUnread: 0, aisles: aisles, storeName: '', storeNumber: 1},
     { missionId: '2', missionName: '2222', storeId: '1', createDateTime: new Date('2001-01-01'), startDateTime: new Date('2001-01-01'),
       endDateTime: new Date('2001-01-01'), aisleCount: 0, outs: 0, labels: 0, readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0,
-      unreadLabels: 0, percentageRead: 0, percentageUnread: 0, aisles: aisles, storeName: '', storeNumber: 1 },
+      unreadLabels: 0, percentageRead: 0, percentageUnread: 0 , aisles: aisles, storeName: '', storeNumber: 1  },
   ];
 
   beforeEach(async(() => {

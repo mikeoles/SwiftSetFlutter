@@ -1,9 +1,30 @@
 <div *ngIf="stores && stores.length === 0" class="title">No Stores Found</div>
 <div *ngIf="stores && stores.length>0">
-  <div class="title">Stores ({{(stores | filter:searchTerm)?.length }})</div>
+  <div *ngIf="!displayingFlaggedStores" class="title">Stores ({{(stores | filter:searchTerm)?.length }})</div>
+  <div *ngIf="displayingFlaggedStores" class="title flaggedTitle">
+    Stores listed below contain aisles that have been analyzed using aisle coverage calculations and flagged for further analysis.  
+    This is only showing stores that have been flagged for the past {{environment.config.coverageIssueDateSpan}} days of scans.
+    <br>
+    <div class="tip">
+      <span>
+        <h1>Explanation of Aisle coverage calculation based on previously seen barcodes<br></h1>
+        <p>This calculation is measuring aisle coverage by using the number of barcodes read for the current scan and 
+          comparing that to all of the labels not found in the current scan but found in the previous 5 scans.   
+          The calculation of coverage is the percentage of labels that were  missed in the scan vs. what labels were found over 
+          the x previous scan  for the same aisle and scan type. The number of previous aisles used in the calculation 
+          can be found on the mission view page. This will produce an aisle coverage percent and flag the aisles that have 
+          a value above {{environment.config.missingPreviosulySeenThreshold * 100}}% </p>
+      </span>
+      <fa-icon size="md" class="fa" [icon]="faInfoCircle"></fa-icon>
+    </div>
+    Aisles having {{environment.config.missingPreviosulySeenThreshold * 100}}% lower number of barcodes found  compared to barcodes found over the previous 5 scans. 
+  </div>
   <div class="storeSearch">
     <input type="text" placeholder="Search By Store Or Robot" [(ngModel)]="searchTerm">
   </div>
+  <button *ngIf="!displayingFlaggedStores" class="flaggedButton" (click)="clickFlaggedStores()">Aisle Coverage
+    Alerts</button>
+  <button *ngIf="displayingFlaggedStores" class="flaggedButton" (click)="clickFlaggedStores()">Show All Stores</button>
   <table>
     <thead>
       <tr>

@@ -7,6 +7,7 @@
       <th>Outs</th>
       <th>Labels</th>
       <th>Aisles Scanned</th>
+      <th *ngIf="hasProblems()">Problems</th>
     </tr>
   </thead>
   <tbody>
@@ -20,6 +21,12 @@
       <td>{{mission.outs}}</td>
       <td>{{mission.labels}}</td>
       <td>{{mission.aisleCount}}</td>
+      <td *ngIf="hasProblems()" class="coverageIssue">
+        <div *ngIf="mission.hasPreviouslySeenIssue">
+          <fa-icon size="lg" class="fa" [icon]="faExclamationTriangle"></fa-icon>
+          Previously Seen Issue
+        </div>
+      </td>
     </tr>
   </tbody>
 </table>

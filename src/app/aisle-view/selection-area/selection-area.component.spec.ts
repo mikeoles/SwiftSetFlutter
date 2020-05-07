@@ -30,26 +30,42 @@ describe('SelectionAreaComponent', () => {
   let aislesDropdownEl: HTMLElement;
   let missionsListEl: HTMLLIElement;
   let aislesListEl: HTMLLIElement;
+  const labels = [];
   const aisles: Aisle[] = [
-    { aisleId: '1', aisleName: '1111', panoramaUrl: '', labels: [], outs: [], sectionLabels: [], sectionBreaks: [], topStock: [],
-      createDateTime: new Date(), outsCount: 0, labelsCount: 0, scanDateTime: new Date(), auditQueueStatus: null },
-    { aisleId: '2', aisleName: '2222', panoramaUrl: '', labels: [], outs: [], sectionLabels: [], sectionBreaks: [], topStock: [],
-      createDateTime: new Date(), outsCount: 0, labelsCount: 0, scanDateTime: new Date(), auditQueueStatus: null },
-    { aisleId: '3', aisleName: '3333', panoramaUrl: '', labels: [], outs: [], sectionLabels: [], sectionBreaks: [], topStock: [],
-      createDateTime: new Date(), outsCount: 0, labelsCount: 0, scanDateTime: new Date(), auditQueueStatus: null },
-    { aisleId: '4', aisleName: '4444', panoramaUrl: '', labels: [], outs: [], sectionLabels: [], sectionBreaks: [], topStock: [],
-      createDateTime: new Date(), outsCount: 0, labelsCount: 0, scanDateTime: new Date(), auditQueueStatus: null },
-    { aisleId: '5', aisleName: '5555', panoramaUrl: '', labels: [], outs: [], sectionLabels: [], sectionBreaks: [], topStock: [],
-      createDateTime: new Date(), outsCount: 0, labelsCount: 0, scanDateTime: new Date(), auditQueueStatus: null }
+    { aisleId: '1', aisleName: '1111', panoramaUrl: '', createDateTime: new Date(), scanDateTime: new Date(),
+      labels: labels, outs: labels, sectionLabels: labels, sectionBreaks: [], topStock: labels,
+      coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: '', auditQueueStatus: null,
+      previouslySeenBarcodeCount: 0, previouslySeenBarcodeSampleSize: 0, missingPreviouslySeenBarcodeCount: 0,
+      missingPreviouslySeenBarcodePercentage: 0, missingPreviouslySeenBarcodes: [] },
+      { aisleId: '5', aisleName: '2222', panoramaUrl: '', createDateTime: new Date(), scanDateTime: new Date(),
+      labels: labels, outs: labels, sectionLabels: labels, sectionBreaks: [], topStock: labels,
+      coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: '', auditQueueStatus: null,
+      previouslySeenBarcodeCount: 0, previouslySeenBarcodeSampleSize: 0, missingPreviouslySeenBarcodeCount: 0,
+      missingPreviouslySeenBarcodePercentage: 0, missingPreviouslySeenBarcodes: [] },
+      { aisleId: '5', aisleName: '3333', panoramaUrl: '', createDateTime: new Date(), scanDateTime: new Date(),
+      labels: labels, outs: labels, sectionLabels: labels, sectionBreaks: [], topStock: labels,
+      coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: '', auditQueueStatus: null,
+      previouslySeenBarcodeCount: 0, previouslySeenBarcodeSampleSize: 0, missingPreviouslySeenBarcodeCount: 0,
+      missingPreviouslySeenBarcodePercentage: 0, missingPreviouslySeenBarcodes: [] },
+      { aisleId: '5', aisleName: '4444', panoramaUrl: '', createDateTime: new Date(), scanDateTime: new Date(),
+      labels: labels, outs: labels, sectionLabels: labels, sectionBreaks: [], topStock: labels,
+      coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: '', auditQueueStatus: null,
+      previouslySeenBarcodeCount: 0, previouslySeenBarcodeSampleSize: 0, missingPreviouslySeenBarcodeCount: 0,
+      missingPreviouslySeenBarcodePercentage: 0, missingPreviouslySeenBarcodes: [] },
+      { aisleId: '5', aisleName: '5555', panoramaUrl: '', createDateTime: new Date(), scanDateTime: new Date(),
+      labels: labels, outs: labels, sectionLabels: labels, sectionBreaks: [], topStock: labels,
+      coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: '', auditQueueStatus: null,
+      previouslySeenBarcodeCount: 0, previouslySeenBarcodeSampleSize: 0, missingPreviouslySeenBarcodeCount: 0,
+      missingPreviouslySeenBarcodePercentage: 0, missingPreviouslySeenBarcodes: [] },
   ];
 
   const missions: Mission[] = [
     { missionId: '1', missionName: '1111', storeId: '1', createDateTime: new Date('2018-12-12'), startDateTime: new Date('2018-12-12'),
       endDateTime: new Date('2018-12-12'), aisleCount: 0, outs: 0, labels: 0, readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0,
-      unreadLabels: 0, percentageRead: 0, percentageUnread: 0, aisles: aisles, storeName: '', storeNumber: 1 },
-    { missionId: '2', missionName: '2222', storeId: '2', createDateTime: new Date('2001-01-01'), startDateTime: new Date('2001-01-01'),
-      endDateTime: new Date('2018-12-12'), aisleCount: 0, outs: 0, labels: 0, readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0,
-      unreadLabels: 0, percentageRead: 0, percentageUnread: 0, aisles: aisles, storeName: '', storeNumber: 1 },
+      unreadLabels: 0, percentageRead: 0, percentageUnread: 0, aisles: aisles, storeName: '', storeNumber: 1  },
+    { missionId: '2', missionName: '2222', storeId: '1', createDateTime: new Date('2001-01-01'), startDateTime: new Date('2001-01-01'),
+      endDateTime: new Date('2001-01-01'), aisleCount: 0, outs: 0, labels: 0, readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0,
+      unreadLabels: 0, percentageRead: 0, percentageUnread: 0 , aisles: aisles, storeName: '', storeNumber: 1 },
   ];
 
   const mission: Mission = { missionId: '2', missionName: '2222', storeId: '1', createDateTime: new Date('2001-01-01'),

@@ -36,18 +36,24 @@ export class ApiService {
       labels: (aisle.labels || []).map(l => this.createLabel(l)),
       outsCount: aisle.outCount,
       outs: (aisle.outs || []).map(l => this.createLabel(l)),
-      sectionLabels: (aisle.sectionLabels || []).map(l => this.createSectionLabel(l)),
-      topStock: (aisle.topStock || []).map(l => this.createSectionLabel(l)),
+      sectionLabels: (aisle.sectionLabels || []).map(l => this.createBasicLabel(l, 'Section Label')),
+      topStock: (aisle.topStock || []).map(l => this.createBasicLabel(l, 'Top Stock')),
       sectionBreaks: aisle.sectionBreaks,
-      auditQueueStatus: aisle.auditQueueStatus
+      auditQueueStatus: aisle.auditQueueStatus,
+      previouslySeenBarcodeCount: aisle.previouslySeenBarcodeCount,
+      previouslySeenBarcodeSampleSize: aisle.previouslySeenBarcodeSampleSize,
+      missingPreviouslySeenBarcodeCount: aisle.missingPreviouslySeenBarcodeCount,
+      missingPreviouslySeenBarcodePercentage: aisle.missingPreviouslySeenBarcodePercentage,
+      missingPreviouslySeenBarcodes: (aisle.missingPreviouslySeenBarcodes || [])
+      .map(l => this.createBasicLabel(l, 'Previously Seen Barcode')),
     };
   }
 
-    // Section label and top stock only contains a barcode and bound
-  createSectionLabel(label: any): Label {
+  // Section label, top stock, and previously seen only contains barcode/bounds and possibly a price
+  createBasicLabel(label: any, labelName: string): Label {
     return {
       labelId: label.id,
-      labelName: 'Section Label',
+      labelName: labelName,
       barcode: label.barcode || '000000000000',
       productId: '',
       price: label.price || 0.0,
@@ -145,6 +151,7 @@ export class ApiService {
       percentageUnread: mission.labelUnreadPercentage,
       percentageRead: mission.labelReadPercentage,
       aisles: (mission.aisles || []).map(a => this.createAisle(a)),
+      hasPreviouslySeenIssue: mission.hasPreviouslySeenIssue || false
     };
   }
 
@@ -478,5 +485,20 @@ export class ApiService {
   queueAisle(storeId: number, missionId: number, aisleId: string): any {
     return this.http.put(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/queueAisle`,
     new FormData()).subscribe();
+  }
+
+  // Get stores that have an aisle from recent missions that are below the threshold for missing previously seen labels
+  getFlaggedStores(): Observable<Store[]> {
+    const config = {
+      params: {
+          missingPreviouslySeenThreshold: this.environment.config.missingPreviosulySeenThreshold,
+          coverageIssueDateSpan: this.environment.config.coverageIssueDateSpan,
+      }
+    };
+    return this.http.get(`${this.apiUrl}/stores/coverage-issue`, config)
+      .pipe(
+        map<any, Store[]>(o => o.map(s => this.createStore(s))),
+        map(stores => stores.sort((a, b) => a.storeName.localeCompare(b.storeName))) // Sort store name
+      );
   }
 }

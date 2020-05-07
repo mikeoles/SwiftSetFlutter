@@ -202,7 +202,8 @@ export class PanoramaComponent implements OnInit, OnChanges {
       this.labels.get(LabelType.shelfLabels),
       this.labels.get(LabelType.outs),
       this.labels.get(LabelType.topStock),
-      this.labels.get(LabelType.sectionLabels)
+      this.labels.get(LabelType.sectionLabels),
+      this.labels.get(LabelType.previouslySeenBarcodes)
     );
 
     const selectedLabel: Label = allLabels[allLabels.findIndex((label => label.labelId === this.currentId))];
@@ -245,6 +246,8 @@ export class PanoramaComponent implements OnInit, OnChanges {
         return '#800080';
       case LabelType.topStock:
         return '#FFC0CB';
+      case LabelType.previouslySeenBarcodes:
+        return '#17c9ff';
     }
   }
 

@@ -169,6 +169,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
       this.labels.set(LabelType.shelfLabels, fullAisle.labels);
       this.labels.set(LabelType.sectionLabels, fullAisle.sectionLabels);
       this.labels.set(LabelType.topStock, fullAisle.topStock);
+      this.labels.set(LabelType.previouslySeenBarcodes, fullAisle.missingPreviouslySeenBarcodes);
       this.labelsChanged = !this.labelsChanged;
       this.sectionBreaks = fullAisle.sectionBreaks;
       this.panoramaUrl = fullAisle.panoramaUrl;
