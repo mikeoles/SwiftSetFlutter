@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Params, ActivatedRoute, Router } from '@angular/router';
 import Store from '../models/store.model';
 import DaySummary from '../models/daySummary.model';
@@ -8,7 +8,6 @@ import { EnvironmentService } from '../services/environment.service';
 import { BackService } from '../services/back.service';
 import { Subscription } from 'rxjs';
 import Mission from '../models/mission.model';
-import Aisle from '../models/aisle.model';
 import { ModalService } from '../services/modal.service';
 import { Title } from '@angular/platform-browser';
 
@@ -45,7 +44,6 @@ export class StoreViewComponent implements OnInit {
       'font-weight': 'bold', 'width': 'auto', 'text-align': 'center', 'cursor': 'pointer'
     }
   };
-  coverageDisplayType = 'description';
   error = false;
   currentlyRequesting = false;
   progress = 0;
@@ -60,7 +58,6 @@ export class StoreViewComponent implements OnInit {
               private router: Router,
               private modalService: ModalService,
               private titleService: Title) {
-    this.coverageDisplayType = environment.config.coverageDisplayType;
     this.graphEndDate = new Date();
     this.graphStartDate = new Date();
     this.graphStartDate.setDate(this.graphEndDate.getDate() - environment.config.missionHistoryDays + 1);
@@ -176,55 +173,6 @@ export class StoreViewComponent implements OnInit {
           body.push(row);
         });
         const filename = 'PerformanceData_' + this.graphStartDate.toDateString() + '-' +
-          this.graphEndDate.toDateString() + '.csv';
-        this.saveCSV(body, columnNames, filename);
-      }
-    );
-  }
-
-  exportAisleScanData() {
-    const columnNames = ['Date Span', 'Aisle', '# Of Scans', 'Average Aisle Coverage'];
-    this.apiService.getMissions(this.storeId, this.graphStartDate, this.graphEndDate, this.store.zoneId)
-    .subscribe(
-      missions => {
-        let aisles: Aisle[] = [];
-        missions.forEach( mission => {
-          aisles = aisles.concat(mission.aisles);
-        });
-        const coveragePercentages = new Map<string, number>();
-        const scanCounts = new Map<string, number>();
-        aisles.forEach( aisle => {
-          let coveragePercent = aisle.coveragePercent;
-          let scanCount = 1;
-          if (coveragePercentages.has(aisle.aisleName)) {
-            coveragePercent += coveragePercentages.get(aisle.aisleName);
-          }
-          if (scanCounts.has(aisle.aisleName)) {
-            scanCount += scanCounts.get(aisle.aisleName);
-          }
-          coveragePercentages.set(aisle.aisleName, coveragePercent);
-          scanCounts.set(aisle.aisleName, scanCount);
-        });
-        const body = [];
-        coveragePercentages.forEach((value: number, key: string) => {
-          let row = [];
-          row = row.concat(this.graphStartDate.toDateString() + '-' + this.graphEndDate.toDateString());
-          row = row.concat(key);
-          row = row.concat(scanCounts.get(key));
-          const coveragePercent = value / scanCounts.get(key);
-          let avgAisleCoverage = 'Low';
-          if (coveragePercent >= 70) {
-            avgAisleCoverage = 'High';
-          } else if (coveragePercent >= 40) {
-            avgAisleCoverage = 'Medium';
-          }
-          if (this.coverageDisplayType.toLowerCase() === 'percent') {
-            avgAisleCoverage = coveragePercent.toString();
-          }
-          row = row.concat(avgAisleCoverage);
-          body.push(row);
-        });
-        const filename = 'ScanData_' + this.graphStartDate.toDateString() + '-' +
           this.graphEndDate.toDateString() + '.csv';
         this.saveCSV(body, columnNames, filename);
       }
