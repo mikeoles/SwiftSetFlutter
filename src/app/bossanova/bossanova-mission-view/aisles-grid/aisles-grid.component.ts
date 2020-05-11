@@ -2,6 +2,10 @@ import { Component, OnInit, Input } from '@angular/core';
 import Aisle from '../../../models/aisle.model';
 import { EnvironmentService } from 'src/app/services/environment.service';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
+import { Role } from 'src/app/auth/role';
+import { AuthService } from 'src/app/auth/auth.service';
+import { ApiService } from 'src/app/services/api.service';
+import { AuditQueueStatus } from '../../audit-queue-status';
 
 @Component({
   selector: 'app-aisles-grid',
@@ -21,7 +25,8 @@ export class AislesGridComponent implements OnInit {
   faAngleDown = faAngleDown;
   faAngleUp = faAngleUp;
 
-  constructor(private environment: EnvironmentService) {
+  constructor(private environment: EnvironmentService, private authService: AuthService,
+    private apiSerivce: ApiService) {
     this.showAisleCoverage = this.environment.config.coveragePercent;
   }
 
@@ -40,5 +45,14 @@ export class AislesGridComponent implements OnInit {
       return this.aisles.sort((a, b) => a[this.sortType] < b[this.sortType] ? 1 : a[this.sortType] === b[this.sortType] ? 0 : -1);
     }
     return this.aisles.sort((a, b) => a[this.sortType] > b[this.sortType] ? 1 : a[this.sortType] === b[this.sortType] ? 0 : -1);
+  }
+
+  auditManager(): boolean {
+    return this.authService.hasRole(Role.AUDIT_MANAGER);
+  }
+
+  queueAisle(aisleId: string) {
+    this.apiSerivce.queueAisle(this.storeId, this.missionId, aisleId);
+    this.aisles.find(l => l.aisleId === aisleId).auditQueueStatus = AuditQueueStatus.QUEUED;
   }
 }

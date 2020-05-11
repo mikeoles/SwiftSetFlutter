@@ -1,4 +1,5 @@
 import Label from './label.model';
+import { AuditQueueStatus } from '../bossanova/audit-queue-status';
 
 export default class Aisle {
   aisleId: string;
@@ -10,6 +11,7 @@ export default class Aisle {
   labelsCount: number;
   outsCount: number;
   aisleCoverage: string;
+  auditQueueStatus: AuditQueueStatus;
   labels: Label[];
   outs: Label[];
   sectionLabels: Label[];
