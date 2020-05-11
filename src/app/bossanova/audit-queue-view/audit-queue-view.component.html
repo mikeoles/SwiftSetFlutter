@@ -1,0 +1,29 @@
+<h1>Audit Queue</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Store</th>
+            <th>Mission</th>
+            <th>Aisle</th>
+            <th>Labels</th>
+            <th>Outs</th>
+            <th>False Positives</th>
+            <th>False Negatives</th>
+            <th>Owner</th>
+            <th>Audit Status</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let auditAisle of auditAisles">
+        <td>{{auditAisle.storeName}}</td>
+        <td>{{auditAisle.missionName}}</td>
+        <td>{{auditAisle.aisleName}}</td>
+        <td>{{auditAisle.labelsCount}}</td>
+        <td>{{auditAisle.outsCount}}</td>
+        <td>{{auditAisle.falsePositiveCount}}</td>
+        <td>{{auditAisle.falseNegativeCount}}</td>
+        <td>{{auditAisle.owner}}</td>
+        <td>{{auditAisle.auditQueueStatus.replace('-', ' ') | titlecase}}</td>
+    </tr>
+    </tbody>
+  </table>
