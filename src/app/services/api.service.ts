@@ -20,25 +20,12 @@ import Detection from '../models/detection.model';
 })
 export class ApiService {
   apiUrl: String;
-  coverageDisplayType = 'Description';
 
   constructor(private http: HttpClient, private environment: EnvironmentService) {
     this.apiUrl = environment.config.apiUrl;
-    this.coverageDisplayType = environment.config.coverageDisplayType;
   }
 
   createAisle(aisle: any): Aisle {
-    let aisleCoverage = 'Low';
-    if (aisle.coveragePercent >= 70) {
-      aisleCoverage = 'High';
-    } else if (aisle.coveragePercent >= 40) {
-      aisleCoverage = 'Medium';
-    }
-
-    if (this.coverageDisplayType && this.coverageDisplayType.toLowerCase() === 'percent') {
-      aisleCoverage = aisle.coveragePercent;
-    }
-
     return {
       aisleId: aisle.id,
       aisleName: aisle.name,
@@ -52,8 +39,6 @@ export class ApiService {
       sectionLabels: (aisle.sectionLabels || []).map(l => this.createSectionLabel(l)),
       topStock: (aisle.topStock || []).map(l => this.createSectionLabel(l)),
       sectionBreaks: aisle.sectionBreaks,
-      coveragePercent: aisle.coveragePercent,
-      aisleCoverage: aisleCoverage,
       auditQueueStatus: aisle.auditQueueStatus
     };
   }

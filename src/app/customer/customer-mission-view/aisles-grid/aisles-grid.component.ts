@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import Aisle from '../../../models/aisle.model';
-import { EnvironmentService } from 'src/app/services/environment.service';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -14,15 +13,13 @@ export class AislesGridComponent implements OnInit {
   @Input() missionId: number;
   @Input() storeId: number;
 
-  showAisleCoverage: boolean;
   sortType = 'aisleName';
   sortReverse = false;
 
   faAngleDown = faAngleDown;
   faAngleUp = faAngleUp;
 
-  constructor(private environment: EnvironmentService) {
-    this.showAisleCoverage = this.environment.config.coveragePercent;
+  constructor() {
   }
 
   ngOnInit() {

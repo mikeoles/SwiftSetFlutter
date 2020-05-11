@@ -18,7 +18,6 @@ export class AislesGridComponent implements OnInit {
   @Input() missionId: number;
   @Input() storeId: number;
 
-  showAisleCoverage: boolean;
   sortType = 'aisleName';
   sortReverse = false;
 
@@ -27,7 +26,6 @@ export class AislesGridComponent implements OnInit {
 
   constructor(private environment: EnvironmentService, private authService: AuthService,
     private apiSerivce: ApiService) {
-    this.showAisleCoverage = this.environment.config.coveragePercent;
   }
 
   ngOnInit() {

@@ -8,7 +8,6 @@
   </div>
   <button class="storeButton" *ngIf="showExportButtons" (click)="openModal('request-data-popup')">Request Data</button>
   <button class="storeButton" (click)="exportPerformanceData()">Performance Data</button>
-  <button class="storeButton" *ngIf="showExportButtons" (click)="exportAisleScanData()">Aisle Scan Data</button>
   <button class="storeButton" *ngIf="auditReportUrl.length > 0" (click)="openAuditReport()">Audit Report</button>
 </div>
 <app-export-modal id="request-data-popup">

@@ -36,23 +36,13 @@ describe('MissionViewComponent', () => {
   let apiService: jasmine.SpyObj<ApiService>;
   let originalTimeout;
 
-  const labels: Label[] = [
-    { labelName: 'label name', labelId: '1', barcode: '12345', productId: '12345', price: 0.0,
-    bounds: { top: 0, left: 0, width: 0, height: 0}, color: '',
-    customFields: [], section: '', department: '', onHand: 0},
-    { labelName: 'label name', labelId: '1', barcode: '550376332', productId: '12345', price: 0.0,
-    bounds: { top: 0, left: 0, width: 0, height: 0 }, color: '',
-    customFields: [], section: '', department: '', onHand: 0},
+  const aisles: Aisle[] = [
+    { aisleId: '1', aisleName: '1111', panoramaUrl: '', labels: [], outs: [], sectionLabels: [], sectionBreaks: [], topStock: [],
+      createDateTime: new Date(), outsCount: 0, labelsCount: 0, scanDateTime: new Date(), auditQueueStatus: null },
   ];
-
-  const sectionBreaks: number[] = [19, 200];
-
-  const aisles: Aisle[] = [{  aisleId: '1', aisleName: '', panoramaUrl: '', createDateTime: new Date(), scanDateTime: new Date(),
-  labels: labels, outs: labels, sectionLabels: labels, topStock: labels, sectionBreaks: sectionBreaks,
-  coveragePercent: 0, aisleCoverage: '0', labelsCount: 0, outsCount: 0 }];
-  const aisle: Aisle = {  aisleId: '1', aisleName: '', panoramaUrl: '', createDateTime: new Date(), scanDateTime: new Date(),
-    labels: labels, outs: labels, sectionLabels: labels, topStock: labels, sectionBreaks: sectionBreaks,
-    coveragePercent: 0, aisleCoverage: '0', labelsCount: 0, outsCount: 0 };
+  const aisle: Aisle = {
+    aisleId: '1', aisleName: '1111', panoramaUrl: '', labels: [], outs: [], sectionLabels: [], sectionBreaks: [], topStock: [],
+    createDateTime: new Date(), outsCount: 0, labelsCount: 0, scanDateTime: new Date(), auditQueueStatus: null };
   const mission: Mission = { missionId: '1', missionName: '', storeId: '1', startDateTime: new Date(), outs: 1, labels: 1,
     aisleCount: 1, endDateTime: new Date(), percentageRead: 1, percentageUnread: 1, unreadLabels: 1, readLabelsMissingProduct: 1,
     readLabelsMatchingProduct: 1, createDateTime: new Date(), aisles: aisles, storeName: '', storeNumber: 1 };
