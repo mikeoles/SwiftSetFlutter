@@ -1,14 +1,32 @@
 <header>
+  
   <div *ngIf="displayBackButton" id="backButton" (click)="backClicked()">
     <fa-icon class="backIcon" [icon]="faArrowAltCircleLeft"></fa-icon>
     <div class="backText">Back</div>
   </div>
+  
   <img id="logo" (click)="logoClicked()" src="../assets/logo.png"/>
-  <div id="login">
+
+  <div id="right">    
     <div *ngIf="username" id="username">
       {{username}} - <a [routerLink]="" (click)="logout()">log out</a>
     </div>
-    <div id="version">{{version}}</div>
+
+    <div class="rightDropdown">
+      <button class="dropdownButton" (click)="clickMenu()">
+        <fa-icon class="backIcon" [icon]="faBars"></fa-icon>
+      </button>
+      <ul *ngIf="showMenu">
+        <li *ngIf="auditManager()" (click)="auditQueue()">
+          Audit Queue
+        </li>
+        <li>
+          Version: {{version}}
+        </li>
+      </ul>
+      <div *ngIf="showMenu" class="pointer"></div>
+    </div>
+
   </div>
 </header>
 <router-outlet></router-outlet>

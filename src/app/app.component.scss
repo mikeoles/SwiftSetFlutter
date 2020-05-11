@@ -23,7 +23,13 @@ header {
     }
   }
 
+  #logo {
+    display: inline-block;
+    cursor: pointer;
+  }
+
   #username {
+    padding: 10px;
     right: 10px;
     font-size: .8em;
     float: right;
@@ -35,23 +41,57 @@ header {
     }
   }
 
-  #version {
-    color: $primary;
-    font-size: .8em;
-    padding-right: 10px;
-    float: right;
-    line-height: 27px;
-  }
-
-  #logo {
-    display: inline-block;
-    cursor: pointer;
-  }
-
-  #login {
+  #right {
     position: absolute;
     right: 0px;
     top: 0px;
-    padding: 10px;
   }
+
+  .rightDropdown {
+    float: right;
+
+    .dropdownButton {
+      background-color: $primary;
+      color: white;
+      height: 50px;
+      font-size: 30px;
+      width: 65px;
+    }
+  }
+
+  ul {
+    width: 150px;
+    position: absolute;
+    right: 55px;
+    z-index: 2;
+    padding: 5px 20px 10px 20px;
+    border-radius: 30px;
+    box-shadow: 0px 0px 30px rgba(32, 32, 32, 0.411);
+    background: white;
+    list-style-type: none;
+    li{
+      border-bottom: rgba(211, 211, 211, 0.5) 1px solid;
+      padding: 10px;
+      cursor:pointer;
+      color: $primary;
+    }
+    li:last-child{
+      border-bottom: 0px;
+      color: black;
+      font-size: 12px;
+      cursor: default;
+    }
+    li:hover{
+      color: black;
+    }
+  }
+
+  .pointer{
+    position: absolute;
+    z-index: 2;
+    margin-left: 26px;
+    border-style: solid;
+    border-width: 0 20px 20px 20px;
+    border-color: transparent transparent white transparent;
+  }  
 }
