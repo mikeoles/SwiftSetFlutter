@@ -397,7 +397,7 @@ export class ApiService {
   }
 
   getDetections(storeId: string, missionId: string, aisleId: string): Observable<Detection[]> {
-    return this.http.get(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/detections`)
+    return this.http.get(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/debug`)
     .pipe(map<any, Detection[]>(o => o.detections.map(d => this.createDetection(d))), );
   }
 
