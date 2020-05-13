@@ -66,24 +66,25 @@ export class DebugViewComponent implements OnInit {
     this.apiService.getDetections(storeId, missionId, aisleId).subscribe(detections => {
       this.detections = detections;
 
-      // set the filters to all of the unique values in the detection types and turn them all off by default
+      // set the filters to all of the unique values in the detection types and turn them all on by default
       detections.forEach(detection => {
-        this.detectionTypes.set(detection.detectionType, false);
+        this.detectionTypes.set(detection.detectionType, true);
       });
       detections.forEach(detection => {
         detection.tags.forEach(tag => {
-          this.tags.set(tag, false);
+          this.tags.set(tag, true);
         });
       });
       detections.forEach(detection => {
         detection.classifications.forEach(classification => {
-          this.classifications.set(classification, false);
+          this.classifications.set(classification, true);
         });
       });
 
       this.setColorsFromConfig(this.detectionTypeColors, this.detectionTypeColorOrder, this.environment.config.detectionTypeColors);
       this.setColorsFromConfig(this.classificationColors, this.classificationColorOrder, this.environment.config.classificationColors);
       this.setColorsFromConfig(this.tagColors, this.tagColorOrder, this.environment.config.tagColors);
+      this.updateDisplayedDetections();
     });
   }
 

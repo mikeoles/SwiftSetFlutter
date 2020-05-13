@@ -1,40 +1,65 @@
 <div class="panorama">
-    <div class="image-owner" id="image-owner">
-      <div id="pano-image" class="image">
-        <img [src]="panoramaUrl" *ngIf="panoramaUrl"/>
+  <div class="image-owner" id="image-owner">
+    <div id="pano-image" class="image">
+      <img [src]="panoramaUrl" *ngIf="panoramaUrl"/>
 
+      <!--Detection Labels-->
+      <ng-container *ngFor="let detection of displayedDetections | keyvalue">
+        <div class="detection"
+        [style.left.px] = "detection.value.bounds.left"
+        [style.top.px] = "detection.value.bounds.top"
+        [style.width.px] = "detection.value.bounds.width"
+        [style.height.px] = "detection.value.bounds.height"
+        [style.border-color] = "detection.value.color"
+        (click)="detectionClicked(detection.value)"></div>
+      </ng-container>
+
+      <!--Association Lines-->
+      <svg>
         <ng-container *ngFor="let detection of displayedDetections | keyvalue">
-          <div class="detection"
-          [style.left.px] = "detection.value.bounds.left"
-          [style.top.px] = "detection.value.bounds.top"
-          [style.width.px] = "detection.value.bounds.width"
-          [style.height.px] = "detection.value.bounds.height"
-          [style.border-color] = "detection.value.color"></div>
+          <ng-container *ngFor="let coordinate of getLineCoordinates(detection.key, detection.value.associations)">
+            <line
+            [attr.x1]="coordinate.x1"
+            [attr.y1]="coordinate.y1"
+            [attr.x2]="coordinate.x2"
+            [attr.y2]="coordinate.y2" />
+          </ng-container>
         </ng-container>
-        <!-- <line
-        [attr.x1]="annotation.bounds.left+annotation.bounds.width/2+10"
-        [attr.y1]="annotation.bounds.top"
-        [attr.x2]="productCoordinate.left+productCoordinate.width/2+10"
-        [attr.y2]="productCoordinate.top+productCoordinate.height/2+10" /> -->
-        <ng-container>
-          <svg>
-            <ng-container *ngFor="let detection of displayedDetections | keyvalue">
-              <ng-container *ngFor="let coordinate of getLineCoordinates(detection.key, detection.value.associations)">
-                <line
-                [attr.x1]="coordinate.x1"
-                [attr.y1]="coordinate.y1"
-                [attr.x2]="coordinate.x2"
-                [attr.y2]="coordinate.y2" />
-              </ng-container>
-            </ng-container>
-          </svg>
-        </ng-container>
-      </div>
+      </svg>
     </div>
+  </div>
     
-    <div id="zoom">
-      <fa-icon id="zoomIn" class="zoomIcon" [icon]="faPlus" (click)="zoomIn()"></fa-icon>
-      <fa-icon id="zoomOut" class="zoomIcon" [icon]="faMinus" (click)="zoomOut()"></fa-icon>
+  <div id="zoom">
+    <fa-icon id="zoomIn" class="zoomIcon" [icon]="faPlus" (click)="zoomIn()"></fa-icon>
+    <fa-icon id="zoomOut" class="zoomIcon" [icon]="faMinus" (click)="zoomOut()"></fa-icon>
+  </div>
+
+  <!-- Detection Info Panel -->
+  <div id="detectionInfo" *ngIf="selectedDetection !== null">
+    <div>
+      <div>Detection Type</div>
+      <li>
+        {{selectedDetection.detectionType}}
+      </li>
     </div>
+    <div *ngIf="selectedDetection.classifications">
+      <div>Classifications</div>
+      <li *ngFor="let classification of selectedDetection.classifications">
+        {{classification}}
+      </li>
+    </div>
+    <div *ngIf="selectedDetection.tags">
+      <div>Tags</div>
+      <li *ngFor="let tag of selectedDetection.tags">
+        {{tag}}
+      </li>
+    </div>
+    <div *ngIf="selectedDetection.tagFields">
+      <div>Tag Fields</div>
+      <tr *ngFor="let tagField of selectedDetection.tagFields | keyvalue">
+        <td>{{tagField.key}}</td>
+        <td>{{tagField.value}}</td>
+      </tr>
+    </div>
+  </div>
 </div>
-  

@@ -10,5 +10,6 @@ export default class Detection {
   associations: string[];
   tags: string[];
   classifications: string[];
+  tagFields: Object;
   color: string;
 }
