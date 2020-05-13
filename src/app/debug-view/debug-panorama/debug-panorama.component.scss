@@ -6,7 +6,7 @@
   position: relative;
 
   .image-owner {
-    height: calc(100vh - 47px - 95px);
+    height: calc(100vh - 53px - 95px);
     position: relative;
 
     .image {
@@ -17,6 +17,7 @@
       }
 
       .detection{
+        z-index: 100;
         position: absolute;
         border: 10px solid;
       }
@@ -63,8 +64,44 @@ svg{
   right: 0;
   height: 100%;
   width: 100%;
+  z-index: 2;
   line{
     stroke: $associationLines;
     stroke-width: 8px;
+  }
+}
+
+#detectionInfo {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  height: calc(100vh - 150px);
+  overflow: auto;
+  background-color: white;
+  
+  > div {
+    border-top: 2px $primary solid;
+    padding: 5px 10px;
+
+    div {
+      font-weight: bold;
+      padding-bottom: 2px;
+    }
+  }
+
+  :first-child {
+    border-top: 0px;
+
+  }
+
+  li {
+    text-align: left;
+    list-style-type: none;
+    padding:  0px 5px;
+  }
+
+  td {
+    text-align: left;
+    width: 100px;
   }
 }

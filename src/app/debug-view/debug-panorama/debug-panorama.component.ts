@@ -13,7 +13,7 @@ export class DebugPanoramaComponent implements OnInit {
 
   @Input() panoramaUrl: string;
   @Input() displayedDetections = new Map<string, Detection>();
-
+  selectedDetection: Detection = null;
 
   panZoomApi: any;
   startingZoom = 0.30;
@@ -60,5 +60,13 @@ export class DebugPanoramaComponent implements OnInit {
   zoomOut(): boolean {
     this.panZoomApi.smoothZoom(window.innerWidth / 2, 182, 0.8);
     return false;
+  }
+
+  detectionClicked(detection: Detection) {
+    if (this.selectedDetection && this.selectedDetection.detectionId === detection.detectionId) {
+      this.selectedDetection = null;
+    } else {
+      this.selectedDetection = detection;
+    }
   }
 }

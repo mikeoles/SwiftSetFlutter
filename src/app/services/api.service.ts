@@ -414,7 +414,8 @@ export class ApiService {
       tags: detection.tags,
       classifications: detection.classifications,
       associations: detection.associations,
-      color: ''
+      color: '',
+      tagFields: detection.tagFields
     };
   }
 
