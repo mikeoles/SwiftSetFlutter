@@ -41,6 +41,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
   @Input() qaMode: boolean;
   @Input() annotations = new Map<AnnotationType, Array<Annotation>>();
   @Input() categories = new Map<AnnotationType, Array<AnnotationCategory>>();
+  @Input() showCoverageIssueDetails: boolean;
 
   @Output() panoramaId = new EventEmitter<string>();
   @Output() panoramaTouched = new EventEmitter();

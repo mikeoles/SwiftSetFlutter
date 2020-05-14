@@ -57,5 +57,7 @@
     <li *ngIf="showDeleteOption" class="delete" (click)="changeAnnotation()">Delete</li>
   </ul>
 
+  <div *ngIf="showCoverageIssueDetails" id="coverageIssueDetails"><span>Coverage Issues Detected:</span><br>Out of 200 distinct barcodes detected in previous 5 scans, 30(15%) of those barcodes were not found in this aisle</div>
+
 </div>
 <ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>

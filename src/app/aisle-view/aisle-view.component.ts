@@ -35,6 +35,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   panoramaUrl: string;
   panoMode: boolean;
   resetPano: boolean;
+  showCoverageIssueDetails: boolean;
 
   private logoSubscription: Subscription;
   private backButtonSubscription: Subscription;
@@ -306,5 +307,9 @@ export class AisleViewComponent implements OnInit, OnDestroy {
       this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId,
       info.top, info.left, info.category, action
     );
+  }
+
+  toggleCoverageIssueDetails() {
+    this.showCoverageIssueDetails = !this.showCoverageIssueDetails;
   }
 }

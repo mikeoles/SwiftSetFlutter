@@ -28,14 +28,14 @@ export class MissionsGridComponent implements OnInit {
     this.dataService.averageStoreLabels = this.averageStoreLabels;
   }
 
-    // Only display the problem coulmn if at least one mission has a problem
-    hasProblems() {
-      let hasProblems = false;
-      this.missions.forEach(mission => {
-        if (mission.hasPreviouslySeenIssue) {
-          hasProblems = true;
-        }
-      });
-      return hasProblems;
-    }
+  // Only display the problem coulmn if at least one mission has a problem
+  hasProblems() {
+    let hasProblems = false;
+    this.missions.forEach(mission => {
+      if (mission.hasPreviouslySeenIssue) {
+        hasProblems = true;
+      }
+    });
+    return hasProblems;
+  }
 }
