@@ -7,7 +7,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Component, Input } from '@angular/core';
 import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import Label from '../../models/label.model';
 import { ModalService } from '../../services/modal.service';
 import { EnvironmentService } from '../../services/environment.service';
 import Mission from '../../models/mission.model';
@@ -40,10 +39,10 @@ describe('CustomerMissionViewComponent', () => {
 
   const aisles: Aisle[] = [{  aisleId: '1', aisleName: '', panoramaUrl: '', createDateTime: new Date(), scanDateTime: new Date(),
   labels: labels, outs: labels, sectionLabels: labels, topStock: labels, sectionBreaks: sectionBreaks,
-  coveragePercent: 0, aisleCoverage: '0', labelsCount: 0, outsCount: 0, auditQueueStatus: null,
+  labelsCount: 0, outsCount: 0, auditQueueStatus: null,
   previouslySeenBarcodeCount: 0, previouslySeenBarcodeSampleSize: 0, missingPreviouslySeenBarcodeCount: 0,
   missingPreviouslySeenBarcodePercentage: 0, missingPreviouslySeenBarcodes: []  }];
-  
+
   const mission: Mission = { missionId: '1', missionName: '', storeId: '1', startDateTime: new Date(), outs: 1, labels: 1,
     aisleCount: 1, endDateTime: new Date(), percentageRead: 1, percentageUnread: 1, unreadLabels: 1, readLabelsMissingProduct: 1,
     readLabelsMatchingProduct: 1, createDateTime: new Date(), aisles: aisles, storeName: '', storeNumber: 1 };

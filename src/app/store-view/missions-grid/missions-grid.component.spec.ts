@@ -11,11 +11,11 @@ describe('MissionsGridComponent', () => {
   let fixture: ComponentFixture<MissionsGridComponent>;
   const aisles: Aisle[] = [
     { aisleId: '1', aisleName: '1111', panoramaUrl: '', labels: [], outs: [], sectionLabels: [], sectionBreaks: [], topStock: [],
-    createDateTime: new Date(), coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: '', scanDateTime: new Date(),
+    createDateTime: new Date(),  outsCount: 0, labelsCount: 0, scanDateTime: new Date(),
       auditQueueStatus: null, previouslySeenBarcodeCount: 0, previouslySeenBarcodeSampleSize: 0, missingPreviouslySeenBarcodeCount: 0,
       missingPreviouslySeenBarcodePercentage: 0, missingPreviouslySeenBarcodes: []  },
     { aisleId: '2', aisleName: '2222', panoramaUrl: '', labels: [], outs: [], sectionLabels: [], sectionBreaks: [], topStock: [],
-    createDateTime: new Date(), coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: '', scanDateTime: new Date(),
+    createDateTime: new Date(),  outsCount: 0, labelsCount: 0, scanDateTime: new Date(),
       auditQueueStatus: null, previouslySeenBarcodeCount: 0, previouslySeenBarcodeSampleSize: 0, missingPreviouslySeenBarcodeCount: 0,
       missingPreviouslySeenBarcodePercentage: 0, missingPreviouslySeenBarcodes: []  },
   ];

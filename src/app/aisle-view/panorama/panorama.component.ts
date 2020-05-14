@@ -19,6 +19,7 @@ import { ShortcutInput } from 'ng-keyboard-shortcuts';
 import { LabelType } from '../label-type';
 import Annotation from 'src/app/models/annotation.model';
 import { AnnotationType } from '../annotation-type';
+import Aisle from 'src/app/models/aisle.model';
 
 @Component({
   selector: 'app-panorama',
@@ -42,11 +43,13 @@ export class PanoramaComponent implements OnInit, OnChanges {
   @Input() annotations = new Map<AnnotationType, Array<Annotation>>();
   @Input() categories = new Map<AnnotationType, Array<AnnotationCategory>>();
   @Input() showCoverageIssueDetails: boolean;
+  @Input() selectedAisle: Aisle;
 
   @Output() panoramaId = new EventEmitter<string>();
   @Output() panoramaTouched = new EventEmitter();
   @Output() updateLabelCategory = new EventEmitter<{labelId: string, category: string, annotationType: AnnotationType}>();
   @Output() updateMissedCategory = new EventEmitter<{top: number, left: number, category: string}>();
+  @Output() toggleCoverageIssueDetails = new EventEmitter();
 
   // annotations
   annotationMenu: AnnotationType = AnnotationType.none;
@@ -488,5 +491,9 @@ export class PanoramaComponent implements OnInit, OnChanges {
     this.annotationLeft = selected.left;
     this.selectedMarkerCategory = selected.annotationCategory;
     this.annotationMenu = AnnotationType.missed;
+  }
+
+  closeCoverageIssueDetails() {
+    this.toggleCoverageIssueDetails.emit();
   }
 }

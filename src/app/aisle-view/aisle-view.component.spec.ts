@@ -42,27 +42,27 @@ describe('AisleViewComponent', () => {
   const aisles: Aisle[] = [
     { aisleId: '1', aisleName: '1111', panoramaUrl: '', createDateTime: new Date(), scanDateTime: new Date(),
       labels: labels, outs: labels, sectionLabels: labels, sectionBreaks: [], topStock: labels,
-      coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: '', auditQueueStatus: null,
+      outsCount: 0, labelsCount: 0, auditQueueStatus: null,
       previouslySeenBarcodeCount: 0, previouslySeenBarcodeSampleSize: 0, missingPreviouslySeenBarcodeCount: 0,
       missingPreviouslySeenBarcodePercentage: 0, missingPreviouslySeenBarcodes: [] },
       { aisleId: '5', aisleName: '2222', panoramaUrl: '', createDateTime: new Date(), scanDateTime: new Date(),
       labels: labels, outs: labels, sectionLabels: labels, sectionBreaks: [], topStock: labels,
-      coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: '', auditQueueStatus: null,
+      outsCount: 0, labelsCount: 0, auditQueueStatus: null,
       previouslySeenBarcodeCount: 0, previouslySeenBarcodeSampleSize: 0, missingPreviouslySeenBarcodeCount: 0,
       missingPreviouslySeenBarcodePercentage: 0, missingPreviouslySeenBarcodes: [] },
       { aisleId: '5', aisleName: '3333', panoramaUrl: '', createDateTime: new Date(), scanDateTime: new Date(),
       labels: labels, outs: labels, sectionLabels: labels, sectionBreaks: [], topStock: labels,
-      coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: '', auditQueueStatus: null,
+      outsCount: 0, labelsCount: 0, auditQueueStatus: null,
       previouslySeenBarcodeCount: 0, previouslySeenBarcodeSampleSize: 0, missingPreviouslySeenBarcodeCount: 0,
       missingPreviouslySeenBarcodePercentage: 0, missingPreviouslySeenBarcodes: [] },
       { aisleId: '5', aisleName: '4444', panoramaUrl: '', createDateTime: new Date(), scanDateTime: new Date(),
       labels: labels, outs: labels, sectionLabels: labels, sectionBreaks: [], topStock: labels,
-      coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: '', auditQueueStatus: null,
+      outsCount: 0, labelsCount: 0, auditQueueStatus: null,
       previouslySeenBarcodeCount: 0, previouslySeenBarcodeSampleSize: 0, missingPreviouslySeenBarcodeCount: 0,
       missingPreviouslySeenBarcodePercentage: 0, missingPreviouslySeenBarcodes: [] },
       { aisleId: '5', aisleName: '5555', panoramaUrl: '', createDateTime: new Date(), scanDateTime: new Date(),
       labels: labels, outs: labels, sectionLabels: labels, sectionBreaks: [], topStock: labels,
-      coveragePercent: 0, outsCount: 0, labelsCount: 0, aisleCoverage: '', auditQueueStatus: null,
+      outsCount: 0, labelsCount: 0, auditQueueStatus: null,
       previouslySeenBarcodeCount: 0, previouslySeenBarcodeSampleSize: 0, missingPreviouslySeenBarcodeCount: 0,
       missingPreviouslySeenBarcodePercentage: 0, missingPreviouslySeenBarcodes: [] },
   ];
@@ -70,7 +70,7 @@ describe('AisleViewComponent', () => {
   const mission: Mission = { missionId: '1', missionName: '1111', storeId: '1', createDateTime: new Date('2018-12-12'),
     startDateTime: new Date('2018-12-12'), endDateTime: new Date('2018-12-12'), aisleCount: 0, outs: 0, labels: 0,
     readLabelsMissingProduct: 0, readLabelsMatchingProduct: 0, unreadLabels: 0, percentageRead: 0, percentageUnread: 0,
-    aisles: aisles, storeName: '', storeNumber: 1, hasPreviouslySeenIssue: false  };
+    aisles: aisles, storeName: '', storeNumber: 1 };
 
   const missions: Mission[] = [
     { missionId: '1', missionName: '1111', storeId: '1', createDateTime: new Date('2018-12-12'), startDateTime: new Date('2018-12-12'),
