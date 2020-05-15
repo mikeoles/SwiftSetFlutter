@@ -14,7 +14,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let store of stores | filter:searchTerm">
+      <tr *ngFor="let store of stores | deepFilter: searchTerm: keysToExclude">
         <td class="canary">
             <fa-icon *ngIf="store.canary" size="lg" class="fa" [icon]="faCopyright"></fa-icon>
         </td>

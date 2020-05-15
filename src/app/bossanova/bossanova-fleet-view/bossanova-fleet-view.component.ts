@@ -14,6 +14,7 @@ export class BossanovaFleetViewComponent implements OnInit {
 
   stores: Store[];
   searchTerm: string;
+  keysToExclude: any [] =  ['storeId', 'zoneId', 'canary'];
   faCopyright = faCopyright;
 
   constructor(private apiService: ApiService, private router: Router, private titleService: Title) { }
