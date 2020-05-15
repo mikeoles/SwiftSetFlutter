@@ -19,4 +19,11 @@ export class AuditQueueViewComponent implements OnInit {
     });
   }
 
+  removeAisle(aisle: AuditAisle) {
+    this.apiSerivce.removeQueuedAisle(aisle);
+    const index: number = this.auditAisles.findIndex(a => a.aisleId === aisle.aisleId);
+    if (index !== -1) {
+        this.auditAisles.splice(index, 1);
+    }
+  }
 }
