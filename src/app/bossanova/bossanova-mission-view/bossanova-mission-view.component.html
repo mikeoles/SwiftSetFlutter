@@ -9,9 +9,12 @@
 <div class="storeSearch">
   <button (click)="searchBarcodeClicked()">Search</button>
   <input type="text" placeholder="Search By Barcode" [(ngModel)]="searchTerm">
+  <button class="queueAllAisles" (click)="addAllToQueue()">Add All To Queue</button>
 </div>
 <div class="grid">
-  <app-aisles-grid *ngIf="store" [aisles]="aisles" [missionId]="mission.missionId" [storeId]="store.storeId"></app-aisles-grid>
+  <app-aisles-grid *ngIf="store" [aisles]="aisles" [missionId]="mission.missionId" [storeId]="store.storeId"
+  [addAllClicked]="addAllClicked">
+</app-aisles-grid>
 </div>
 <app-export-modal id="export-popup">
   <div class="modal">

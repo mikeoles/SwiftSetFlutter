@@ -18,7 +18,9 @@
       </button>
       <ul *ngIf="showMenu">
         <li *ngIf="auditManager()" (click)="auditQueue()">
-          Audit Queue
+          <a [routerLink]="['/audit-queue']">
+            Audit Queue
+          </a>
         </li>
         <li>
           Version: {{version}}

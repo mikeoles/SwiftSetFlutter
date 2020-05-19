@@ -476,8 +476,14 @@ export class ApiService {
   }
 
   // Add an aisle to the audit queue
-  queueAisle(storeId: number, missionId: number, aisleId: string): any {
+  queueAisle(storeId: string, missionId: string, aisleId: string): any {
     return this.http.put(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/audit-queue`,
+    new FormData()).subscribe();
+  }
+
+  // Add a mission to the audit queue
+  queueMission(storeId: string, missionId: string): any {
+    return this.http.put(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/audit-queue`,
     new FormData()).subscribe();
   }
 

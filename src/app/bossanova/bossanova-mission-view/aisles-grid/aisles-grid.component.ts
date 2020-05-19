@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import Aisle from '../../../models/aisle.model';
 import { EnvironmentService } from 'src/app/services/environment.service';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
@@ -15,8 +15,9 @@ import { AuditQueueStatus } from '../../audit-queue-status';
 export class AislesGridComponent implements OnInit {
 
   @Input() aisles: Aisle[];
-  @Input() missionId: number;
-  @Input() storeId: number;
+  @Input() missionId: string;
+  @Input() storeId: string;
+  @Input() addAllClicked: string;
 
   sortType = 'aisleName';
   sortReverse = false;

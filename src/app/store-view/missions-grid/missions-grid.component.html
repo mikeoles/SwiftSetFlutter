@@ -7,12 +7,12 @@
       <th>Outs</th>
       <th>Labels</th>
       <th>Aisles Scanned</th>
+      <th *ngIf="auditManager()">Audit Status</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let mission of missions; let i = index" (click)="viewMission(mission.missionId)">
+    <tr *ngFor="let mission of missions; let i = index">
       <td>
-        <!-- <a [routerLink]="['/store', storeId, 'mission', mission.missionId]" (click)="viewMission()"> -->
         <a [routerLink]="['/store', storeId, 'mission', mission.missionId]" (click)="viewMission(mission.missionId)">
           {{mission.missionName}}
         </a>
@@ -20,6 +20,10 @@
       <td>{{mission.outs}}</td>
       <td>{{mission.labels}}</td>
       <td>{{mission.aisleCount}}</td>
+      <td *ngIf="auditManager()">
+        <button *ngIf="hasUnqueuedAisles(mission.missionId)" (click)="queueMission(mission.missionId)">Queue</button>
+        <ng-container *ngIf="!hasUnqueuedAisles(mission.missionId)">Queued</ng-container>
+      </td>
     </tr>
   </tbody>
 </table>
