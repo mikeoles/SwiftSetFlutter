@@ -14,7 +14,6 @@ import AnnotationCategory from '../models/annotationCategory.model';
 import AuthData from '../models/auth.model';
 import moment from 'moment';
 import Detection from '../models/detection.model';
-import AuditAisle from '../models/auditAisle.model';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +26,24 @@ export class ApiService {
   }
 
   createAisle(aisle: any): Aisle {
+
+    let storeId = null, storeName = null, missionId = null, missionName = null, falseNegativeCount = 0, falsePositiveCount = 0;
+
+    if (aisle.store) {
+      storeId = aisle.store.id;
+      storeName = aisle.store.name;
+    }
+
+    if (aisle.mission) {
+      missionId = aisle.mission.id;
+      missionName = aisle.mission.name;
+    }
+
+    if (aisle.audit) {
+      falseNegativeCount = aisle.audit.falseNegativeCount;
+      falsePositiveCount = aisle.audit.falsePositiveCount;
+    }
+
     return {
       aisleId: aisle.id,
       aisleName: aisle.name,
@@ -47,6 +64,13 @@ export class ApiService {
       missingPreviouslySeenBarcodePercentage: aisle.missingPreviouslySeenBarcodePercentage,
       missingPreviouslySeenBarcodes: (aisle.missingPreviouslySeenBarcodes || [])
       .map(l => this.createBasicLabel(l, 'Previously Seen Barcode')),
+      storeName: aisle.storeName || storeName,
+      storeId: aisle.storeId || storeId,
+      missionName: aisle.missionName || missionName,
+      missionId: aisle.missionId || missionId,
+      falsePositiveCount: falsePositiveCount,
+      falseNegativeCount: falseNegativeCount,
+      owner: aisle.owner,
     };
   }
 
@@ -517,33 +541,15 @@ export class ApiService {
   }
 
   // Get aisles currently added to the audit queue or currenlty being queued by an auditor
-  getAuditQueue(): Observable<AuditAisle[]> {
+  getAuditQueue(): Observable<Aisle[]> {
     return this.http.get(`${this.apiUrl}/audit-queue`)
       .pipe(
-        map<any, AuditAisle[]>(o => o.map(a => this.createAuditAisle(a))),
+        map<any, Aisle[]>(o => o.map(a => this.createAisle(a))),
       );
   }
 
-  createAuditAisle(auditAisle: any): AuditAisle {
-    return {
-      aisleId: auditAisle.aisleId,
-      aisleName: auditAisle.aisleName,
-      scanDateTime: auditAisle.scanDateTime,
-      missionId: auditAisle.missionId,
-      missionName: auditAisle.missionName,
-      storeId: auditAisle.storeId,
-      storeName: auditAisle.storeName,
-      labelsCount: auditAisle.labelCount,
-      outsCount: auditAisle.outCount,
-      falsePositiveCount: auditAisle.falsePositives,
-      falseNegativeCount: auditAisle.falseNegatives,
-      owner: auditAisle.owner,
-      auditQueueStatus: auditAisle.auditQueueStatus,
-    };
-  }
-
     // Remove an aisle from the audit queue
-  removeQueuedAisle(aisle: AuditAisle) {
+  removeQueuedAisle(aisle: Aisle) {
     this.http.delete(
       `${this.apiUrl}/stores/${aisle.storeId}/missions/${aisle.missionId}/aisles/${aisle.aisleId}/audit-queue`
     ).subscribe();

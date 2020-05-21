@@ -15,19 +15,19 @@
         </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let auditAisle of auditAisles">
-        <td>{{auditAisle.storeName}}</td>
-        <td>{{auditAisle.missionName}}</td>
-        <td>{{auditAisle.aisleName}}</td>
-        <td>{{auditAisle.labelsCount}}</td>
-        <td>{{auditAisle.outsCount}}</td>
-        <td>{{auditAisle.falsePositiveCount}}</td>
-        <td>{{auditAisle.falseNegativeCount}}</td>
-        <td>{{auditAisle.owner}}</td>
-        <td>{{auditAisle.auditQueueStatus.replace('-', ' ') | titlecase}}</td>
+    <tr *ngFor="let aisles of aisles">
+        <td>{{aisles.storeName}}</td>
+        <td>{{aisles.missionName}}</td>
+        <td>{{aisles.aisleName}}</td>
+        <td>{{aisles.labelsCount}}</td>
+        <td>{{aisles.outsCount}}</td>
+        <td>{{aisles.falsePositiveCount}}</td>
+        <td>{{aisles.falseNegativeCount}}</td>
+        <td>{{aisles.owner}}</td>
+        <td>{{aisles.auditQueueStatus.replace('-', ' ') | titlecase}}</td>
         <td>
-            <button *ngIf="auditAisle.auditQueueStatus === 'queued'" (click)="removeAisle(auditAisle)">Remove</button>
+            <button *ngIf="aisles.auditQueueStatus === 'queued'" (click)="removeAisle(aisles)">Remove</button>
         </td>
     </tr>
     </tbody>
-  </table>
+</table>

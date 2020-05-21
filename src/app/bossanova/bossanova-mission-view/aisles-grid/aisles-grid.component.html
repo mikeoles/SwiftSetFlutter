@@ -6,7 +6,7 @@
         <fa-icon *ngIf="sortType === 'aisleName' && !sortReverse" size="sm" class="fa" [icon]="faAngleDown"></fa-icon>
         <fa-icon *ngIf="sortType === 'aisleName' && sortReverse" size="sm" class="fa" [icon]="faAngleUp"></fa-icon>
       </th>
-      <th (click)="sortBy('scanDateTime')">
+      <th *ngIf="!auditManager()" (click)="sortBy('scanDateTime')">
         Capture Time 
         <fa-icon *ngIf="sortType === 'scanDateTime' && !sortReverse" size="sm" class="fa" [icon]="faAngleDown"></fa-icon>
         <fa-icon *ngIf="sortType === 'scanDateTime' && sortReverse" size="sm" class="fa" [icon]="faAngleUp"></fa-icon>
@@ -20,6 +20,16 @@
         Labels
         <fa-icon *ngIf="sortType === 'labelsCount' && !sortReverse" size="sm" class="fa" [icon]="faAngleDown"></fa-icon>
         <fa-icon *ngIf="sortType === 'labelsCount' && sortReverse" size="sm" class="fa" [icon]="faAngleUp"></fa-icon>
+      </th>
+      <th *ngIf="auditManager()" (click)="sortBy('falsePositiveCount')">
+        False Positives
+        <fa-icon *ngIf="sortType === 'falsePositiveCount' && !sortReverse" size="sm" class="fa" [icon]="faAngleDown"></fa-icon>
+        <fa-icon *ngIf="sortType === 'falsePositiveCount' && sortReverse" size="sm" class="fa" [icon]="faAngleUp"></fa-icon>
+      </th>
+      <th *ngIf="auditManager()" (click)="sortBy('falseNegativeCount')">
+        False Negatives
+        <fa-icon *ngIf="sortType === 'falseNegativeCount' && !sortReverse" size="sm" class="fa" [icon]="faAngleDown"></fa-icon>
+        <fa-icon *ngIf="sortType === 'falseNegativeCount' && sortReverse" size="sm" class="fa" [icon]="faAngleUp"></fa-icon>
       </th>
       <th *ngIf="auditManager()" (click)="sortBy('auditQueueStatus')">
         Audit Status
@@ -38,9 +48,11 @@
           {{aisle.aisleName}}
         </a>
       </td>
-      <td>{{aisle.scanDateTime | date:'medium'}}</td>
+      <td *ngIf="!auditManager()">{{aisle.scanDateTime | date:'medium'}}</td>
       <td>{{aisle.outsCount}}</td>
       <td>{{aisle.labelsCount}}</td>
+      <td *ngIf="auditManager()" >{{aisle.falsePositiveCount}}</td>
+      <td *ngIf="auditManager()" >{{aisle.falseNegativeCount}}</td>
       <td *ngIf="auditManager()">
         <button *ngIf="!aisle.auditQueueStatus && !addAllClicked" (click)="queueAisle(aisle.aisleId)">Queue</button>
         <ng-container *ngIf="aisle.auditQueueStatus">{{aisle.auditQueueStatus.replace('-', ' ') | titlecase}}</ng-container>

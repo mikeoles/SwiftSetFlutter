@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
-import AuditAisle from 'src/app/models/auditAisle.model';
+import Aisle from 'src/app/models/aisle.model';
 
 @Component({
   selector: 'app-audit-queue-view',
@@ -9,21 +9,21 @@ import AuditAisle from 'src/app/models/auditAisle.model';
 })
 export class AuditQueueViewComponent implements OnInit {
 
-  auditAisles: AuditAisle[];
+  aisles: Aisle[];
 
   constructor(private apiSerivce: ApiService) { }
 
   ngOnInit() {
-    this.apiSerivce.getAuditQueue().subscribe(auditAisles => {
-      this.auditAisles = auditAisles;
+    this.apiSerivce.getAuditQueue().subscribe(aisle => {
+      this.aisles = aisle;
     });
   }
 
-  removeAisle(aisle: AuditAisle) {
+  removeAisle(aisle: Aisle) {
     this.apiSerivce.removeQueuedAisle(aisle);
-    const index: number = this.auditAisles.findIndex(a => a.aisleId === aisle.aisleId);
+    const index: number = this.aisles.findIndex(a => a.aisleId === aisle.aisleId);
     if (index !== -1) {
-        this.auditAisles.splice(index, 1);
+        this.aisles.splice(index, 1);
     }
   }
 }
