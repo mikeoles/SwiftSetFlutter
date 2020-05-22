@@ -95,7 +95,7 @@ export class BossanovaMissionViewComponent implements OnInit, OnDestroy {
   searchMissingBarcodesChanged(selected: boolean) {
     this.searchMissingBarcodes = selected;
     if (this.searchMissingBarcodes) {
-      this.apiService.getAislesByLabels(this.store.storeId, this.mission.missionId, 'barcode', 'missing').subscribe(aisles => {
+      this.apiService.getAislesMissingBarcode(this.store.storeId, this.mission.missionId).subscribe(aisles => {
         this.aisles = aisles;
       });
     } else {
