@@ -15,19 +15,25 @@
         </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let aisles of aisles">
-        <td>{{aisles.storeName}}</td>
-        <td>{{aisles.missionName}}</td>
-        <td>{{aisles.aisleName}}</td>
-        <td>{{aisles.labelsCount}}</td>
-        <td>{{aisles.outsCount}}</td>
-        <td>{{aisles.falsePositiveCount}}</td>
-        <td>{{aisles.falseNegativeCount}}</td>
-        <td>{{aisles.owner}}</td>
-        <td>{{aisles.auditQueueStatus.replace('-', ' ') | titlecase}}</td>
-        <td>
-            <button *ngIf="aisles.auditQueueStatus === 'queued'" (click)="removeAisle(aisles)">Remove</button>
-        </td>
-    </tr>
+        <tr *ngFor="let aisle of aisles">
+            <td>{{aisle.storeName}}</td>
+            <td>{{aisle.missionName}}</td>
+            <td>{{aisle.aisleName}}</td>
+            <td>{{aisle.labelsCount}}</td>
+            <td>{{aisle.outsCount}}</td>
+            <td>{{aisle.falsePositiveCount}}</td>
+            <td>{{aisle.falseNegativeCount}}</td>
+            <td>{{aisle.owner}}</td>
+            <td *ngIf="auditManager() || aisle.auditQueueStatus !== 'queued'">
+                {{aisle.auditQueueStatus.replace('-', ' ') | titlecase}}
+            </td>
+            <td *ngIf="auditor() && aisle.auditQueueStatus === 'queued'">
+                <button (click)="auditAisle(aisle)">Audit</button>
+            </td>
+            <td>
+                <button *ngIf="auditManager() && aisle.auditQueueStatus === 'queued'" class="remove"
+                    (click)="removeAisle(aisle)">Remove</button>
+            </td>
+        </tr>
     </tbody>
 </table>

@@ -73,4 +73,8 @@ export class AppComponent implements OnInit {
   auditManager(): boolean {
     return this.authService.hasRole(Role.AUDIT_MANAGER);
   }
+
+  auditor(): boolean {
+    return this.authService.hasRole(Role.AUDITOR);
+  }
 }

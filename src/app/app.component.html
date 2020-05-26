@@ -17,7 +17,7 @@
         <fa-icon class="backIcon" [icon]="faBars"></fa-icon>
       </button>
       <ul *ngIf="showMenu">
-        <li *ngIf="auditManager()" (click)="auditQueue()">
+        <li *ngIf="auditManager() || auditor()" (click)="auditQueue()">
           <a [routerLink]="['/audit-queue']">
             Audit Queue
           </a>

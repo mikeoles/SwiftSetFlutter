@@ -548,10 +548,18 @@ export class ApiService {
       );
   }
 
-    // Remove an aisle from the audit queue
+  // Remove an aisle from the audit queue
   removeQueuedAisle(aisle: Aisle) {
     this.http.delete(
       `${this.apiUrl}/stores/${aisle.storeId}/missions/${aisle.missionId}/aisles/${aisle.aisleId}/audit-queue`
+    ).subscribe();
+  }
+
+  // Set the current user as auditor of the aisle
+  auditAisle(aisle: Aisle) {
+    this.http.put(
+      `${this.apiUrl}/stores/${aisle.storeId}/missions/${aisle.missionId}/aisles/${aisle.aisleId}/audit`,
+      new FormData()
     ).subscribe();
   }
 }
