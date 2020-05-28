@@ -1,4 +1,5 @@
 <h1>Audit Queue</h1>
+<p class="auditError" *ngIf="errorMessage">{{errorMessage}}</p>
 <table>
     <thead>
         <tr>
@@ -16,9 +17,21 @@
     </thead>
     <tbody>
         <tr *ngFor="let aisle of aisles">
-            <td>{{aisle.storeName}}</td>
-            <td>{{aisle.missionName}}</td>
-            <td>{{aisle.aisleName}}</td>
+            <td>
+                <a [routerLink]="['/store', aisle.storeId]">
+                    {{aisle.storeName}}
+                </a>
+            </td>
+            <td>
+                <a [routerLink]="['/store', aisle.storeId, 'mission', aisle.missionId]">
+                    {{aisle.missionName}}
+                </a>
+            </td>
+            <td>
+                <a [routerLink]="['/store', aisle.storeId, 'mission', aisle.missionId, 'aisle', aisle.aisleId]">
+                    {{aisle.aisleName}}
+                </a>
+            </td>
             <td>{{aisle.labelsCount}}</td>
             <td>{{aisle.outsCount}}</td>
             <td>{{aisle.falsePositiveCount}}</td>

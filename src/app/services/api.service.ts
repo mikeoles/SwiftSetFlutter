@@ -556,10 +556,10 @@ export class ApiService {
   }
 
   // Set the current user as auditor of the aisle
-  auditAisle(aisle: Aisle) {
-    this.http.put(
+  auditAisle(aisle: Aisle): Observable<any> {
+    return this.http.put(
       `${this.apiUrl}/stores/${aisle.storeId}/missions/${aisle.missionId}/aisles/${aisle.aisleId}/audit`,
       new FormData()
-    ).subscribe();
+    );
   }
 }

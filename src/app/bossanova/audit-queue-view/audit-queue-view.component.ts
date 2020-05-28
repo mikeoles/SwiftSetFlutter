@@ -13,12 +13,13 @@ import { Router } from '@angular/router';
 export class AuditQueueViewComponent implements OnInit {
 
   aisles: Aisle[];
+  errorMessage: string;
 
   constructor(private apiSerivce: ApiService, private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
-    this.apiSerivce.getAuditQueue().subscribe(aisle => {
-      this.aisles = aisle;
+    this.apiSerivce.getAuditQueue().subscribe(aisles => {
+      this.aisles = aisles;
     });
   }
 
@@ -31,8 +32,15 @@ export class AuditQueueViewComponent implements OnInit {
   }
 
   auditAisle(aisle: Aisle) {
-    this.apiSerivce.auditAisle(aisle);
-    this.router.navigate(['store/' + aisle.storeId + '/mission/' + aisle.missionId + '/aisle/' + aisle.aisleId + '/audit']);
+    this.apiSerivce.auditAisle(aisle).subscribe(
+      data => {
+        console.log('aisle reserved', data);
+        this.router.navigate(['store/' + aisle.storeId + '/mission/' + aisle.missionId + '/aisle/' + aisle.aisleId + '/audit']);
+      },
+      error => {
+        this.errorMessage = error.error.message;
+      }
+    );
   }
 
   auditManager(): boolean {
