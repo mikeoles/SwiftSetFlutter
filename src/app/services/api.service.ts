@@ -513,4 +513,11 @@ export class ApiService {
       auditQueueStatus: auditAisle.auditQueueStatus,
     };
   }
+
+    // Remove an aisle from the audit queue
+  removeQueuedAisle(aisle: AuditAisle) {
+    this.http.delete(
+      `${this.apiUrl}/stores/${aisle.storeId}/missions/${aisle.missionId}/aisles/${aisle.aisleId}/audit-queue`
+    ).subscribe();
+  }
 }
