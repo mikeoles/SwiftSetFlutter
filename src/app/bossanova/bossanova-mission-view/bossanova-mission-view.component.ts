@@ -27,6 +27,7 @@ export class BossanovaMissionViewComponent implements OnInit, OnDestroy {
   averageStoreOuts: number;
   averageStoreLabels: number;
   searchTerm: string;
+  searchMissingBarcodes = false;
   service: ApiService;
   currentlyExporting = false;
   showExportButtons = false;
@@ -71,7 +72,7 @@ export class BossanovaMissionViewComponent implements OnInit, OnDestroy {
       });
     });
     this.service = this.apiService;
-}
+  }
 
   goBack(): void {
     this.router.navigate(['/store/' + this.store.storeId]);
@@ -82,8 +83,20 @@ export class BossanovaMissionViewComponent implements OnInit, OnDestroy {
   }
 
   searchBarcodeClicked() {
-    if (this.searchTerm.length > 0) {
+    this.searchMissingBarcodes = false;
+    if (this.searchTerm && this.searchTerm.length > 0) {
       this.apiService.getAislesByLabels(this.store.storeId, this.mission.missionId, 'barcode', this.searchTerm).subscribe(aisles => {
+        this.aisles = aisles;
+      });
+    } else {
+      this.aisles = this.mission.aisles;
+    }
+  }
+
+  searchMissingBarcodesChanged(selected: boolean) {
+    this.searchMissingBarcodes = selected;
+    if (this.searchMissingBarcodes) {
+      this.apiService.getAislesMissingBarcode(this.store.storeId, this.mission.missionId).subscribe(aisles => {
         this.aisles = aisles;
       });
     } else {
