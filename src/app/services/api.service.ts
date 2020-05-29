@@ -14,6 +14,7 @@ import AnnotationCategory from '../models/annotationCategory.model';
 import AuthData from '../models/auth.model';
 import moment from 'moment';
 import Detection from '../models/detection.model';
+import AuditAisle from '../models/auditAisle.model';
 
 @Injectable({
   providedIn: 'root'
@@ -483,7 +484,33 @@ export class ApiService {
 
   // Add an aisle to the audit queue
   queueAisle(storeId: number, missionId: number, aisleId: string): any {
-    return this.http.put(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/queueAisle`,
+    return this.http.put(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/audit-queue`,
     new FormData()).subscribe();
+  }
+
+  // Get aisles currently added to the audit queue or currenlty being queued by an auditor
+  getAuditQueue(): Observable<AuditAisle[]> {
+    return this.http.get(`${this.apiUrl}/audit-queue`)
+      .pipe(
+        map<any, AuditAisle[]>(o => o.map(a => this.createAuditAisle(a))),
+      );
+  }
+
+  createAuditAisle(auditAisle: any): AuditAisle {
+    return {
+      aisleId: auditAisle.aisleId,
+      aisleName: auditAisle.aisleName,
+      scanDateTime: auditAisle.scanDateTime,
+      missionId: auditAisle.missionId,
+      missionName: auditAisle.missionName,
+      storeId: auditAisle.storeId,
+      storeName: auditAisle.storeName,
+      labelsCount: auditAisle.labelCount,
+      outsCount: auditAisle.outCount,
+      falsePositiveCount: auditAisle.falsePositives,
+      falseNegativeCount: auditAisle.falseNegatives,
+      owner: auditAisle.owner,
+      auditQueueStatus: auditAisle.auditQueueStatus,
+    };
   }
 }
