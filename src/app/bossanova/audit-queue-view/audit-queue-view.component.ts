@@ -4,6 +4,7 @@ import Aisle from 'src/app/models/aisle.model';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Role } from 'src/app/auth/role';
 import { Router } from '@angular/router';
+import { AuditQueueStatus } from '../audit-queue-status';
 
 @Component({
   selector: 'app-audit-queue-view',
@@ -29,6 +30,13 @@ export class AuditQueueViewComponent implements OnInit {
     if (index !== -1) {
         this.aisles.splice(index, 1);
     }
+  }
+
+  removeAuditor(aisle: Aisle) {
+    this.apiSerivce.removeAuditor(aisle);
+    const changedAisle: Aisle = this.aisles.find(a => a.aisleId === aisle.aisleId);
+    changedAisle.auditQueueStatus = AuditQueueStatus.QUEUED;
+    changedAisle.owner = null;
   }
 
   auditAisle(aisle: Aisle) {

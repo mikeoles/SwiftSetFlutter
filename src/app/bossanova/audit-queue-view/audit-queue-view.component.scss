@@ -6,21 +6,13 @@ table {
     table-layout: auto;
     margin-bottom: 10px;
 
-    td:last-child, th:last-child {
-        border-width: 0px 0px 0px 1px;
-    }
-
-    td:first-child {
-        border-left-width: 1px;;
-    }
-
     td {
         border: solid black;
         border-width: 1px 0px;
     }
 
     tr {
-        border-width: 0px;
+        border-width: 1px;
     }
 
     button {

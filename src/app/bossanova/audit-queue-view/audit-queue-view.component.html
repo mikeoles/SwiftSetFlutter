@@ -12,7 +12,7 @@
             <th>False Negatives</th>
             <th>Owner</th>
             <th>Audit Status</th>
-            <th></th>
+            <th *ngIf="auditManager()">Action</th>
         </tr>
     </thead>
     <tbody>
@@ -43,9 +43,11 @@
             <td *ngIf="auditor() && aisle.auditQueueStatus === 'queued'">
                 <button (click)="auditAisle(aisle)">Audit</button>
             </td>
-            <td>
-                <button *ngIf="auditManager() && aisle.auditQueueStatus === 'queued'" class="remove"
+            <td *ngIf="auditManager()">
+                <button *ngIf="aisle.auditQueueStatus === 'queued'" class="remove"
                     (click)="removeAisle(aisle)">Remove</button>
+                <button *ngIf="aisle.auditQueueStatus === 'in-progress'" class="remove"
+                    (click)="removeAuditor(aisle)">Remove Auditor</button>
             </td>
         </tr>
     </tbody>

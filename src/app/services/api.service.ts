@@ -562,4 +562,11 @@ export class ApiService {
       new FormData()
     );
   }
+
+  // Set the current user as auditor of the aisle
+  removeAuditor(aisle: Aisle) {
+    return this.http.delete(
+      `${this.apiUrl}/stores/${aisle.storeId}/missions/${aisle.missionId}/aisles/${aisle.aisleId}/audit`
+    ).subscribe();
+  }
 }
