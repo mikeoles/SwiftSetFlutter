@@ -8,6 +8,7 @@
       <th>Labels</th>
       <th>Aisles Scanned</th>
       <th *ngIf="auditManager()">Audit Status</th>
+      <th *ngIf="hasProblems()">Problems</th>
     </tr>
   </thead>
   <tbody>
@@ -23,6 +24,11 @@
       <td *ngIf="auditManager()">
         <button *ngIf="hasUnqueuedAisles(mission.missionId)" (click)="queueMission(mission.missionId)">Queue</button>
         <ng-container *ngIf="!hasUnqueuedAisles(mission.missionId)">Queued</ng-container>
+      <td *ngIf="hasProblems()" class="coverageIssue">
+        <div *ngIf="mission.hasPreviouslySeenIssue">
+          <fa-icon size="lg" class="fa" [icon]="faExclamationTriangle"></fa-icon>
+          Coverage Issue
+        </div>
       </td>
     </tr>
   </tbody>

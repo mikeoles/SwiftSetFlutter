@@ -15,6 +15,7 @@ export const environment = {
   detectionTypeColors: ['peg_product:#4fd4ff' , 'product:#ff637f'],
   exportFields: ['Barcode', 'top', 'left', 'width', 'height'],
   labelScrolling: labelScrollOptions.vertical,
+  missingPreviosulySeenThreshold: 0.10,
   missionHistoryDays: 14, // Number of days to display missions for
   permissions: ['topStock', 'QA', 'sectionLabels', 'sectionBreaks', 'misreadBarcodes'],
   productGridFields: ['Barcode', 'Price'],

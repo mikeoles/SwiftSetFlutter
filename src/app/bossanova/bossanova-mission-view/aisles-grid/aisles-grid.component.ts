@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import Aisle from '../../../models/aisle.model';
 import { EnvironmentService } from 'src/app/services/environment.service';
-import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faAngleUp, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { Role } from 'src/app/auth/role';
 import { AuthService } from 'src/app/auth/auth.service';
 import { ApiService } from 'src/app/services/api.service';
@@ -24,6 +24,7 @@ export class AislesGridComponent implements OnInit {
 
   faAngleDown = faAngleDown;
   faAngleUp = faAngleUp;
+  faExclamationTriangle = faExclamationTriangle;
 
   constructor(private environment: EnvironmentService, private authService: AuthService,
     private apiSerivce: ApiService) {
@@ -53,5 +54,16 @@ export class AislesGridComponent implements OnInit {
   queueAisle(aisleId: string) {
     this.apiSerivce.queueAisle(this.storeId, this.missionId, aisleId);
     this.aisles.find(l => l.aisleId === aisleId).auditQueueStatus = AuditQueueStatus.QUEUED;
+  }
+
+  // Only display the problem coulmn if at least one aisle has a problem
+  hasProblems() {
+    let hasProblems = false;
+    this.aisles.forEach(aisle => {
+      if (aisle.missingPreviouslySeenBarcodePercentage > this.environment.config.missingPreviosulySeenThreshold) {
+        hasProblems = true;
+      }
+    });
+    return hasProblems;
   }
 }

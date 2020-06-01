@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { Role } from 'src/app/auth/role';
 import { ApiService } from 'src/app/services/api.service';
 import { AuditQueueStatus } from 'src/app/bossanova/audit-queue-status';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-missions-grid',
@@ -18,6 +19,8 @@ export class MissionsGridComponent implements OnInit {
   @Input() averageStoreOuts: number;
   @Input() averageStoreLabels: number;
   @Input() storeId: string;
+  @Input() storeId: number;
+  faExclamationTriangle = faExclamationTriangle;
 
   constructor(private router: Router,
     public dataService: DataService,
@@ -58,5 +61,15 @@ export class MissionsGridComponent implements OnInit {
         aisle.auditQueueStatus = AuditQueueStatus.QUEUED;
       }
     });
+
+    // Only display the problem coulmn if at least one mission has a problem
+  hasProblems() {
+    let hasProblems = false;
+    this.missions.forEach(mission => {
+      if (mission.hasPreviouslySeenIssue) {
+        hasProblems = true;
+      }
+    });
+    return hasProblems;
   }
 }

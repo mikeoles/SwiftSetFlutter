@@ -5,6 +5,8 @@ import { EnvironmentService } from '../../services/environment.service';
 import { ApiService } from 'src/app/services/api.service';
 import { LabelType } from '../label-type';
 import { AnnotationType } from '../annotation-type';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import Aisle from 'src/app/models/aisle.model';
 
 @Component({
   selector: 'app-product-details',
@@ -22,8 +24,11 @@ export class ProductDetailsComponent implements OnChanges {
   @Input() currentId: number;
   @Input() panoMode: boolean;
   @Input() qaMode: boolean;
+  @Input() selectedAisle: Aisle;
 
   @Output() gridId = new EventEmitter();
+  @Output() toggleCoverageIssueDetails = new EventEmitter();
+
 
   allLabels: Array<Label> = [];
   allAnnotations: Array<Annotation> = [];
@@ -32,7 +37,9 @@ export class ProductDetailsComponent implements OnChanges {
   showSectionBreaks = false;
   showTopStock = false;
   showMisreadBarcodes = false;
+  showCoverageIssueDetails = false;
   labelType = LabelType;
+  faExclamationTriangle = faExclamationTriangle;
 
   constructor(private environment: EnvironmentService, private apiService: ApiService) {
     this.showMisreadBarcodes = environment.config.showMisreadBarcodes;
@@ -68,5 +75,15 @@ export class ProductDetailsComponent implements OnChanges {
       return this.labelsDictionary.get(labelType).length;
     }
     return 0;
+  }
+
+  // Only display the warning symbol
+  hasProblems() {
+    return this.selectedAisle &&
+    this.selectedAisle.missingPreviouslySeenBarcodePercentage > this.environment.config.missingPreviosulySeenThreshold;
+  }
+
+  coverageIssueClicked() {
+    this.toggleCoverageIssueDetails.emit();
   }
 }

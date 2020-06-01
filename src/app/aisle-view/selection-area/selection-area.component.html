@@ -80,6 +80,11 @@
           <fa-icon *ngIf="!currentlyDisplayed.includes('sectionBreaks')" size="lg" class="check" [icon]="faSquare"></fa-icon>
           Section Breaks
         </li>
+        <li *ngIf="showPreviouslySeenBarcodes" (click)="displaySelected('previouslySeenBarcodes')">
+          <fa-icon *ngIf="currentlyDisplayed.includes('previouslySeenBarcodes')" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
+          <fa-icon *ngIf="!currentlyDisplayed.includes('previouslySeenBarcodes')" size="lg" class="check" [icon]="faSquare"></fa-icon>
+          Previously Seen Barcodes
+        </li>
       </ul>
       <div *ngIf="currentDropdown === 'display'" class="pointer"></div>
     </div>
@@ -111,7 +116,7 @@
           <button *ngIf="showExportButtons" [disabled]="currentlyExporting" (click)="exportAisle('shelflabels','export-popup')">Labels</button>
           <button *ngIf="showExportButtons" [disabled]="currentlyExporting" (click)="exportAisle('onhand','export-popup')">On Hand</button>
           <button *ngIf="showExportButtons" [disabled]="currentlyExporting" (click)="exportPDF('export-popup')">On Hand PDF</button>
-          <button [disabled]="currentlyExporting" (click)="exportPano('export-popup')">Pano</button>
+          <button [disabled]="currentlyExporting" (click)="exportPanoClicked('export-popup')">Pano</button>
           <button class="cancel" (click)="closeModal('export-popup');">Close</button>
       </div>
   </div>

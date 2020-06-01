@@ -19,6 +19,10 @@ import { ShortcutInput } from 'ng-keyboard-shortcuts';
 import { LabelType } from '../label-type';
 import Annotation from 'src/app/models/annotation.model';
 import { AnnotationType } from '../annotation-type';
+import Aisle from 'src/app/models/aisle.model';
+import htmlToImage from 'html-to-image';
+import { saveAs } from 'file-saver';
+import Mission from 'src/app/models/mission.model';
 
 @Component({
   selector: 'app-panorama',
@@ -36,16 +40,21 @@ export class PanoramaComponent implements OnInit, OnChanges {
   @Input() panoramaUrl: string;
   @Input() panoMode: boolean;
   @Input() resetPano = false;
+  @Input() exportPano = false;
+  @Input() selectedAisle: Aisle;
+  @Input() selectedMission: Mission;
   @Input() currentlyDisplayed: Array<LabelType>;
   @Input() currentlyDisplayedToggled: boolean;
   @Input() qaMode: boolean;
   @Input() annotations = new Map<AnnotationType, Array<Annotation>>();
   @Input() categories = new Map<AnnotationType, Array<AnnotationCategory>>();
+  @Input() showCoverageIssueDetails: boolean;
 
   @Output() panoramaId = new EventEmitter<string>();
   @Output() panoramaTouched = new EventEmitter();
   @Output() updateLabelCategory = new EventEmitter<{labelId: string, category: string, annotationType: AnnotationType}>();
   @Output() updateMissedCategory = new EventEmitter<{top: number, left: number, category: string}>();
+  @Output() toggleCoverageIssueDetails = new EventEmitter();
 
   // annotations
   annotationMenu: AnnotationType = AnnotationType.none;
@@ -153,6 +162,25 @@ export class PanoramaComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    if (changes.exportPano && this.exportPano) {
+      const context = this;
+      this.panZoomApi = panzoom(this.panoImageElement, {
+        maxZoom: 1,
+        minZoom: 1
+      });
+      setTimeout(() => {
+        htmlToImage.toJpeg(document.getElementById('pano-image'))
+        .then(function (blob) {
+          saveAs(blob,
+            context.selectedMission.storeName + ' ' +
+            context.selectedMission.missionName + ' ' +
+            context.selectedAisle.aisleName + '.jpg');
+          context.ngOnInit();
+        });
+      },
+      1000);
+    }
+
     if (changes.labels || changes.qaMode || changes.currentlyDisplayedToggled || changes.currentId || changes.labelsChanged) {
       this.updateLabelBorderColors();
       if (this.qaMode) {
@@ -202,7 +230,8 @@ export class PanoramaComponent implements OnInit, OnChanges {
       this.labels.get(LabelType.shelfLabels),
       this.labels.get(LabelType.outs),
       this.labels.get(LabelType.topStock),
-      this.labels.get(LabelType.sectionLabels)
+      this.labels.get(LabelType.sectionLabels),
+      this.labels.get(LabelType.previouslySeenBarcodes)
     );
 
     const selectedLabel: Label = allLabels[allLabels.findIndex((label => label.labelId === this.currentId))];
@@ -245,6 +274,8 @@ export class PanoramaComponent implements OnInit, OnChanges {
         return '#800080';
       case LabelType.topStock:
         return '#FFC0CB';
+      case LabelType.previouslySeenBarcodes:
+        return '#17c9ff';
     }
   }
 
@@ -484,5 +515,9 @@ export class PanoramaComponent implements OnInit, OnChanges {
     this.annotationLeft = selected.left;
     this.selectedMarkerCategory = selected.annotationCategory;
     this.annotationMenu = AnnotationType.missed;
+  }
+
+  closeCoverageIssueDetails() {
+    this.toggleCoverageIssueDetails.emit();
   }
 }
