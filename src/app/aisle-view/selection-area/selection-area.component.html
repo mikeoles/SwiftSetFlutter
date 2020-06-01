@@ -39,7 +39,7 @@
     <button class="panoChangeButton" (click)="previousPano()"><fa-icon size="lg" class="fa" [icon]="faArrowLeft"></fa-icon></button>
     <button class="panoChangeButton" (click)="nextPano()"><fa-icon size="lg" class="fa" [icon]="faArrowRight"></fa-icon></button>
     <button class="rightButton hideSmallScreen" (click)="openModal('export-popup')"><img class="exportImage" src="../../assets/export-blue.png"> <span>Export</span></button>
-    <button *ngIf="showDebugButton" class="rightButton" (click)="debugClick()">Debug</button>
+    <button *ngIf="showDebugButton" class="rightButton" (click)="debugClick()">Model Debug</button>
     <button class="rightButton hideSmallScreen" (click)="resetPanoClick()">Reset Pano</button>
     <button class="rightButton "  [ngClass]="{'selectedButton': qaMode}" (click)="qaModeClick()">QA Mode</button>
 

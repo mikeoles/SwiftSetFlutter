@@ -12,8 +12,8 @@ import Store from 'src/app/models/store.model';
 import panzoom from 'panzoom';
 import htmlToImage from 'html-to-image';
 import { saveAs } from 'file-saver';
-import { Router } from '@angular/router';
 import { LabelType } from '../label-type';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-selection-area',
@@ -62,7 +62,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
               private modalService: ModalService,
               private environment: EnvironmentService,
               private apiService: ApiService,
-              private router: Router) {
+              private location: Location) {
     this.showExportButtons = environment.config.showExportButtons;
     this.showMisreadBarcodes = environment.config.showMisreadBarcodes;
     this.showSectionLabels = environment.config.showSectionLabels;
@@ -118,7 +118,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
 
   // open debug view in new tab
   debugClick() {
-    let url = this.router.url;
+    let url = this.location.path();
     const hasParameters = url.indexOf('?');
     url = url.substring(0, hasParameters !== -1 ? hasParameters : url.length);
     window.open(url + '/debug', '_blank');

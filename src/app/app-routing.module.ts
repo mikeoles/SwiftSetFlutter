@@ -10,6 +10,7 @@ import { AuthGuard } from './auth/auth.guard';
 import { DebugViewComponent } from './debug-view/debug-view.component';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { Role } from './auth/role';
+import { AuditQueueViewComponent } from './bossanova/audit-queue-view/audit-queue-view.component';
 
 const routes: Routes = [
   {
@@ -34,6 +35,11 @@ const routes: Routes = [
   },
   { path: 'auth', component: AuthComponent },
   { path: 'unauthorized', component: UnauthorizedComponent },
+  { path: 'audit-queue',
+    component: AuditQueueViewComponent,
+    canActivate: [AuthGuard],
+    data: {roles: [Role.AUDIT_MANAGER]}
+  },
   {
     path: '',
     component: FleetViewComponent,
