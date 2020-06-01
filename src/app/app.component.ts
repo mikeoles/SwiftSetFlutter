@@ -63,7 +63,6 @@ export class AppComponent implements OnInit {
   }
 
   auditQueue() {
-    this.router.navigate(['audit-queue']);
     this.showMenu = false;
   }
 

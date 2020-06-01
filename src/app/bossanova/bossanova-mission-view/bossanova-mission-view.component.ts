@@ -31,6 +31,7 @@ export class BossanovaMissionViewComponent implements OnInit, OnDestroy {
   service: ApiService;
   currentlyExporting = false;
   showExportButtons = false;
+  addAllClicked = false;
 
   private backButtonSubscription: Subscription;
 
@@ -222,5 +223,11 @@ export class BossanovaMissionViewComponent implements OnInit, OnDestroy {
     doc.autoTable({head: head, body: body, startY: 15, styles: {cellPadding: 0.5, fontSize: 9}});
     doc.save(this.mission.missionName + '.pdf');
     this.currentlyExporting = false;
+  }
+
+  // Add every aisle in the mission to the queue
+  addAllToQueue() {
+    this.apiService.queueMission(this.mission.storeId, this.mission.missionId);
+    this.addAllClicked = true;
   }
 }
