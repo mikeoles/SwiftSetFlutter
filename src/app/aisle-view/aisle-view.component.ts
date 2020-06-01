@@ -43,6 +43,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   qaMode = false;
   shortcuts: ShortcutInput[] = [];
   labelsChanged = false;
+  exportPano = false;
   currentlyDisplayedToggled: boolean;
 
   constructor(private apiService: ApiService,
@@ -111,6 +112,10 @@ export class AisleViewComponent implements OnInit, OnDestroy {
 
   resetPanoClicked() {
     this.resetPano = !this.resetPano;
+  }
+
+  exportPanoClicked() {
+    this.exportPano = !this.exportPano;
   }
 
   toggleQAMode() {

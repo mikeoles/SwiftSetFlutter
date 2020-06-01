@@ -9,9 +9,6 @@ import { ModalService } from '../../services/modal.service';
 import { EnvironmentService } from 'src/app/services/environment.service';
 import { ApiService } from 'src/app/services/api.service';
 import Store from 'src/app/models/store.model';
-import panzoom from 'panzoom';
-import htmlToImage from 'html-to-image';
-import { saveAs } from 'file-saver';
 import { LabelType } from '../label-type';
 import {Location} from '@angular/common';
 
@@ -48,6 +45,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   @Output() resetPano = new EventEmitter();
   @Output() toggleQAMode = new EventEmitter();
   @Output() toggleDisplayed = new EventEmitter();
+  @Output() exportPano = new EventEmitter();
 
   faAngleDown = faAngleDown;
   faAngleUp = faAngleUp;
@@ -256,25 +254,9 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
     this.currentlyExporting = false;
   }
 
-  exportPano(modalId: string) {
-    const element = document.getElementById('pano-image');
-    this.currentlyExporting = true;
-    const context = this;
-    panzoom(element, {
-      maxZoom: 1,
-      minZoom: 1,
-    });
-    setTimeout(() => {
-      htmlToImage.toJpeg(document.getElementById('pano-image'))
-      .then(function (blob) {
-        saveAs(blob,
-          context.selectedMission.storeNumber + ' ' + context.selectedMission.missionName + ' ' + context.selectedAisle.aisleName + '.jpg');
-        context.currentlyExporting = false;
-        context.modalService.close(modalId);
-        context.resetPano.emit();
-      });
-    },
-    1000);
+  exportPanoClicked(modalId: string) {
+    this.exportPano.emit();
+    this.modalService.close(modalId);
   }
 
   nextPano() {

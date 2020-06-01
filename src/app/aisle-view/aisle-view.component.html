@@ -1,14 +1,15 @@
 <app-selection-area *ngIf="selectedMission" [missions]="missions" [aisles]="selectedMission.aisles"
-  [selectedMission]="selectedMission" [selectedAisle]="selectedAisle" [panoramaUrl]="panoramaUrl" [labelsChanged]="labelsChanged" [labels]="labels"
-  (missionSelected)='changeMission($event)' (aisleSelected)='setAisle($event)'
-  (resetPano)='resetPanoClicked()'(toggleQAMode)='toggleQAMode()' [qaMode]='qaMode' [currentlyDisplayed]='currentlyDisplayed' (toggleDisplayed)='toggleDisplayed($event)'>
+  [selectedMission]="selectedMission" [selectedAisle]="selectedAisle" [panoramaUrl]="panoramaUrl" [labelsChanged]="labelsChanged" 
+  [labels]="labels" (missionSelected)='changeMission($event)' (aisleSelected)='setAisle($event)'
+  (resetPano)='resetPanoClicked()'(toggleQAMode)='toggleQAMode()' [qaMode]='qaMode' [currentlyDisplayed]='currentlyDisplayed' 
+  (toggleDisplayed)='toggleDisplayed($event)' (exportPano)="exportPanoClicked()">
 </app-selection-area>
 <app-panorama [panoramaUrl]="panoramaUrl" [currentId]="currentId" [currentlyDisplayed]='currentlyDisplayed' [annotations]="annotations" [categories]="categories"
   [labels]="labels" [sectionBreaks]="sectionBreaks" [currentlyDisplayedToggled]="currentlyDisplayedToggled" 
   [panoMode]='panoMode' [qaMode]='qaMode'  [resetPano]='resetPano' [labelsChanged]="labelsChanged" (panoramaId)='setId($event)'
   (updateLabelCategory)='updateLabelCategory($event)' (updateMissedCategory)='updateMissedCategory($event)'
   [showCoverageIssueDetails]='showCoverageIssueDetails' (toggleCoverageIssueDetails)='toggleCoverageIssueDetails()'
-  [selectedAisle]="selectedAisle">
+  [exportPano]='exportPano' [selectedAisle]='selectedAisle' [selectedMission]='selectedMission'>
 </app-panorama>
 <app-product-details [labelsDictionary]="labels" [annotationsDictionary]="annotations" [labelsChanged]="labelsChanged" [sectionBreaks]="sectionBreaks"
 [currentlyDisplayed]='currentlyDisplayed' (gridId)='setId($event)' [currentId]="currentId" [panoMode]='panoMode' [qaMode]='qaMode'

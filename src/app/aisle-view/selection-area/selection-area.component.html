@@ -116,7 +116,7 @@
           <button *ngIf="showExportButtons" [disabled]="currentlyExporting" (click)="exportAisle('shelflabels','export-popup')">Labels</button>
           <button *ngIf="showExportButtons" [disabled]="currentlyExporting" (click)="exportAisle('onhand','export-popup')">On Hand</button>
           <button *ngIf="showExportButtons" [disabled]="currentlyExporting" (click)="exportPDF('export-popup')">On Hand PDF</button>
-          <button [disabled]="currentlyExporting" (click)="exportPano('export-popup')">Pano</button>
+          <button [disabled]="currentlyExporting" (click)="exportPanoClicked('export-popup')">Pano</button>
           <button class="cancel" (click)="closeModal('export-popup');">Close</button>
       </div>
   </div>
