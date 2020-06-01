@@ -19,7 +19,6 @@ export class MissionsGridComponent implements OnInit {
   @Input() averageStoreOuts: number;
   @Input() averageStoreLabels: number;
   @Input() storeId: string;
-  @Input() storeId: number;
   faExclamationTriangle = faExclamationTriangle;
 
   constructor(private router: Router,
@@ -61,6 +60,7 @@ export class MissionsGridComponent implements OnInit {
         aisle.auditQueueStatus = AuditQueueStatus.QUEUED;
       }
     });
+  }
 
     // Only display the problem coulmn if at least one mission has a problem
   hasProblems() {
