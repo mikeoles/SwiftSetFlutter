@@ -80,6 +80,11 @@
           <fa-icon *ngIf="!currentlyDisplayed.includes('sectionBreaks')" size="lg" class="check" [icon]="faSquare"></fa-icon>
           Section Breaks
         </li>
+        <li *ngIf="showPreviouslySeenBarcodes" (click)="displaySelected('previouslySeenBarcodes')">
+          <fa-icon *ngIf="currentlyDisplayed.includes('previouslySeenBarcodes')" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
+          <fa-icon *ngIf="!currentlyDisplayed.includes('previouslySeenBarcodes')" size="lg" class="check" [icon]="faSquare"></fa-icon>
+          Previously Seen Barcodes
+        </li>
       </ul>
       <div *ngIf="currentDropdown === 'display'" class="pointer"></div>
     </div>

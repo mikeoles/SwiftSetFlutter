@@ -26,6 +26,9 @@
         <fa-icon *ngIf="sortType === 'auditQueueStatus' && !sortReverse" size="sm" class="fa" [icon]="faAngleDown"></fa-icon>
         <fa-icon *ngIf="sortType === 'auditQueueStatus' && sortReverse" size="sm" class="fa" [icon]="faAngleUp"></fa-icon>
       </th>
+      <th *ngIf="hasProblems()" (click)="sortBy('auditQueueStatus')">
+        Problems
+      </th>
     </tr>
   </thead>
   <tbody>
@@ -41,6 +44,12 @@
       <td *ngIf="auditManager()">
         <button *ngIf="!aisle.auditQueueStatus" (click)="queueAisle(aisle.aisleId)">Queue</button>
         <ng-container *ngIf="aisle.auditQueueStatus">{{aisle.auditQueueStatus.replace('-', ' ') | titlecase}}</ng-container>
+      </td>
+      <td *ngIf="hasProblems()" class="coverageIssue">
+        <div *ngIf="aisle.missingPreviouslySeenBarcodePercentage > environment.config.missingPreviosulySeenThreshold">
+          <fa-icon size="lg" class="fa" [icon]="faExclamationTriangle"></fa-icon>
+          Coverage Issue
+        </div>
       </td>
     </tr>
   </tbody>

@@ -6,6 +6,8 @@
       </div>
       <div>
         Labels: {{getCount(labelType.shelfLabels)}}
+        <fa-icon *ngIf="hasProblems()" title="Coverage issue detected, click for more info" size="lg" class="fa" 
+        [icon]="faExclamationTriangle" (click)="coverageIssueClicked()"></fa-icon>
       </div>
       <div *ngIf="showMisreadBarcodes">
         Misread: {{getCount(labelType.misreadBarcodes)}}

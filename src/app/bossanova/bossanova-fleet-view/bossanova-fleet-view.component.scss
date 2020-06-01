@@ -9,6 +9,12 @@
   font-weight: bold;
   margin-bottom: 20px;
   text-align: center;
+  margin: auto;
+}
+
+.flaggedTitle{
+  font-size: 16px;
+  width: calc(100vw - 500px);
 }
 
 .storeSearch {
@@ -36,4 +42,48 @@ th:nth-child(2) {
   position: absolute;
   right: 10px;
   top: 60px;
+}
+
+.tip {
+  color: $primary;
+  display: inline-block;
+}
+
+.tip:hover {
+  cursor: help;
+  position: relative;
+
+  span {
+    display: table;
+    position: absolute;
+    left: 15px;
+    top: 20px;
+    width: 1000px;
+    padding: 5px;
+    background-color: white;
+    border: #2baae1 2px solid;
+    border-radius: 0px 10px 10px 10px;
+    color: black;
+
+    h1 {
+      font-size: 16px;
+      left: 0px;
+      top: 0px;
+      width: 1000px;
+      border-width: 0px;
+      text-align: center;
+      display: table;
+      margin-block-start: 2px;
+    }
+
+    p {
+      font-size: 14px;
+      text-align: left;
+      margin: 4px;
+    }
+  }
+}
+
+.tip span {
+  display: none
 }

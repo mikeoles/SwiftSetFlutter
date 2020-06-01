@@ -31,6 +31,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   showQA = false;
   showMisreadBarcodes = false;
   showDebugButton = false;
+  showPreviouslySeenBarcodes = true;
 
   @Input() missions: Mission[];
   @Input() aisles: Aisle[];

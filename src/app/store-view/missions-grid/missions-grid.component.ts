@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import Mission from 'src/app/models/mission.model';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-missions-grid',
@@ -14,6 +15,7 @@ export class MissionsGridComponent implements OnInit {
   @Input() averageStoreOuts: number;
   @Input() averageStoreLabels: number;
   @Input() storeId: number;
+  faExclamationTriangle = faExclamationTriangle;
 
   constructor(private router: Router, public dataService: DataService) { }
 
@@ -26,4 +28,14 @@ export class MissionsGridComponent implements OnInit {
     this.dataService.averageStoreLabels = this.averageStoreLabels;
   }
 
+  // Only display the problem coulmn if at least one mission has a problem
+  hasProblems() {
+    let hasProblems = false;
+    this.missions.forEach(mission => {
+      if (mission.hasPreviouslySeenIssue) {
+        hasProblems = true;
+      }
+    });
+    return hasProblems;
+  }
 }

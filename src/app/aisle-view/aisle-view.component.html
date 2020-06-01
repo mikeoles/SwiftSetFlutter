@@ -6,9 +6,12 @@
 <app-panorama [panoramaUrl]="panoramaUrl" [currentId]="currentId" [currentlyDisplayed]='currentlyDisplayed' [annotations]="annotations" [categories]="categories"
   [labels]="labels" [sectionBreaks]="sectionBreaks" [currentlyDisplayedToggled]="currentlyDisplayedToggled" 
   [panoMode]='panoMode' [qaMode]='qaMode'  [resetPano]='resetPano' [labelsChanged]="labelsChanged" (panoramaId)='setId($event)'
-  (updateLabelCategory)='updateLabelCategory($event)' (updateMissedCategory)='updateMissedCategory($event)'>
+  (updateLabelCategory)='updateLabelCategory($event)' (updateMissedCategory)='updateMissedCategory($event)'
+  [showCoverageIssueDetails]='showCoverageIssueDetails' (toggleCoverageIssueDetails)='toggleCoverageIssueDetails()'
+  [selectedAisle]="selectedAisle">
 </app-panorama>
 <app-product-details [labelsDictionary]="labels" [annotationsDictionary]="annotations" [labelsChanged]="labelsChanged" [sectionBreaks]="sectionBreaks"
-[currentlyDisplayed]='currentlyDisplayed' (gridId)='setId($event)' [currentId]="currentId" [panoMode]='panoMode' [qaMode]='qaMode'>
+[currentlyDisplayed]='currentlyDisplayed' (gridId)='setId($event)' [currentId]="currentId" [panoMode]='panoMode' [qaMode]='qaMode'
+[selectedAisle]="selectedAisle" (toggleCoverageIssueDetails)='toggleCoverageIssueDetails()'>
 </app-product-details>
 <ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>

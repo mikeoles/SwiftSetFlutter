@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import Store from '../../models/store.model';
 import { ApiService } from '../../services/api.service';
 import { Router } from '@angular/router';
-import { faCopyright } from '@fortawesome/free-solid-svg-icons';
+import { faCopyright, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { Title } from '@angular/platform-browser';
+import { EnvironmentService } from 'src/app/services/environment.service';
 
 @Component({
   selector: 'app-bossanova-fleet-view',
@@ -14,9 +15,13 @@ export class BossanovaFleetViewComponent implements OnInit {
 
   stores: Store[];
   searchTerm: string;
+  displayingFlaggedStores = false;
   faCopyright = faCopyright;
+  faInfoCircle = faInfoCircle;
 
-  constructor(private apiService: ApiService, private router: Router, private titleService: Title) { }
+
+  constructor(private apiService: ApiService, private router: Router, private titleService: Title,
+    private environment: EnvironmentService) { }
 
   ngOnInit() {
     this.titleService.setTitle('Bossa Nova - Store Viewer');
@@ -30,5 +35,19 @@ export class BossanovaFleetViewComponent implements OnInit {
 
   viewStore(storeId: number) {
     this.router.navigate(['store/' + storeId]);
+  }
+
+  // Display only stores that have missions which contain aisles flagged for low coverage deltas
+  clickFlaggedStores() {
+    this.displayingFlaggedStores = !this.displayingFlaggedStores;
+    if (this.displayingFlaggedStores) {
+      this.apiService.getFlaggedStores().subscribe(stores => {
+        this.stores = stores;
+      });
+    } else {
+      this.apiService.getStores().subscribe(stores => {
+        this.stores = stores;
+      });
+    }
   }
 }

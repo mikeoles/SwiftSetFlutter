@@ -105,9 +105,18 @@ export class StoreViewComponent implements OnInit {
     const indexDate: Date = new Date(selectedValues.date);
     const end: Date = new Date(indexDate);
     end.setDate(end.getDate() + 1);
-    this.apiService.getMissions(this.storeId, indexDate, end, this.store.zoneId).subscribe(
-      missions => this.missions = missions
-    );
+    this.apiService.getMissions(this.storeId, indexDate, end, this.store.zoneId).subscribe(missions => {
+      missions.forEach(mission => {
+        let hasPreviouslySeenIssue = false;
+        mission.aisles.forEach(aisle => {
+          if (aisle.missingPreviouslySeenBarcodePercentage > this.environment.config.missingPreviosulySeenThreshold) {
+            hasPreviouslySeenIssue = true;
+          }
+        });
+        mission.hasPreviouslySeenIssue = hasPreviouslySeenIssue;
+      });
+      this.missions = missions;
+    });
   }
 
   // Add summary values for days with no labels or outs
