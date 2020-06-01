@@ -14,6 +14,7 @@ import AnnotationCategory from '../models/annotationCategory.model';
 import AuthData from '../models/auth.model';
 import moment from 'moment';
 import Detection from '../models/detection.model';
+import AuditAisle from '../models/auditAisle.model';
 
 @Injectable({
   providedIn: 'root'
@@ -36,18 +37,24 @@ export class ApiService {
       labels: (aisle.labels || []).map(l => this.createLabel(l)),
       outsCount: aisle.outCount,
       outs: (aisle.outs || []).map(l => this.createLabel(l)),
-      sectionLabels: (aisle.sectionLabels || []).map(l => this.createSectionLabel(l)),
-      topStock: (aisle.topStock || []).map(l => this.createSectionLabel(l)),
+      sectionLabels: (aisle.sectionLabels || []).map(l => this.createBasicLabel(l, 'Section Label')),
+      topStock: (aisle.topStock || []).map(l => this.createBasicLabel(l, 'Top Stock')),
       sectionBreaks: aisle.sectionBreaks,
-      auditQueueStatus: aisle.auditQueueStatus
+      auditQueueStatus: aisle.auditQueueStatus,
+      previouslySeenBarcodeCount: aisle.previouslySeenBarcodeCount,
+      previouslySeenBarcodeSampleSize: aisle.previouslySeenBarcodeSampleSize,
+      missingPreviouslySeenBarcodeCount: aisle.missingPreviouslySeenBarcodeCount,
+      missingPreviouslySeenBarcodePercentage: aisle.missingPreviouslySeenBarcodePercentage,
+      missingPreviouslySeenBarcodes: (aisle.missingPreviouslySeenBarcodes || [])
+      .map(l => this.createBasicLabel(l, 'Previously Seen Barcode')),
     };
   }
 
-    // Section label and top stock only contains a barcode and bound
-  createSectionLabel(label: any): Label {
+  // Section label, top stock, and previously seen only contains barcode/bounds and possibly a price
+  createBasicLabel(label: any, labelName: string): Label {
     return {
       labelId: label.id,
-      labelName: 'Section Label',
+      labelName: labelName,
       barcode: label.barcode || '000000000000',
       productId: '',
       price: label.price || 0.0,
@@ -145,6 +152,7 @@ export class ApiService {
       percentageUnread: mission.labelUnreadPercentage,
       percentageRead: mission.labelReadPercentage,
       aisles: (mission.aisles || []).map(a => this.createAisle(a)),
+      hasPreviouslySeenIssue: mission.hasPreviouslySeenIssue || false
     };
   }
 
@@ -323,6 +331,13 @@ export class ApiService {
       );
   }
 
+  getAislesMissingBarcode(storeId: string, missionId: string): Observable<Aisle[]> {
+    return this.http.get(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/barcodeMissing`)
+      .pipe(
+        map<any, Aisle[]>(o => o.map(a => this.createAisle(a))), // Map the result to an array of Aisle objects
+      );
+  }
+
   getHistorialData(startDate: Date, endDate: Date): any {
     return this.http.get(`${this.apiUrl}/historicalData?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`);
   }
@@ -475,8 +490,62 @@ export class ApiService {
   }
 
   // Add an aisle to the audit queue
-  queueAisle(storeId: number, missionId: number, aisleId: string): any {
-    return this.http.put(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/queueAisle`,
+  queueAisle(storeId: string, missionId: string, aisleId: string): any {
+    return this.http.put(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/audit-queue`,
     new FormData()).subscribe();
+  }
+
+  // Add a mission to the audit queue
+  queueMission(storeId: string, missionId: string): any {
+    return this.http.put(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/audit-queue`,
+    new FormData()).subscribe();
+  }
+
+  // Get stores that have an aisle from recent missions that are below the threshold for missing previously seen labels
+  getFlaggedStores(): Observable<Store[]> {
+    const config = {
+      params: {
+          missingPreviouslySeenThreshold: this.environment.config.missingPreviosulySeenThreshold,
+          coverageIssueDateSpan: this.environment.config.coverageIssueDateSpan,
+      }
+    };
+    return this.http.get(`${this.apiUrl}/stores/coverage-issue`, config)
+      .pipe(
+        map<any, Store[]>(o => o.map(s => this.createStore(s))),
+        map(stores => stores.sort((a, b) => a.storeName.localeCompare(b.storeName))) // Sort store name
+      );
+  }
+
+  // Get aisles currently added to the audit queue or currenlty being queued by an auditor
+  getAuditQueue(): Observable<AuditAisle[]> {
+    return this.http.get(`${this.apiUrl}/audit-queue`)
+      .pipe(
+        map<any, AuditAisle[]>(o => o.map(a => this.createAuditAisle(a))),
+      );
+  }
+
+  createAuditAisle(auditAisle: any): AuditAisle {
+    return {
+      aisleId: auditAisle.aisleId,
+      aisleName: auditAisle.aisleName,
+      scanDateTime: auditAisle.scanDateTime,
+      missionId: auditAisle.missionId,
+      missionName: auditAisle.missionName,
+      storeId: auditAisle.storeId,
+      storeName: auditAisle.storeName,
+      labelsCount: auditAisle.labelCount,
+      outsCount: auditAisle.outCount,
+      falsePositiveCount: auditAisle.falsePositives,
+      falseNegativeCount: auditAisle.falseNegatives,
+      owner: auditAisle.owner,
+      auditQueueStatus: auditAisle.auditQueueStatus,
+    };
+  }
+
+    // Remove an aisle from the audit queue
+  removeQueuedAisle(aisle: AuditAisle) {
+    this.http.delete(
+      `${this.apiUrl}/stores/${aisle.storeId}/missions/${aisle.missionId}/aisles/${aisle.aisleId}/audit-queue`
+    ).subscribe();
   }
 }

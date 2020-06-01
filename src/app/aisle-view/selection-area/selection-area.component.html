@@ -39,7 +39,7 @@
     <button class="panoChangeButton" (click)="previousPano()"><fa-icon size="lg" class="fa" [icon]="faArrowLeft"></fa-icon></button>
     <button class="panoChangeButton" (click)="nextPano()"><fa-icon size="lg" class="fa" [icon]="faArrowRight"></fa-icon></button>
     <button class="rightButton hideSmallScreen" (click)="openModal('export-popup')"><img class="exportImage" src="../../assets/export-blue.png"> <span>Export</span></button>
-    <button *ngIf="showDebugButton" class="rightButton" (click)="debugClick()">Debug</button>
+    <button *ngIf="showDebugButton" class="rightButton" (click)="debugClick()">Model Debug</button>
     <button class="rightButton hideSmallScreen" (click)="resetPanoClick()">Reset Pano</button>
     <button class="rightButton "  [ngClass]="{'selectedButton': qaMode}" (click)="qaModeClick()">QA Mode</button>
 
@@ -80,6 +80,11 @@
           <fa-icon *ngIf="!currentlyDisplayed.includes('sectionBreaks')" size="lg" class="check" [icon]="faSquare"></fa-icon>
           Section Breaks
         </li>
+        <li *ngIf="showPreviouslySeenBarcodes" (click)="displaySelected('previouslySeenBarcodes')">
+          <fa-icon *ngIf="currentlyDisplayed.includes('previouslySeenBarcodes')" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
+          <fa-icon *ngIf="!currentlyDisplayed.includes('previouslySeenBarcodes')" size="lg" class="check" [icon]="faSquare"></fa-icon>
+          Previously Seen Barcodes
+        </li>
       </ul>
       <div *ngIf="currentDropdown === 'display'" class="pointer"></div>
     </div>
@@ -111,7 +116,7 @@
           <button *ngIf="showExportButtons" [disabled]="currentlyExporting" (click)="exportAisle('shelflabels','export-popup')">Labels</button>
           <button *ngIf="showExportButtons" [disabled]="currentlyExporting" (click)="exportAisle('onhand','export-popup')">On Hand</button>
           <button *ngIf="showExportButtons" [disabled]="currentlyExporting" (click)="exportPDF('export-popup')">On Hand PDF</button>
-          <button [disabled]="currentlyExporting" (click)="exportPano('export-popup')">Pano</button>
+          <button [disabled]="currentlyExporting" (click)="exportPanoClicked('export-popup')">Pano</button>
           <button class="cancel" (click)="closeModal('export-popup');">Close</button>
       </div>
   </div>

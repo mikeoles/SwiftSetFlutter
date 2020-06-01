@@ -90,11 +90,13 @@ export class DebugViewComponent implements OnInit {
 
   // set colors from environment cofig
   setColorsFromConfig(colorsMap: Map<string, string>, colorsOrder: Array<string>, configString: string[]) {
-    configString.forEach(config => {
-      const configValues = config.split(':');
-      colorsMap.set(configValues[0], configValues[1]);
-      colorsOrder.unshift(configValues[0]);
-    });
+    if (configString) {
+      configString.forEach(config => {
+        const configValues = config.split(':');
+        colorsMap.set(configValues[0], configValues[1]);
+        colorsOrder.unshift(configValues[0]);
+      });
+    }
   }
 
   toggleFilters(toggleInfo: any) {

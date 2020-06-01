@@ -3,8 +3,10 @@ import { Router, NavigationEnd } from '@angular/router';
 import { LogoService } from './services/logo.service';
 import { BackService } from './services/back.service';
 import { faArrowAltCircleLeft } from '@fortawesome/free-regular-svg-icons';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from './auth/auth.service';
 import { version } from '../../package.json';
+import { Role } from './auth/role';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +16,9 @@ import { version } from '../../package.json';
 export class AppComponent implements OnInit {
 
   displayBackButton: boolean;
+  showMenu = false;
   faArrowAltCircleLeft = faArrowAltCircleLeft;
+  faBars = faBars;
   version: string = version;
 
   constructor(private router: Router,
@@ -56,5 +60,17 @@ export class AppComponent implements OnInit {
   logout() {
     this.authService.logout();
     this.router.navigate(['auth']);
+  }
+
+  auditQueue() {
+    this.showMenu = false;
+  }
+
+  clickMenu() {
+    this.showMenu = !this.showMenu;
+  }
+
+  auditManager(): boolean {
+    return this.authService.hasRole(Role.AUDIT_MANAGER);
   }
 }

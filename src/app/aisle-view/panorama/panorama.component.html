@@ -57,5 +57,12 @@
     <li *ngIf="showDeleteOption" class="delete" (click)="changeAnnotation()">Delete</li>
   </ul>
 
+  <div *ngIf="showCoverageIssueDetails" id="coverageIssueDetails">
+    <span>Coverage Issues Detected:</span>
+    <br>Out of {{selectedAisle.previouslySeenBarcodeCount}} distinct barcodes detected in the
+    previous {{selectedAisle.previouslySeenBarcodeSampleSize}} scans, {{selectedAisle.missingPreviouslySeenBarcodeCount}}
+    ({{selectedAisle.missingPreviouslySeenBarcodePercentage*100}}%) of those barcodes were not found in this aisle
+  </div>
+  <button *ngIf="showCoverageIssueDetails" id="closeCoverageIssueDetails" (click)="closeCoverageIssueDetails()">Close</button>
 </div>
 <ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>

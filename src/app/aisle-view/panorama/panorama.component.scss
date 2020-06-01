@@ -120,3 +120,32 @@
 .panoModeClass{
   height: calc(100vh - 111px - 95px) !important;
 }
+
+#coverageIssueDetails {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: 30%;
+  background-color: white;
+  height: calc(100% - 50px);
+  overflow: auto;
+  span{
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: red
+  }
+}
+
+#closeCoverageIssueDetails {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  width: 30%;
+  height: 50px;
+  background-color: red;
+  color: black;
+  border-radius: 0px;
+  border-width: 0px;
+  text-align: center;
+}
+

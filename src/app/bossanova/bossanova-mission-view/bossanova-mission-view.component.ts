@@ -27,9 +27,11 @@ export class BossanovaMissionViewComponent implements OnInit, OnDestroy {
   averageStoreOuts: number;
   averageStoreLabels: number;
   searchTerm: string;
+  searchMissingBarcodes = false;
   service: ApiService;
   currentlyExporting = false;
   showExportButtons = false;
+  addAllClicked = false;
 
   private backButtonSubscription: Subscription;
 
@@ -70,7 +72,7 @@ export class BossanovaMissionViewComponent implements OnInit, OnDestroy {
       });
     });
     this.service = this.apiService;
-}
+  }
 
   goBack(): void {
     this.router.navigate(['/store/' + this.store.storeId]);
@@ -81,8 +83,20 @@ export class BossanovaMissionViewComponent implements OnInit, OnDestroy {
   }
 
   searchBarcodeClicked() {
-    if (this.searchTerm.length > 0) {
+    this.searchMissingBarcodes = false;
+    if (this.searchTerm && this.searchTerm.length > 0) {
       this.apiService.getAislesByLabels(this.store.storeId, this.mission.missionId, 'barcode', this.searchTerm).subscribe(aisles => {
+        this.aisles = aisles;
+      });
+    } else {
+      this.aisles = this.mission.aisles;
+    }
+  }
+
+  searchMissingBarcodesChanged(selected: boolean) {
+    this.searchMissingBarcodes = selected;
+    if (this.searchMissingBarcodes) {
+      this.apiService.getAislesMissingBarcode(this.store.storeId, this.mission.missionId).subscribe(aisles => {
         this.aisles = aisles;
       });
     } else {
@@ -209,5 +223,11 @@ export class BossanovaMissionViewComponent implements OnInit, OnDestroy {
     doc.autoTable({head: head, body: body, startY: 15, styles: {cellPadding: 0.5, fontSize: 9}});
     doc.save(this.mission.missionName + '.pdf');
     this.currentlyExporting = false;
+  }
+
+  // Add every aisle in the mission to the queue
+  addAllToQueue() {
+    this.apiService.queueMission(this.mission.storeId, this.mission.missionId);
+    this.addAllClicked = true;
   }
 }

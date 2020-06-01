@@ -9,13 +9,15 @@ import { BossanovaMissionViewComponent } from './bossanova-mission-view/bossanov
 import { MissionStatsComponent } from './bossanova-mission-view/mission-stats/mission-stats.component';
 import { AislesGridComponent } from './bossanova-mission-view/aisles-grid/aisles-grid.component';
 import { SharedModule } from '../shared/shared.module';
+import { AuditQueueViewComponent } from './audit-queue-view/audit-queue-view.component';
 
 @NgModule({
   declarations: [
     BossanovaFleetViewComponent,
     BossanovaMissionViewComponent,
     MissionStatsComponent,
-    AislesGridComponent
+    AislesGridComponent,
+    AuditQueueViewComponent
   ],
   imports: [
     CommonModule,

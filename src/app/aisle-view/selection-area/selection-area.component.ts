@@ -9,11 +9,8 @@ import { ModalService } from '../../services/modal.service';
 import { EnvironmentService } from 'src/app/services/environment.service';
 import { ApiService } from 'src/app/services/api.service';
 import Store from 'src/app/models/store.model';
-import panzoom from 'panzoom';
-import htmlToImage from 'html-to-image';
-import { saveAs } from 'file-saver';
-import { Router } from '@angular/router';
 import { LabelType } from '../label-type';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-selection-area',
@@ -31,6 +28,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   showQA = false;
   showMisreadBarcodes = false;
   showDebugButton = false;
+  showPreviouslySeenBarcodes = true;
 
   @Input() missions: Mission[];
   @Input() aisles: Aisle[];
@@ -47,6 +45,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   @Output() resetPano = new EventEmitter();
   @Output() toggleQAMode = new EventEmitter();
   @Output() toggleDisplayed = new EventEmitter();
+  @Output() exportPano = new EventEmitter();
 
   faAngleDown = faAngleDown;
   faAngleUp = faAngleUp;
@@ -61,7 +60,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
               private modalService: ModalService,
               private environment: EnvironmentService,
               private apiService: ApiService,
-              private router: Router) {
+              private location: Location) {
     this.showExportButtons = environment.config.showExportButtons;
     this.showMisreadBarcodes = environment.config.showMisreadBarcodes;
     this.showSectionLabels = environment.config.showSectionLabels;
@@ -117,7 +116,7 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
 
   // open debug view in new tab
   debugClick() {
-    let url = this.router.url;
+    let url = this.location.path();
     const hasParameters = url.indexOf('?');
     url = url.substring(0, hasParameters !== -1 ? hasParameters : url.length);
     window.open(url + '/debug', '_blank');
@@ -255,25 +254,9 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
     this.currentlyExporting = false;
   }
 
-  exportPano(modalId: string) {
-    const element = document.getElementById('pano-image');
-    this.currentlyExporting = true;
-    const context = this;
-    panzoom(element, {
-      maxZoom: 1,
-      minZoom: 1,
-    });
-    setTimeout(() => {
-      htmlToImage.toJpeg(document.getElementById('pano-image'))
-      .then(function (blob) {
-        saveAs(blob,
-          context.selectedMission.storeNumber + ' ' + context.selectedMission.missionName + ' ' + context.selectedAisle.aisleName + '.jpg');
-        context.currentlyExporting = false;
-        context.modalService.close(modalId);
-        context.resetPano.emit();
-      });
-    },
-    1000);
+  exportPanoClicked(modalId: string) {
+    this.exportPano.emit();
+    this.modalService.close(modalId);
   }
 
   nextPano() {
