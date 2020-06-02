@@ -66,7 +66,7 @@
           Top Stock
         </li>
         <li *ngIf="showMisreadBarcodes" (click)="displaySelected('misreadBarcodes')">
-          <fa-icon *ngIf="currentlyDisplayed.includes('misreadBarcodes')  && displayMisreadBarcodes" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
+          <fa-icon *ngIf="currentlyDisplayed.includes('misreadBarcodes')" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
           <fa-icon *ngIf="!currentlyDisplayed.includes('misreadBarcodes')" size="lg" class="check" [icon]="faSquare"></fa-icon>
           Misread Barcodes
         </li>
