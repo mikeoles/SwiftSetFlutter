@@ -12,6 +12,8 @@ import { DataService } from '../../services/data.service';
 import * as jsPDF from 'jspdf';
 import Aisle from '../../models/aisle.model';
 import { Title } from '@angular/platform-browser';
+import { Role } from 'src/app/auth/role';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-bossanova-mission-view',
@@ -37,7 +39,7 @@ export class BossanovaMissionViewComponent implements OnInit, OnDestroy {
 
   constructor(private apiService: ApiService, private activatedRoute: ActivatedRoute, private router: Router,
     private modalService: ModalService, private backService: BackService, private environment: EnvironmentService,
-    public dataService: DataService, private titleService: Title) {
+    public dataService: DataService, private titleService: Title, private authService: AuthService) {
       this.showExportButtons = environment.config.showExportButtons;
   }
 
@@ -229,5 +231,9 @@ export class BossanovaMissionViewComponent implements OnInit, OnDestroy {
   addAllToQueue() {
     this.apiService.queueMission(this.mission.storeId, this.mission.missionId);
     this.addAllClicked = true;
+  }
+
+  auditManager(): boolean {
+    return this.authService.hasRole(Role.AUDIT_MANAGER);
   }
 }
