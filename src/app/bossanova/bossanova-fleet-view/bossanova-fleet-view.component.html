@@ -1,6 +1,5 @@
-<div *ngIf="stores && stores.length === 0" class="title">No Stores Found</div>
-<div *ngIf="stores && stores.length>0">
-  <div *ngIf="!displayingFlaggedStores" class="title">Stores ({{(stores | filter:searchTerm)?.length }})</div>
+<div *ngIf="stores">
+  <div class="title">Stores ({{(stores | filter:searchTerm)?.length }})</div>
   <div *ngIf="displayingFlaggedStores" class="title flaggedTitle">
     Stores listed below contain aisles that have been analyzed using aisle coverage calculations and flagged for further analysis.  
     This is only showing stores that have been flagged for the past {{environment.config.coverageIssueDateSpan}} days of scans.
@@ -25,7 +24,7 @@
   <button *ngIf="!displayingFlaggedStores" class="flaggedButton" (click)="clickFlaggedStores()">Aisle Coverage
     Alerts</button>
   <button *ngIf="displayingFlaggedStores" class="flaggedButton" (click)="clickFlaggedStores()">Show All Stores</button>
-  <table>
+  <table *ngIf="stores && stores.length>0">
     <thead>
       <tr>
         <th class="canary"></th>
@@ -49,4 +48,5 @@
       </tr>
     </tbody>
   </table>
+  <div *ngIf="stores && stores.length === 0" class="title">No Stores Found</div>
 </div>
