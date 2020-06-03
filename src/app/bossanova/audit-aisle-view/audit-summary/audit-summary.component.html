@@ -1,0 +1,19 @@
+<div id="title">{{auditStage}}</div>
+<div *ngIf="aisle" class="info">
+    {{aisle.storeName}} {{aisle.missionName}} {{aisle.aisleName}}
+</div>
+<div *ngIf="aisle" class="counts">
+    <div>
+        Labels: <span> {{aisle.labelsCount}} </span>
+    </div>
+    <div>
+        Outs: <span> {{aisle.outsCount}} </span>
+    </div>
+    <div>
+        False Positives: <span> {{aisle.falsePositiveCount}} </span>
+    </div>
+    <div>
+        False Negatives: <span> {{aisle.falseNegativeCount}} </span>
+    </div>
+</div>
+<button (click)=nextStage()>{{buttonText}}</button>

@@ -3,7 +3,7 @@ import Label from '../../models/label.model';
 import Annotation from 'src/app/models/annotation.model';
 import { EnvironmentService } from '../../services/environment.service';
 import { ApiService } from 'src/app/services/api.service';
-import { LabelType } from '../label-type';
+import { LabelType } from 'src/app/shared/label-type';
 import { AnnotationType } from '../annotation-type';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import Aisle from 'src/app/models/aisle.model';

@@ -11,6 +11,8 @@ import { AislesGridComponent } from './bossanova-mission-view/aisles-grid/aisles
 import { SharedModule } from '../shared/shared.module';
 import { AuditQueueViewComponent } from './audit-queue-view/audit-queue-view.component';
 import { AuditAisleViewComponent } from './audit-aisle-view/audit-aisle-view.component';
+import { AuditPanoramaComponent } from './audit-aisle-view/audit-panorama/audit-panorama.component';
+import { AuditSummaryComponent } from './audit-aisle-view/audit-summary/audit-summary.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { AuditAisleViewComponent } from './audit-aisle-view/audit-aisle-view.com
     MissionStatsComponent,
     AislesGridComponent,
     AuditQueueViewComponent,
-    AuditAisleViewComponent
+    AuditAisleViewComponent,
+    AuditPanoramaComponent,
+    AuditSummaryComponent
   ],
   imports: [
     CommonModule,

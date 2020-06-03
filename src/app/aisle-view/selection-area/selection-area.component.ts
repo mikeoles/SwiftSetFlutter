@@ -9,7 +9,7 @@ import { ModalService } from '../../services/modal.service';
 import { EnvironmentService } from 'src/app/services/environment.service';
 import { ApiService } from 'src/app/services/api.service';
 import Store from 'src/app/models/store.model';
-import { LabelType } from '../label-type';
+import { LabelType } from 'src/app/shared/label-type';
 import {Location} from '@angular/common';
 
 @Component({

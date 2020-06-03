@@ -1,0 +1,26 @@
+<div class="panorama">
+  <div class="image-owner" id="image-owner">
+    <div id="pano-image" class="image">
+      <img [src]="panoramaUrl" *ngIf="panoramaUrl"/>
+
+        <!-- Labels -->
+      <ng-container *ngFor="let displayType of currentlyDisplayed">
+        <ng-container *ngFor="let label of labels.get(displayType)">
+          <div class="label"
+          [ngClass] = "displayType"
+          [style.left.px] = "label.bounds.left"
+          [style.top.px] = "label.bounds.top"
+          [style.width.px] = "label.bounds.width"
+          [style.height.px] = "label.bounds.height"
+          [style.border-color] = "label.color"></div>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+  
+  <div id="zoom">
+    <fa-icon id="zoomIn" class="zoomIcon" [icon]="faPlus" (click)="zoomIn()"></fa-icon>
+    <fa-icon id="zoomOut" class="zoomIcon" [icon]="faMinus" (click)="zoomOut()"></fa-icon>
+  </div>
+</div>
+  

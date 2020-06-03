@@ -16,7 +16,7 @@ import { ApiService } from '../../services/api.service';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ShortcutInput } from 'ng-keyboard-shortcuts';
-import { LabelType } from '../label-type';
+import { LabelType } from 'src/app/shared/label-type';
 import Annotation from 'src/app/models/annotation.model';
 import { AnnotationType } from '../annotation-type';
 import Aisle from 'src/app/models/aisle.model';

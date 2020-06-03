@@ -11,7 +11,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import {Location} from '@angular/common';
 import { BackService } from '../services/back.service';
 import { ShortcutInput } from 'ng-keyboard-shortcuts';
-import { LabelType } from './label-type';
+import { LabelType } from 'src/app/shared/label-type';
 import { AnnotationType } from './annotation-type';
 import AnnotationCategory from '../models/annotationCategory.model';
 import { Title } from '@angular/platform-browser';
