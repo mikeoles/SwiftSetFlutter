@@ -53,6 +53,8 @@ export class AuditAisleViewComponent implements OnInit {
       this.labelsChanged = !this.labelsChanged;
 
       this.apiService.getAnnotations(storeId, missionId, aisleId).subscribe(annotations => {
+        this.aisle.falseNegativeCount += annotations.falseNegatives.length;
+        this.aisle.falsePositiveCount += annotations.falsePositives.length;
         this.setLabelAnnotations(annotations.falsePositives, AnnotationType.falsePositive);
         this.setLabelAnnotations(annotations.falseNegatives, AnnotationType.falseNegative);
         this.labelsChanged = !this.labelsChanged;
@@ -94,6 +96,14 @@ export class AuditAisleViewComponent implements OnInit {
       annotationsList.push(annotationObj);
     });
     this.annotations.set(annotationType, annotationsList);
+  }
+
+  updateAnnotationCounts(change: number) {
+    if (this.auditStage === AuditStage.falseNegatives) {
+      this.aisle.falseNegativeCount += change;
+    } else if (this.auditStage === AuditStage.falsePositives) {
+      this.aisle.falsePositiveCount += change;
+    }
   }
 
 }

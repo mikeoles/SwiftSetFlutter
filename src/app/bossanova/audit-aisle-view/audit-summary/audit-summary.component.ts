@@ -24,9 +24,9 @@ export class AuditSummaryComponent implements OnInit {
   nextStage() {
     this.completeStage.emit();
     if (this.auditStage === AuditStage.overview) {
-      this.buttonText = 'Complete False Positives';
+      this.buttonText = 'Complete Stage';
     } else if (this.auditStage === AuditStage.falsePositives) {
-      this.buttonText = 'Complete False Negatives';
+      this.buttonText = 'Finish';
     }
   }
 

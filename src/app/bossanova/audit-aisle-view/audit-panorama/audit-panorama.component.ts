@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import panzoom from 'panzoom';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import Label from 'src/app/models/label.model';
@@ -28,6 +28,8 @@ export class AuditPanoramaComponent implements OnInit, OnChanges {
   @Input() currentId: string;
   @Input() categories = new Map<AnnotationType, Array<AnnotationCategory>>();
   @Input() aisle: Aisle;
+
+  @Output() annotationChange = new EventEmitter<number>(); // Keeps track of number of annoations for summary view
 
   annotationMenu: AnnotationType = AnnotationType.none;
   faPlus = faPlus;
@@ -189,12 +191,14 @@ export class AuditPanoramaComponent implements OnInit, OnChanges {
     let action = '';
     if (info.category === undefined) {
       action = 'delete';
+      this.annotationChange.emit(-1);
       delete annotationsToUpdate[i];
     } else if (i > -1) {
       action = 'update';
       annotationsToUpdate[i].annotationCategory = info.category;
     } else {
       action = 'create';
+      this.annotationChange.emit(1);
       annotationsToUpdate.push({
         annotationType: info.annotationType,
         annotationCategory: info.category,
