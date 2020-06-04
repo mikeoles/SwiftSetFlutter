@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuditStage } from './audit-stage';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { Title } from '@angular/platform-browser';
 import { LabelType } from 'src/app/shared/label-type';
@@ -26,7 +26,8 @@ export class AuditAisleViewComponent implements OnInit {
   annotations = new Map<AnnotationType, Array<Annotation>>();
   categories = new Map<AnnotationType, Array<AnnotationCategory>>();
 
-  constructor(private activatedRoute: ActivatedRoute, private apiService: ApiService, private titleService: Title) { }
+  constructor(private activatedRoute: ActivatedRoute, private apiService: ApiService, private titleService: Title,
+    private router: Router) { }
 
   ngOnInit() {
     let missionId: string, aisleId: string, storeId: string;
@@ -80,7 +81,14 @@ export class AuditAisleViewComponent implements OnInit {
       this.auditStage = AuditStage.falseNegatives;
       this.currentlyDisplayed = [];
       this.currentlyDisplayed.push(LabelType.shelfLabels);
+    } else if (this.auditStage === AuditStage.falseNegatives) {
+      this.finalizeAudit();
     }
+  }
+
+  finalizeAudit() {
+    this.apiService.finalizeAudit(this.aisle);
+    this.router.navigate(['store/' + this.aisle.storeId + '/mission/' + this.aisle.missionId]);
   }
 
   setLabelAnnotations(annotations, annotationType: AnnotationType): any {

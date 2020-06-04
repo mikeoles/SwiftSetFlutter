@@ -569,4 +569,11 @@ export class ApiService {
       `${this.apiUrl}/stores/${aisle.storeId}/missions/${aisle.missionId}/aisles/${aisle.aisleId}/audit`
     ).subscribe();
   }
+
+  finalizeAudit(aisle: Aisle) {
+    return this.http.post(
+      `${this.apiUrl}/stores/${aisle.storeId}/missions/${aisle.missionId}/aisles/${aisle.aisleId}/finalize-audit`,
+      new FormData()
+    ).subscribe();
+  }
 }
