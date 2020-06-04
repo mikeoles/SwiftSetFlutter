@@ -1,7 +1,7 @@
 <div class="panorama">
   <div class="image-owner" id="image-owner">
     <div id="pano-image" class="image">
-      <img [src]="panoramaUrl" *ngIf="panoramaUrl"/>
+      <img [src]="panoramaUrl" *ngIf="panoramaUrl" (click)="panoTouched()"/>
 
         <!-- Labels -->
       <ng-container *ngFor="let displayType of currentlyDisplayed">
@@ -12,8 +12,16 @@
           [style.top.px] = "label.bounds.top"
           [style.width.px] = "label.bounds.width"
           [style.height.px] = "label.bounds.height"
-          [style.border-color] = "label.color"></div>
+          [style.border-color] = "label.color"
+          (click)="labelClicked(label.labelId)"></div>
         </ng-container>
+      </ng-container>
+
+      <!-- Annotations -->
+      <ng-container *ngFor="let annotation of getAnnotations()">
+        <div *ngIf="annotation" class="label"
+        [ngStyle] = "setAnnotationStyles(annotation.labelId, annotation.color)"
+        (click)="labelClicked(annotation.labelId)"></div>
       </ng-container>
     </div>
   </div>
@@ -22,5 +30,17 @@
     <fa-icon id="zoomIn" class="zoomIcon" [icon]="faPlus" (click)="zoomIn()"></fa-icon>
     <fa-icon id="zoomOut" class="zoomIcon" [icon]="faMinus" (click)="zoomOut()"></fa-icon>
   </div>
+
+  <!-- Annotation Selection Menu -->
+  <ul id="annotationSelector" *ngIf="annotationMenu !== 'none'" [ngStyle]="setMenuStyles()">
+    <ng-container *ngFor="let category of categories.get(annotationMenu); let i = index">
+      <li
+        [ngStyle]="setMenuOptionStyles(category.categoryName, hovered, i, category.color)"
+        (mouseover)="hovered = i" (mouseleave)="hovered = -1" (click)="changeAnnotation(category.categoryName)">
+        {{category.categoryName}} <span>{{category.hotkey | uppercase}}</span>
+      </li>
+    </ng-container>
+    <li *ngIf="showDeleteOption" class="delete" (click)="changeAnnotation()">Delete</li>
+  </ul>
 </div>
   

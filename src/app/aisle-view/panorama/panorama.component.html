@@ -21,7 +21,7 @@
       <ng-container *ngFor="let annotation of getAnnotations()">
         <div *ngIf="annotation" class="label"
         [ngStyle] = "setAnnotationStyles(annotation.labelId, annotation.color)"
-        (click)="annotationClicked(annotation)"></div>
+        (click)="labelClicked(annotation)"></div>
       </ng-container>
 
       <!-- Missing Barcodes Circles -->

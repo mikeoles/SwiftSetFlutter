@@ -189,7 +189,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
       });
       this.apiService.getMisreadCategories().subscribe(categories => {
         this.categories.set(AnnotationType.misread, categories);
-    });
+      });
       this.apiService.getMissedCategories().subscribe(categories => {
         this.categories.set(AnnotationType.missed, categories);
       });
