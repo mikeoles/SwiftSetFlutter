@@ -52,7 +52,7 @@ export class AuditPanoramaComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.labelsChanged) {
+    if (changes.labelsChanged || changes.auditStage) {
       this.updateLabelBorderColors();
       this.updateAnnotationBorderColors();
     }
@@ -71,7 +71,7 @@ export class AuditPanoramaComponent implements OnInit, OnChanges {
   }
 
   updateAnnotationBorderColors(): any {
-    if (this.annotations && this.annotations.size > 0 && this.categories && this.categories.size > 0) {
+    if (this.annotations && this.annotations.size === 3 && this.categories && this.categories.size === 3) {
       this.annotations.forEach((annotations: Array<Annotation>) => {
         annotations.forEach(annotation => {
           const categoriesList = this.categories.get(annotation.annotationType);
@@ -111,16 +111,23 @@ export class AuditPanoramaComponent implements OnInit, OnChanges {
   }
 
   getColorByLabelType(labelType: LabelType): string {
+    console.log(labelType);
     switch (labelType) {
       case LabelType.shelfLabels:
         return '#00CD87';
       case LabelType.outs:
         return '#FFFFFF';
+      case LabelType.misreadBarcodes:
+        return '#FF0000';
     }
   }
 
   getAnnotations(): Array<Annotation> {
     let labelAnnotations = [];
+    if (this.annotations.has(AnnotationType.misread) &&
+      (this.auditStage === AuditStage.overview || this.auditStage === AuditStage.misread)) {
+      labelAnnotations = labelAnnotations.concat(this.annotations.get(AnnotationType.misread));
+    }
     if (this.annotations.has(AnnotationType.falseNegative) &&
       (this.auditStage === AuditStage.overview || this.auditStage === AuditStage.falseNegatives)) {
       labelAnnotations = labelAnnotations.concat(this.annotations.get(AnnotationType.falseNegative));
@@ -162,7 +169,10 @@ export class AuditPanoramaComponent implements OnInit, OnChanges {
       this.showDeleteOption = false;
       const out: Label = this.labels.get(LabelType.outs).find((l => l.labelId === this.currentId));
       const shelfLabel: Label = this.labels.get(LabelType.shelfLabels).find((l => l.labelId === this.currentId));
-      if (out) {
+      const misread = this.labels.get(LabelType.misreadBarcodes).find((l => l.labelId === this.currentId));
+      if (misread) {
+        this.annotationMenu = AnnotationType.misread;
+      } else if (out) {
         this.annotationMenu = AnnotationType.falsePositive;
       } else if (shelfLabel) {
         this.annotationMenu = AnnotationType.falseNegative;

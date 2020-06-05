@@ -275,17 +275,6 @@ export class AisleViewComponent implements OnInit, OnDestroy {
     );
   }
 
-  getLabelTypeFromAnnotationType(annotationType: string): LabelType {
-    switch (annotationType) {
-      case AnnotationType.misread:
-        return LabelType.misreadBarcodes;
-      case AnnotationType.falsePositive:
-        return LabelType.outs;
-      case AnnotationType.falseNegative:
-        return LabelType.shelfLabels;
-    }
-  }
-
   // When a missed category marker is created updated or deleted
   updateMissedCategory(info): void {
     const missedBarcodes: Array<Annotation> = this.annotations.get(AnnotationType.missed);

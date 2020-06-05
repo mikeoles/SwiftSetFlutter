@@ -46,11 +46,15 @@ export class AuditAisleViewComponent implements OnInit {
     this.apiService.getAisle(storeId, missionId, aisleId).subscribe(aisle => {
       this.aisle = aisle;
       this.titleService.setTitle(aisle.aisleName + ' Audit');
+      const misreadBarcodes: Array<Label> = this.getMisreadBarcodes(aisle.labels);
+      misreadBarcodes.concat(this.getMisreadBarcodes(aisle.outs));
+      this.labels.set(LabelType.misreadBarcodes, misreadBarcodes);
       this.labels.set(LabelType.outs, aisle.outs);
       this.labels.set(LabelType.shelfLabels, aisle.labels);
       this.panoramaUrl = aisle.panoramaUrl;
       this.currentlyDisplayed.push(LabelType.shelfLabels);
       this.currentlyDisplayed.push(LabelType.outs);
+      this.currentlyDisplayed.push(LabelType.misreadBarcodes);
       this.labelsChanged = !this.labelsChanged;
 
       this.apiService.getAnnotations(storeId, missionId, aisleId).subscribe(annotations => {
@@ -58,9 +62,13 @@ export class AuditAisleViewComponent implements OnInit {
         this.aisle.falsePositiveCount += annotations.falsePositives.length;
         this.setLabelAnnotations(annotations.falsePositives, AnnotationType.falsePositive);
         this.setLabelAnnotations(annotations.falseNegatives, AnnotationType.falseNegative);
+        this.setLabelAnnotations(annotations.misread, AnnotationType.misread);
         this.labelsChanged = !this.labelsChanged;
       });
-
+      this.apiService.getMisreadCategories().subscribe(categories => {
+        this.categories.set(AnnotationType.misread, categories);
+        this.labelsChanged = !this.labelsChanged;
+      });
       this.apiService.getFalsePositiveCategories().subscribe(categories => {
         this.categories.set(AnnotationType.falsePositive, categories);
         this.labelsChanged = !this.labelsChanged;
@@ -82,6 +90,10 @@ export class AuditAisleViewComponent implements OnInit {
       this.currentlyDisplayed = [];
       this.currentlyDisplayed.push(LabelType.shelfLabels);
     } else if (this.auditStage === AuditStage.falseNegatives) {
+      this.auditStage = AuditStage.misread;
+      this.currentlyDisplayed = [];
+      this.currentlyDisplayed.push(LabelType.misreadBarcodes);
+    } else if (this.auditStage === AuditStage.misread) {
       this.finalizeAudit();
     }
   }
@@ -113,5 +125,16 @@ export class AuditAisleViewComponent implements OnInit {
       this.aisle.falsePositiveCount += change;
     }
   }
+
+    // Barcodes with all zeroes are considered missing barcodes
+    getMisreadBarcodes(labels: Array<Label>): Array<Label> {
+      const misreadBarcodes: Array<Label> = [];
+      labels.forEach(label => {
+        if (/^0*$/.test(label.barcode)) {
+          misreadBarcodes.push(label);
+        }
+      });
+      return misreadBarcodes;
+    }
 
 }
