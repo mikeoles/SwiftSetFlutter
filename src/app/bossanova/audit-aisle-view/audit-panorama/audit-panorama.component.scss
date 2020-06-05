@@ -21,6 +21,15 @@
         color: white;
         border: 10px solid;
       }
+
+      .marker {
+        position: absolute;
+        height: 70px;
+        width: 70px;
+        background-color: rgba(0, 0, 0, 0);
+        border-radius: 50%;
+        border: 10px #3399ff solid;
+      }
     }
   }
 

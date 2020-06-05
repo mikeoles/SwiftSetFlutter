@@ -11,7 +11,8 @@ export class AuditSummaryComponent implements OnInit {
 
   @Input() auditStage: AuditStage;
   @Input() aisle: Aisle;
-
+  @Input() misreadCount: number;
+  @Input() missingCount: number;
   @Output() completeStage = new EventEmitter();
 
   buttonText = 'Start Audit';
@@ -23,9 +24,10 @@ export class AuditSummaryComponent implements OnInit {
 
   nextStage() {
     this.completeStage.emit();
-    if (this.auditStage === AuditStage.overview || this.auditStage === AuditStage.falsePositives) {
+    if (this.auditStage === AuditStage.overview || this.auditStage === AuditStage.falsePositives
+      || this.auditStage === AuditStage.falseNegatives) {
       this.buttonText = 'Complete Stage';
-    } else if (this.auditStage === AuditStage.falseNegatives) {
+    } else if (this.auditStage === AuditStage.misread) {
       this.buttonText = 'Finish';
     }
   }

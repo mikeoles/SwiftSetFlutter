@@ -23,6 +23,13 @@
         [ngStyle] = "setAnnotationStyles(annotation.labelId, annotation.color)"
         (click)="labelClicked(annotation.labelId)"></div>
       </ng-container>
+
+      <!-- Missing Barcodes Circles -->
+      <ng-container *ngIf="showMissingBarcodes()">
+        <ng-container *ngFor="let annotation of annotations.get('missed')">
+          <div class="marker" [ngStyle]="setMarkerStyles(annotation)" (click)="editMarker(annotation)"></div>
+        </ng-container>
+      </ng-container>
     </div>
   </div>
   

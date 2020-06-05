@@ -25,6 +25,8 @@ export class AuditAisleViewComponent implements OnInit {
   currentlyDisplayed: Array<string> = new Array<string>();
   annotations = new Map<AnnotationType, Array<Annotation>>();
   categories = new Map<AnnotationType, Array<AnnotationCategory>>();
+  misreadCount = 0;
+  missingCount = 0;
 
   constructor(private activatedRoute: ActivatedRoute, private apiService: ApiService, private titleService: Title,
     private router: Router) { }
@@ -60,9 +62,12 @@ export class AuditAisleViewComponent implements OnInit {
       this.apiService.getAnnotations(storeId, missionId, aisleId).subscribe(annotations => {
         this.aisle.falseNegativeCount += annotations.falseNegatives.length;
         this.aisle.falsePositiveCount += annotations.falsePositives.length;
+        this.misreadCount += annotations.misread.length;
+        this.missingCount += annotations.missed.length;
         this.setLabelAnnotations(annotations.falsePositives, AnnotationType.falsePositive);
         this.setLabelAnnotations(annotations.falseNegatives, AnnotationType.falseNegative);
         this.setLabelAnnotations(annotations.misread, AnnotationType.misread);
+        this.setMissedAnnotations(annotations.missed);
         this.labelsChanged = !this.labelsChanged;
       });
       this.apiService.getMisreadCategories().subscribe(categories => {
@@ -75,6 +80,10 @@ export class AuditAisleViewComponent implements OnInit {
       });
       this.apiService.getFalseNegativeCategories().subscribe(categories => {
         this.categories.set(AnnotationType.falseNegative, categories);
+        this.labelsChanged = !this.labelsChanged;
+      });
+      this.apiService.getMissedCategories().subscribe(categories => {
+        this.categories.set(AnnotationType.missed, categories);
         this.labelsChanged = !this.labelsChanged;
       });
     });
@@ -94,6 +103,11 @@ export class AuditAisleViewComponent implements OnInit {
       this.currentlyDisplayed = [];
       this.currentlyDisplayed.push(LabelType.misreadBarcodes);
     } else if (this.auditStage === AuditStage.misread) {
+      this.auditStage = AuditStage.missing;
+      this.currentlyDisplayed = [];
+      this.currentlyDisplayed.push(LabelType.shelfLabels);
+      this.currentlyDisplayed.push(LabelType.outs);
+    } else if (this.auditStage === AuditStage.missing) {
       this.finalizeAudit();
     }
   }
@@ -118,23 +132,42 @@ export class AuditAisleViewComponent implements OnInit {
     this.annotations.set(annotationType, annotationsList);
   }
 
+  setMissedAnnotations(annotations): any {
+    if (annotations === undefined) {
+      annotations = [];
+    }
+    const annotationsList: Array<Annotation> = [];
+    annotations.forEach(annotation => {
+      const annotationObj = new Annotation();
+      annotationObj.annotationType = AnnotationType.missed;
+      annotationObj.annotationCategory = annotation.category;
+      annotationObj.top = annotation.top;
+      annotationObj.left = annotation.left;
+      annotationsList.push(annotationObj);
+    });
+    this.annotations.set(AnnotationType.missed, annotationsList);
+  }
+
   updateAnnotationCounts(change: number) {
     if (this.auditStage === AuditStage.falseNegatives) {
       this.aisle.falseNegativeCount += change;
     } else if (this.auditStage === AuditStage.falsePositives) {
       this.aisle.falsePositiveCount += change;
+    } else if (this.auditStage === AuditStage.misread) {
+      this.misreadCount += change;
+    } else if (this.auditStage === AuditStage.missing) {
+      this.missingCount += change;
     }
   }
 
-    // Barcodes with all zeroes are considered missing barcodes
-    getMisreadBarcodes(labels: Array<Label>): Array<Label> {
-      const misreadBarcodes: Array<Label> = [];
-      labels.forEach(label => {
-        if (/^0*$/.test(label.barcode)) {
-          misreadBarcodes.push(label);
-        }
-      });
-      return misreadBarcodes;
-    }
-
+  // Barcodes with all zeroes are considered missing barcodes
+  getMisreadBarcodes(labels: Array<Label>): Array<Label> {
+    const misreadBarcodes: Array<Label> = [];
+    labels.forEach(label => {
+      if (/^0*$/.test(label.barcode)) {
+        misreadBarcodes.push(label);
+      }
+    });
+    return misreadBarcodes;
+  }
 }
