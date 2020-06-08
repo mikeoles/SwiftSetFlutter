@@ -90,12 +90,19 @@
     span {
       float: right;
       margin-left: 20px;
-      border-left: 1px solid #2baaf1;
+      border-left: 1px solid $primary;
       min-width: 25px;
       padding-left: 5px;
     }
 
   }
+
+  .outCheckbox {
+    border-bottom: 2px solid $primary;
+    font-weight: bold;
+    text-align: center;
+  }
+
   .delete {
     background-color: red;
     text-align: center;

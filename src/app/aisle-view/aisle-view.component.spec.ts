@@ -44,7 +44,7 @@ describe('AisleViewComponent', () => {
       labels: labels, outs: labels, sectionLabels: labels, sectionBreaks: [], topStock: labels,
       outsCount: 0, labelsCount: 0, auditQueueStatus: null,
       previouslySeenBarcodeCount: 0, previouslySeenBarcodeSampleSize: 0, missingPreviouslySeenBarcodeCount: 0,
-      missingPreviouslySeenBarcodePercentage: 0, missingPreviouslySeenBarcodes: [] },
+      missingPreviouslySeenBarcodePercentage: 0, missingPreviouslySeenBarcodes: [], },
       { aisleId: '5', aisleName: '2222', panoramaUrl: '', createDateTime: new Date(), scanDateTime: new Date(),
       labels: labels, outs: labels, sectionLabels: labels, sectionBreaks: [], topStock: labels,
       outsCount: 0, labelsCount: 0, auditQueueStatus: null,
@@ -96,7 +96,7 @@ describe('AisleViewComponent', () => {
 
   beforeEach(async(() => {
     const apiServiceSpy = jasmine.createSpyObj('ApiService', ['getMissions', 'getMission', 'getAisle', 'getStore',
-    'getMisreadCategories', 'getMissedCategories', 'getFalseNegativeCategories', 'getFalsePositiveCategories']);
+    'getMisreadCategories', 'getUndetectedLabelsCategories', 'getFalseNegativeCategories', 'getFalsePositiveCategories']);
     const locationSpy = jasmine.createSpyObj('Location', ['replaceState', 'go']);
     const environmentServiceSpy = jasmine.createSpyObj('EnvironmentService', ['setPermissions']);
 
@@ -146,7 +146,7 @@ describe('AisleViewComponent', () => {
     apiService.getAisle.and.returnValue(of(aisles[0]));
     apiService.getStore.and.returnValue(of(store));
     apiService.getMisreadCategories.and.returnValues(of([]));
-    apiService.getMissedCategories.and.returnValues(of([]));
+    apiService.getUndetectedLabelsCategories.and.returnValues(of([]));
     apiService.getFalseNegativeCategories.and.returnValues(of([]));
     apiService.getFalsePositiveCategories.and.returnValues(of([]));
     fixture = TestBed.createComponent(AisleViewComponent);

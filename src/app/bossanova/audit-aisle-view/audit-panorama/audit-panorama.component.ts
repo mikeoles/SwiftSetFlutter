@@ -40,6 +40,7 @@ export class AuditPanoramaComponent implements OnInit, OnChanges {
   annotationLeft = 0;
   annotationTop = 0;
   selectedMarkerCategory = '';
+  undetectedOut = false;
 
   constructor(private apiService: ApiService) {
   }
@@ -51,12 +52,12 @@ export class AuditPanoramaComponent implements OnInit, OnChanges {
       minZoom: 0.12,
       zoomDoubleClickSpeed: 1,
       onDoubleClick: function(e: any) {
-        if (context.auditStage === AuditStage.missing) {
+        if (context.auditStage === AuditStage.undetectedLabels) {
           context.showDeleteOption = false;
           context.selectedMarkerCategory = '';
           context.annotationLeft = e.offsetX;
           context.annotationTop = e.offsetY;
-          context.annotationMenu = AnnotationType.missed;
+          context.annotationMenu = AnnotationType.undetectedLabels;
         }
       },
     });
@@ -192,16 +193,16 @@ export class AuditPanoramaComponent implements OnInit, OnChanges {
     }
   }
 
-  showMissingBarcodes() {
-    return this.auditStage === AuditStage.overview || this.auditStage === AuditStage.missing;
+  showUndetectedLabels() {
+    return this.auditStage === AuditStage.overview || this.auditStage === AuditStage.undetectedLabels;
   }
 
   // When a user chooses an annotation from the menu
   changeAnnotation(category: string) {
     if (this.annotationMenu === AnnotationType.none) {
       return;
-    } else if (this.annotationMenu === AnnotationType.missed) {
-      this.updateMissedCategory({
+    } else if (this.annotationMenu === AnnotationType.undetectedLabels) {
+      this.updateUndetectedLabelsCategory({
         top: this.annotationTop,
         left: this.annotationLeft,
         category: category,
@@ -240,6 +241,7 @@ export class AuditPanoramaComponent implements OnInit, OnChanges {
         top: undefined,
         left: undefined,
         color: undefined,
+        out: undefined
       });
     }
     this.annotations.set(info.annotationType, annotationsToUpdate);
@@ -252,9 +254,9 @@ export class AuditPanoramaComponent implements OnInit, OnChanges {
     this.updateAnnotationBorderColors();
   }
 
-  updateMissedCategory(info: {top: number, left: number, category: string}): any {
-    const missedBarcodes: Array<Annotation> = this.annotations.get(AnnotationType.missed);
-    const i = missedBarcodes.findIndex(m => {
+  updateUndetectedLabelsCategory(info: {top: number, left: number, category: string}): any {
+    const undetectedLabels: Array<Annotation> = this.annotations.get(AnnotationType.undetectedLabels);
+    const i = undetectedLabels.findIndex(m => {
       return m !== undefined && m.left === info.left && m.top === info.top;
     });
     let action: string;
@@ -262,41 +264,56 @@ export class AuditPanoramaComponent implements OnInit, OnChanges {
     if (info.category === undefined) {
       action = 'delete';
       this.annotationChange.emit(-1);
-      delete missedBarcodes[i];
+      delete undetectedLabels[i];
     } else if (i > -1) {
       action = 'update';
-      missedBarcodes[i].annotationCategory = info.category;
+      undetectedLabels[i].annotationCategory = info.category;
     } else {
       action = 'create';
       const annotation: Annotation = new Annotation();
-      annotation.annotationType = AnnotationType.missed;
+      annotation.annotationType = AnnotationType.undetectedLabels;
       annotation.annotationCategory = info.category;
       annotation.top = info.top;
       annotation.left = info.left;
       this.annotationChange.emit(1);
-      missedBarcodes.push(annotation);
+      undetectedLabels.push(annotation);
     }
 
-    this.apiService.updateMissedAnnotation(
+    this.apiService.updateUndetectedLabelsAnnotation(
       this.aisle.storeId, this.aisle.missionId, this.aisle.aisleId,
-      String(info.top), String(info.left), info.category, action
+      String(info.top), String(info.left), info.category, String(this.undetectedOut), action
     );
   }
 
-  // Allow missing barcode marker to be edited when clicked on
+  // Allow undetected labels marker to be edited when clicked on
   editMarker(annotation: Annotation): void {
-    if (this.auditStage === AuditStage.missing) {
+    if (this.auditStage === AuditStage.undetectedLabels) {
       this.currentId = '-1';
       this.showDeleteOption = true;
-      const missedAnnotations: Annotation[] = this.annotations.get(AnnotationType.missed);
-      const selected = missedAnnotations.find(a => {
+      const undetectedLabelsAnnotations: Annotation[] = this.annotations.get(AnnotationType.undetectedLabels);
+      const selected = undetectedLabelsAnnotations.find(a => {
         return a && a.top === annotation.top && a.left === annotation.left;
       });
       this.annotationTop = selected.top;
       this.annotationLeft = selected.left;
       this.selectedMarkerCategory = selected.annotationCategory;
-      this.annotationMenu = AnnotationType.missed;
+      this.undetectedOut = selected.out;
+      this.annotationMenu = AnnotationType.undetectedLabels;
     }
+  }
+
+  // If the currently selected undetected label is supposed to be an out
+  undetectedOutChanged(selected: boolean) {
+    this.undetectedOut = selected;
+    const undetectedLabels: Array<Annotation> = this.annotations.get(AnnotationType.undetectedLabels);
+    const i = undetectedLabels.findIndex(m => {
+      return m !== undefined && m.left === this.annotationLeft && m.top === this.annotationTop;
+    });
+    undetectedLabels[i].out = this.undetectedOut;
+    this.apiService.updateUndetectedLabelsAnnotation(
+      this.aisle.storeId, this.aisle.missionId, this.aisle.aisleId,
+      String(undetectedLabels[i].top), String(undetectedLabels[i].left), undetectedLabels[i].annotationCategory, String(this.undetectedOut), 'update'
+    );
   }
 
   // Css styles for annotation dropdown
@@ -308,7 +325,7 @@ export class AuditPanoramaComponent implements OnInit, OnChanges {
     if (this.currentId && this.currentId !== '-1') {
       annotation = this.getAnnotationById(this.currentId);
     }
-    if (this.annotationMenu === AnnotationType.missed && this.selectedMarkerCategory === category) {
+    if (this.annotationMenu === AnnotationType.undetectedLabels && this.selectedMarkerCategory === category) {
       styles['background-color'] = 'lightgray'; // highlight the currently selected color light gray
     } else if (annotation && annotation.annotationCategory === category) {
       styles['background-color'] = 'lightgray'; // highlight the currently selected color light gray
@@ -331,13 +348,13 @@ export class AuditPanoramaComponent implements OnInit, OnChanges {
     return styles;
   }
 
-  // Displays missing barcode markers
+  // Displays undetectedLabels markers
   setMarkerStyles(annotation: Annotation) {
-    if (annotation && this.categories.has(AnnotationType.missed)) {
+    if (annotation && this.categories.has(AnnotationType.undetectedLabels)) {
       const styles = {};
       styles['top.px'] = annotation.top - 35;
       styles['left.px'] = annotation.left - 35;
-      styles['border-color'] = this.categories.get(AnnotationType.missed)
+      styles['border-color'] = this.categories.get(AnnotationType.undetectedLabels)
         .find((obj => obj.categoryName === annotation.annotationCategory)).color;
       return styles;
     }

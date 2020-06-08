@@ -24,10 +24,10 @@
         (click)="labelClicked(annotation.labelId)"></div>
       </ng-container>
 
-      <!-- Missing Barcodes Circles -->
-      <ng-container *ngIf="showMissingBarcodes()">
-        <ng-container *ngFor="let annotation of annotations.get('missed')">
-          <div class="marker" [ngStyle]="setMarkerStyles(annotation)" (click)="editMarker(annotation)"></div>
+      <!-- Undetected Labels Circles -->
+      <ng-container *ngIf="showUndetectedLabels()">
+        <ng-container *ngFor="let annotation of annotations.get('undetectedLabels')">
+          <div *ngIf="annotation" class="marker" [ngStyle]="setMarkerStyles(annotation)" (click)="editMarker(annotation)"></div>
         </ng-container>
       </ng-container>
     </div>
@@ -40,6 +40,9 @@
 
   <!-- Annotation Selection Menu -->
   <ul id="annotationSelector" *ngIf="annotationMenu !== 'none'" [ngStyle]="setMenuStyles()">
+    <li class="outCheckbox" *ngIf="annotationMenu === 'undetectedLabels'">
+      <input class="checkbox" type="checkbox" [ngModel]="undetectedOut" (ngModelChange)="undetectedOutChanged($event)"/> Out
+    </li>
     <ng-container *ngFor="let category of categories.get(annotationMenu); let i = index">
       <li
         [ngStyle]="setMenuOptionStyles(category.categoryName, hovered, i, category.color)"

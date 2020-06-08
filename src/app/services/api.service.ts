@@ -395,8 +395,8 @@ export class ApiService {
     };
   }
 
-  getMissedCategories(): Observable<AnnotationCategory[]> {
-    return this.http.get(`${this.apiUrl}/categories/missed`)
+  getUndetectedLabelsCategories(): Observable<AnnotationCategory[]> {
+    return this.http.get(`${this.apiUrl}/categories/undetectedLabels`)
     .pipe(
       map<any, AnnotationCategory[]>(o => o.categories.map(c => this.createAnnotationCategory(c))),
     );
@@ -458,22 +458,23 @@ export class ApiService {
     };
   }
 
-  updateMissedAnnotation(storeId: string, missionId: string, aisleId: string,
-    top: string, left: string, category: string, action: string): void {
+  updateUndetectedLabelsAnnotation(storeId: string, missionId: string, aisleId: string,
+    top: string, left: string, category: string, out: string, action: string): void {
     const data = new FormData();
     data.set('top', top);
     data.set('left', left);
     data.set('category', category);
+    data.set('out', out);
     if (action === 'update') {
-      this.http.put(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/missed`,
+      this.http.put(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/undetectedLabel`,
       data).subscribe();
     }
     if (action === 'delete') {
-      this.http.delete(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/missed`,
+      this.http.delete(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/undetectedLabel`,
       {params: {top, left}}).subscribe();
     }
     if (action === 'create') {
-      this.http.post(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/missed`,
+      this.http.post(`${this.apiUrl}/stores/${storeId}/missions/${missionId}/aisles/${aisleId}/annotations/undetectedLabel`,
       data).subscribe();
     }
   }

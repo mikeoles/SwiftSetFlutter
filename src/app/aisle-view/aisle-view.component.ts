@@ -190,7 +190,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
       this.apiService.getMisreadCategories().subscribe(categories => {
         this.categories.set(AnnotationType.misread, categories);
       });
-      this.apiService.getMissedCategories().subscribe(categories => {
+      this.apiService.getUndetectedLabelsCategories().subscribe(categories => {
         this.categories.set(AnnotationType.missed, categories);
       });
       this.apiService.getFalsePositiveCategories().subscribe(categories => {
@@ -297,7 +297,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
     missedBarcodes.push(annotation);
     }
 
-    this.apiService.updateMissedAnnotation(
+    this.apiService.updateUndetectedLabelsAnnotation(
       this.selectedMission.storeId, this.selectedMission.missionId, this.selectedAisle.aisleId,
       info.top, info.left, info.category, action
     );

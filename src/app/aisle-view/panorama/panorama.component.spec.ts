@@ -14,7 +14,7 @@ describe('PanoramaComponent', () => {
 
   beforeEach(async(() => {
     const apiServiceSpy = jasmine.createSpyObj('ApiService',
-      ['getMisreadCategories', 'getMissedCategories', 'getFalsePositiveCategories', 'getFalseNegativeCategories']
+      ['getMisreadCategories', 'getUndetectedLabelsCategories', 'getFalsePositiveCategories', 'getFalseNegativeCategories']
     );
 
     TestBed.configureTestingModule({
@@ -44,7 +44,7 @@ describe('PanoramaComponent', () => {
     component.qaMode = false;
     apiService = TestBed.get('ApiService');
     apiService.getMisreadCategories.and.returnValue(of([]));
-    apiService.getMissedCategories.and.returnValue(of([]));
+    apiService.getUndetectedLabelsCategories.and.returnValue(of([]));
     apiService.getFalsePositiveCategories.and.returnValue(of([]));
     apiService.getFalseNegativeCategories.and.returnValue(of([]));
   }));

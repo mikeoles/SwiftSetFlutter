@@ -7,4 +7,5 @@ export default class Annotation {
     top: number;
     left: number;
     color: string;
+    out: boolean;
 }

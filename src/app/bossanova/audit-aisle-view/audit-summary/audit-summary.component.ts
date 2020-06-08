@@ -12,7 +12,7 @@ export class AuditSummaryComponent implements OnInit {
   @Input() auditStage: AuditStage;
   @Input() aisle: Aisle;
   @Input() misreadCount: number;
-  @Input() missingCount: number;
+  @Input() undetectedLabelsCount: number;
   @Output() completeStage = new EventEmitter();
 
   buttonText = 'Start Audit';

@@ -3,5 +3,5 @@ export enum AuditStage {
     falsePositives = 'False Positives',
     falseNegatives = 'False Negatives',
     misread = 'Misread Barcodes',
-    missing = 'Missing Barcodes'
+    undetectedLabels = 'Undetected Labels'
 }
