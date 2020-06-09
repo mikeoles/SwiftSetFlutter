@@ -41,7 +41,6 @@
     <button class="rightButton hideSmallScreen" (click)="openModal('export-popup')"><img class="exportImage" src="../../assets/export-blue.png"> <span>Export</span></button>
     <button *ngIf="showDebugButton" class="rightButton" (click)="debugClick()">Model Debug</button>
     <button class="rightButton hideSmallScreen" (click)="resetPanoClick()">Reset Pano</button>
-    <button class="rightButton "  [ngClass]="{'selectedButton': qaMode}" (click)="qaModeClick()">QA Mode</button>
 
     <div class="rightDropdown rightButton">
       <button class="dropdownButton" (click)="openDropdown('display')">
@@ -88,23 +87,6 @@
       </ul>
       <div *ngIf="currentDropdown === 'display'" class="pointer"></div>
     </div>
-
-    <!-- <div id="collapsedContainer">
-      <button class="dropdownButton" [ngClass]="{'selectedButton': showOptions}" (click)="selectOptionsDropdown()">
-        Options
-        <fa-icon *ngIf="!showOptions" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
-        <fa-icon *ngIf="showOptions" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
-      </button>
-      <ul class="dropdown" *ngIf="showOptions">
-        <li (click)="openModal('export-popup')">Export</li>
-        <li (click)="resetPanoClick()">Reset Pano</li>
-        <li *ngIf="showQA" (click)="toggleModeClicked('debug')">Debug</li>
-        <li *ngIf="showQA" (click)="toggleModeClicked('misreadBarcodes')">Misread Barcodes</li>
-
-      </ul>
-      <div *ngIf="showOptions" class="pointer"></div>
-    </div> -->
-
   </div>
 
 </div>

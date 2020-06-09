@@ -5,7 +5,7 @@ import Label from 'src/app/models/label.model';
 import { ShortcutInput } from 'ng-keyboard-shortcuts';
 import { LabelType } from 'src/app/shared/label-type';
 import Annotation from 'src/app/models/annotation.model';
-import { AnnotationType } from 'src/app/aisle-view/annotation-type';
+import { AnnotationType } from 'src/app/bossanova/audit-aisle-view/annotation-type';
 import AnnotationCategory from 'src/app/models/annotationCategory.model';
 import { AuditStage } from '../audit-stage';
 import Aisle from 'src/app/models/aisle.model';
@@ -61,7 +61,7 @@ export class AuditPanoramaComponent implements OnInit, OnChanges {
         }
       },
     });
-
+    this.setHotkeys();
     this.panZoomApi.zoomAbs(0, 0, this.startingZoomLevel);
   }
 
@@ -70,6 +70,34 @@ export class AuditPanoramaComponent implements OnInit, OnChanges {
       this.updateLabelBorderColors();
       this.updateAnnotationBorderColors();
     }
+  }
+
+  // Set shortcuts based on categories info
+  setHotkeys() {
+    const newShortcuts = [];
+    this.categories.forEach((annotationCategories: Array<AnnotationCategory>) => {
+      annotationCategories.forEach(category => {
+        newShortcuts.push(
+          {
+            key: category.hotkey,
+            command: () => {
+              this.changeAnnotation(category.categoryName);
+            },
+            preventDefault: true,
+          },
+        );
+      });
+    });
+    newShortcuts.push(
+      {
+        key: 'del',
+        command: () => {
+          this.changeAnnotation(undefined);
+        },
+        preventDefault: true,
+      },
+    );
+    this.shortcuts = newShortcuts;
   }
 
   updateLabelBorderColors(): any {

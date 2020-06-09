@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output, HostListener, ElementRef, OnChanges, SimpleChanges, Inject } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
 import { faAngleDown, faAngleUp, faArrowRight, faArrowLeft, faCheckSquare, faSquare } from '@fortawesome/free-solid-svg-icons';
 import Mission from '../../models/mission.model';
 import Aisle from '../../models/aisle.model';
@@ -38,12 +38,10 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   @Input() labels = new Map<LabelType, Array<Label>>();
   @Input() labelsChanged: boolean;
   @Input() currentlyDisplayed: Set<string>;
-  @Input() qaMode: boolean;
 
   @Output() missionSelected = new EventEmitter();
   @Output() aisleSelected = new EventEmitter();
   @Output() resetPano = new EventEmitter();
-  @Output() toggleQAMode = new EventEmitter();
   @Output() toggleDisplayed = new EventEmitter();
   @Output() exportPano = new EventEmitter();
 
@@ -108,10 +106,6 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
 
   displaySelected(display: string) {
     this.toggleDisplayed.emit(display);
-  }
-
-  qaModeClick() {
-    this.toggleQAMode.emit();
   }
 
   // open debug view in new tab

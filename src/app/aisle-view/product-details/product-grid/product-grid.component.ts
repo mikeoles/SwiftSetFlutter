@@ -2,7 +2,6 @@ import { Component, OnInit, AfterViewChecked, EventEmitter, Output, Input, HostL
 import Label from 'src/app/models/label.model';
 import { labelScrollOptions } from 'src/app/aisle-view/product-details/product-grid/labelScrollOptions';
 import { EnvironmentService } from '../../../services/environment.service';
-import Annotation from 'src/app/models/annotation.model';
 
 export enum KEY_CODE {
   UP = 38,
@@ -17,10 +16,8 @@ export enum KEY_CODE {
 export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges {
 
   @Output() gridClicked = new EventEmitter<string>();
-  @Input() allAnnotations: Array<Annotation>;
   @Input() allLabels: Array<Label>;
   @Input() selectedId: string;
-  @Input() qaMode: boolean;
   columnHeaders: String[];
   rows: Array<Array<String>> = [];
 
@@ -31,11 +28,11 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!this.allLabels || !(changes['allLabels'] || changes['qaMode'])) {
+    if (!this.allLabels || !(changes['allLabels'])) {
       return;
     }
 
-    if (changes['allLabels'] || changes['qaMode']) {
+    if (changes['allLabels']) {
       if (this.allLabels.length > -1) {
         this.sortProductsByLocation();
         this.getGridData();
@@ -96,10 +93,6 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
   getGridData() {
     this.rows = [];
     this.columnHeaders = Object.assign([], this.environment.config.productGridFields);
-    if (this.qaMode) {
-      this.columnHeaders.push('QA Annotations');
-    }
-
     for (let i = 0; i < this.allLabels.length; i++) {
       const label: Label = this.allLabels[i];
       let row: Array<String> = Array<String>();
@@ -116,15 +109,7 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
           cellValue = `$${label.price.toFixed(2)}`;
         }
 
-        if (fieldLowercase === 'qAAnnotations') { // check the label for annotations and display the first one in the grid
-          cellValue = '';
-          const annotation: Annotation = this.allAnnotations.find(a => {
-            return a !== undefined && a.labelId === label.labelId;
-          });
-          if (annotation) {
-            cellValue = annotation.annotationType + ': ' + annotation.annotationCategory;
-          }
-        } else if (label[fieldLowercase]) {
+        if (label[fieldLowercase]) {
           cellValue = label[fieldLowercase];
         } else if (label.bounds[fieldLowercase]) {
           cellValue = label.bounds[fieldLowercase];
