@@ -396,7 +396,7 @@ export class ApiService {
   }
 
   getUndetectedLabelsCategories(): Observable<AnnotationCategory[]> {
-    return this.http.get(`${this.apiUrl}/categories/undetectedLabels`)
+    return this.http.get(`${this.apiUrl}/categories/undetectedLabel`)
     .pipe(
       map<any, AnnotationCategory[]>(o => o.categories.map(c => this.createAnnotationCategory(c))),
     );

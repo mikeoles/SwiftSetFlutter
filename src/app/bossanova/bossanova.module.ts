@@ -13,6 +13,7 @@ import { AuditQueueViewComponent } from './audit-queue-view/audit-queue-view.com
 import { AuditAisleViewComponent } from './audit-aisle-view/audit-aisle-view.component';
 import { AuditPanoramaComponent } from './audit-aisle-view/audit-panorama/audit-panorama.component';
 import { AuditSummaryComponent } from './audit-aisle-view/audit-summary/audit-summary.component';
+import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { AuditSummaryComponent } from './audit-aisle-view/audit-summary/audit-su
     FormsModule,
     RouterModule,
     FontAwesomeModule,
-    SharedModule
+    SharedModule,
+    KeyboardShortcutsModule.forRoot(),
   ],
   exports: [
     BossanovaFleetViewComponent,
