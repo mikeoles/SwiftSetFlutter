@@ -41,6 +41,7 @@ export class AuditPanoramaComponent implements OnInit, OnChanges {
   annotationTop = 0;
   selectedMarkerCategory = '';
   undetectedOut = false;
+  header = 128; // accounts for size of header when centering vertically
 
   constructor(private apiService: ApiService) {
   }
@@ -186,14 +187,34 @@ export class AuditPanoramaComponent implements OnInit, OnChanges {
     }
     if (this.currentId !== labelId) {
       this.currentId = labelId;
+      this.panZoomApi.setTransformOrigin({x: 0.5, y: 0.5}); // Zoom towards the center of page instead of the mouse
+      this.centerOnLabel();
     } else {
       this.currentId = '-1';
+      this.panZoomApi.setTransformOrigin(null);
     }
     this.showAnnotationMenu();
   }
 
+  centerOnLabel(): any {
+    const allLabels: Array<Label> = [].concat(
+      this.labels.get(LabelType.shelfLabels),
+      this.labels.get(LabelType.outs),
+    );
+    const label: Label = allLabels[allLabels.findIndex((l => l.labelId === this.currentId))];
+
+    const zoom = this.panZoomApi.getTransform().scale; // current level of zoom
+    const x = label.bounds.left + (label.bounds.width / 2) - (window.innerWidth / 2) * (1 / zoom);
+    const y = label.bounds.top + (label.bounds.height / 2) - ((window.innerHeight - this.header) / 2) * (1 / zoom);
+
+    this.panZoomApi.zoomAbs(0, 0, 1);
+    this.panZoomApi.moveTo(x * -1, y * -1);
+    this.panZoomApi.zoomAbs(0, 0, zoom);
+  }
+
   panoTouched() {
     this.annotationMenu = AnnotationType.none;
+    this.panZoomApi.setTransformOrigin(null);
   }
 
   // Show or hide menu with a list of annotation categories
