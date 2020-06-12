@@ -28,6 +28,7 @@ export class AuditPanoramaComponent implements OnInit, OnChanges {
   @Input() currentId: string;
   @Input() categories = new Map<AnnotationType, Array<AnnotationCategory>>();
   @Input() aisle: Aisle;
+  @Input() searchedBarcode: string;
 
   @Output() annotationChange = new EventEmitter<number>(); // Keeps track of number of annoations for summary view
 
@@ -71,6 +72,24 @@ export class AuditPanoramaComponent implements OnInit, OnChanges {
       this.updateLabelBorderColors();
       this.updateAnnotationBorderColors();
     }
+
+    if (changes.searchedBarcode) {
+      this.currentId = this.findIdByBarcode(this.searchedBarcode);
+      this.panZoomApi.setTransformOrigin({x: 0.5, y: 0.5}); // Zoom towards the center of page instead of the mouse
+      this.centerOnLabel();
+    }
+  }
+
+  findIdByBarcode(barcode: any): string {
+    let id = '';
+    this.labels.forEach(labels => {
+      labels.forEach(label => {
+        if (label.barcode === barcode) {
+          id = label.labelId;
+        }
+      });
+    });
+    return id;
   }
 
   // Set shortcuts based on categories info
@@ -202,6 +221,10 @@ export class AuditPanoramaComponent implements OnInit, OnChanges {
       this.labels.get(LabelType.outs),
     );
     const label: Label = allLabels[allLabels.findIndex((l => l.labelId === this.currentId))];
+    if (!label) {
+      console.error('label not found');
+      return;
+    }
 
     const zoom = this.panZoomApi.getTransform().scale; // current level of zoom
     const x = label.bounds.left + (label.bounds.width / 2) - (window.innerWidth / 2) * (1 / zoom);

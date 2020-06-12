@@ -27,6 +27,7 @@ export class AuditAisleViewComponent implements OnInit {
   categories = new Map<AnnotationType, Array<AnnotationCategory>>();
   misreadCount = 0;
   undetectedLabelsCount = 0;
+  barcode = '';
 
   constructor(private activatedRoute: ActivatedRoute, private apiService: ApiService, private titleService: Title,
     private router: Router) { }

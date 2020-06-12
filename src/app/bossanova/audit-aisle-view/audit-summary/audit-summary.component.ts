@@ -13,7 +13,9 @@ export class AuditSummaryComponent implements OnInit {
   @Input() aisle: Aisle;
   @Input() misreadCount: number;
   @Input() undetectedLabelsCount: number;
+  @Input() searchedBarcode: string;
   @Output() completeStage = new EventEmitter();
+  @Output() searchedBarcodeChange = new EventEmitter();
 
   buttonText = 'Start Audit';
 
@@ -30,6 +32,11 @@ export class AuditSummaryComponent implements OnInit {
     } else if (this.auditStage === AuditStage.misread) {
       this.buttonText = 'Finish';
     }
+  }
+
+  change(newValue) {
+    this.searchedBarcode = newValue;
+    this.searchedBarcodeChange.emit(newValue);
   }
 
 }

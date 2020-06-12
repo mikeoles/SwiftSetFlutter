@@ -10,9 +10,15 @@
 }
 
 button {
-    position: absolute;
-    right: 0px;
-    margin: 10px;
+    float: right;
+    margin: 8px;
+}
+
+input {
+    float: right;
+    margin: 18px;
+    font-size: 22px;
+    width: 180px;
 }
 
 .info {

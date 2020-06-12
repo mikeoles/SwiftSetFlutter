@@ -23,3 +23,4 @@
     </div>
 </div>
 <button (click)=nextStage()>{{buttonText}}</button>
+<input type="text" placeholder="Search Barcode" [ngModel]="searchedBarcode" (ngModelChange)="change($event)">
