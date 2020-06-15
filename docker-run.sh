@@ -49,6 +49,12 @@ fi
 if [[ ! -z "$AUDIT_REPORT_URL" ]]; then
   echo "  \"auditReportUrl\": \"$AUDIT_REPORT_URL\"," >> /usr/share/nginx/html/assets/config.json
 fi
+if [[ ! -z "$COVERAGE_ISSUE_DATE_SPAN" ]]; then
+  echo "  \"coverageIssueDateSpan\": $COVERAGE_ISSUE_DATE_SPAN," >> /usr/share/nginx/html/assets/config.json
+fi
+if [[ ! -z "$PREVIOUSLY_SEEN_THRESHOLD" ]]; then
+  echo "  \"missingPreviosulySeenThreshold\": $PREVIOUSLY_SEEN_THRESHOLD," >> /usr/share/nginx/html/assets/config.json
+fi
 echo "  \"production\": true" >> /usr/share/nginx/html/assets/config.json
 echo "}" >> /usr/share/nginx/html/assets/config.json
 

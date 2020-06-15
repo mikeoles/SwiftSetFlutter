@@ -530,8 +530,8 @@ export class ApiService {
   getFlaggedStores(): Observable<Store[]> {
     const config = {
       params: {
-          missingPreviouslySeenThreshold: this.environment.config.missingPreviosulySeenThreshold,
-          coverageIssueDateSpan: this.environment.config.coverageIssueDateSpan,
+          maximumPercentage: this.environment.config.missingPreviosulySeenThreshold,
+          days: this.environment.config.coverageIssueDateSpan,
       }
     };
     return this.http.get(`${this.apiUrl}/stores/coverage-issue`, config)
