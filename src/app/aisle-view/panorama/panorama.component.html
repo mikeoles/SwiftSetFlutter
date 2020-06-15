@@ -26,8 +26,8 @@
 
       <!-- Annotations -->	
       <ng-container *ngFor="let annotation of getAnnotations()">	
-        <div *ngIf="annotation" class="label"	
-        [ngStyle] = "setAnnotationStyles(annotation.labelId, annotation.color)"	></div>	
+        <div *ngIf="annotation" class="label" (click)="labelClicked(annotation)"
+        [ngStyle] = "setAnnotationStyles(annotation.labelId, annotation.color)"></div>	
       </ng-container>
     </div>
   </div>

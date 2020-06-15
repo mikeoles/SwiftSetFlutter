@@ -6,6 +6,6 @@ export enum LabelType {
     sectionLabels = 'sectionLabels',
     sectionBreaks = 'sectionBreaks',
     previouslySeenBarcodes = 'previouslySeenBarcodes',
-    falsePositives = 'falsePositives',
-    falseNegatives = 'falseNegatives'
+    falsePositives = 'falsePositive',
+    falseNegatives = 'falseNegative'
 }

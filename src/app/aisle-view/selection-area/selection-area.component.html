@@ -84,14 +84,14 @@
           <fa-icon *ngIf="!currentlyDisplayed.includes('previouslySeenBarcodes')" size="lg" class="check" [icon]="faSquare"></fa-icon>
           Previously Seen Barcodes
         </li>
-        <li (click)="displaySelected('falsePositives')">
-          <fa-icon *ngIf="currentlyDisplayed.includes('falsePositives')" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
-          <fa-icon *ngIf="!currentlyDisplayed.includes('falsePositives')" size="lg" class="check" [icon]="faSquare"></fa-icon>
+        <li *ngIf="auditor() || auditManager()" (click)="displaySelected('falsePositive')">
+          <fa-icon *ngIf="currentlyDisplayed.includes('falsePositive')" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
+          <fa-icon *ngIf="!currentlyDisplayed.includes('falsePositive')" size="lg" class="check" [icon]="faSquare"></fa-icon>
           False Positives
         </li>
-        <li (click)="displaySelected('falseNegatives')">
-          <fa-icon *ngIf="currentlyDisplayed.includes('falseNegatives')" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
-          <fa-icon *ngIf="!currentlyDisplayed.includes('falseNegatives')" size="lg" class="check" [icon]="faSquare"></fa-icon>
+        <li *ngIf="auditor() || auditManager()" (click)="displaySelected('falseNegative')">
+          <fa-icon *ngIf="currentlyDisplayed.includes('falseNegative')" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
+          <fa-icon *ngIf="!currentlyDisplayed.includes('falseNegative')" size="lg" class="check" [icon]="faSquare"></fa-icon>
           False Negatives
         </li>
       </ul>

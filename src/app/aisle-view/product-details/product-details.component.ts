@@ -5,6 +5,8 @@ import { ApiService } from 'src/app/services/api.service';
 import { LabelType } from 'src/app/shared/label-type';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import Aisle from 'src/app/models/aisle.model';
+import Annotation from 'src/app/models/annotation.model';
+import { AnnotationType } from 'src/app/shared/annotation-type';
 
 @Component({
   selector: 'app-product-details',
@@ -15,6 +17,7 @@ import Aisle from 'src/app/models/aisle.model';
 export class ProductDetailsComponent implements OnChanges {
 
   @Input() labelsDictionary = new Map<LabelType, Array<Label>>();
+  @Input() annotations = new Map<AnnotationType, Array<Annotation>>();
   @Input() sectionBreaks: number[] = [];
   @Input() labelsChanged: boolean;
   @Input() currentlyDisplayed: Array<string>;
@@ -27,7 +30,9 @@ export class ProductDetailsComponent implements OnChanges {
 
 
   allLabels: Array<Label> = [];
-
+  allAnnotations: Array<Annotation> = [];
+  labelToAnnotation = new Map<string, string>();
+  displayedIds = new Set<string>(); // A list of labelsIds to avoid duplicates from annotations
   showSectionLabels = false;
   showSectionBreaks = false;
   showTopStock = false;
@@ -45,11 +50,37 @@ export class ProductDetailsComponent implements OnChanges {
 
   ngOnChanges(): void {
     this.allLabels = [];
+    this.allAnnotations = [];
+    this.displayedIds.clear();
+
     this.labelsDictionary.forEach((labels: Label[], type: LabelType) => {
       if (this.currentlyDisplayed.includes(type)) { // only display labels selected in the selection area dropdown
         this.allLabels = this.allLabels.concat(labels);
+        labels.forEach(label => {
+          this.displayedIds.add(label.labelId);
+        });
       }
     });
+    this.annotations.forEach((annotations: Annotation[], annotationType: AnnotationType) => {
+      annotations.forEach(annotation => { // map each label to corresponding annotation, leave blank if no annotations
+        this.labelToAnnotation.set(annotation.labelId, annotation.annotationType + ': ' + annotation.annotationCategory);
+        if (!this.displayedIds.has(annotation.labelId) && this.currentlyDisplayed.includes(annotationType)) {
+          this.allLabels.push(this.getLabelById(annotation.labelId));
+        }
+      });
+    });
+  }
+
+  getLabelById(labelId: string): Label {
+    let matchingLabel;
+    this.labelsDictionary.forEach((labels: Array<Label>) => {
+      labels.forEach(label => {
+        if (label.labelId === labelId) {
+          matchingLabel = label;
+        }
+      });
+    });
+    return matchingLabel;
   }
 
   // if an item is clied on the grid

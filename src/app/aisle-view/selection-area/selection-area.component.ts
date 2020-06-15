@@ -11,6 +11,8 @@ import { ApiService } from 'src/app/services/api.service';
 import Store from 'src/app/models/store.model';
 import { LabelType } from 'src/app/shared/label-type';
 import {Location} from '@angular/common';
+import { Role } from 'src/app/auth/role';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-selection-area',
@@ -58,7 +60,8 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
               private modalService: ModalService,
               private environment: EnvironmentService,
               private apiService: ApiService,
-              private location: Location) {
+              private location: Location,
+              private authService: AuthService) {
     this.showExportButtons = environment.config.showExportButtons;
     this.showMisreadBarcodes = environment.config.showMisreadBarcodes;
     this.showSectionLabels = environment.config.showSectionLabels;
@@ -275,5 +278,13 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
       return -1;
     }
     return 0;
+  }
+
+  auditManager(): boolean {
+    return this.authService.hasRole(Role.AUDIT_MANAGER);
+  }
+
+  auditor(): boolean {
+    return this.authService.hasRole(Role.AUDITOR);
   }
 }

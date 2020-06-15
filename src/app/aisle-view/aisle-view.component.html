@@ -11,7 +11,7 @@
   [exportPano]='exportPano' [selectedAisle]='selectedAisle' [selectedMission]='selectedMission'
   [annotations]="annotations" [categories]="categories">
 </app-panorama>
-<app-product-details [labelsDictionary]="labels" [labelsChanged]="labelsChanged" 
+<app-product-details [labelsDictionary]="labels" [labelsChanged]="labelsChanged" [annotations]="annotations"
 [sectionBreaks]="sectionBreaks" [currentlyDisplayed]='currentlyDisplayed' (gridId)='setId($event)' [currentId]="currentId"
 [panoMode]='panoMode' [selectedAisle]="selectedAisle" (toggleCoverageIssueDetails)='toggleCoverageIssueDetails()'>
 </app-product-details>
