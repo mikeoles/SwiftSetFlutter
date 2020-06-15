@@ -8,7 +8,8 @@
   [labels]="labels" [sectionBreaks]="sectionBreaks" [currentlyDisplayedToggled]="currentlyDisplayedToggled" 
   [panoMode]='panoMode'  [resetPano]='resetPano' [labelsChanged]="labelsChanged" (panoramaId)='setId($event)'
   [showCoverageIssueDetails]='showCoverageIssueDetails' (toggleCoverageIssueDetails)='toggleCoverageIssueDetails()'
-  [exportPano]='exportPano' [selectedAisle]='selectedAisle' [selectedMission]='selectedMission'>
+  [exportPano]='exportPano' [selectedAisle]='selectedAisle' [selectedMission]='selectedMission'
+  [annotations]="annotations" [categories]="categories">
 </app-panorama>
 <app-product-details [labelsDictionary]="labels" [labelsChanged]="labelsChanged" 
 [sectionBreaks]="sectionBreaks" [currentlyDisplayed]='currentlyDisplayed' (gridId)='setId($event)' [currentId]="currentId"

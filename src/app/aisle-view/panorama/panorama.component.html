@@ -23,6 +23,12 @@
           <div class="break" [style.left.px]="sectionBreak"></div>
         </ng-container>
       </ng-container>
+
+      <!-- Annotations -->	
+      <ng-container *ngFor="let annotation of getAnnotations()">	
+        <div *ngIf="annotation" class="label"	
+        [ngStyle] = "setAnnotationStyles(annotation.labelId, annotation.color)"	></div>	
+      </ng-container>
     </div>
   </div>
   

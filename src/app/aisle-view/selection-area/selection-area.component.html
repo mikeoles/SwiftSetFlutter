@@ -84,6 +84,16 @@
           <fa-icon *ngIf="!currentlyDisplayed.includes('previouslySeenBarcodes')" size="lg" class="check" [icon]="faSquare"></fa-icon>
           Previously Seen Barcodes
         </li>
+        <li (click)="displaySelected('falsePositives')">
+          <fa-icon *ngIf="currentlyDisplayed.includes('falsePositives')" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
+          <fa-icon *ngIf="!currentlyDisplayed.includes('falsePositives')" size="lg" class="check" [icon]="faSquare"></fa-icon>
+          False Positives
+        </li>
+        <li (click)="displaySelected('falseNegatives')">
+          <fa-icon *ngIf="currentlyDisplayed.includes('falseNegatives')" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
+          <fa-icon *ngIf="!currentlyDisplayed.includes('falseNegatives')" size="lg" class="check" [icon]="faSquare"></fa-icon>
+          False Negatives
+        </li>
       </ul>
       <div *ngIf="currentDropdown === 'display'" class="pointer"></div>
     </div>

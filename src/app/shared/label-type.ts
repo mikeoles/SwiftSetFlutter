@@ -5,5 +5,7 @@ export enum LabelType {
     topStock = 'topStock',
     sectionLabels = 'sectionLabels',
     sectionBreaks = 'sectionBreaks',
-    previouslySeenBarcodes = 'previouslySeenBarcodes'
+    previouslySeenBarcodes = 'previouslySeenBarcodes',
+    falsePositives = 'falsePositives',
+    falseNegatives = 'falseNegatives'
 }
