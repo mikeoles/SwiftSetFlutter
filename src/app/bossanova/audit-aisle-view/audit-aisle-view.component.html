@@ -1,0 +1,7 @@
+<app-audit-summary [auditStage]="auditStage" [aisle]="aisle" (completeStage)="completeStage()"
+[(searchedBarcode)]="barcode" [misreadCount]="misreadCount" [undetectedLabelsCount]="undetectedLabelsCount">
+</app-audit-summary>
+<app-audit-panorama [currentlyDisplayed]="currentlyDisplayed" [labels]="labels" [panoramaUrl]="panoramaUrl"
+[labelsChanged]="labelsChanged" [categories]="categories" [auditStage]="auditStage" [aisle]="aisle"
+[annotations]="annotations" (annotationChange)="updateAnnotationCounts($event)" [searchedBarcode]="barcode">
+</app-audit-panorama>

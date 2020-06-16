@@ -20,4 +20,11 @@ export default class Aisle {
   topStock: Label[];
   sectionBreaks: number[];
   missingPreviouslySeenBarcodes: Label[];
+  storeName: string;
+  storeId: string;
+  missionName: string;
+  missionId: string;
+  falsePositiveCount: number;
+  falseNegativeCount: number;
+  owner: string;
 }

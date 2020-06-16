@@ -51,6 +51,10 @@ export class AislesGridComponent implements OnInit {
     return this.authService.hasRole(Role.AUDIT_MANAGER);
   }
 
+  auditor(): boolean {
+    return this.authService.hasRole(Role.AUDITOR);
+  }
+
   queueAisle(aisleId: string) {
     this.apiSerivce.queueAisle(this.storeId, this.missionId, aisleId);
     this.aisles.find(l => l.aisleId === aisleId).auditQueueStatus = AuditQueueStatus.QUEUED;

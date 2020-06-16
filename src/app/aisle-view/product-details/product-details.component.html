@@ -26,5 +26,5 @@
 </div>
 
 <div *ngIf='!panoMode'>
-  <app-product-grid [allLabels]="allLabels" [allAnnotations]="allAnnotations" [selectedId]="currentId" (gridClicked)='productGridSelected($event)' [qaMode]="qaMode"></app-product-grid>
+  <app-product-grid [allLabels]="allLabels" [selectedId]="currentId" (gridClicked)='productGridSelected($event)'></app-product-grid>
 </div>

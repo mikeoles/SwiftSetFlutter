@@ -10,6 +10,10 @@ import { MissionStatsComponent } from './bossanova-mission-view/mission-stats/mi
 import { AislesGridComponent } from './bossanova-mission-view/aisles-grid/aisles-grid.component';
 import { SharedModule } from '../shared/shared.module';
 import { AuditQueueViewComponent } from './audit-queue-view/audit-queue-view.component';
+import { AuditAisleViewComponent } from './audit-aisle-view/audit-aisle-view.component';
+import { AuditPanoramaComponent } from './audit-aisle-view/audit-panorama/audit-panorama.component';
+import { AuditSummaryComponent } from './audit-aisle-view/audit-summary/audit-summary.component';
+import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
 
 @NgModule({
   declarations: [
@@ -17,7 +21,10 @@ import { AuditQueueViewComponent } from './audit-queue-view/audit-queue-view.com
     BossanovaMissionViewComponent,
     MissionStatsComponent,
     AislesGridComponent,
-    AuditQueueViewComponent
+    AuditQueueViewComponent,
+    AuditAisleViewComponent,
+    AuditPanoramaComponent,
+    AuditSummaryComponent
   ],
   imports: [
     CommonModule,
@@ -25,7 +32,8 @@ import { AuditQueueViewComponent } from './audit-queue-view/audit-queue-view.com
     FormsModule,
     RouterModule,
     FontAwesomeModule,
-    SharedModule
+    SharedModule,
+    KeyboardShortcutsModule.forRoot(),
   ],
   exports: [
     BossanovaFleetViewComponent,

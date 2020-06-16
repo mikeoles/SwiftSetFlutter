@@ -1,4 +1,4 @@
-@import '../../../variables';
+@import '../../../../variables';
 
 .panorama {
   overflow: hidden;
@@ -6,7 +6,7 @@
   position: relative;
 
   .image-owner {
-    height: 365px;
+    height: calc(100vh - 128px);
     position: relative;
 
     .image {
@@ -22,13 +22,13 @@
         border: 10px solid;
       }
 
-      .break{
+      .marker {
         position: absolute;
-        color: $sectionBreak;
-        border: 20px solid;
-        width: 0px;
-        height: 100%;
-        top: 0px;
+        height: 70px;
+        width: 70px;
+        background-color: rgba(0, 0, 0, 0);
+        border-radius: 50%;
+        border: 10px #3399ff solid;
       }
     }
   }
@@ -67,35 +67,44 @@
   }
 }
 
-.panoModeClass{
-  height: calc(100vh - 111px - 95px) !important;
-}
-
-#coverageIssueDetails {
+#annotationSelector {
   position: absolute;
   top: 0px;
   right: 0px;
-  width: 30%;
-  background-color: white;
-  height: calc(100% - 50px);
+  max-height: calc(100vh - 128px);
+  font-size: 22px;
+  margin-block-start: 00px;
   overflow: auto;
-  span{
+  background-color: white;
+  padding: 0px 0px 0px 0px;
+  border-top-left-radius: 0px;
+  box-shadow: 0px 0px 30px rgba(32, 32, 32, 0.411);
+  text-align: left;
+  list-style-type: none;
+  
+  li {
+    padding: 3px;
+    border-bottom: rgba(211, 211, 211, 0.5) 1px solid;
+    cursor:pointer;
+    
+    span {
+      float: right;
+      margin-left: 20px;
+      border-left: 1px solid $primary;
+      min-width: 25px;
+      padding-left: 5px;
+    }
+
+  }
+
+  .outCheckbox {
+    border-bottom: 2px solid $primary;
     font-weight: bold;
-    margin-bottom: 10px;
-    color: red
+    text-align: center;
+  }
+
+  .delete {
+    background-color: red;
+    text-align: center;
   }
 }
-
-#closeCoverageIssueDetails {
-  position: absolute;
-  bottom: 0px;
-  right: 0px;
-  width: 30%;
-  height: 50px;
-  background-color: red;
-  color: black;
-  border-radius: 0px;
-  border-width: 0px;
-  text-align: center;
-}
-

@@ -136,5 +136,8 @@
       }
     }
   },
-  "defaultProject": "aisle"
+  "defaultProject": "aisle",
+  "cli": {
+    "analytics": false
+  }
 }

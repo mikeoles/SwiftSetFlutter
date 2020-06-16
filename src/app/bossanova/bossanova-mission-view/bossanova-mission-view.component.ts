@@ -12,8 +12,8 @@ import { DataService } from '../../services/data.service';
 import * as jsPDF from 'jspdf';
 import Aisle from '../../models/aisle.model';
 import { Title } from '@angular/platform-browser';
-import { Role } from 'src/app/auth/role';
 import { AuthService } from 'src/app/auth/auth.service';
+import { Role } from 'src/app/auth/role';
 
 @Component({
   selector: 'app-bossanova-mission-view',

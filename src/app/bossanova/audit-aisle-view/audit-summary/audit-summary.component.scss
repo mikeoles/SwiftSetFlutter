@@ -1,0 +1,45 @@
+:host {
+    display: block;
+}
+
+#title {
+    font-size: 24px;
+    font-weight: bold;
+    display: inline-block;
+    margin: 20px 10px;
+}
+
+button {
+    float: right;
+    margin: 8px;
+}
+
+input {
+    float: right;
+    margin: 18px;
+    font-size: 22px;
+    width: 180px;
+}
+
+.info {
+    display: inline-block;
+    font-size: 24px;
+    color: #2baae1;
+    font-weight: bold;
+    margin-left: 25px;
+}
+
+.counts {
+    display: inline-block;
+    margin-left: 25px;
+
+    div {
+        display: inline;
+
+        span {
+            font-weight: bold;
+            font-size: 20px;
+            margin-right: 5px;
+        }
+    }
+}

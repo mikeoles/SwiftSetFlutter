@@ -1,4 +1,5 @@
 <h1>Audit Queue</h1>
+<p class="auditError" *ngIf="errorMessage">{{errorMessage}}</p>
 <table>
     <thead>
         <tr>
@@ -11,23 +12,43 @@
             <th>False Negatives</th>
             <th>Owner</th>
             <th>Audit Status</th>
-            <th></th>
+            <th *ngIf="auditManager()">Action</th>
         </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let auditAisle of auditAisles">
-        <td>{{auditAisle.storeName}}</td>
-        <td>{{auditAisle.missionName}}</td>
-        <td>{{auditAisle.aisleName}}</td>
-        <td>{{auditAisle.labelsCount}}</td>
-        <td>{{auditAisle.outsCount}}</td>
-        <td>{{auditAisle.falsePositiveCount}}</td>
-        <td>{{auditAisle.falseNegativeCount}}</td>
-        <td>{{auditAisle.owner}}</td>
-        <td>{{auditAisle.auditQueueStatus.replace('-', ' ') | titlecase}}</td>
-        <td>
-            <button *ngIf="auditAisle.auditQueueStatus === 'queued'" (click)="removeAisle(auditAisle)">Remove</button>
-        </td>
-    </tr>
+        <tr *ngFor="let aisle of aisles">
+            <td>
+                <a [routerLink]="['/store', aisle.storeId]">
+                    {{aisle.storeName}}
+                </a>
+            </td>
+            <td>
+                <a [routerLink]="['/store', aisle.storeId, 'mission', aisle.missionId]">
+                    {{aisle.missionName}}
+                </a>
+            </td>
+            <td>
+                <a [routerLink]="['/store', aisle.storeId, 'mission', aisle.missionId, 'aisle', aisle.aisleId]">
+                    {{aisle.aisleName}}
+                </a>
+            </td>
+            <td>{{aisle.labelsCount}}</td>
+            <td>{{aisle.outsCount}}</td>
+            <td>{{aisle.falsePositiveCount}}</td>
+            <td>{{aisle.falseNegativeCount}}</td>
+            <td>{{aisle.owner}}</td>
+            <td *ngIf="auditManager() || aisle.auditQueueStatus !== 'queued'">
+                {{aisle.auditQueueStatus.replace('-', ' ') | titlecase}}
+            </td>
+            <td *ngIf="auditor() && aisle.auditQueueStatus === 'queued'">
+                <button (click)="auditAisle(aisle)">Audit</button>
+            </td>
+            <td *ngIf="auditManager()">
+                <button *ngIf="aisle.auditQueueStatus === 'queued'" class="remove"
+                    (click)="removeAisle(aisle)">Remove</button>
+                <button *ngIf="aisle.auditQueueStatus === 'in-progress'" class="remove"
+                    (click)="removeAuditor(aisle)">Remove Auditor</button>
+            </td>
+        </tr>
     </tbody>
-  </table>
+</table>

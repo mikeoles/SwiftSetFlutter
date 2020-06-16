@@ -1,10 +1,8 @@
 import { Component, Output, EventEmitter, Input, OnChanges } from '@angular/core';
 import Label from '../../models/label.model';
-import Annotation from 'src/app/models/annotation.model';
 import { EnvironmentService } from '../../services/environment.service';
 import { ApiService } from 'src/app/services/api.service';
-import { LabelType } from '../label-type';
-import { AnnotationType } from '../annotation-type';
+import { LabelType } from 'src/app/shared/label-type';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import Aisle from 'src/app/models/aisle.model';
 
@@ -17,13 +15,11 @@ import Aisle from 'src/app/models/aisle.model';
 export class ProductDetailsComponent implements OnChanges {
 
   @Input() labelsDictionary = new Map<LabelType, Array<Label>>();
-  @Input() annotationsDictionary = new Map<AnnotationType, Array<Annotation>>();
   @Input() sectionBreaks: number[] = [];
   @Input() labelsChanged: boolean;
   @Input() currentlyDisplayed: Array<string>;
   @Input() currentId: number;
   @Input() panoMode: boolean;
-  @Input() qaMode: boolean;
   @Input() selectedAisle: Aisle;
 
   @Output() gridId = new EventEmitter();
@@ -31,7 +27,6 @@ export class ProductDetailsComponent implements OnChanges {
 
 
   allLabels: Array<Label> = [];
-  allAnnotations: Array<Annotation> = [];
 
   showSectionLabels = false;
   showSectionBreaks = false;
@@ -50,14 +45,10 @@ export class ProductDetailsComponent implements OnChanges {
 
   ngOnChanges(): void {
     this.allLabels = [];
-    this.allAnnotations = [];
     this.labelsDictionary.forEach((labels: Label[], type: LabelType) => {
       if (this.currentlyDisplayed.includes(type)) { // only display labels selected in the selection area dropdown
         this.allLabels = this.allLabels.concat(labels);
       }
-    });
-    this.annotationsDictionary.forEach((annotations: Annotation[]) => {
-      this.allAnnotations = this.allAnnotations.concat(annotations);
     });
   }
 

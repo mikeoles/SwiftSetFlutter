@@ -1,0 +1,57 @@
+<div class="panorama">
+  <div class="image-owner" id="image-owner">
+    <div id="pano-image" class="image">
+      <img [src]="panoramaUrl" *ngIf="panoramaUrl" (click)="panoTouched()"/>
+
+        <!-- Labels -->
+      <ng-container *ngFor="let displayType of currentlyDisplayed">
+        <ng-container *ngFor="let label of labels.get(displayType)">
+          <div class="label"
+          [ngClass] = "displayType"
+          [style.left.px] = "label.bounds.left"
+          [style.top.px] = "label.bounds.top"
+          [style.width.px] = "label.bounds.width"
+          [style.height.px] = "label.bounds.height"
+          [style.border-color] = "label.color"
+          (click)="labelClicked(label.labelId)"></div>
+        </ng-container>
+      </ng-container>
+
+      <!-- Annotations -->
+      <ng-container *ngFor="let annotation of getAnnotations()">
+        <div *ngIf="annotation" class="label"
+        [ngStyle] = "setAnnotationStyles(annotation.labelId, annotation.color)"
+        (click)="labelClicked(annotation.labelId)"></div>
+      </ng-container>
+
+      <!-- Undetected Labels Circles -->
+      <ng-container *ngIf="showUndetectedLabels()">
+        <ng-container *ngFor="let annotation of annotations.get('undetectedLabels')">
+          <div *ngIf="annotation" class="marker" [ngStyle]="setMarkerStyles(annotation)" (click)="editMarker(annotation)"></div>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+  
+  <div id="zoom">
+    <fa-icon id="zoomIn" class="zoomIcon" [icon]="faPlus" (click)="zoomIn()"></fa-icon>
+    <fa-icon id="zoomOut" class="zoomIcon" [icon]="faMinus" (click)="zoomOut()"></fa-icon>
+  </div>
+
+  <!-- Annotation Selection Menu -->
+  <ul id="annotationSelector" *ngIf="annotationMenu !== 'none'" [ngStyle]="setMenuStyles()">
+    <li class="outCheckbox" *ngIf="annotationMenu === 'undetectedLabels'">
+      <input class="checkbox" type="checkbox" [ngModel]="undetectedOut" (ngModelChange)="undetectedOutChanged($event)"/> Out
+    </li>
+    <ng-container *ngFor="let category of categories.get(annotationMenu); let i = index">
+      <li
+        [ngStyle]="setMenuOptionStyles(category.categoryName, hovered, i, category.color)"
+        (mouseover)="hovered = i" (mouseleave)="hovered = -1" (click)="changeAnnotation(category.categoryName)">
+        {{category.categoryName}} <span>{{category.hotkey | uppercase}}</span>
+      </li>
+    </ng-container>
+    <li *ngIf="showDeleteOption" class="delete" (click)="changeAnnotation()">Delete</li>
+  </ul>
+</div>
+<ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
+  

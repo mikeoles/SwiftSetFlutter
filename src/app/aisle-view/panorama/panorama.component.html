@@ -17,20 +17,6 @@
         </ng-container>
       </ng-container>
 
-      <!-- Annotations -->
-      <ng-container *ngFor="let annotation of getAnnotations()">
-        <div *ngIf="annotation" class="label"
-        [ngStyle] = "setAnnotationStyles(annotation.labelId, annotation.color)"
-        (click)="annotationClicked(annotation)"></div>
-      </ng-container>
-
-      <!-- Missing Barcodes Circles -->
-      <ng-container *ngIf="qaMode">
-        <ng-container *ngFor="let missedAnnotation of annotations.get('missed'); let i = index">
-          <div class="marker" [ngStyle]="setMarkerStyles(missedAnnotation)" (click)="editMarker(i)"></div>
-        </ng-container>
-      </ng-container>
-
       <!-- Section Breaks -->
       <ng-container *ngIf="currentlyDisplayed.includes(labelType.sectionBreaks)">
         <ng-container *ngFor="let sectionBreak of sectionBreaks">
@@ -45,23 +31,11 @@
     <fa-icon id="zoomOut" class="zoomIcon" [icon]="faMinus" (click)="zoomOut()"></fa-icon>
   </div>
 
-  <!-- Annotation Selection Menu -->
-  <ul id="annotationSelector" *ngIf="annotationMenu !== 'none'" [ngStyle]="setMenuStyles()">
-    <ng-container *ngFor="let category of categories.get(annotationMenu); let i = index">
-      <li
-        [ngStyle]="setMenuOptionStyles(category.categoryName, hovered, i, category.color)"
-        (mouseover)="hovered = i" (mouseleave)="hovered = -1" (click)="changeAnnotation(category.categoryName)">
-        {{category.categoryName}} <span>{{category.hotkey | uppercase}}</span>
-      </li>
-    </ng-container>
-    <li *ngIf="showDeleteOption" class="delete" (click)="changeAnnotation()">Delete</li>
-  </ul>
-
   <div *ngIf="showCoverageIssueDetails" id="coverageIssueDetails">
     <span>Coverage Issues Detected:</span>
     <br>Out of {{selectedAisle.previouslySeenBarcodeCount}} distinct barcodes detected in the
     previous {{selectedAisle.previouslySeenBarcodeSampleSize}} scans, {{selectedAisle.missingPreviouslySeenBarcodeCount}}
-    ({{selectedAisle.missingPreviouslySeenBarcodePercentage*100}}%) of those barcodes were not found in this aisle
+    ({{selectedAisle.missingPreviouslySeenBarcodePercentage*100 | number : '1.0-2'}}%) of those barcodes were not found in this aisle
   </div>
   <button *ngIf="showCoverageIssueDetails" id="closeCoverageIssueDetails" (click)="closeCoverageIssueDetails()">Close</button>
 </div>
