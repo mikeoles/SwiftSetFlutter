@@ -135,10 +135,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.exportPano && this.exportPano) {
       const context = this;
-      this.panZoomApi = panzoom(this.panoImageElement, {
-        maxZoom: 1,
-        minZoom: 1
-      });
+      this.panZoomApi.zoomAbs(0, 0, 1);
       setTimeout(() => {
         htmlToImage.toJpeg(document.getElementById('pano-image'))
         .then(function (blob) {
@@ -146,7 +143,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
             context.selectedMission.storeName + ' ' +
             context.selectedMission.missionName + ' ' +
             context.selectedAisle.aisleName + '.jpg');
-          context.ngOnInit();
+            context.panZoomApi.zoomAbs(0, 0, .2);
         });
       },
       1000);
@@ -164,6 +161,10 @@ export class PanoramaComponent implements OnInit, OnChanges {
       this.zoomToLabel();
     }
     this.cancelZoom = false;
+  }
+
+  zoomOutAfterExport() {
+
   }
 
   // Center the pano on the screen
