@@ -77,13 +77,13 @@ export class AisleViewComponent implements OnInit, OnDestroy {
       }
     });
     this.apiService.getStore(storeId, new Date(), new Date()).subscribe(store => {
-      this.apiService.getMission(storeId, missionId, store.zoneId).subscribe(mission => {
+      this.apiService.getMission(store.storeId, missionId, store.zoneId).subscribe(mission => {
         const start: Date = new Date();
         start.setTime(mission.startDateTime.getTime());
         const end: Date = new Date(start);
         end.setDate(end.getDate() + 3);
         start.setDate(start.getDate() - 3);
-        this.apiService.getMissions(storeId, start, end, store.zoneId).subscribe(missions => {
+        this.apiService.getMissions(store.storeId, start, end, store.zoneId).subscribe(missions => {
           this.setMission(mission, aisleId);
           this.missions = missions;
         });
@@ -134,7 +134,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   setMission(mission: Mission, aisleId: string) {
     this.selectedMission = mission;
     mission.aisles.forEach(aisle => {
-      if (aisle.aisleId.toString() === aisleId) {
+      if (aisle.aisleId.toString() === aisleId || aisle.aisleName === aisleId) {
         this.setAisle(aisle);
       }
     });

@@ -54,21 +54,21 @@ export class CustomerMissionViewComponent implements OnInit, OnDestroy {
         storeId = params['storeId'];
       }
     });
-    this.apiService.getMission(storeId, missionId, Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe(mission => {
-      this.titleService.setTitle(mission.storeName + ' - ' + mission.missionName);
-      this.mission = mission;
-      this.aisles = mission.aisles;
-      const startDate = new Date();
-      startDate.setDate(startDate.getDate() - this.environment.config.missionHistoryDays + 1);
-      this.apiService.getStore(mission.storeId, startDate, new Date()).subscribe(store => {
-        this.store = store;
-        // If this page was nagivates to from the store view, show the two week average from there, if not show the last two weeks average
-        this.averageStoreLabels = this.dataService.averageStoreLabels
-          ? this.dataService.averageStoreLabels : this.store.totalAverageLabels;
-        this.averageStoreOuts = this.dataService.averageStoreOuts
-          ? this.dataService.averageStoreOuts : this.store.totalAverageOuts;
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - this.environment.config.missionHistoryDays + 1);
+    this.apiService.getStore(storeId, startDate, new Date()).subscribe(store => {
+      this.store = store;
+      this.apiService.getMission(storeId, missionId, Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe(mission => {
+        this.titleService.setTitle(mission.storeName + ' - ' + mission.missionName);
+        this.mission = mission;
+        this.aisles = mission.aisles;
+          // If this page was nagivates to from the store view, show the two week average from there, if not show the last two weeks average
+          this.averageStoreLabels = this.dataService.averageStoreLabels
+            ? this.dataService.averageStoreLabels : this.store.totalAverageLabels;
+          this.averageStoreOuts = this.dataService.averageStoreOuts
+            ? this.dataService.averageStoreOuts : this.store.totalAverageOuts;
+        });
       });
-    });
     this.service = this.apiService;
 }
 
