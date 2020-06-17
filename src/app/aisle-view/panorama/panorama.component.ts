@@ -143,7 +143,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
             context.selectedMission.storeName + ' ' +
             context.selectedMission.missionName + ' ' +
             context.selectedAisle.aisleName + '.jpg');
-            context.panZoomApi.zoomAbs(0, 0, .2);
+            context.panZoomApi.zoomAbs(0, 0, context.panoModeStartingZoomLevel);
         });
       },
       1000);
