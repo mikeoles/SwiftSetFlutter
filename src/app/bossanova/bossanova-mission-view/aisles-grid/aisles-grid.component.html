@@ -6,7 +6,7 @@
         <fa-icon *ngIf="sortType === 'aisleName' && !sortReverse" size="sm" class="fa" [icon]="faAngleDown"></fa-icon>
         <fa-icon *ngIf="sortType === 'aisleName' && sortReverse" size="sm" class="fa" [icon]="faAngleUp"></fa-icon>
       </th>
-      <th *ngIf="!auditManager() && !auditor()" (click)="sortBy('scanDateTime')">
+      <th (click)="sortBy('scanDateTime')">
         Capture Time 
         <fa-icon *ngIf="sortType === 'scanDateTime' && !sortReverse" size="sm" class="fa" [icon]="faAngleDown"></fa-icon>
         <fa-icon *ngIf="sortType === 'scanDateTime' && sortReverse" size="sm" class="fa" [icon]="faAngleUp"></fa-icon>
@@ -48,7 +48,7 @@
           {{aisle.aisleName}}
         </a>
       </td>
-      <td *ngIf="!auditManager() && !auditor()">{{aisle.scanDateTime | date:'medium'}}</td>
+      <td>{{aisle.scanDateTime | date:'medium'}}</td>
       <td>{{aisle.outsCount}}</td>
       <td>{{aisle.labelsCount}}</td>
       <td *ngIf="auditManager() || auditor()" >{{aisle.falsePositiveCount}}</td>
