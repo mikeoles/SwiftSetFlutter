@@ -12,6 +12,9 @@ import { BackService } from '../services/back.service';
 import { ShortcutInput } from 'ng-keyboard-shortcuts';
 import { LabelType } from 'src/app/shared/label-type';
 import { Title } from '@angular/platform-browser';
+import { AnnotationType } from '../shared/annotation-type';
+import Annotation from '../models/annotation.model';
+import AnnotationCategory from '../models/annotationCategory.model';
 
 @Component({
   selector: 'app-aisle-view',
@@ -34,6 +37,8 @@ export class AisleViewComponent implements OnInit, OnDestroy {
 
   private logoSubscription: Subscription;
   private backButtonSubscription: Subscription;
+  annotations = new Map<AnnotationType, Array<Annotation>>();
+  categories = new Map<AnnotationType, Array<AnnotationCategory>>();
   currentlyDisplayed: Array<LabelType> = new Array<LabelType>();
   shortcuts: ShortcutInput[] = [];
   labelsChanged = false;
@@ -169,6 +174,17 @@ export class AisleViewComponent implements OnInit, OnDestroy {
       this.sectionBreaks = fullAisle.sectionBreaks;
       this.panoramaUrl = fullAisle.panoramaUrl;
       this.currentId = null;
+      this.apiService.getAnnotations(this.selectedMission.storeId, this.selectedMission.missionId, aisle.aisleId)
+      .subscribe(annotations => {
+        this.setLabelAnnotations(annotations.falsePositives, AnnotationType.falsePositive);
+        this.setLabelAnnotations(annotations.falseNegatives, AnnotationType.falseNegative);
+      });
+      this.apiService.getFalsePositiveCategories().subscribe(categories => {
+        this.categories.set(AnnotationType.falsePositive, categories);
+      });
+      this.apiService.getFalseNegativeCategories().subscribe(categories => {
+        this.categories.set(AnnotationType.falseNegative, categories);
+      });
     });
     this.location.replaceState(
       'store/' + this.selectedMission.storeId + '/mission/' + this.selectedMission.missionId + '/aisle/' + this.selectedAisle.aisleId);
@@ -180,5 +196,20 @@ export class AisleViewComponent implements OnInit, OnDestroy {
 
   toggleCoverageIssueDetails() {
     this.showCoverageIssueDetails = !this.showCoverageIssueDetails;
+  }
+
+  setLabelAnnotations(annotations, annotationType: AnnotationType): any {
+    if (annotations === undefined) {
+      annotations = [];
+    }
+    const annotationsList: Array<Annotation> = [];
+    annotations.forEach(annotation => {
+      const annotationObj = new Annotation();
+      annotationObj.annotationType = annotationType;
+      annotationObj.annotationCategory = annotation.category;
+      annotationObj.labelId = annotation.labelId;
+      annotationsList.push(annotationObj);
+    });
+    this.annotations.set(annotationType, annotationsList);
   }
 }

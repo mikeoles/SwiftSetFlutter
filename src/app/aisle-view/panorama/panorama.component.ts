@@ -19,6 +19,9 @@ import Aisle from 'src/app/models/aisle.model';
 import htmlToImage from 'html-to-image';
 import { saveAs } from 'file-saver';
 import Mission from 'src/app/models/mission.model';
+import { AnnotationType } from 'src/app/shared/annotation-type';
+import Annotation from 'src/app/models/annotation.model';
+import AnnotationCategory from 'src/app/models/annotationCategory.model';
 
 @Component({
   selector: 'app-panorama',
@@ -43,6 +46,8 @@ export class PanoramaComponent implements OnChanges, AfterViewInit {
   @Input() currentlyDisplayed: Array<LabelType>;
   @Input() currentlyDisplayedToggled: boolean;
   @Input() showCoverageIssueDetails: boolean;
+  @Input() annotations = new Map<AnnotationType, Array<Annotation>>();
+  @Input() categories = new Map<AnnotationType, Array<AnnotationCategory>>();
   @Input() elementId = 'pano-image';
   @Input() panoPosition: any;
   @Input() panoChanged: boolean;
@@ -169,6 +174,7 @@ export class PanoramaComponent implements OnChanges, AfterViewInit {
 
     if (changes.labels || changes.currentlyDisplayedToggled || changes.currentId || changes.labelsChanged) {
       this.updateLabelBorderColors();
+      this.updateAnnotationBorderColors();
     }
 
     if (this.panZoomApi && (changes['panoMode'] || changes['resetPano'] !== undefined)) {
@@ -303,5 +309,46 @@ export class PanoramaComponent implements OnChanges, AfterViewInit {
 
   closeCoverageIssueDetails() {
     this.toggleCoverageIssueDetails.emit();
+  }
+
+  setAnnotationStyles(labelId: string, color: string) {
+    const styles = {};
+    const label = this.getLabelById(labelId);
+    if (label !== undefined) {
+      styles['left.px'] = label.bounds.left;
+      styles['top.px'] = label.bounds.top;
+      styles['width.px'] = label.bounds.width;
+      styles['height.px'] = label.bounds.height;
+      styles['border-color'] = color;
+    }
+    return styles;
+  }
+
+  getAnnotations(): Array<Annotation> {
+    let labelAnnotations = [];
+    if (this.currentlyDisplayed.includes(LabelType.falseNegatives) && this.annotations.has(AnnotationType.falseNegative)) {
+      labelAnnotations = labelAnnotations.concat(this.annotations.get(AnnotationType.falseNegative));
+    }
+    if (this.currentlyDisplayed.includes(LabelType.falsePositives)  && this.annotations.has(AnnotationType.falsePositive)) {
+      labelAnnotations = labelAnnotations.concat(this.annotations.get(AnnotationType.falsePositive));
+    }
+    return labelAnnotations;
+  }
+
+  // Changes border colors for labels that have annotations attached to them
+  updateAnnotationBorderColors(): any {
+    if (this.annotations && this.annotations.size > 0 && this.categories && this.categories.size > 0) {
+      this.annotations.forEach((annotations: Array<Annotation>, annotationType: AnnotationType) => {
+        annotations.forEach(annotation => {
+          const categoriesList = this.categories.get(annotation.annotationType);
+          const categoryName = annotation.annotationCategory;
+          categoriesList.forEach(category => {
+            if (category.categoryName === categoryName) {
+              annotation.color = category.color;
+            }
+          });
+        });
+      });
+    }
   }
 }

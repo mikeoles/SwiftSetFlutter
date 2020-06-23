@@ -6,7 +6,7 @@ import { Title } from '@angular/platform-browser';
 import { LabelType } from 'src/app/shared/label-type';
 import Label from 'src/app/models/label.model';
 import Aisle from 'src/app/models/aisle.model';
-import { AnnotationType } from 'src/app/bossanova/audit-aisle-view/annotation-type';
+import { AnnotationType } from 'src/app/shared/annotation-type';
 import Annotation from 'src/app/models/annotation.model';
 import AnnotationCategory from 'src/app/models/annotationCategory.model';
 

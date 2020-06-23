@@ -2,6 +2,9 @@ import { Component, OnInit, AfterViewChecked, EventEmitter, Output, Input, HostL
 import Label from 'src/app/models/label.model';
 import { labelScrollOptions } from 'src/app/aisle-view/product-details/product-grid/labelScrollOptions';
 import { EnvironmentService } from '../../../services/environment.service';
+import Annotation from 'src/app/models/annotation.model';
+import { Role } from 'src/app/auth/role';
+import { AuthService } from 'src/app/auth/auth.service';
 
 export enum KEY_CODE {
   UP = 38,
@@ -15,13 +18,16 @@ export enum KEY_CODE {
 })
 export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges {
 
-  @Output() gridClicked = new EventEmitter<string>();
+  @Input() labelToAnnotation = new Map<string, string>();
   @Input() allLabels: Array<Label>;
   @Input() selectedId: string;
+
+  @Output() gridClicked = new EventEmitter<string>();
+
   columnHeaders: String[];
   rows: Array<Array<String>> = [];
 
-  constructor(private environment: EnvironmentService) {
+  constructor(private environment: EnvironmentService, private authService: AuthService) {
   }
 
   ngOnInit() {
@@ -93,6 +99,10 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
   getGridData() {
     this.rows = [];
     this.columnHeaders = Object.assign([], this.environment.config.productGridFields);
+    if (this.authService.hasRole(Role.AUDITOR) || this.authService.hasRole(Role.AUDIT_MANAGER)) {
+      this.columnHeaders.push('QA Annotations');
+    }
+
     for (let i = 0; i < this.allLabels.length; i++) {
       const label: Label = this.allLabels[i];
       let row: Array<String> = Array<String>();
@@ -101,10 +111,12 @@ export class ProductGridComponent implements OnInit, AfterViewChecked, OnChanges
         const field: String = this.columnHeaders[j];
         let fieldLowercase = field.charAt(0).toLowerCase() + field.slice(1);
         fieldLowercase = fieldLowercase.replace(/\s/g, ''); // remove spaces and make first letter lowercase
-        if (fieldLowercase === 'description') {
+        let cellValue: any = '';
+        if (fieldLowercase === 'qAAnnotations') { // check the label for annotations and display the first one in the grid
+          cellValue = this.labelToAnnotation.get(label.labelId);
+        } else if (fieldLowercase === 'description') {
           fieldLowercase = 'labelName';
         }
-        let cellValue: any = '';
         if (fieldLowercase === 'price' && (label.price === 0 || label.price)) {
           cellValue = `$${label.price.toFixed(2)}`;
         }
