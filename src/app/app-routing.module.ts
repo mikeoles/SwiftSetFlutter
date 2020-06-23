@@ -12,6 +12,7 @@ import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { Role } from './auth/role';
 import { AuditQueueViewComponent } from './bossanova/audit-queue-view/audit-queue-view.component';
 import { AuditAisleViewComponent } from './bossanova/audit-aisle-view/audit-aisle-view.component';
+import { AisleComparisonViewComponent } from './aisle-comparison-view/aisle-comparison-view.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,12 @@ const routes: Routes = [
   {
     path: 'store/:storeId/mission/:missionId/aisle/:aisleId/audit',
     component: AuditAisleViewComponent,
+    canActivate: [AuthGuard],
+    data: {roles: [Role.AUDITOR]}
+  },
+  {
+    path: 'store/:storeId/mission/:missionId/aisle/:aisleId/compare',
+    component: AisleComparisonViewComponent,
     canActivate: [AuthGuard],
     data: {roles: [Role.AUDITOR]}
   },

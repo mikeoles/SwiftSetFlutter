@@ -34,7 +34,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
 
   private logoSubscription: Subscription;
   private backButtonSubscription: Subscription;
-  currentlyDisplayed: Array<string> = new Array<string>();
+  currentlyDisplayed: Array<LabelType> = new Array<LabelType>();
   shortcuts: ShortcutInput[] = [];
   labelsChanged = false;
   exportPano = false;
@@ -60,7 +60,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.currentlyDisplayed.push('outs');
+    this.currentlyDisplayed.push(LabelType.outs);
     this.logoSubscription = this.logoService.logoClickEvent().subscribe(() => this.changePanoMode());
     this.backButtonSubscription = this.backService.backClickEvent().subscribe(() => this.goBack());
 
@@ -113,14 +113,15 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   }
 
   // If the element is in the list remove it, if not add it.  Move shelf labels to the front so they arent written over outs in the UI
-  toggleDisplayed(d: string) {
-    if (this.currentlyDisplayed.indexOf(d) !== -1) {
-      this.currentlyDisplayed.splice(this.currentlyDisplayed.indexOf(d), 1);
+  toggleDisplayed(input: string) {
+    const toggle = LabelType[input];
+    if (this.currentlyDisplayed.indexOf(toggle) !== -1) {
+      this.currentlyDisplayed.splice(this.currentlyDisplayed.indexOf(toggle), 1);
     } else {
-      if (d === 'shelfLabels') {
-        this.currentlyDisplayed.unshift(d);
+      if (toggle === LabelType.shelfLabels) {
+        this.currentlyDisplayed.unshift(toggle);
       } else {
-        this.currentlyDisplayed.push(d);
+        this.currentlyDisplayed.push(toggle);
       }
     }
     this.currentlyDisplayedToggled = !this.currentlyDisplayedToggled;
