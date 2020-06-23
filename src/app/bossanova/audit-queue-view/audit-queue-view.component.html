@@ -37,7 +37,7 @@
             <td>{{aisle.falsePositiveCount}}</td>
             <td>{{aisle.falseNegativeCount}}</td>
             <td>{{aisle.owner}}</td>
-            <td *ngIf="auditManager() || aisle.auditQueueStatus !== 'queued'">
+            <td *ngIf="!auditor() || aisle.auditQueueStatus !== 'queued'">
                 {{aisle.auditQueueStatus.replace('-', ' ') | titlecase}}
             </td>
             <td *ngIf="auditor() && aisle.auditQueueStatus === 'queued'">

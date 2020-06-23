@@ -152,10 +152,7 @@ export class PanoramaComponent implements OnChanges, AfterViewInit {
 
     if (changes.exportPano && this.exportPano) {
       const context = this;
-      this.panZoomApi = panzoom(this.panoImageElement, {
-        maxZoom: 1,
-        minZoom: 1
-      });
+      this.panZoomApi.zoomAbs(0, 0, 1);
       setTimeout(() => {
         htmlToImage.toJpeg(document.getElementById(this.elementId))
         .then(function (blob) {
@@ -163,8 +160,9 @@ export class PanoramaComponent implements OnChanges, AfterViewInit {
             context.selectedMission.storeName + ' ' +
             context.selectedMission.missionName + ' ' +
             context.selectedAisle.aisleName + '.jpg');
-          context.ngAfterViewInit();
-        });
+            context.panZoomApi.zoomAbs(0, 0, context.panoModeStartingZoomLevel);
+            context.ngAfterViewInit();
+          });
       },
       1000);
     }
@@ -181,6 +179,10 @@ export class PanoramaComponent implements OnChanges, AfterViewInit {
       this.zoomToLabel();
     }
     this.cancelZoom = false;
+  }
+
+  zoomOutAfterExport() {
+
   }
 
   // Center the pano on the screen
