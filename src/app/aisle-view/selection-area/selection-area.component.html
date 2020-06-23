@@ -2,7 +2,7 @@
   <div class="bottomBar">
     <div class="storeInfo">{{selectedMission.storeName}}</div>
     <div id="missionsContainer">
-      <button class="dropdownButton" [ngClass]="{'selectedButton': currentDropdown === 'missions'}" (click)="openDropdown('missions')">
+      <button class="dropdownButton" (click)="openDropdown('missions')">
         Scan: {{selectedMission.missionName}}
         <fa-icon *ngIf="currentDropdown !== 'missions'" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
         <fa-icon *ngIf="currentDropdown === 'missions'" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
@@ -12,15 +12,14 @@
           *ngFor="let mission of missions"
           [class.selected]="mission.missionId === this.selectedMission.missionId"
           [value]="mission"
-          (click)="missionChanged(mission)"
-        >
+          (click)="missionChanged(mission)">
           {{mission.missionName}}
         </li>
       </ul>
       <div *ngIf="currentDropdown === 'missions'" class="pointer"></div>
     </div>
     <div id="aislesContainer">
-      <button class="dropdownButton" [ngClass]="{'selectedButton': currentDropdown === 'aisles'}" (click)="openDropdown('aisles')">
+      <button class="dropdownButton" (click)="openDropdown('aisles')">
         Aisle {{selectedAisle?.aisleName}}
         <fa-icon *ngIf="currentDropdown !== 'aisles'" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
         <fa-icon *ngIf="currentDropdown === 'aisles'" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
@@ -40,6 +39,7 @@
     <button class="panoChangeButton" (click)="nextPano()"><fa-icon size="lg" class="fa" [icon]="faArrowRight"></fa-icon></button>
     <button class="rightButton hideSmallScreen" (click)="openModal('export-popup')"><img class="exportImage" src="../../assets/export-blue.png"> <span>Export</span></button>
     <button *ngIf="showDebugButton" class="rightButton" (click)="debugClick()">Model Debug</button>
+    <button class="rightButton" (click)="compareAisle()">Compare</button>
     <button class="rightButton hideSmallScreen" (click)="resetPanoClick()">Reset Pano</button>
 
     <div class="rightDropdown rightButton">
@@ -65,7 +65,7 @@
           Top Stock
         </li>
         <li *ngIf="showMisreadBarcodes" (click)="displaySelected('misreadBarcodes')">
-          <fa-icon *ngIf="currentlyDisplayed.includes('misreadBarcodes')  && displayMisreadBarcodes" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
+          <fa-icon *ngIf="currentlyDisplayed.includes('misreadBarcodes')" size="lg" class="check" [icon]="faCheckSquare"></fa-icon>
           <fa-icon *ngIf="!currentlyDisplayed.includes('misreadBarcodes')" size="lg" class="check" [icon]="faSquare"></fa-icon>
           Misread Barcodes
         </li>
@@ -98,7 +98,6 @@
       <div *ngIf="currentDropdown === 'display'" class="pointer"></div>
     </div>
   </div>
-
 </div>
 <app-export-modal id="export-popup">
   <div class="modal">

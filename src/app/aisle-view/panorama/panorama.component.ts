@@ -1,11 +1,11 @@
 import {
   Component,
-  OnInit,
   Input,
   Output,
   EventEmitter,
   OnChanges,
-  SimpleChanges
+  SimpleChanges,
+  AfterViewInit
 } from '@angular/core';
 import panzoom from 'panzoom';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
@@ -29,7 +29,7 @@ import AnnotationCategory from 'src/app/models/annotationCategory.model';
   styleUrls: ['./panorama.component.scss'],
 })
 
-export class PanoramaComponent implements OnInit, OnChanges {
+export class PanoramaComponent implements OnChanges, AfterViewInit {
   shortcuts: ShortcutInput[] = [];
 
   @Input() labels = new Map<LabelType, Array<Label>>();
@@ -38,6 +38,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
   @Input() currentId: string;
   @Input() panoramaUrl: string;
   @Input() panoMode: boolean;
+  @Input() comparisonMode: boolean;
   @Input() resetPano = false;
   @Input() exportPano = false;
   @Input() selectedAisle: Aisle;
@@ -47,9 +48,13 @@ export class PanoramaComponent implements OnInit, OnChanges {
   @Input() showCoverageIssueDetails: boolean;
   @Input() annotations = new Map<AnnotationType, Array<Annotation>>();
   @Input() categories = new Map<AnnotationType, Array<AnnotationCategory>>();
+  @Input() elementId = 'pano-image';
+  @Input() panoPosition: any;
+  @Input() panoChanged: boolean;
 
   @Output() panoramaId = new EventEmitter<string>();
   @Output() panoramaTouched = new EventEmitter();
+  @Output() panoramaTransformed = new EventEmitter();
   @Output() toggleCoverageIssueDetails = new EventEmitter();
 
   misreadBarcodes = false; // Toggle qa user ability to add misread barcodes based on config
@@ -63,7 +68,7 @@ export class PanoramaComponent implements OnInit, OnChanges {
   currentWidth = 0;
   currentHeight = 0;
   cancelZoom = false;
-  panoImageElement: HTMLElement = document.getElementById('pano-image');
+  panoImageElement: HTMLElement = document.getElementById(this.elementId);
   labelType = LabelType;
   selectedColor = '#FFD54A';
   baseUrl = '';
@@ -73,14 +78,20 @@ export class PanoramaComponent implements OnInit, OnChanges {
     this.misreadBarcodes = environment.config.showMisreadBarcodes;
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     const owner = document.getElementById('image-owner');
-    this.panoImageElement = document.getElementById('pano-image');
+    this.panoImageElement = document.getElementById(this.elementId);
     const context = this;
     this.panZoomApi = panzoom(this.panoImageElement, {
       maxZoom: 10,
       minZoom: 0.12,
       zoomDoubleClickSpeed: 1,
+      beforeMouseDown: function() { // dont allow comparison pano to be panned
+        return context.elementId === 'pano-image-comparison';
+      },
+      beforeWheel: function() { // dont allow comparison pano to be zoomed
+        return context.elementId === 'pano-image-comparison';
+      }
     });
 
     // Set position based off url
@@ -104,12 +115,13 @@ export class PanoramaComponent implements OnInit, OnChanges {
 
      // And update on changes
     this.panZoomApi.on('transform', function(e) {
-      const p = context.panZoomApi.getTransform();
+      const transform = context.panZoomApi.getTransform();
+      context.panoramaTransformed.emit(transform); // Send current position after pan, used for comparison screen
       context.location.go(
         context.baseUrl +
-        '?zoom=' + parseFloat(p.scale).toFixed(2) +
-        '&x=' + parseFloat(p.x).toFixed(2) + '&y=' +
-        parseFloat(p.y).toFixed(2)
+        '?zoom=' + parseFloat(transform.scale).toFixed(2) +
+        '&x=' + parseFloat(transform.x).toFixed(2) + '&y=' +
+        parseFloat(transform.y).toFixed(2)
       );
     });
 
@@ -138,6 +150,11 @@ export class PanoramaComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    if (this.panZoomApi && changes.panoChanged) {
+      this.panZoomApi.moveTo(this.panoPosition.x, this.panoPosition.y);
+      this.panZoomApi.zoomAbs(this.panoPosition.x, this.panoPosition.y, this.panoPosition.scale);
+    }
+
     if (changes.exportPano && this.exportPano) {
       const context = this;
       this.panZoomApi = panzoom(this.panoImageElement, {
@@ -145,13 +162,13 @@ export class PanoramaComponent implements OnInit, OnChanges {
         minZoom: 1
       });
       setTimeout(() => {
-        htmlToImage.toJpeg(document.getElementById('pano-image'))
+        htmlToImage.toJpeg(document.getElementById(this.elementId))
         .then(function (blob) {
           saveAs(blob,
             context.selectedMission.storeName + ' ' +
             context.selectedMission.missionName + ' ' +
             context.selectedAisle.aisleName + '.jpg');
-          context.ngOnInit();
+          context.ngAfterViewInit();
         });
       },
       1000);

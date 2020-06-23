@@ -37,7 +37,6 @@ export class AisleViewComponent implements OnInit, OnDestroy {
 
   private logoSubscription: Subscription;
   private backButtonSubscription: Subscription;
-  currentlyDisplayed: Array<string> = new Array<string>();
   annotations = new Map<AnnotationType, Array<Annotation>>();
   categories = new Map<AnnotationType, Array<AnnotationCategory>>();
   shortcuts: ShortcutInput[] = [];
@@ -65,7 +64,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.currentlyDisplayed.push('outs');
+    this.currentlyDisplayed.push(LabelType.outs);
     this.logoSubscription = this.logoService.logoClickEvent().subscribe(() => this.changePanoMode());
     this.backButtonSubscription = this.backService.backClickEvent().subscribe(() => this.goBack());
 
@@ -82,13 +81,13 @@ export class AisleViewComponent implements OnInit, OnDestroy {
       }
     });
     this.apiService.getStore(storeId, new Date(), new Date()).subscribe(store => {
-      this.apiService.getMission(storeId, missionId, store.zoneId).subscribe(mission => {
+      this.apiService.getMission(store.storeId, missionId, store.zoneId).subscribe(mission => {
         const start: Date = new Date();
         start.setTime(mission.startDateTime.getTime());
         const end: Date = new Date(start);
         end.setDate(end.getDate() + 3);
         start.setDate(start.getDate() - 3);
-        this.apiService.getMissions(storeId, start, end, store.zoneId).subscribe(missions => {
+        this.apiService.getMissions(store.storeId, start, end, store.zoneId).subscribe(missions => {
           this.setMission(mission, aisleId);
           this.missions = missions;
         });
@@ -118,14 +117,15 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   }
 
   // If the element is in the list remove it, if not add it.  Move shelf labels to the front so they arent written over outs in the UI
-  toggleDisplayed(d: string) {
-    if (this.currentlyDisplayed.indexOf(d) !== -1) {
-      this.currentlyDisplayed.splice(this.currentlyDisplayed.indexOf(d), 1);
+  toggleDisplayed(input: string) {
+    const toggle = LabelType[input];
+    if (this.currentlyDisplayed.indexOf(toggle) !== -1) {
+      this.currentlyDisplayed.splice(this.currentlyDisplayed.indexOf(toggle), 1);
     } else {
-      if (d === 'shelfLabels') {
-        this.currentlyDisplayed.unshift(d);
+      if (toggle === LabelType.shelfLabels) {
+        this.currentlyDisplayed.unshift(toggle);
       } else {
-        this.currentlyDisplayed.push(d);
+        this.currentlyDisplayed.push(toggle);
       }
     }
     this.currentlyDisplayedToggled = !this.currentlyDisplayedToggled;
@@ -139,7 +139,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   setMission(mission: Mission, aisleId: string) {
     this.selectedMission = mission;
     mission.aisles.forEach(aisle => {
-      if (aisle.aisleId.toString() === aisleId) {
+      if (aisle.aisleId.toString() === aisleId || aisle.aisleName === aisleId) {
         this.setAisle(aisle);
       }
     });

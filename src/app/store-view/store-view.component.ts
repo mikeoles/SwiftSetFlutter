@@ -69,6 +69,7 @@ export class StoreViewComponent implements OnInit {
       }
     });
     this.apiService.getStore(this.storeId, start, end).subscribe(store => {
+      this.store = store;
       this.titleService.setTitle(store.storeName);
       this.setAllSummaryValues(store);
     });
@@ -105,7 +106,7 @@ export class StoreViewComponent implements OnInit {
     const indexDate: Date = new Date(selectedValues.date);
     const end: Date = new Date(indexDate);
     end.setDate(end.getDate() + 1);
-    this.apiService.getMissions(this.storeId, indexDate, end, this.store.zoneId).subscribe(missions => {
+    this.apiService.getMissions(this.store.storeId, indexDate, end, this.store.zoneId).subscribe(missions => {
       missions.forEach(mission => {
         let hasPreviouslySeenIssue = false;
         mission.aisles.forEach(aisle => {
@@ -163,7 +164,7 @@ export class StoreViewComponent implements OnInit {
     const columnNames = ['Mission Date', 'Customer - Store', 'Total Aisles Scanned', 'Total # Of Labels', 'Total # Unread Labels',
     'Percentage Unread Labels', 'Percentage Read Labels', '# Read Labels With Matching Product', '# Read Labels Missing Product',
     'Total # OOS'];
-    this.apiService.getMissions(this.storeId, this.graphStartDate, this.graphEndDate, this.store.zoneId)
+    this.apiService.getMissions(this.store.storeId, this.graphStartDate, this.graphEndDate, this.store.zoneId)
     .subscribe(
       missions => {
         const body = [];

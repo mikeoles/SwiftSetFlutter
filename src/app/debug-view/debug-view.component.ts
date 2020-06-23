@@ -27,7 +27,6 @@ export class DebugViewComponent implements OnInit {
   tagColors = new Map<string, string>();
   classificationColors = new Map<string, string>();
 
-
   // determine which color are shown if two detectionTypes, tags, classifications are applied to the same detection
   // highest index in the array has priority
   detectionTypeColorOrder = new Array<string>();
@@ -61,30 +60,30 @@ export class DebugViewComponent implements OnInit {
     this.apiService.getAisle(storeId, missionId, aisleId).subscribe(aisle => {
       this.titleService.setTitle(aisle.aisleName + ' - Debug');
       this.panoramaUrl = aisle.panoramaUrl;
-    });
 
-    this.apiService.getDetections(storeId, missionId, aisleId).subscribe(detections => {
-      this.detections = detections;
+      this.apiService.getDetections(aisle.storeId, aisle.missionId, aisle.aisleId).subscribe(detections => {
+        this.detections = detections;
 
-      // set the filters to all of the unique values in the detection types and turn them all on by default
-      detections.forEach(detection => {
-        this.detectionTypes.set(detection.detectionType, true);
-      });
-      detections.forEach(detection => {
-        detection.tags.forEach(tag => {
-          this.tags.set(tag, true);
+        // set the filters to all of the unique values in the detection types and turn them all on by default
+        detections.forEach(detection => {
+          this.detectionTypes.set(detection.detectionType, true);
         });
-      });
-      detections.forEach(detection => {
-        detection.classifications.forEach(classification => {
-          this.classifications.set(classification, true);
+        detections.forEach(detection => {
+          detection.tags.forEach(tag => {
+            this.tags.set(tag, true);
+          });
         });
-      });
+        detections.forEach(detection => {
+          detection.classifications.forEach(classification => {
+            this.classifications.set(classification, true);
+          });
+        });
 
-      this.setColorsFromConfig(this.detectionTypeColors, this.detectionTypeColorOrder, this.environment.config.detectionTypeColors);
-      this.setColorsFromConfig(this.classificationColors, this.classificationColorOrder, this.environment.config.classificationColors);
-      this.setColorsFromConfig(this.tagColors, this.tagColorOrder, this.environment.config.tagColors);
-      this.updateDisplayedDetections();
+        this.setColorsFromConfig(this.detectionTypeColors, this.detectionTypeColorOrder, this.environment.config.detectionTypeColors);
+        this.setColorsFromConfig(this.classificationColors, this.classificationColorOrder, this.environment.config.classificationColors);
+        this.setColorsFromConfig(this.tagColors, this.tagColorOrder, this.environment.config.tagColors);
+        this.updateDisplayedDetections();
+      });
     });
   }
 

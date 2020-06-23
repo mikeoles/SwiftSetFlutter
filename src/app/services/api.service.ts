@@ -299,9 +299,9 @@ export class ApiService {
   getStore(storeId: string, start: Date, end: Date): Observable<Store> {
     return this.http.get(`${this.apiUrl}/stores/${storeId}`)
       .pipe(
-        switchMap((store: Store) =>
+        switchMap((store: any) =>
           forkJoin([
-            this.getMissions(storeId, start, end, this.getValidTimezone(store.zoneId)),
+            this.getMissions(store.id, start, end, this.getValidTimezone(store.zoneId)),
             this.http.get(`${this.apiUrl}/stores/${storeId}`)
           ])
         ),
@@ -309,7 +309,7 @@ export class ApiService {
       );
   }
 
-  getMissions(storeId: string, start: Date, end: Date, timezone: string): Observable<Mission[]> {
+  getMissions(storeId: String, start: Date, end: Date, timezone: string): Observable<Mission[]> {
     // Call api for missions on date of stores local timezone
     const adjTZStartString = new Date(start).toLocaleString('en-US', {timeZone: timezone});
     const adjTZStartDate = new Date(adjTZStartString);
@@ -530,8 +530,8 @@ export class ApiService {
   getFlaggedStores(): Observable<Store[]> {
     const config = {
       params: {
-          missingPreviouslySeenThreshold: this.environment.config.missingPreviosulySeenThreshold,
-          coverageIssueDateSpan: this.environment.config.coverageIssueDateSpan,
+          maximumPercentage: this.environment.config.missingPreviosulySeenThreshold,
+          days: this.environment.config.coverageIssueDateSpan,
       }
     };
     return this.http.get(`${this.apiUrl}/stores/coverage-issue`, config)

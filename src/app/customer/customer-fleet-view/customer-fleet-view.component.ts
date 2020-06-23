@@ -13,6 +13,7 @@ export class CustomerFleetViewComponent implements OnInit {
 
   stores: Store[];
   searchTerm: string;
+  keysToExclude: any [] =  ['storeId', 'zoneId', 'canary'];
 
   constructor(private apiService: ApiService, private router: Router, private titleService: Title) { }
 

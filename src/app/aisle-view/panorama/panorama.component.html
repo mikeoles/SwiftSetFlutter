@@ -1,6 +1,6 @@
 <div class="panorama">
-  <div [ngClass]="{'panoModeClass': panoMode}" class="image-owner" id="image-owner">
-    <div id="pano-image" class="image">
+  <div [ngClass]="{'panoModeClass': panoMode, 'comparisonModeClass': comparisonMode}" class="image-owner" id="image-owner">
+    <div [attr.id]="elementId" class="image">
       <img [src]="panoramaUrl" *ngIf="panoramaUrl" (click)="panoTouched()"/>
 
        <!-- Labels -->
@@ -32,7 +32,7 @@
     </div>
   </div>
   
-  <div id="zoom">
+  <div *ngIf="elementId != 'pano-image-comparison'" id="zoom">
     <fa-icon id="zoomIn" class="zoomIcon" [icon]="faPlus" (click)="zoomIn()"></fa-icon>
     <fa-icon id="zoomOut" class="zoomIcon" [icon]="faMinus" (click)="zoomOut()"></fa-icon>
   </div>

@@ -1,0 +1,59 @@
+<div class="container">
+    <div class="bottomBar">
+      <div class="storeInfo">{{selectedMission.storeName}}</div>
+      <div id="missionsContainer">
+        <button class="dropdownButton" (click)="openDropdown('missions')">
+          Scan: {{selectedMission.missionName}}
+          <fa-icon *ngIf="currentDropdown !== 'missions'" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
+          <fa-icon *ngIf="currentDropdown === 'missions'" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
+        </button>
+        <ul class="dropdown" *ngIf="currentDropdown === 'missions'">
+          <li
+            *ngFor="let mission of missions"
+            [class.selected]="mission.missionId === this.selectedMission.missionId"
+            [value]="mission"
+            (click)="missionChanged(mission)"
+          >
+            {{mission.missionName}}
+          </li>
+        </ul>
+        <div *ngIf="currentDropdown === 'missions'" class="pointer"></div>
+      </div>
+      <div id="aislesContainer">
+        <button class="dropdownButton" (click)="openDropdown('aisles')">
+          Aisle {{selectedAisle?.aisleName}}
+          <fa-icon *ngIf="currentDropdown !== 'aisles'" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
+          <fa-icon *ngIf="currentDropdown === 'aisles'" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
+        </button>
+        <ul *ngIf="currentDropdown === 'aisles'">
+          <li
+            [class.selected]="aisle.aisleId === this.selectedAisle.aisleId"
+            *ngFor="let aisle of aisles"
+            [value]="aisle"
+            (click)="aisleChanged(aisle)">
+            {{aisle?.aisleName}}
+          </li>
+        </ul>
+        <div *ngIf="currentDropdown === 'aisles'" class="pointer"></div>
+      </div>
+      <div class="storeInfo">Compare To:</div>
+      <div id="aisleComparisonContainer">
+        <button class="dropdownButton"
+        (click)="openDropdown('comparisonAisles')">
+          {{selectedComparisonAisle?.missionName}} {{selectedComparisonAisle?.aisleName}}
+          <fa-icon *ngIf="currentDropdown !== 'comparisonAisles'" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
+          <fa-icon *ngIf="currentDropdown === 'comparisonAisles'" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
+        </button>
+        <ul *ngIf="currentDropdown === 'comparisonAisles'">
+          <li
+            [class.selected]="aisle.aisleId === this.selectedComparisonAisle.aisleId"
+            *ngFor="let aisle of comparableAisles"
+            [value]="aisle"
+            (click)="comparisonAisleChanged(aisle)">
+            {{aisle?.missionName}} {{aisle?.aisleName}}
+          </li>
+        </ul>
+        <div *ngIf="currentDropdown === 'comparisonAisles'" class="pointer"></div>
+      </div>
+    </div>
+  </div>

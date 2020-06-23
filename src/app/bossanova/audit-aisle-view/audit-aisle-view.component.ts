@@ -60,7 +60,7 @@ export class AuditAisleViewComponent implements OnInit {
       this.currentlyDisplayed.push(LabelType.misreadBarcodes);
       this.labelsChanged = !this.labelsChanged;
 
-      this.apiService.getAnnotations(storeId, missionId, aisleId).subscribe(annotations => {
+      this.apiService.getAnnotations(aisle.storeId, aisle.missionId, aisle.aisleId).subscribe(annotations => {
         this.setAnnotationCounts(annotations);
         this.setLabelAnnotations(annotations.falsePositives, AnnotationType.falsePositive);
         this.setLabelAnnotations(annotations.falseNegatives, AnnotationType.falseNegative);
