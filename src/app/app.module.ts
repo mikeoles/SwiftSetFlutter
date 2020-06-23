@@ -20,7 +20,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
 import { EnvironmentService } from './services/environment.service';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { ModalComponent } from './shared/modal/modal.component';
 import { ModalService } from './services/modal.service';
 import { NgDatepickerModule } from 'ng2-datepicker';
 import { DataService } from './services/data.service';
@@ -39,6 +38,8 @@ import { CustomerModule } from './customer/customer.module';
 import { BossanovaModule } from './bossanova/bossanova.module';
 import { FleetViewComponent } from './fleet-view/fleet-view.component';
 import { SharedModule } from './shared/shared.module';
+import { AisleComparisonViewComponent } from './aisle-comparison-view/aisle-comparison-view.component';
+import { ComparisonSelectionAreaComponent } from './aisle-comparison-view/comparison-selection-area/comparison-selection-area.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,8 @@ import { SharedModule } from './shared/shared.module';
     DebugPanoramaComponent,
     DebugFiltersComponent,
     UnauthorizedComponent,
+    AisleComparisonViewComponent,
+    ComparisonSelectionAreaComponent,
   ],
   imports: [
     BrowserModule,

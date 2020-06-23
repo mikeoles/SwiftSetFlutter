@@ -71,6 +71,10 @@
   height: calc(100vh - 111px - 95px) !important;
 }
 
+.comparisonModeClass{
+  height: calc((100vh - 134px) / 2) !important;
+}
+
 #coverageIssueDetails {
   position: absolute;
   top: 0px;

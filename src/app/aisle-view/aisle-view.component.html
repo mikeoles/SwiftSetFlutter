@@ -1,5 +1,5 @@
 <app-selection-area *ngIf="selectedMission" [missions]="missions" [aisles]="selectedMission.aisles"
-  [selectedMission]="selectedMission" [selectedAisle]="selectedAisle" [panoramaUrl]="panoramaUrl" [labelsChanged]="labelsChanged" 
+  [selectedMission]="selectedMission" [selectedAisle]="selectedAisle" [labelsChanged]="labelsChanged" 
   [labels]="labels" (missionSelected)='changeMission($event)' (aisleSelected)='setAisle($event)'
   (resetPano)='resetPanoClicked()' [currentlyDisplayed]='currentlyDisplayed' 
   (toggleDisplayed)='toggleDisplayed($event)' (exportPano)="exportPanoClicked()">

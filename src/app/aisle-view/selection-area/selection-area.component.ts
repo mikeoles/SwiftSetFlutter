@@ -34,7 +34,6 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
   @Input() aisles: Aisle[];
   @Input() selectedMission: Mission;
   @Input() selectedAisle: Aisle;
-  @Input() panoramaUrl: string;
   @Input() labels = new Map<LabelType, Array<Label>>();
   @Input() labelsChanged: boolean;
   @Input() currentlyDisplayed: Set<string>;
@@ -114,6 +113,14 @@ export class SelectionAreaComponent implements OnInit, OnChanges {
     const hasParameters = url.indexOf('?');
     url = url.substring(0, hasParameters !== -1 ? hasParameters : url.length);
     window.open(url + '/debug', '_blank');
+  }
+
+  // open comparison view in new tab
+  compareAisle() {
+    let url = this.location.path();
+    const hasParameters = url.indexOf('?');
+    url = url.substring(0, hasParameters !== -1 ? hasParameters : url.length);
+    window.open(url + '/compare', '_blank');
   }
 
   openDropdown(name: string) {
