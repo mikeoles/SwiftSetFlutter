@@ -1,0 +1,91 @@
+@import '../../../variables';
+
+.bottomBar {
+    display: block;
+    height: 75px;
+}
+
+#missionsContainer,#aislesContainer, #aisleComparisonContainer{
+    float: left;
+    width: auto;
+    margin: 10px;
+}
+  
+#missionsContainer button {
+    width: 300px;
+}
+
+#aislesContainer button {
+    width: 175px;
+}
+
+#aisleComparisonContainer button {
+    width: 350px;
+}
+
+ul{
+    width: auto;
+    min-width: 200px;
+    max-height: 350px;
+    overflow: auto;
+    size: 18px;
+    position: absolute;
+    display: block;
+    z-index: 2;
+    margin-left: 6px;
+    padding: 5px 20px 10px 20px;
+    border-radius: 30px;
+    box-shadow: 0px 0px 30px rgba(32, 32, 32, 0.411);
+    background: white;
+    text-align: left;
+    list-style-type: none;
+    li{
+      border-bottom: rgba(211, 211, 211, 0.5) 1px solid;
+      padding: 10px;
+      cursor:pointer;
+      color: $primary;
+    }
+    li:last-child{
+      border-bottom: 0px;
+    }
+    li:hover{
+      color: black;
+    }
+}
+  
+.container{
+    width: 100%;
+}
+
+.storeInfo {
+    float: left;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 24px 10px;
+}
+
+.pointer{
+    position: absolute;
+    z-index: 2;
+    margin-left: 50px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 20px 20px 20px;
+    border-color: transparent transparent white transparent;
+}
+
+//Scrollbar
+::-webkit-scrollbar {
+    width: 30px;
+}
+  
+::-webkit-scrollbar-track {
+    background: transparent;
+    border-width: 0px;
+}
+
+::-webkit-scrollbar-thumb {
+    border: 12px solid transparent;
+    border-radius: 20px;
+}
