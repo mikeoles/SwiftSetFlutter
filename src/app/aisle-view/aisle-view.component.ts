@@ -39,6 +39,7 @@ export class AisleViewComponent implements OnInit, OnDestroy {
   private backButtonSubscription: Subscription;
   annotations = new Map<AnnotationType, Array<Annotation>>();
   categories = new Map<AnnotationType, Array<AnnotationCategory>>();
+  currentlyDisplayed: Array<LabelType> = new Array<LabelType>();
   shortcuts: ShortcutInput[] = [];
   labelsChanged = false;
   exportPano = false;
