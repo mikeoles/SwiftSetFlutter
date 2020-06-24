@@ -8,13 +8,13 @@
 <app-mission-stats *ngIf="mission" [title]="'Shelf Labels Detected'" [average]="averageStoreLabels" [total]="mission.labels"></app-mission-stats>
 <div class="storeSearch">
   <button (click)="searchBarcodeClicked()">Search</button>
-  <input type="text" placeholder="Search By Barcode" [(ngModel)]="searchTerm">
+  <input (keyup.enter)="searchBarcodeClicked()" type="text" placeholder="Search By Barcode" [(ngModel)]="searchTerm">
   <input class="checkbox" type="checkbox" [ngModel]="searchMissingBarcodes" (ngModelChange)="searchMissingBarcodesChanged($event)"/>
   <div>Aisles Missing Barcodes</div>
   <button *ngIf="auditManager()" class="queueAllAisles" (click)="addAllToQueue()">Add All To Queue</button>
 </div>
 <div class="grid">
-  <app-aisles-grid *ngIf="store" [aisles]="aisles" [missionId]="mission.missionId" [storeId]="store.storeId"
+  <app-aisles-grid *ngIf="store && mission" [aisles]="aisles" [missionId]="mission.missionId" [storeId]="store.storeId"
   [addAllClicked]="addAllClicked">
 </app-aisles-grid>
 </div>
