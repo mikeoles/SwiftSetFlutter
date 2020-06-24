@@ -1,59 +1,129 @@
 <div class="container">
-    <div class="bottomBar">
-      <div class="storeInfo">{{selectedMission.storeName}}</div>
-      <div id="missionsContainer">
-        <button class="dropdownButton" (click)="openDropdown('missions')">
-          Scan: {{selectedMission.missionName}}
-          <fa-icon *ngIf="currentDropdown !== 'missions'" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
-          <fa-icon *ngIf="currentDropdown === 'missions'" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
-        </button>
-        <ul class="dropdown" *ngIf="currentDropdown === 'missions'">
-          <li
-            *ngFor="let mission of missions"
-            [class.selected]="mission.missionId === this.selectedMission.missionId"
-            [value]="mission"
-            (click)="missionChanged(mission)"
-          >
-            {{mission.missionName}}
-          </li>
-        </ul>
-        <div *ngIf="currentDropdown === 'missions'" class="pointer"></div>
+  <div class="bottomBar">
+    <div class="storeInfo">{{selectedMission.storeName}}</div>
+    <div id="missionsContainer">
+      <button class="dropdownButton" (click)="openDropdown('missions')">
+        Scan: {{selectedMission.missionName}}
+        <fa-icon *ngIf="currentDropdown !== 'missions'" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
+        <fa-icon *ngIf="currentDropdown === 'missions'" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
+      </button>
+      <ul class="dropdown" *ngIf="currentDropdown === 'missions'">
+        <li
+          *ngFor="let mission of missions"
+          [class.selected]="mission.missionId === this.selectedMission.missionId"
+          [value]="mission"
+          (click)="missionChanged(mission)"
+        >
+          {{mission.missionName}}
+        </li>
+      </ul>
+      <div *ngIf="currentDropdown === 'missions'" class="pointer"></div>
+    </div>
+    <div id="aislesContainer">
+      <button class="dropdownButton" (click)="openDropdown('aisles')">
+        Aisle {{selectedAisle?.aisleName}}
+        <fa-icon *ngIf="currentDropdown !== 'aisles'" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
+        <fa-icon *ngIf="currentDropdown === 'aisles'" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
+      </button>
+      <ul *ngIf="currentDropdown === 'aisles'">
+        <li
+          [class.selected]="aisle.aisleId === this.selectedAisle.aisleId"
+          *ngFor="let aisle of aisles"
+          [value]="aisle"
+          (click)="aisleChanged(aisle)">
+          {{aisle?.aisleName}}
+        </li>
+      </ul>
+      <div *ngIf="currentDropdown === 'aisles'" class="pointer"></div>
+    </div>
+    <div class="storeInfo">Compare To:</div>
+    <div id="aisleComparisonContainer">
+      <button class="dropdownButton"
+      (click)="openDropdown('comparisonAisles')">
+        {{selectedComparisonAisle?.missionName}} {{selectedComparisonAisle?.aisleName}}
+        <fa-icon *ngIf="currentDropdown !== 'comparisonAisles'" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
+        <fa-icon *ngIf="currentDropdown === 'comparisonAisles'" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
+      </button>
+      <ul *ngIf="currentDropdown === 'comparisonAisles'">
+        <li
+          [class.selected]="aisle.aisleId === this.selectedComparisonAisle.aisleId"
+          *ngFor="let aisle of comparableAisles"
+          [value]="aisle"
+          (click)="comparisonAisleChanged(aisle)">
+          {{aisle?.missionName}} {{aisle?.aisleName}}
+        </li>
+      </ul>
+      <div *ngIf="currentDropdown === 'comparisonAisles'" class="pointer"></div>
+    </div>
+    <button class="rightButton" (click)="openModal('counts-popup')">Aisle Info</button>
+  </div>
+</div>
+
+<app-export-modal id="counts-popup">
+  <div class="modal">
+    <div class="modal-body">
+      <h1>Aisle Info</h1>
+      <div *ngIf="selectedAisle && labels">
+        <h3>{{selectedAisle.missionName}} {{selectedAisle.aisleName}}</h3>
+        <table>
+          <tr>
+            <td>Labels</td>
+            <td>{{selectedAisle.labels.length}}</td>
+          </tr>
+          <tr>
+            <td>Outs</td>
+            <td>{{selectedAisle.outs.length}}</td>
+          </tr>
+          <tr>
+            <td>Misread Barcodes</td>
+            <td>{{labels.get('misreadBarcodes').length}}</td>
+          </tr>
+          <tr>
+            <td>Section Labels</td>
+            <td>{{selectedAisle.sectionLabels.length}}</td>
+          </tr>
+          <tr>
+            <td>Section Breaks</td>
+            <td>{{selectedAisle.sectionBreaks.length}}</td>
+          </tr>
+          <tr>
+            <td>Top Stock</td>
+            <td>{{selectedAisle.topStock.length}}</td>
+          </tr>
+        </table>
       </div>
-      <div id="aislesContainer">
-        <button class="dropdownButton" (click)="openDropdown('aisles')">
-          Aisle {{selectedAisle?.aisleName}}
-          <fa-icon *ngIf="currentDropdown !== 'aisles'" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
-          <fa-icon *ngIf="currentDropdown === 'aisles'" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
-        </button>
-        <ul *ngIf="currentDropdown === 'aisles'">
-          <li
-            [class.selected]="aisle.aisleId === this.selectedAisle.aisleId"
-            *ngFor="let aisle of aisles"
-            [value]="aisle"
-            (click)="aisleChanged(aisle)">
-            {{aisle?.aisleName}}
-          </li>
-        </ul>
-        <div *ngIf="currentDropdown === 'aisles'" class="pointer"></div>
+      <div *ngIf="selectedComparisonAisle && comparisonLabels">
+        <h3>{{selectedComparisonAisle.missionName}} {{selectedComparisonAisle.aisleName}}</h3>
+        <table>
+          <tr>
+            <td>Labels</td>
+            <td>{{selectedComparisonAisle.labels.length}}</td>
+          </tr>
+          <tr>
+            <td>Outs</td>
+            <td>{{selectedComparisonAisle.outs.length}}</td>
+          </tr>
+          <tr>
+            <td>Misread Barcodes</td>
+            <td>{{comparisonLabels.get('misreadBarcodes').length}}</td>
+          </tr>
+          <tr>
+            <td>Section Labels</td>
+            <td>{{selectedComparisonAisle.sectionLabels.length}}</td>
+          </tr>
+          <tr>
+            <td>Section Breaks</td>
+            <td>{{selectedComparisonAisle.sectionBreaks.length}}</td>
+          </tr>
+          <tr>
+            <td>Top Stock</td>
+            <td>{{selectedComparisonAisle.topStock.length}}</td>
+          </tr>
+        </table>
       </div>
-      <div class="storeInfo">Compare To:</div>
-      <div id="aisleComparisonContainer">
-        <button class="dropdownButton"
-        (click)="openDropdown('comparisonAisles')">
-          {{selectedComparisonAisle?.missionName}} {{selectedComparisonAisle?.aisleName}}
-          <fa-icon *ngIf="currentDropdown !== 'comparisonAisles'" size="lg" class="fa" [icon]="faAngleDown"></fa-icon>
-          <fa-icon *ngIf="currentDropdown === 'comparisonAisles'" size="lg" class="fa" [icon]="faAngleUp"></fa-icon>
-        </button>
-        <ul *ngIf="currentDropdown === 'comparisonAisles'">
-          <li
-            [class.selected]="aisle.aisleId === this.selectedComparisonAisle.aisleId"
-            *ngFor="let aisle of comparableAisles"
-            [value]="aisle"
-            (click)="comparisonAisleChanged(aisle)">
-            {{aisle?.missionName}} {{aisle?.aisleName}}
-          </li>
-        </ul>
-        <div *ngIf="currentDropdown === 'comparisonAisles'" class="pointer"></div>
-      </div>
+      <button class="cancel" (click)="closeModal('counts-popup');">Close</button>
     </div>
   </div>
+  <div class="modal-background"></div>
+</app-export-modal>
+  

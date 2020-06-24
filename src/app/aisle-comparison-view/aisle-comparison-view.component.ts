@@ -83,13 +83,11 @@ export class AisleComparisonViewComponent implements OnInit {
   }
 
   setAisle(aisle: Aisle) {
-    this.selectedAisle = aisle;
-
     this.apiService.getAisle(this.selectedMission.storeId, this.selectedMission.missionId, aisle.aisleId).subscribe(fullAisle => {
       this.titleService.setTitle(this.selectedMission.storeName + ' - ' + fullAisle.aisleName);
       const misreadBarcodes: Array<Label> = this.getMissingBarcodes(fullAisle.labels);
       misreadBarcodes.concat(this.getMissingBarcodes(fullAisle.outs));
-
+      this.selectedAisle = fullAisle;
       this.labels.set(LabelType.misreadBarcodes, misreadBarcodes);
       this.labels.set(LabelType.outs, fullAisle.outs);
       this.labels.set(LabelType.shelfLabels, fullAisle.labels);
@@ -99,6 +97,9 @@ export class AisleComparisonViewComponent implements OnInit {
       this.labelsChanged = !this.labelsChanged;
       this.sectionBreaks = fullAisle.sectionBreaks;
       this.panoramaUrl = fullAisle.panoramaUrl;
+      this.location.replaceState(
+        'store/' + this.selectedMission.storeId + '/mission/' + this.selectedMission.missionId +
+        '/aisle/' + this.selectedAisle.aisleId + '/compare');
     });
 
     this.setComparisonAisle(aisle);
@@ -113,10 +114,6 @@ export class AisleComparisonViewComponent implements OnInit {
         }
       });
     });
-
-    this.location.replaceState(
-      'store/' + this.selectedMission.storeId + '/mission/' + this.selectedMission.missionId +
-      '/aisle/' + this.selectedAisle.aisleId + '/compare');
   }
 
   setComparisonAisle(aisle: Aisle) {

@@ -89,3 +89,30 @@ ul{
     border: 12px solid transparent;
     border-radius: 20px;
 }
+
+.rightButton {
+    float: right;
+    margin: 10px;
+}
+
+.modal-body {
+    /* margin exposes part of the modal background */
+    margin: 200px calc(50vw - 500px) !important;
+
+    h3 {
+        color: $primary;
+    }
+
+    div {
+        font-weight: normal;
+        display: inline-block;
+        width: 400px;
+    }
+
+    td {
+        border: 1px solid black;
+        padding: 2px;
+        height: auto;
+        font-weight: bold;
+    }
+}

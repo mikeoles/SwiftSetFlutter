@@ -1,7 +1,8 @@
 <app-comparison-selection-area *ngIf="selectedMission" [missions]="missions" [aisles]="selectedMission.aisles"
   [selectedMission]="selectedMission" [selectedAisle]="selectedAisle" [selectedComparisonAisle]="selectedComparisonAisle"
   (missionSelected)='changeMission($event)' (aisleSelected)='setAisle($event)' 
-  (comparisonAisleSelected)='setComparisonAisle($event)' [comparableAisles]="comparableAisles">
+  (comparisonAisleSelected)='setComparisonAisle($event)' [comparableAisles]="comparableAisles"
+  [labels]="labels" [comparisonLabels]="comparisonLabels" >
 </app-comparison-selection-area>
 <app-panorama [panoramaUrl]="panoramaUrl" [labels]="labels" [sectionBreaks]="sectionBreaks" 
 [currentlyDisplayed]="currentlyDisplayed" [labelsChanged]="labelsChanged" [elementId]="'pano-image'" 

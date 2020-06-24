@@ -2,6 +2,8 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import Mission from 'src/app/models/mission.model';
 import Aisle from 'src/app/models/aisle.model';
+import { ModalService } from 'src/app/services/modal.service';
+import Label from 'src/app/models/label.model';
 
 @Component({
   selector: 'app-comparison-selection-area',
@@ -16,6 +18,8 @@ export class ComparisonSelectionAreaComponent implements OnInit {
   @Input() selectedMission: Mission;
   @Input() selectedAisle: Aisle;
   @Input() selectedComparisonAisle: Aisle;
+  @Input() labels: Label[];
+  @Input() comparisonLabels: Label[];
 
   @Output() missionSelected = new EventEmitter();
   @Output() aisleSelected = new EventEmitter();
@@ -25,7 +29,7 @@ export class ComparisonSelectionAreaComponent implements OnInit {
   faAngleDown = faAngleDown;
   faAngleUp = faAngleUp;
 
-  constructor() { }
+  constructor(private modalService: ModalService) { }
 
   ngOnInit() {
   }
@@ -47,5 +51,13 @@ export class ComparisonSelectionAreaComponent implements OnInit {
   comparisonAisleChanged(aisle) {
     this.comparisonAisleSelected.emit(aisle);
     this.currentDropdown = '';
+  }
+
+  closeModal(id: string) {
+    this.modalService.close(id);
+  }
+
+  openModal(id: string) {
+    this.modalService.open(id);
   }
 }
