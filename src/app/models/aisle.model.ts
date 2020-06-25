@@ -7,8 +7,8 @@ export default class Aisle {
   panoramaUrl: string;
   createDateTime: Date;
   scanDateTime: Date;
-  labelsCount: number;
-  outsCount: number;
+  labelCount: number;
+  outCount: number;
   auditQueueStatus: AuditQueueStatus;
   previouslySeenBarcodeCount: number; // The total number of distinct barcodes in previous N scans
   previouslySeenBarcodeSampleSize: number; // Number of scans the count was taken from

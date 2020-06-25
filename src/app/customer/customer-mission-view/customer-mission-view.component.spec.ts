@@ -39,7 +39,7 @@ describe('CustomerMissionViewComponent', () => {
 
   const aisles: Aisle[] = [{  aisleId: '1', aisleName: '', panoramaUrl: '', createDateTime: new Date(), scanDateTime: new Date(),
   labels: labels, outs: labels, sectionLabels: labels, topStock: labels, sectionBreaks: sectionBreaks,
-  labelsCount: 0, outsCount: 0, auditQueueStatus: null,
+  labelCount: 0, outCount: 0, auditQueueStatus: null,
   previouslySeenBarcodeCount: 0, previouslySeenBarcodeSampleSize: 0, missingPreviouslySeenBarcodeCount: 0,
   missingPreviouslySeenBarcodePercentage: 0, missingPreviouslySeenBarcodes: []  }];
 

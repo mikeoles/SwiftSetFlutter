@@ -11,15 +11,15 @@
         <fa-icon *ngIf="sortType === 'scanDateTime' && !sortReverse" size="sm" class="fa" [icon]="faAngleDown"></fa-icon>
         <fa-icon *ngIf="sortType === 'scanDateTime' && sortReverse" size="sm" class="fa" [icon]="faAngleUp"></fa-icon>
       </th>
-      <th (click)="sortBy('outsCount')">
+      <th (click)="sortBy('outCount')">
         Outs
-        <fa-icon *ngIf="sortType === 'outsCount' && !sortReverse" size="sm" class="fa" [icon]="faAngleDown"></fa-icon>
-        <fa-icon *ngIf="sortType === 'outsCount' && sortReverse" size="sm" class="fa" [icon]="faAngleUp"></fa-icon>
+        <fa-icon *ngIf="sortType === 'outCount' && !sortReverse" size="sm" class="fa" [icon]="faAngleDown"></fa-icon>
+        <fa-icon *ngIf="sortType === 'outCount' && sortReverse" size="sm" class="fa" [icon]="faAngleUp"></fa-icon>
       </th>
-      <th (click)="sortBy('labelsCount')">
+      <th (click)="sortBy('labelCount')">
         Labels
-        <fa-icon *ngIf="sortType === 'labelsCount' && !sortReverse" size="sm" class="fa" [icon]="faAngleDown"></fa-icon>
-        <fa-icon *ngIf="sortType === 'labelsCount' && sortReverse" size="sm" class="fa" [icon]="faAngleUp"></fa-icon>
+        <fa-icon *ngIf="sortType === 'labelCount' && !sortReverse" size="sm" class="fa" [icon]="faAngleDown"></fa-icon>
+        <fa-icon *ngIf="sortType === 'labelCount' && sortReverse" size="sm" class="fa" [icon]="faAngleUp"></fa-icon>
       </th>
     </tr>
   </thead>
@@ -31,8 +31,8 @@
         </a>
       </td>
       <td>{{aisle.scanDateTime | date:'medium'}}</td>
-      <td>{{aisle.outsCount}}</td>
-      <td>{{aisle.labelsCount}}</td>
+      <td>{{aisle.outCount}}</td>
+      <td>{{aisle.labelCount}}</td>
     </tr>
   </tbody>
 </table>
