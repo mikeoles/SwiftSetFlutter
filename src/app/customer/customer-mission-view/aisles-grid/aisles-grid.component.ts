@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import Aisle from '../../../models/aisle.model';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
+import { EnvironmentService } from 'src/app/services/environment.service';
 
 @Component({
   selector: 'app-aisles-grid',
@@ -15,11 +16,12 @@ export class AislesGridComponent implements OnInit {
 
   sortType = 'aisleName';
   sortReverse = false;
-
+  aisleGridCounts = [];
   faAngleDown = faAngleDown;
   faAngleUp = faAngleUp;
 
-  constructor() {
+  constructor(private environment: EnvironmentService) {
+    this.aisleGridCounts = this.environment.config.aisleGridCounts;
   }
 
   ngOnInit() {
