@@ -9,6 +9,10 @@ export default class Aisle {
   scanDateTime: Date;
   labelCount: number;
   outCount: number;
+  misreadBarcodeCount: number;
+  sectionLabelCount: number;
+  sectionBreakCount: number;
+  topStockCount: number;
   auditQueueStatus: AuditQueueStatus;
   previouslySeenBarcodeCount: number; // The total number of distinct barcodes in previous N scans
   previouslySeenBarcodeSampleSize: number; // Number of scans the count was taken from
