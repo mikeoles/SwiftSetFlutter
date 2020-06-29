@@ -55,6 +55,9 @@ fi
 if [[ ! -z "$PREVIOUSLY_SEEN_THRESHOLD" ]]; then
   echo "  \"missingPreviosulySeenThreshold\": $PREVIOUSLY_SEEN_THRESHOLD," >> /usr/share/nginx/html/assets/config.json
 fi
+if [[ ! -z "$AISLE_GRID_COUNTS" ]]; then
+  echo "  \"aisleGridCounts\": [$AISLE_GRID_COUNTS]," >> /usr/share/nginx/html/assets/config.json
+fi
 echo "  \"production\": true" >> /usr/share/nginx/html/assets/config.json
 echo "}" >> /usr/share/nginx/html/assets/config.json
 
