@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import Aisle from '../../../models/aisle.model';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
+import { EnvironmentService } from 'src/app/services/environment.service';
 
 @Component({
   selector: 'app-aisles-grid',
@@ -15,11 +16,12 @@ export class AislesGridComponent implements OnInit {
 
   sortType = 'aisleName';
   sortReverse = false;
-
+  aisleGridCounts = [];
   faAngleDown = faAngleDown;
   faAngleUp = faAngleUp;
 
-  constructor() {
+  constructor(private environment: EnvironmentService) {
+    this.aisleGridCounts = this.environment.config.aisleGridCounts;
   }
 
   ngOnInit() {
@@ -37,5 +39,13 @@ export class AislesGridComponent implements OnInit {
       return this.aisles.sort((a, b) => a[this.sortType] < b[this.sortType] ? 1 : a[this.sortType] === b[this.sortType] ? 0 : -1);
     }
     return this.aisles.sort((a, b) => a[this.sortType] > b[this.sortType] ? 1 : a[this.sortType] === b[this.sortType] ? 0 : -1);
+  }
+
+  // reformat count variable to readable header: misreadBarcodeCount -> Misread Barcodes
+  formatHeader(countName: string) {
+    let result = countName.replace( /([A-Z])/g, ' $1' );
+    result = result.charAt(0).toUpperCase() + result.slice(1);
+    result = result.substring(0, result.length - 6);
+    return result += 's';
   }
 }

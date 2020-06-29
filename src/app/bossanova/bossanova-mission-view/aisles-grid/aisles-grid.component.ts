@@ -21,7 +21,7 @@ export class AislesGridComponent implements OnInit {
 
   sortType = 'aisleName';
   sortReverse = false;
-
+  aisleGridCounts = [];
   faAngleDown = faAngleDown;
   faAngleUp = faAngleUp;
   faExclamationTriangle = faExclamationTriangle;
@@ -31,6 +31,7 @@ export class AislesGridComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.aisleGridCounts = this.environment.config.aisleGridCounts;
   }
 
   sortBy(type: string) {
@@ -69,5 +70,13 @@ export class AislesGridComponent implements OnInit {
       }
     });
     return hasProblems;
+  }
+
+  // reformat count variable to readable header: misreadBarcodeCount -> Misread Barcodes
+  formatHeader(countName: string) {
+    let result = countName.replace( /([A-Z])/g, ' $1' );
+    result = result.charAt(0).toUpperCase() + result.slice(1);
+    result = result.substring(0, result.length - 6);
+    return result += 's';
   }
 }

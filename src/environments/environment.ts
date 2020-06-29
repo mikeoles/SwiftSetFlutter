@@ -7,6 +7,7 @@ import { labelScrollOptions } from 'src/app/aisle-view/product-details/product-g
 export const environment = {
   production: false,
   auditReportUrl: '',
+  aisleGridCounts: ['labelCount', 'outCount', 'misreadBarcodeCount', 'sectionLabelCount', 'sectionBreakCount', 'topStockCount'],
   apiUrl: 'http://localhost/api',
   authUrl: 'http://localhost/dex/auth?',
   authClientId: 'data-products-viewer',
