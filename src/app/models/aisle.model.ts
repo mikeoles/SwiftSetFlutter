@@ -9,7 +9,7 @@ export default class Aisle {
   scanDateTime: Date;
   labelCount: number;
   outCount: number;
-  misreadBarcodeCount: number;
+  labelUnreadCount: number;
   sectionLabelCount: number;
   sectionBreakCount: number;
   topStockCount: number;

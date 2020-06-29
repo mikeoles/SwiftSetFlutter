@@ -53,7 +53,7 @@ export class ApiService {
       labelCount: aisle.labelCount,
       labels: (aisle.labels || []).map(l => this.createLabel(l)),
       outCount: aisle.outCount,
-      misreadBarcodeCount: aisle.misreadBarcodeCount,
+      labelUnreadCount: aisle.labelUnreadCount,
       sectionBreakCount: aisle.sectionBreakCount,
       sectionLabelCount: aisle.sectionLabelCount,
       topStockCount: aisle.topStockCount,
