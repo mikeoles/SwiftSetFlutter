@@ -3,10 +3,10 @@
 }
 
 #title {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
     display: inline-block;
-    margin: 20px 10px;
+    margin: 24px 10px;
 }
 
 button {
@@ -16,20 +16,21 @@ button {
 
 input {
     float: right;
-    margin: 18px;
-    font-size: 22px;
+    margin: 22px 10px;
+    font-size: 18px;
     width: 180px;
 }
 
 .info {
     display: inline-block;
-    font-size: 24px;
+    font-size: 18px;
     color: #2baae1;
     font-weight: bold;
     margin-left: 25px;
 }
 
 .counts {
+    font-size: 14px;
     display: inline-block;
     margin-left: 25px;
 
@@ -38,7 +39,7 @@ input {
 
         span {
             font-weight: bold;
-            font-size: 20px;
+            font-size: 18px;
             margin-right: 5px;
         }
     }

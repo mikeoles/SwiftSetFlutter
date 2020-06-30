@@ -63,7 +63,6 @@ export class AuditPanoramaComponent implements OnInit, OnChanges {
         }
       },
     });
-    this.setHotkeys();
     this.panZoomApi.zoomAbs(0, 0, this.startingZoomLevel);
   }
 
@@ -73,11 +72,13 @@ export class AuditPanoramaComponent implements OnInit, OnChanges {
       this.updateAnnotationBorderColors();
     }
 
-    if (changes.searchedBarcode) {
+    if (changes.searchedBarcode && this.searchedBarcode.length > 0) {
       this.currentId = this.findIdByBarcode(this.searchedBarcode);
       this.panZoomApi.setTransformOrigin({x: 0.5, y: 0.5}); // Zoom towards the center of page instead of the mouse
       this.centerOnLabel();
     }
+
+    this.setHotkeys();
   }
 
   findIdByBarcode(barcode: any): string {
