@@ -5,10 +5,10 @@ import 'package:swiftset/utils/exercise_database.dart';
 import 'models/exercise.dart';
 import 'models/filter_category.dart';
 
-List<Exercise> exercises;
+List<Exercise> allExercises;
 
 void main() async {
-  exercises = await ExerciseDatabase.getAllExercises();
+  allExercises = await ExerciseDatabase.getAllExercises();
   runApp(SwiftSet());
 }
 
@@ -28,27 +28,44 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final currentFilters = new List<FilterCategory>();
+  var currentExercises = new List<Exercise>();
+
+  @override
+  void initState() {
+    currentExercises.addAll(allExercises);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-            child: Column(
-      children: [
-        _searchBar(),
-        _filterList(),
-        _exerciseList(),
-      ],
-    )));
+      body: SafeArea(
+        child: Column(
+          children: [
+            _searchBar(),
+            _filterList(),
+            _exerciseList(),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => {},
+        tooltip: 'Increment Counter',
+        child: const Icon(Icons.add),
+      ),
+    );
   }
 
   Widget _searchBar() {
     return Padding(
       padding: EdgeInsets.all(16.0),
       child: TextFormField(
+        onChanged: (searchText) {
+          filterSearchResults(searchText);
+        },
         decoration: new InputDecoration(
           prefixIcon: Icon(Icons.search),
-          labelText: "Search " + exercises.length.toString() + " Exercises",
+          labelText: "Search " + currentExercises.length.toString() + " Exercises",
           border: new OutlineInputBorder(
             borderRadius: new BorderRadius.circular(25.0),
           ),
@@ -90,9 +107,9 @@ class _HomeState extends State<Home> {
   Widget _exerciseList() {
     return Expanded(
       child: ListView.builder(
-        itemCount: exercises.length,
+        itemCount: currentExercises.length,
         itemBuilder: (context, index) {
-          final exercise = exercises[index];
+          final exercise = currentExercises[index];
           return _buildRow(exercise);
         },
       ),
@@ -121,5 +138,19 @@ class _HomeState extends State<Home> {
         ),
       ),
     );
+  }
+
+  void filterSearchResults(String query) {
+    if(query.isNotEmpty) {
+      setState(() {
+        currentExercises = allExercises.where((i) => i.name.toLowerCase().contains(query)).toList();
+      });
+      return;
+    } else {
+      setState(() {
+        currentExercises.clear();
+        currentExercises.addAll(allExercises);
+      });
+    }
   }
 }

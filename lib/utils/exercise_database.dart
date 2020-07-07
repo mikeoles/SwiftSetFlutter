@@ -8,13 +8,6 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:swiftset/models/exercise.dart';
 
-void main() async {
-  List<Exercise> exercises = await ExerciseDatabase.getAllExercises();
-  exercises.forEach((element) {
-    print(element.name);
-  });
-}
-
 class ExerciseDatabase {
   static Future<List<Exercise>> getAllExercises() async {
     // Avoid errors caused by flutter upgrade.
@@ -25,10 +18,10 @@ class ExerciseDatabase {
     var dbDir = await getDatabasesPath();
     var dbPath = join(dbDir, "app.db");
 
-// Delete any existing database:
+    // Delete any existing database:
     await deleteDatabase(dbPath);
 
-// Create the writable database file from the bundled demo database file:
+    // Create the writable database file from the bundled demo database file:
     ByteData data = await rootBundle.load("assets/main_exercises_19.db");
     List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
     await File(dbPath).writeAsBytes(bytes);
