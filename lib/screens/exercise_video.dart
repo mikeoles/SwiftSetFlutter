@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -66,7 +65,6 @@ class ExerciseVideoScreen extends StatelessWidget {
     //Find the video code from the url
     //Ex: Url = https://www.youtube.com/watch?v=D5d_rkxPfuE&t=1m4s videoCode = D5d_rkxPfuE
     int endOfVideoCode = findFirstSeparator(youtubeCode);
-    //If a specific time is designated in the video set the start time in milliseconds
     if ((youtubeCode.contains("&t=") || youtubeCode.contains("?t=")) &&
         (endOfVideoCode < youtubeCode.length)) {
       //removes the video code from the youtubeCode
@@ -85,7 +83,6 @@ class ExerciseVideoScreen extends StatelessWidget {
       }
 
       if (timecode.contains("m")) {
-        //m in url d
         var parts = timecode.split("m");
         parts[0] =
             parts[0].substring(0, parts[0].length - 1); // remove mL 2m -> 2
@@ -118,7 +115,6 @@ class ExerciseVideoScreen extends StatelessWidget {
     if (s.contains("\n")) {
       endOfVideoCode = min(endOfVideoCode, s.indexOf("\n"));
     }
-    //Code is after url and before the first seperator character (?/&)
     return endOfVideoCode;
   }
 }

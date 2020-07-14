@@ -49,7 +49,7 @@ class _HomeState extends State<Home> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => {},
+        onPressed: _addFilter,
         tooltip: 'Increment Counter',
         child: const Icon(Icons.add),
       ),
@@ -152,5 +152,9 @@ class _HomeState extends State<Home> {
         currentExercises.addAll(allExercises);
       });
     }
+  }
+
+  void _addFilter() {
+
   }
 }
