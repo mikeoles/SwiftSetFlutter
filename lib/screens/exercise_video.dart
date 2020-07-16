@@ -6,8 +6,6 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class ExerciseVideoScreen extends StatelessWidget {
   final Exercise exercise;
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-  YoutubePlayerController _controller;
 
   ExerciseVideoScreen({Key key, @required this.exercise}) : super(key: key);
 

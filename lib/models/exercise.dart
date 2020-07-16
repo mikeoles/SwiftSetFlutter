@@ -2,7 +2,7 @@ class Exercise {
   final int id;
   final String name;
   final String url;
-  final int difficulty;
+  final String difficulty;
   final String primary;
   final String equipment;
   final String movement;
@@ -19,20 +19,20 @@ class Exercise {
 
   Map<String, dynamic> toMap() {
     return {
-      '_id': id,
-      'Name': name,
-      'Url': url,
-      'Difficulty': difficulty,
-      'Primary': primary,
-      'Equipment': equipment,
-      'Movement': movement,
-      'Angle': angle,
-      'Tempo': tempo,
-      'Unilateral': unilateral,
-      'Joint': joint,
-      'Stability': stability,
-      'Sport': sport,
-      'Grip': grip,
+      'id': id,
+      'name': name,
+      'url': url,
+      'difficulty': difficulty,
+      'primary': primary,
+      'equipment': equipment,
+      'movement': movement,
+      'angle': angle,
+      'tempo': tempo,
+      'unilateral': unilateral,
+      'joint': joint,
+      'stability': stability,
+      'sport': sport,
+      'grip': grip,
     };
   }
 }
