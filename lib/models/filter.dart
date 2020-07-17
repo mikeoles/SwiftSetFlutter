@@ -1,11 +1,13 @@
+import 'filter_group.dart';
+
 class Filter {
   final int id;
   final String name;
   final String dbColumn;
   final String dbSortBy;
-  final int groupId;
+  final FilterGroup group;
 
-  Filter({this.id, this.name, this.dbColumn, this.dbSortBy, this.groupId});
+  Filter({this.id, this.name, this.dbColumn, this.dbSortBy, this.group});
 
   Map<String, dynamic> toMap() {
     return {
@@ -13,7 +15,7 @@ class Filter {
       'name': name,
       'dbColumn': dbColumn,
       'dbSortBy': dbSortBy,
-      'filter_group': groupId
+      'group': group
     };
   }
 }

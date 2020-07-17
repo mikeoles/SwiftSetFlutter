@@ -53,6 +53,7 @@ class ExerciseDatabase {
           stability: maps[i]['stability'],
           sport: maps[i]['sport'],
           grip: maps[i]['grip'],
+          movement: maps[i]['movement']
         );
       });
     }
@@ -92,11 +93,17 @@ class ExerciseDatabase {
           id: maps[i]['id'],
           name: maps[i]['name'],
           isMultiChoice: maps[i]['isMultiChoice'] == 1,
+          isDefault: maps[i]['isDefault'] == 1,
         );
       });
     }
 
     return getFilterGroups();
+  }
+
+  static Future<List<FilterGroup>> getStartingFilterGroups() async {
+    var allGroups = await getAllFilterGroups();
+    return allGroups.where((g) => g.isDefault).toList();
   }
 
   static Future<List<Filter>> getAllFilters() async {
@@ -125,6 +132,8 @@ class ExerciseDatabase {
       // Query the table for all The Exercises.
       final List<Map<String, dynamic>> maps = await db.query('filters');
 
+      List<FilterGroup> allGroups = await getAllFilterGroups();
+
       // Convert the List<Map<String, dynamic> into a List<Exercise>.
       return List.generate(maps.length, (i) {
         return Filter(
@@ -132,7 +141,7 @@ class ExerciseDatabase {
           name: maps[i]['name'],
           dbColumn: maps[i]['dbColumn'],
           dbSortBy: maps[i]['dbSortBy'],
-          groupId: maps[i]['filter_group'],
+          group: allGroups.firstWhere((g) => g.id == maps[i]['filter_group']),
         );
       });
     }

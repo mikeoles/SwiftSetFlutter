@@ -20,7 +20,7 @@ class _SingleFilterSelectionScreenState extends State<SingleFilterSelectionScree
       future: ExerciseDatabase.getAllFilters(),
       builder: (BuildContext context, AsyncSnapshot<List<Filter>> snapshot) {
         if (snapshot.hasData) {
-          List<Filter> matchingFilters = snapshot.data.where((i) => i.groupId == widget.filterGroupId).toList();
+          List<Filter> matchingFilters = snapshot.data.where((i) => i.group.id == widget.filterGroupId).toList();
           return Scaffold(
             body: SafeArea(
                 child: _filterList(matchingFilters)

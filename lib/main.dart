@@ -8,11 +8,11 @@ import 'models/exercise.dart';
 import 'models/filter.dart';
 
 List<Exercise> allExercises;
-List<FilterGroup> allGroups;
+List<FilterGroup> startingGroups;
 
 void main() async {
   allExercises = await ExerciseDatabase.getAllExercises();
-  allGroups = await ExerciseDatabase.getAllFilterGroups();
+  startingGroups = await ExerciseDatabase.getStartingFilterGroups();
   runApp(SwiftSet());
 }
 
@@ -53,7 +53,7 @@ class _HomeState extends State<Home> {
     }
     filteredExercises.addAll(allExercises);
     searchedExercises.addAll(allExercises);
-    currentGroups.addAll(allGroups);
+    currentGroups.addAll(startingGroups);
     super.initState();
   }
 
@@ -109,6 +109,7 @@ class _HomeState extends State<Home> {
       onDeleted: () {
         setState(() {
           currentFilters.remove(filter);
+          _updateGroups(filter);
           _filterExercises();
         });
       },
@@ -184,6 +185,7 @@ class _HomeState extends State<Home> {
       ),
     );
     setState(() {
+      this.currentGroups.removeWhere((g) => g.id == chosenFilter.group.id);
       this.currentFilters.add(chosenFilter);
       _filterExercises();
     });
@@ -194,14 +196,31 @@ class _HomeState extends State<Home> {
     this.searchedExercises.clear();
     this.filteredExercises.addAll(allExercises);
     this.currentFilters.forEach((f) => {
-          this.filteredExercises =
-              this.filteredExercises
-              .where((e) =>
-                  e.toMap()[f.dbColumn.toLowerCase()].toLowerCase() ==
-                  f.dbSortBy.toLowerCase())
-              .toList()
-        });
-
+      this.filteredExercises = this.filteredExercises.where((e) => _matchesFilter(e,f)).toList()
+    });
     this.searchedExercises.addAll(this.filteredExercises);
+  }
+
+  // Determine if an exercise should be removed by a filter
+  bool _matchesFilter(Exercise exercise, Filter filter) {
+    var exerciseValue = exercise.toMap()[filter.dbColumn.toLowerCase()]; // Value from the exercuse to check against filter
+    if (exerciseValue==null) {
+      return false;
+    }
+    exerciseValue = exerciseValue.toLowerCase();
+    var filterValue = filter.dbSortBy.toLowerCase();
+
+
+    if (filterValue.contains('/')) { // Used when multiple values are acceptable (Ex: chest, triceps both acceptable primary values for Push)
+      return filterValue.split('/').any((e) => exerciseValue.contains(e));
+    } else {
+      return exerciseValue.contains(filterValue);
+    }
+  }
+
+  void _updateGroups(Filter filter) {
+    if (!currentFilters.any((f) => f.group.id == filter.group.id)) {
+      this.currentGroups.add(filter.group);
+    }
   }
 }
