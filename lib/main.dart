@@ -17,22 +17,18 @@ void main() async {
 }
 
 class SwiftSet extends StatelessWidget {
-  Filter filter;
-
-  SwiftSet({this.filter});
+  SwiftSet();
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Home(this.filter),
+      home: Home(),
     );
   }
 }
 
 class Home extends StatefulWidget {
-  Filter filter;
-
-  Home(this.filter);
+  Home();
 
   @override
   _HomeState createState() => _HomeState();
@@ -46,11 +42,6 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    if (widget.filter != null) {
-      {
-        currentFilters.add(widget.filter);
-      }
-    }
     filteredExercises.addAll(allExercises);
     searchedExercises.addAll(allExercises);
     currentGroups.addAll(startingGroups);
@@ -109,7 +100,27 @@ class _HomeState extends State<Home> {
       onDeleted: () {
         setState(() {
           currentFilters.remove(filter);
-          _updateGroups(filter);
+          _updateGroups();
+          _filterExercises();
+        });
+      },
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+    );
+  }
+
+  Widget _buildClearAllChip() {
+    return Chip(
+      label: Text(
+        "Clear All",
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      backgroundColor: Colors.redAccent,
+      onDeleted: () {
+        setState(() {
+          currentFilters.clear();
+          _updateGroups();
           _filterExercises();
         });
       },
@@ -118,13 +129,17 @@ class _HomeState extends State<Home> {
   }
 
   Widget _filterList() {
+    List<Widget> filters = currentFilters
+        .map((item) => _buildChip(item))
+        .toList()
+        .cast<Widget>();
+    if (filters.isNotEmpty) {
+      filters.add(_buildClearAllChip());
+    }
     return Wrap(
       spacing: 5.0,
       runSpacing: 5.0,
-      children: currentFilters
-          .map((item) => _buildChip(item))
-          .toList()
-          .cast<Widget>(),
+      children: filters,
     );
   }
 
@@ -150,11 +165,14 @@ class _HomeState extends State<Home> {
           ),
         );
       },
-      child: Card(
-        child: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Center(
-            child: Text(exercise.name),
+      child: Hero(
+        tag: 'exercise-' + exercise.id.toString(),
+        child: Card(
+          child: Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Center(
+              child: Text(exercise.name),
+            ),
           ),
         ),
       ),
@@ -178,16 +196,25 @@ class _HomeState extends State<Home> {
   }
 
   void _addFilter() async {
-    final Filter chosenFilter = await Navigator.push(
+    var chosenFilter = await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => GroupSelectionScreen(filterGroups: currentGroups),
       ),
     );
     setState(() {
-      this.currentGroups.removeWhere((g) => g.id == chosenFilter.group.id);
-      this.currentFilters.add(chosenFilter);
-      _filterExercises();
+      if (chosenFilter.runtimeType == Filter) {
+        Filter filter = chosenFilter as Filter;
+        this.currentGroups.removeWhere((g) => g.id == filter.group.id);
+        this.currentGroups.addAll(filter.groupsToAdd);
+        this.currentFilters.add(chosenFilter);
+        _filterExercises();
+      } else { // returning list of filters from a multi selection
+        List<Filter> multipleFilters = chosenFilter as List<Filter>;
+        this.currentGroups.removeWhere((g) => g.id == multipleFilters[0].group.id);
+        multipleFilters.forEach((f) => this.currentFilters.add(f));
+        _filterExercises();
+      }
     });
   }
 
@@ -195,32 +222,61 @@ class _HomeState extends State<Home> {
     this.filteredExercises.clear();
     this.searchedExercises.clear();
     this.filteredExercises.addAll(allExercises);
-    this.currentFilters.forEach((f) => {
-      this.filteredExercises = this.filteredExercises.where((e) => _matchesFilter(e,f)).toList()
-    });
+    _filterMulti();
+    _filterSingle();
     this.searchedExercises.addAll(this.filteredExercises);
   }
 
   // Determine if an exercise should be removed by a filter
   bool _matchesFilter(Exercise exercise, Filter filter) {
-    var exerciseValue = exercise.toMap()[filter.dbColumn.toLowerCase()]; // Value from the exercuse to check against filter
-    if (exerciseValue==null) {
+    var exerciseValue = exercise.toMap()[filter.dbColumn.toLowerCase()]; // Value from the exercise to check against filter
+    if (exerciseValue == null) {
       return false;
     }
     exerciseValue = exerciseValue.toLowerCase();
     var filterValue = filter.dbSortBy.toLowerCase();
 
-
-    if (filterValue.contains('/')) { // Used when multiple values are acceptable (Ex: chest, triceps both acceptable primary values for Push)
+    if (filterValue.contains('/')) {
+      // Used when multiple values are acceptable (Ex: chest, triceps both acceptable primary values for Push)
       return filterValue.split('/').any((e) => exerciseValue.contains(e));
     } else {
       return exerciseValue.contains(filterValue);
     }
   }
 
-  void _updateGroups(Filter filter) {
-    if (!currentFilters.any((f) => f.group.id == filter.group.id)) {
-      this.currentGroups.add(filter.group);
+  void _updateGroups() {
+    Map<int, FilterGroup> groups = Map(); // make sure no group is duplicated
+    startingGroups.forEach((g) => groups.putIfAbsent(g.id, () => g)); // start with all default groups
+    currentFilters.forEach((f) {
+      f.groupsToAdd.forEach((g) => groups.putIfAbsent(g.id, () => g)); // add groups based on filters
+    });
+    currentFilters.forEach((f) { // remove groups that are already filtered
+      groups.remove(f.id);
+    });
+    currentGroups.clear();
+    currentGroups.addAll(groups.values.toList());
+  }
+
+  void _filterMulti() {
+    List<Filter> multiFilters =
+        currentFilters.where((f) => f.group.isMultiChoice).toList();
+    Map<int, Exercise> unqiueExercises = Map();
+    for (int i = 0; i < multiFilters.length; i++) {
+      List<Exercise> matchingExercises = allExercises
+          .where((e) => _matchesFilter(e, multiFilters[i]))
+          .toList();
+      matchingExercises
+          .forEach((e) => unqiueExercises.putIfAbsent(e.id, () => e));
+      this.filteredExercises = unqiueExercises.values.toList();
     }
+  }
+
+  void _filterSingle() {
+    List<Filter> singleFilters =
+        currentFilters.where((f) => !f.group.isMultiChoice).toList();
+    singleFilters.forEach((f) => {
+          this.filteredExercises =
+              this.filteredExercises.where((e) => _matchesFilter(e, f)).toList()
+        });
   }
 }

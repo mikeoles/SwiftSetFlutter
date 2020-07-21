@@ -30,12 +30,15 @@ class ExerciseVideoScreen extends StatelessWidget {
               controller: _controller,
               showVideoProgressIndicator: true,
             ),
-            Padding(
-              padding: EdgeInsets.all(15),
-              child: Text(
-                exercise.name,
-                style: Theme.of(context).textTheme.headline3,
-                textAlign: TextAlign.center,
+            Hero(
+              tag: 'exercise-' + exercise.id.toString(),
+              child: Card(
+                child: Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Center(
+                    child: Text(exercise.name),
+                  ),
+                ),
               ),
             ),
           ],
@@ -69,8 +72,8 @@ class ExerciseVideoScreen extends StatelessWidget {
       youtubeCode =
           youtubeCode.substring(endOfVideoCode + 1, youtubeCode.length);
       //Timecode is everything after t=
-      String timecode = youtubeCode.substring(
-          youtubeCode.indexOf("t=") + 2, youtubeCode.length);
+      int start = max(youtubeCode.indexOf("&t=") + 3, youtubeCode.indexOf("?t=") + 3);
+      String timecode = youtubeCode.substring(start, youtubeCode.length);
       //and everything before the first seperator
       timecode = timecode.substring(0, findFirstSeparator(timecode));
 

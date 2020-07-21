@@ -11,6 +11,34 @@ import 'package:swiftset/models/filter.dart';
 import 'package:swiftset/models/filter_group.dart';
 
 class ExerciseDatabase {
+  // groups that are added when a filter is chosen (ex: chest movemment patterns added after chest)
+  static final map = {
+    6: [1,7],
+    57: [1],
+    58: [7],
+    60: [7],
+    61: [2],
+    62: [16],
+    63: [7,11],
+    65: [7],
+    66: [7,20],
+    67: [7],
+    68: [6],
+    69: [13],
+    70: [3],
+    72: [22],
+    73: [8],
+    76: [9],
+    85: [7],
+    86: [1],
+    101: [7],
+  };
+
+  static List<int> newGroupsByFilterId(int filterId) {
+    if(map.containsKey(filterId)) return map[filterId];
+    return List();
+  }
+
   static Future<List<Exercise>> getAllExercises() async {
     // Avoid errors caused by flutter upgrade.
     // Importing 'package:flutter/widgets.dart' is required.
@@ -94,6 +122,7 @@ class ExerciseDatabase {
           name: maps[i]['name'],
           isMultiChoice: maps[i]['isMultiChoice'] == 1,
           isDefault: maps[i]['isDefault'] == 1,
+          color: maps[i]['color'],
         );
       });
     }
@@ -133,7 +162,6 @@ class ExerciseDatabase {
       final List<Map<String, dynamic>> maps = await db.query('filters');
 
       List<FilterGroup> allGroups = await getAllFilterGroups();
-
       // Convert the List<Map<String, dynamic> into a List<Exercise>.
       return List.generate(maps.length, (i) {
         return Filter(
@@ -142,6 +170,7 @@ class ExerciseDatabase {
           dbColumn: maps[i]['dbColumn'],
           dbSortBy: maps[i]['dbSortBy'],
           group: allGroups.firstWhere((g) => g.id == maps[i]['filter_group']),
+          groupsToAdd: allGroups.where((g) => newGroupsByFilterId(maps[i]['id']).contains(g.id)).toList(),
         );
       });
     }

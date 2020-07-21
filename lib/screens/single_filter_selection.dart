@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:swiftset/models/filter.dart';
 import 'package:swiftset/utils/exercise_database.dart';
 
-import '../main.dart';
-
 class SingleFilterSelectionScreen extends StatefulWidget {
   final int filterGroupId;
 
@@ -38,15 +36,13 @@ class _SingleFilterSelectionScreenState extends State<SingleFilterSelectionScree
   }
 
   Widget _filterList(List<Filter> filters) {
-    return Expanded(
-      child: ListView.builder(
+    return ListView.builder(
         itemCount: filters.length,
         itemBuilder: (context, index) {
           final group = filters[index];
           return _buildRow(group, context);
         },
-      ),
-    );
+      );
   }
 
   Widget _buildRow(Filter filter, BuildContext context) {
