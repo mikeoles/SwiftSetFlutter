@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:swiftset/models/filter_group.dart';
 import 'package:swiftset/screens/multi_filter_selection.dart';
 import 'package:swiftset/screens/single_filter_selection.dart';
+import 'package:swiftset/utils/exercise_database.dart';
 
 class GroupSelectionScreen extends StatelessWidget {
   final List<FilterGroup> filterGroups;
@@ -12,13 +13,28 @@ class GroupSelectionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(child: _groupList()),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.all(20),
+              child: Text(
+                'Filter Exercises',
+                style: TextStyle(fontSize: 24),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Expanded(child: _groupList())
+          ],
+        ),
+      ),
     );
   }
 
   Widget _groupList() {
     return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+      gridDelegate:
+          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
       itemCount: filterGroups.length,
       itemBuilder: (context, index) {
         final group = filterGroups[index];
@@ -36,7 +52,7 @@ class GroupSelectionScreen extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) =>
-                  MultiFilterSelectionScreen(filterGroupId: filterGroup.id),
+                  MultiFilterSelectionScreen(filterGroup: filterGroup),
             ),
           );
         } else {
@@ -44,7 +60,7 @@ class GroupSelectionScreen extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) =>
-                  SingleFilterSelectionScreen(filterGroupId: filterGroup.id),
+                  SingleFilterSelectionScreen(filterGroup: filterGroup),
             ),
           );
         }
@@ -53,19 +69,25 @@ class GroupSelectionScreen extends StatelessWidget {
         }
       },
       child: Card(
-        color: hexToColor(filterGroup.color),
-        child: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Center(
-            child: Text(filterGroup.name),
-          ),
+        color: Colors.white,
+        child: Column(
+          children: [
+            Image.asset(
+              'assets/images/' + filterGroup.image.toString(),
+              color: ExerciseDatabase.hexToColor(filterGroup.color),
+              height: 100,
+              width: 100,
+            ),
+            Center(
+              child: Text(
+                filterGroup.name,
+                style: TextStyle(fontSize: 24),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
         ),
       ),
     );
-  }
-
-  Color hexToColor(String code) {
-    if (code == null) return Colors.red;
-    return new Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
   }
 }

@@ -39,6 +39,7 @@ class _HomeState extends State<Home> {
   var currentGroups = new List<FilterGroup>();
   var filteredExercises = new List<Exercise>();
   var searchedExercises = new List<Exercise>();
+  int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -46,6 +47,12 @@ class _HomeState extends State<Home> {
     searchedExercises.addAll(allExercises);
     currentGroups.addAll(startingGroups);
     super.initState();
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
@@ -64,6 +71,25 @@ class _HomeState extends State<Home> {
         onPressed: _addFilter,
         tooltip: 'Increment Counter',
         child: const Icon(Icons.filter_list),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            title: Text('Search'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            title: Text('Saved'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            title: Text('Settings'),
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.blueAccent,
+        onTap: _onItemTapped,
       ),
     );
   }
@@ -95,7 +121,7 @@ class _HomeState extends State<Home> {
           color: Colors.white,
         ),
       ),
-      backgroundColor: Colors.blueAccent,
+      backgroundColor: ExerciseDatabase.hexToColor(filter.group.color),
       deleteIcon: Icon(Icons.close, color: Colors.white, size: 12),
       onDeleted: () {
         setState(() {
@@ -133,7 +159,7 @@ class _HomeState extends State<Home> {
         .map((item) => _buildChip(item))
         .toList()
         .cast<Widget>();
-    if (filters.isNotEmpty) {
+    if (filters.length > 1) {
       filters.add(_buildClearAllChip());
     }
     return Wrap(

@@ -4,8 +4,9 @@ class FilterGroup {
   final bool isMultiChoice;
   final bool isDefault;
   final String color;
+  final String image;
 
-  FilterGroup({this.id, this.name, this.isMultiChoice, this.isDefault, this.color});
+  FilterGroup({this.id, this.name, this.isMultiChoice, this.isDefault, this.color, this.image});
 
   Map<String, dynamic> toMap() {
     return {
@@ -14,6 +15,7 @@ class FilterGroup {
       'isMultiChoice': isMultiChoice,
       'isDefault': isDefault,
       'color': color,
+      'image': image,
     };
   }
 }

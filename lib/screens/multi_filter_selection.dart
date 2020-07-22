@@ -1,12 +1,15 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:swiftset/models/filter.dart';
+import 'package:swiftset/models/filter_group.dart';
 import 'package:swiftset/utils/exercise_database.dart';
 
 class MultiFilterSelectionScreen extends StatefulWidget {
-  final int filterGroupId;
+  final FilterGroup filterGroup;
 
-  MultiFilterSelectionScreen({this.filterGroupId});
+  MultiFilterSelectionScreen({this.filterGroup});
 
   @override
   _SingleFilterSelectionScreenState createState() =>
@@ -30,11 +33,36 @@ class _SingleFilterSelectionScreenState
         builder: (BuildContext context, AsyncSnapshot<List<Filter>> snapshot) {
           if (snapshot.hasData) {
             List<Filter> matchingFilters = snapshot.data
-                .where((i) => i.group.id == widget.filterGroupId)
+                .where((i) => i.group.id == widget.filterGroup.id)
                 .toList();
             return Scaffold(
               body: SafeArea(
-                child: Column(children: [
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                  Padding(
+                    padding: EdgeInsets.all(13),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset(
+                          'assets/images/' +
+                              widget.filterGroup.image.toString(),
+                          color: ExerciseDatabase.hexToColor(
+                              widget.filterGroup.color),
+                        ),
+                        Text(
+                          widget.filterGroup.name,
+                          style: TextStyle(
+                            fontSize: 24,
+                            color: ExerciseDatabase.hexToColor(
+                                widget.filterGroup.color),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   Expanded(
                     child: _filterList(matchingFilters),
                   ),
@@ -57,20 +85,23 @@ class _SingleFilterSelectionScreenState
       itemCount: filters.length,
       itemBuilder: (context, index) {
         final group = filters[index];
-        return _buildRow(group, context);
+        return _buildRow(group, filters.length, context);
       },
     );
   }
 
-  Widget _buildRow(Filter filter, BuildContext context) {
-    return new CheckboxListTile(
-      title: new Text(filter.name),
+  Widget _buildRow(Filter filter, int itemCount, BuildContext context) {
+    return Container(
+        height: 50,
+    child: CheckboxListTile(
+      title: new Text(filter.name,),
       value: values.containsKey(filter.id) && values[filter.id],
       onChanged: (bool value) {
         setState(() {
           values[filter.id] = value;
         });
       },
+    ),
     );
   }
 
@@ -91,7 +122,7 @@ class _SingleFilterSelectionScreenState
 
   _selectPressed() async {
     List<Filter> test = await ExerciseDatabase.getAllFilters();
-    test = test.where((i) => i.group.id == widget.filterGroupId).toList();
+    test = test.where((i) => i.group.id == widget.filterGroup.id).toList();
     test = test.where((f) => values.containsKey(f.id) && values[f.id]).toList();
     SchedulerBinding.instance.addPostFrameCallback((_) {
       Navigator.pop(context, test);

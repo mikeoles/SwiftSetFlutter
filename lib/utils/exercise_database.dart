@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
@@ -123,6 +124,7 @@ class ExerciseDatabase {
           isMultiChoice: maps[i]['isMultiChoice'] == 1,
           isDefault: maps[i]['isDefault'] == 1,
           color: maps[i]['color'],
+          image: maps[i]['image'],
         );
       });
     }
@@ -176,5 +178,10 @@ class ExerciseDatabase {
     }
 
     return getFilters();
+  }
+
+  static Color hexToColor(String code) {
+    if (code == null) return Colors.red;
+    return new Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
   }
 }
