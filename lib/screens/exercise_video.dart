@@ -1,18 +1,33 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swiftset/models/exercise.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class ExerciseVideoScreen extends StatelessWidget {
+class ExerciseVideoScreen extends StatefulWidget {
   final Exercise exercise;
+  final bool saved;
 
-  ExerciseVideoScreen({Key key, @required this.exercise}) : super(key: key);
+  ExerciseVideoScreen({Key key, @required this.exercise, @required this.saved}) : super(key: key);
+
+  @override
+  _ExerciseVideoScreenState createState() => _ExerciseVideoScreenState();
+}
+
+class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
+  bool saved = false;
+
+  @override
+  void initState() {
+    super.initState();
+    saved = widget.saved;
+  }
 
   @override
   Widget build(BuildContext context) {
-    String videoId = YoutubePlayer.convertUrlToId(exercise.url);
-    int startTime = getStartTime(exercise.url);
+    String videoId = YoutubePlayer.convertUrlToId(widget.exercise.url);
+    int startTime = getStartTime(widget.exercise.url);
 
     YoutubePlayerController _controller = YoutubePlayerController(
       initialVideoId: videoId,
@@ -31,23 +46,24 @@ class ExerciseVideoScreen extends StatelessWidget {
               showVideoProgressIndicator: true,
             ),
             Hero(
-              tag: 'exercise-' + exercise.id.toString(),
-              child: Card(
-                child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Center(
-                    child: Text(exercise.name),
-                  ),
+              tag: 'exercise-' + widget.exercise.id.toString(),
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Center(
+                  child: Text(widget.exercise.name),
                 ),
               ),
             ),
+            RaisedButton(
+              onPressed: _saveExercise,
+              child: saved ? Text('Unsave') : Text('Save Exercise')
+            )
           ],
         ),
       ),
     );
   }
 
-  // Get the start time in seconds from a youtube url
   int getStartTime(String selectedUrl) {
     String youtubeCode = "";
     int startTimeSeconds = 0;
@@ -103,8 +119,6 @@ class ExerciseVideoScreen extends StatelessWidget {
     return startTimeSeconds;
   }
 
-  /* Finds the index of the first location of a seperator character in the URL
-  Returns the end of the string if none are found */
   int findFirstSeparator(String s) {
     int endOfVideoCode = s.length;
     if (s.contains("&")) {
@@ -117,5 +131,23 @@ class ExerciseVideoScreen extends StatelessWidget {
       endOfVideoCode = min(endOfVideoCode, s.indexOf("\n"));
     }
     return endOfVideoCode;
+  }
+
+  void _saveExercise() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedExercisesString = prefs.getString('savedExercises') ?? '';
+    final savedExercises = savedExercisesString.split(',');
+    final String id = widget.exercise.id.toString();
+
+    if (saved) {
+      savedExercises.remove(id);
+    } else {
+      savedExercises.add(id);
+    }
+    setState(() {
+      saved = !saved;
+    });
+
+    prefs.setString('savedExercises', savedExercises.join(','));
   }
 }

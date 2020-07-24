@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swiftset/models/filter_group.dart';
 import 'package:swiftset/screens/exercise_video.dart';
 import 'package:swiftset/screens/group_selection.dart';
@@ -8,58 +11,106 @@ import '../models/exercise.dart';
 import '../models/filter.dart';
 
 class ExerciseFinder extends StatefulWidget {
+  ExerciseFinderState efs;
+
+  void addFilter() {
+    efs.addFilter();
+  }
+
   @override
-  _ExerciseFinderState createState() => _ExerciseFinderState();
+  ExerciseFinderState createState() {
+    efs = new ExerciseFinderState();
+    return efs;
+  }
+
+
 }
 
-class _ExerciseFinderState extends State<ExerciseFinder> {
+class ExerciseFinderState extends State<ExerciseFinder> {
+  SharedPreferences prefs;
+  Set<String> savedIds = new Set();
   var allExercises = new List<Exercise>();
   var startingGroups = new List<FilterGroup>();
+  var allFilters = new List<Filter>();
   var currentFilters = new List<Filter>();
   var currentGroups = new List<FilterGroup>();
   var filteredExercises = new List<Exercise>();
   var searchedExercises = new List<Exercise>();
 
   @override
+  void initState() {
+    _loadFromDatabase();
+  }
+
+  void _loadFromDatabase() async {
+    prefs = await SharedPreferences.getInstance();
+    final savedExercisesString = prefs.getString('savedExercises') ?? '';
+    savedIds = savedExercisesString.split(',').toSet();
+
+    allExercises = await ExerciseDatabase.getAllExercises();
+    startingGroups = await ExerciseDatabase.getStartingFilterGroups();
+    allFilters = await ExerciseDatabase.getAllFilters();
+
+    setState(() {
+      filteredExercises.addAll(allExercises);
+      _filterHidden();
+      searchedExercises.addAll(filteredExercises);
+      currentGroups.addAll(startingGroups);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: Future.wait([ExerciseDatabase.getAllExercises(), ExerciseDatabase.getStartingFilterGroups()]),
-        builder:
-            (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
-          if (snapshot.hasData && allExercises.isEmpty) {
-            allExercises = snapshot.data[0];
-            startingGroups = snapshot.data[1];
-            filteredExercises.addAll(allExercises);
-            searchedExercises.addAll(allExercises);
-            currentGroups.addAll(startingGroups);
-          }
-          return SafeArea(
-            child: Column(
-              children: [
-                _searchBar(),
-                _filterList(),
-                _exerciseList(),
-              ],
-            ),
-          );
-        });
+    return SafeArea(
+      child: Column(
+        children: [
+          _searchBar(),
+          _filterList(),
+          _exerciseList(),
+        ],
+      ),
+    );
   }
 
   Widget _searchBar() {
     return Padding(
       padding: EdgeInsets.all(16.0),
-      child: TextFormField(
-        onChanged: (searchText) {
-          filterSearchResults(searchText);
-        },
-        decoration: new InputDecoration(
-          prefixIcon: Icon(Icons.search),
-          labelText:
-              "Search " + searchedExercises.length.toString() + " Exercises",
-          border: new OutlineInputBorder(
-            borderRadius: new BorderRadius.circular(25.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextFormField(
+              onChanged: (searchText) {
+                filterSearchResults(searchText);
+              },
+              style: new TextStyle(color: Colors.blue),
+              decoration: new InputDecoration(
+                contentPadding: new EdgeInsets.symmetric(vertical: 5.0),
+                prefixIcon: Icon(Icons.search),
+                labelText: "Search " +
+                    searchedExercises.length.toString() +
+                    " Exercises",
+                border: new OutlineInputBorder(
+                  borderRadius: new BorderRadius.circular(25.0),
+                ),
+              ),
+            ),
           ),
-        ),
+          new IconButton(
+            icon: Icon(Icons.shuffle, color: Colors.blue, size: 40),
+            onPressed: () {
+              final _random = new Random();
+              var exercise = searchedExercises[_random.nextInt(searchedExercises.length)];
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ExerciseVideoScreen(
+                      exercise: exercise,
+                      saved: savedIds.contains(exercise.id.toString())),
+                ),
+              );
+            },
+          )
+        ],
       ),
     );
   }
@@ -120,36 +171,41 @@ class _ExerciseFinderState extends State<ExerciseFinder> {
 
   Widget _exerciseList() {
     return Expanded(
-      child: ListView.builder(
+      child: ListView.separated(
         itemCount: searchedExercises.length,
         itemBuilder: (context, index) {
           final exercise = searchedExercises[index];
-          return _buildRow(exercise);
+          return _buildRow(
+              exercise, savedIds.contains(exercise.id.toString()));
         },
+        separatorBuilder: (BuildContext context, int index) => Divider(
+          thickness: 1,
+          height: 1,
+        ),
       ),
     );
   }
 
-  Widget _buildRow(Exercise exercise) {
+  Widget _buildRow(Exercise exercise, bool favorite) {
     return InkWell(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ExerciseVideoScreen(exercise: exercise),
+            builder: (context) => ExerciseVideoScreen(
+                exercise: exercise,
+                saved: savedIds.contains(exercise.id.toString())),
           ),
         );
       },
-      child: Hero(
-        tag: 'exercise-' + exercise.id.toString(),
-        child: Card(
-          child: Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Center(
-              child: Text(exercise.name),
-            ),
-          ),
-        ),
+      child: ListTile(
+        title: Text(exercise.name),
+        trailing: favorite
+            ? Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Image.asset('assets/images/swiftset.png'),
+              )
+            : null,
       ),
     );
   }
@@ -170,7 +226,7 @@ class _ExerciseFinderState extends State<ExerciseFinder> {
     }
   }
 
-  void _addFilter() async {
+  void addFilter() async {
     var chosenFilter = await Navigator.push(
       context,
       MaterialPageRoute(
@@ -184,14 +240,16 @@ class _ExerciseFinderState extends State<ExerciseFinder> {
         this.currentGroups.addAll(filter.groupsToAdd);
         this.currentFilters.add(chosenFilter);
         _filterExercises();
-      } else {
+      } else if (chosenFilter != null) {
         // returning list of filters from a multi selection
         List<Filter> multipleFilters = chosenFilter as List<Filter>;
-        this
-            .currentGroups
-            .removeWhere((g) => g.id == multipleFilters[0].group.id);
-        multipleFilters.forEach((f) => this.currentFilters.add(f));
-        _filterExercises();
+        if (multipleFilters.isNotEmpty) {
+          this
+              .currentGroups
+              .removeWhere((g) => g.id == multipleFilters[0].group.id);
+          multipleFilters.forEach((f) => this.currentFilters.add(f));
+          _filterExercises();
+        }
       }
     });
   }
@@ -244,13 +302,24 @@ class _ExerciseFinderState extends State<ExerciseFinder> {
         currentFilters.where((f) => f.group.isMultiChoice).toList();
     Map<int, Exercise> unqiueExercises = Map();
     for (int i = 0; i < multiFilters.length; i++) {
-      List<Exercise> matchingExercises = allExercises
+      List<Exercise> matchingExercises = filteredExercises
           .where((e) => _matchesFilter(e, multiFilters[i]))
           .toList();
       matchingExercises
           .forEach((e) => unqiueExercises.putIfAbsent(e.id, () => e));
       this.filteredExercises = unqiueExercises.values.toList();
     }
+  }
+
+  void _filterHidden() {
+    String filterString = prefs.getString("4") + ',' + prefs.getString("5");
+    Set filterIds = filterString.split(",").toSet();
+    List<Filter> hiddenFilters =
+        allFilters.where((f) => filterIds.contains(f.id.toString())).toList();
+    hiddenFilters.forEach(
+        (f) => this.filteredExercises.removeWhere((e) => _matchesFilter(e, f)));
+    hiddenFilters.forEach(
+        (f) => this.filteredExercises.removeWhere((e) => _matchesFilter(e, f)));
   }
 
   void _filterSingle() {

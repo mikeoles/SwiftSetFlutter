@@ -137,6 +137,11 @@ class ExerciseDatabase {
     return allGroups.where((g) => g.isDefault).toList();
   }
 
+  static Future<FilterGroup> getGroupsById(int id) async {
+    var allGroups = await getAllFilterGroups();
+    return allGroups.firstWhere((g) => g.id == id);
+  }
+
   static Future<List<Filter>> getAllFilters() async {
     // Avoid errors caused by flutter upgrade.
     // Importing 'package:flutter/widgets.dart' is required.

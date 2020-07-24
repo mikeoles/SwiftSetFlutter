@@ -23,9 +23,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  shared_preferences: 0.5.8
   sqflite:
   path:
   youtube_player_flutter:
+  launch_review: ^1.0.1
 
 
   # The following adds the Cupertino Icons font to your application.

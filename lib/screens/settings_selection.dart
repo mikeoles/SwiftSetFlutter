@@ -5,26 +5,25 @@ import 'package:swiftset/models/filter.dart';
 import 'package:swiftset/models/filter_group.dart';
 import 'package:swiftset/utils/exercise_database.dart';
 
-class MultiFilterSelectionScreen extends StatefulWidget {
+class SettingsSelectionScreen extends StatefulWidget {
   final FilterGroup filterGroup;
 
-  MultiFilterSelectionScreen({this.filterGroup});
+  SettingsSelectionScreen({this.filterGroup});
 
   @override
-  _SingleFilterSelectionScreenState createState() =>
-      _SingleFilterSelectionScreenState();
+  _SettingsSelectionScreenState createState() =>
+      _SettingsSelectionScreenState();
 }
 
-class _SingleFilterSelectionScreenState
-    extends State<MultiFilterSelectionScreen> {
+class _SettingsSelectionScreenState
+    extends State<SettingsSelectionScreen> {
   Map<int, bool> values;
-  Set<String> hiddenOptions;
 
   @override
   void initState() {
     super.initState();
-    values = new Map();
-    _getHiddenOptions();
+    values = new Map<int, bool>();
+    _getCurretlySavedOptions();
   }
 
   @override
@@ -36,8 +35,9 @@ class _SingleFilterSelectionScreenState
             List<Filter> matchingFilters = snapshot.data
                 .where((i) => i.group.id == widget.filterGroup.id)
                 .toList();
-            matchingFilters.removeWhere((f) => hiddenOptions.contains(f.id.toString()));
-
+//            if (!widget.settings) {
+//              matchingFilters.removeWhere((f) => savedValues.containsKey(f.id.toString()) && savedValues[f.id.toString()]);
+//            }
             return Scaffold(
               body: SafeArea(
                 child: Column(
@@ -114,7 +114,7 @@ class _SingleFilterSelectionScreenState
         onPressed: () {
           _selectPressed();
         },
-        child: const Text('Select', style: TextStyle(fontSize: 20)),
+        child: Text('Save', style: TextStyle(fontSize: 20)),
         color: Colors.blue,
         textColor: Colors.white,
         elevation: 5,
@@ -123,18 +123,20 @@ class _SingleFilterSelectionScreenState
   }
 
   _selectPressed() async {
-    List<Filter> test = await ExerciseDatabase.getAllFilters();
-    test = test.where((i) => i.group.id == widget.filterGroup.id).toList();
-    test = test.where((f) => values.containsKey(f.id) && values[f.id]).toList();
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      Navigator.pop(context, test);
-    });
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        Navigator.pop(context, values);
+      });
   }
 
-  void _getHiddenOptions() async {
+  void _getCurretlySavedOptions() async {
     final prefs = await SharedPreferences.getInstance();
-    final savedExercisesString =
-        prefs.getString(widget.filterGroup.id.toString()) ?? '';
-    hiddenOptions = savedExercisesString.split(',').toSet();
+    final savedExercisesString = prefs.getString(widget.filterGroup.id.toString()) ?? '';
+    var savedValues = new Map<int, bool>();;
+    savedExercisesString.split(',').forEach((id) {
+      if (id.isNotEmpty) savedValues[int.parse(id)] = true;
+    });
+    setState(() {
+      values = savedValues;
+    });
   }
 }

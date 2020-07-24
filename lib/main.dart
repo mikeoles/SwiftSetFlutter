@@ -6,6 +6,7 @@ import 'package:swiftset/screens/settings.dart';
 void main() => runApp(Home());
 
 class Home extends StatefulWidget {
+
   @override
   _HomeState createState() => _HomeState();
 }
@@ -26,6 +27,7 @@ class _HomeState extends State<Home> {
     settings = new Settings();
     pages = [exerciseFinder,savedExercises, settings];
     currentPage = exerciseFinder;
+    print('init search');
   }
 
   void _onItemTapped(int index) {
@@ -49,8 +51,9 @@ class _HomeState extends State<Home> {
 
   Widget _button() {
     return Visibility(
+      visible: _selectedIndex == 0,
       child: FloatingActionButton(
-//        onPressed: _addFilter,
+        onPressed: () => exerciseFinder.addFilter(),
         tooltip: 'Increment Counter',
         child: const Icon(Icons.filter_list),
       ),
