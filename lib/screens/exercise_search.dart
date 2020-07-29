@@ -22,11 +22,10 @@ class ExerciseFinder extends StatefulWidget {
     efs = new ExerciseFinderState();
     return efs;
   }
-
-
 }
 
 class ExerciseFinderState extends State<ExerciseFinder> {
+  bool sortedAlpha = true;
   SharedPreferences prefs;
   Set<String> savedIds = new Set();
   var allExercises = new List<Exercise>();
@@ -48,6 +47,7 @@ class ExerciseFinderState extends State<ExerciseFinder> {
     savedIds = savedExercisesString.split(',').toSet();
 
     allExercises = await ExerciseDatabase.getAllExercises();
+    allExercises.sort((a,b) => a.name.compareTo(b.name));
     startingGroups = await ExerciseDatabase.getStartingFilterGroups();
     allFilters = await ExerciseDatabase.getAllFilters();
 
@@ -95,7 +95,28 @@ class ExerciseFinderState extends State<ExerciseFinder> {
               ),
             ),
           ),
-          new IconButton(
+          IconButton(
+            icon: Icon(Icons.sort, color: Colors.blue, size: 40),
+            onPressed: () {
+              setState(() {
+                if (sortedAlpha) {
+                  this.searchedExercises.sort((a,b) => a.name.compareTo(b.name));
+                  Scaffold.of(context).showSnackBar(SnackBar(
+                    content: Text("Sorting Alphabetically"),
+                    duration: Duration(milliseconds: 800),
+                  ));
+                } else {
+                  this.searchedExercises.sort((a,b) => b.id.compareTo(a.id));
+                  Scaffold.of(context).showSnackBar(SnackBar(
+                    content: Text("Sorting By Newest"),
+                    duration: Duration(milliseconds: 800),
+                  ));
+                }
+                sortedAlpha = !sortedAlpha;
+              });
+            },
+          ),
+          IconButton(
             icon: Icon(Icons.shuffle, color: Colors.blue, size: 40),
             onPressed: () {
               final _random = new Random();
@@ -109,7 +130,7 @@ class ExerciseFinderState extends State<ExerciseFinder> {
                 ),
               );
             },
-          )
+          ),
         ],
       ),
     );
@@ -188,8 +209,8 @@ class ExerciseFinderState extends State<ExerciseFinder> {
 
   Widget _buildRow(Exercise exercise, bool favorite) {
     return InkWell(
-      onTap: () {
-        Navigator.push(
+      onTap: () async {
+        bool result = await Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => ExerciseVideoScreen(
@@ -197,6 +218,12 @@ class ExerciseFinderState extends State<ExerciseFinder> {
                 saved: savedIds.contains(exercise.id.toString())),
           ),
         );
+        if (result) {
+          setState(() {
+            _reset();
+            _loadFromDatabase();
+          });
+        }
       },
       child: ListTile(
         title: Text(exercise.name),
@@ -302,7 +329,7 @@ class ExerciseFinderState extends State<ExerciseFinder> {
         currentFilters.where((f) => f.group.isMultiChoice).toList();
     Map<int, Exercise> unqiueExercises = Map();
     for (int i = 0; i < multiFilters.length; i++) {
-      List<Exercise> matchingExercises = filteredExercises
+      List<Exercise> matchingExercises = allExercises
           .where((e) => _matchesFilter(e, multiFilters[i]))
           .toList();
       matchingExercises
@@ -312,7 +339,14 @@ class ExerciseFinderState extends State<ExerciseFinder> {
   }
 
   void _filterHidden() {
-    String filterString = prefs.getString("4") + ',' + prefs.getString("5");
+    String filterString = '';
+    if(prefs.containsKey("4")) {
+      filterString += prefs.getString("4");
+    }
+    if(prefs.containsKey("5")) {
+      if(filterString.isNotEmpty) filterString += ",";
+      filterString += "," + prefs.getString("5");
+    }
     Set filterIds = filterString.split(",").toSet();
     List<Filter> hiddenFilters =
         allFilters.where((f) => filterIds.contains(f.id.toString())).toList();
@@ -329,5 +363,9 @@ class ExerciseFinderState extends State<ExerciseFinder> {
           this.filteredExercises =
               this.filteredExercises.where((e) => _matchesFilter(e, f)).toList()
         });
+  }
+
+  void _reset() async {
+    // todo update saved exercises after changes made
   }
 }

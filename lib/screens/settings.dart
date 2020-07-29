@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swiftset/models/filter_group.dart';
-import 'package:swiftset/screens/multi_filter_selection.dart';
 import 'package:swiftset/screens/settings_selection.dart';
 import 'package:swiftset/utils/exercise_database.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Settings extends StatelessWidget {
 
@@ -91,6 +91,26 @@ class Settings extends StatelessWidget {
                                 iOSAppId: '401626263');
                           },
                         ),
+                        _buildDivider(),
+                        ListTile(
+                          leading: Icon(
+                            Icons.lock,
+                            color: Colors.blue,
+                          ),
+                          title: Text("Privacy Policy"),
+                          trailing: Icon(Icons.keyboard_arrow_right),
+                          onTap: () => _launchURL('https://github.com/mikeoles/SwiftSetFlutter/wiki/Privacy-Policy'),
+                        ),
+                        _buildDivider(),
+                        ListTile(
+                          leading: Icon(
+                            Icons.mail,
+                            color: Colors.blue,
+                          ),
+                          title: Text("Contact Us"),
+                          trailing: Icon(Icons.keyboard_arrow_right),
+                          onTap: () => _launchURL('https://github.com/mikeoles/SwiftSetFlutter/wiki/Contact-Us'),
+                        ),
                       ],
                     ),
                   ),
@@ -137,6 +157,14 @@ class Settings extends StatelessWidget {
       hiddenEquipment.removeWhere((key, value) => value == false);
       var keys = hiddenEquipment.keys.toList();
       prefs.setString(id.toString(), keys.join(','));
+    }
+  }
+
+  _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
     }
   }
 }

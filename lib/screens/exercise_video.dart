@@ -17,6 +17,7 @@ class ExerciseVideoScreen extends StatefulWidget {
 
 class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
   bool saved = false;
+  bool changed = false;
 
   @override
   void initState() {
@@ -37,28 +38,81 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
       ),
     );
 
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            YoutubePlayer(
-              controller: _controller,
-              showVideoProgressIndicator: true,
-            ),
-            Hero(
-              tag: 'exercise-' + widget.exercise.id.toString(),
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Center(
-                  child: Text(widget.exercise.name),
+    return WillPopScope(
+      onWillPop: _backPressed,
+      child: Scaffold(
+        body: SafeArea(
+          child: Column(
+            children: [
+              YoutubePlayer(
+                controller: _controller,
+                showVideoProgressIndicator: true,
+              ),
+              Center(
+                child: Container(
+                  color: Colors.blue,
+                  width: MediaQuery.of(context).size.width,
+                  height: 80,
+                  child: Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: FittedBox(
+                      fit: BoxFit.contain,
+                      child: Text(widget.exercise.name)
+                    ),
+                  ),
                 ),
               ),
-            ),
-            RaisedButton(
-              onPressed: _saveExercise,
-              child: saved ? Text('Unsave') : Text('Save Exercise')
-            )
-          ],
+              Padding(
+                padding: const EdgeInsets.only(top: 18.0),
+                child: OutlineButton.icon(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 10.0,
+                    horizontal: 30.0,
+                  ),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)),
+                  highlightedBorderColor: Colors.blue,
+                  borderSide: BorderSide(color: Colors.blue),
+                  color: Colors.blue,
+                  textColor: Colors.blue,
+                  icon: saved ? Icon(Icons.close, size: 18.0) : Icon(Icons.favorite, size: 18.0,),
+                  label: saved ? Text('Unsave Exercise') : Text('Save Exercise'),
+                  onPressed: _saveExercise,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 28.0),
+                child: Column(
+                  children: <Widget>[
+                    ListTile(
+                      leading: Image.asset('assets/images/muscle.png',
+                      color: Colors.blue,),
+                      title: Text("Muscle Group"),
+                      subtitle: Text(widget.exercise.primary),
+                    ),
+                    ListTile(
+                      leading: Image.asset('assets/images/equipment.png',
+                        color: Colors.blue,),
+                      title: Text("Equipment"),
+                      subtitle: Text(widget.exercise.equipment.replaceAll("/", ", ")),
+                    ),
+                    ListTile(
+                      leading: Image.asset('assets/images/tempo.png',
+                        color: Colors.blue,),
+                      title: Text("Tempo"),
+                      subtitle: Text(widget.exercise.tempo.replaceAll("/", ", ")),
+                    ),
+                    ListTile(
+                      leading: Image.asset('assets/images/difficulty.png',
+                        color: Colors.blue,),
+                      title: Text("Difficulty"),
+                      subtitle: Text(_difficultyText(widget.exercise.difficulty)),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -146,8 +200,32 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
     }
     setState(() {
       saved = !saved;
+      changed = !changed;
     });
 
     prefs.setString('savedExercises', savedExercises.join(','));
+  }
+
+  String _difficultyText(String difficulty) {
+    switch(difficulty) {
+      case "1": {  return "Beginner"; }
+      break;
+
+      case "2": {  return "Intermediate"; }
+      break;
+
+      case "3": {  return "Experienced"; }
+      break;
+
+      case "4": {  return "Advanced"; }
+      break;
+
+      default: { return "Unknown"; }
+      break;
+    }
+  }
+
+  Future<bool> _backPressed() {
+    Navigator.pop(context, changed);
   }
 }

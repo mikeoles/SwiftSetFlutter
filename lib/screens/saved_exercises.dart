@@ -15,7 +15,7 @@ class _SavedExercisesState extends State<SavedExercises> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(child: _exerciseList());
+    return SafeArea(child: savedExercises.isEmpty ? _emptyMessage() : _exerciseList());
   }
 
   @override
@@ -36,14 +36,17 @@ class _SavedExercisesState extends State<SavedExercises> {
 
   Widget _buildRow(Exercise exercise) {
     return InkWell(
-      onTap: () {
-        Navigator.push(
+      onTap: () async {
+        bool changed = await Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) =>
                 ExerciseVideoScreen(exercise: exercise, saved: true),
           ),
         );
+        setState(() {
+          _getSavedExercises();
+        });
       },
       child: Hero(
         tag: 'exercise-' + exercise.id.toString(),
@@ -68,5 +71,13 @@ class _SavedExercisesState extends State<SavedExercises> {
           .where((e) => savedIds.contains(e.id.toString()))
           .toList();
     });
+  }
+
+  Widget _emptyMessage() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Center(child: Text("No Saved Exercises",
+      style: TextStyle(fontSize: 24),)),
+    );
   }
 }

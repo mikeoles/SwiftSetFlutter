@@ -27,7 +27,6 @@ class _HomeState extends State<Home> {
     settings = new Settings();
     pages = [exerciseFinder,savedExercises, settings];
     currentPage = exerciseFinder;
-    print('init search');
   }
 
   void _onItemTapped(int index) {
