@@ -38,6 +38,7 @@ class ExerciseFinderState extends State<ExerciseFinder> {
 
   @override
   void initState() {
+    super.initState();
     _loadFromDatabase();
   }
 
@@ -52,6 +53,8 @@ class ExerciseFinderState extends State<ExerciseFinder> {
     allFilters = await ExerciseDatabase.getAllFilters();
 
     setState(() {
+      filteredExercises.clear();
+      searchedExercises.clear();
       filteredExercises.addAll(allExercises);
       _filterHidden();
       searchedExercises.addAll(filteredExercises);
@@ -271,8 +274,7 @@ class ExerciseFinderState extends State<ExerciseFinder> {
         // returning list of filters from a multi selection
         List<Filter> multipleFilters = chosenFilter as List<Filter>;
         if (multipleFilters.isNotEmpty) {
-          this
-              .currentGroups
+          this.currentGroups
               .removeWhere((g) => g.id == multipleFilters[0].group.id);
           multipleFilters.forEach((f) => this.currentFilters.add(f));
           _filterExercises();
@@ -325,17 +327,21 @@ class ExerciseFinderState extends State<ExerciseFinder> {
   }
 
   void _filterMulti() {
-    List<Filter> multiFilters =
-        currentFilters.where((f) => f.group.isMultiChoice).toList();
-    Map<int, Exercise> unqiueExercises = Map();
-    for (int i = 0; i < multiFilters.length; i++) {
-      List<Exercise> matchingExercises = allExercises
-          .where((e) => _matchesFilter(e, multiFilters[i]))
-          .toList();
-      matchingExercises
-          .forEach((e) => unqiueExercises.putIfAbsent(e.id, () => e));
-      this.filteredExercises = unqiueExercises.values.toList();
+    List<Filter> equipFilters = currentFilters.where((f) => f.group.name == "Equipment").toList();
+    List<Filter> diffFilters = currentFilters.where((f) => f.group.name == "Difficulty").toList();
+    Set<int> exerciseIds = new Set();
+
+    if(equipFilters.isEmpty && diffFilters.isEmpty) {
+      return;
+    } else if(equipFilters.isEmpty) {
+      exerciseIds = _getMatching(diffFilters);
+    } else if(diffFilters.isEmpty) {
+      exerciseIds = _getMatching(equipFilters);
+    } else {
+      exerciseIds = _getMatching(equipFilters).intersection(_getMatching(diffFilters));
     }
+
+    filteredExercises = filteredExercises.where((exercise) => exerciseIds.contains(exercise.id)).toList();
   }
 
   void _filterHidden() {
@@ -367,5 +373,16 @@ class ExerciseFinderState extends State<ExerciseFinder> {
 
   void _reset() async {
     // todo update saved exercises after changes made
+  }
+
+  Set<int> _getMatching(List<Filter> filters) {
+    Set<int> exerciseIds = new Set();
+    for (int i = 0; i < filters.length; i++) {
+      List<Exercise> matchingExercises = allExercises
+          .where((e) => _matchesFilter(e, filters[i]))
+          .toList();
+      matchingExercises.forEach((e) => exerciseIds.add(e.id));
+    }
+    return exerciseIds;
   }
 }

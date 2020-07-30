@@ -8,10 +8,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 class Settings extends StatelessWidget {
 
-  @override
-  void initState() {
-  }
-
   Brightness _getBrightness() {
     return Brightness.light;
   }

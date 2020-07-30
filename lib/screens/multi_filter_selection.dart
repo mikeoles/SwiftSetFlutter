@@ -123,11 +123,11 @@ class _SingleFilterSelectionScreenState
   }
 
   _selectPressed() async {
-    List<Filter> test = await ExerciseDatabase.getAllFilters();
-    test = test.where((i) => i.group.id == widget.filterGroup.id).toList();
-    test = test.where((f) => values.containsKey(f.id) && values[f.id]).toList();
+    List<Filter> filters = await ExerciseDatabase.getAllFilters();
+    filters = filters.where((f) => f.group.id == widget.filterGroup.id).toList();
+    filters = filters.where((f) => values.containsKey(f.id) && values[f.id]).toList();
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      Navigator.pop(context, test);
+      Navigator.pop(context, filters);
     });
   }
 

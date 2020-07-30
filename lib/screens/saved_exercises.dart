@@ -21,6 +21,7 @@ class _SavedExercisesState extends State<SavedExercises> {
   @override
   @override
   void initState() {
+    super.initState();
     _getSavedExercises();
   }
 
@@ -37,7 +38,7 @@ class _SavedExercisesState extends State<SavedExercises> {
   Widget _buildRow(Exercise exercise) {
     return InkWell(
       onTap: () async {
-        bool changed = await Navigator.push(
+        await Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) =>

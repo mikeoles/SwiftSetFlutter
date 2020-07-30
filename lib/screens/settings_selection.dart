@@ -131,7 +131,7 @@ class _SettingsSelectionScreenState
   void _getCurretlySavedOptions() async {
     final prefs = await SharedPreferences.getInstance();
     final savedExercisesString = prefs.getString(widget.filterGroup.id.toString()) ?? '';
-    var savedValues = new Map<int, bool>();;
+    var savedValues = new Map<int, bool>();
     savedExercisesString.split(',').forEach((id) {
       if (id.isNotEmpty) savedValues[int.parse(id)] = true;
     });
