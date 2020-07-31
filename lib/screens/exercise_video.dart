@@ -16,8 +16,8 @@ class ExerciseVideoScreen extends StatefulWidget {
 }
 
 class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
-  bool saved = false;
-  bool changed = false;
+  bool saved = false; //
+  bool changed = false; // If the saved status is changed reload search page
 
   @override
   void initState() {
@@ -30,87 +30,16 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
     String videoId = YoutubePlayer.convertUrlToId(widget.exercise.url);
     int startTime = getStartTime(widget.exercise.url);
 
-    YoutubePlayerController _controller = YoutubePlayerController(
-      initialVideoId: videoId,
-      flags: YoutubePlayerFlags(
-        autoPlay: true,
-        startAt: startTime,
-      ),
-    );
-
     return WillPopScope(
       onWillPop: _backPressed,
       child: Scaffold(
         body: SafeArea(
           child: Column(
             children: [
-              YoutubePlayer(
-                controller: _controller,
-                showVideoProgressIndicator: true,
-              ),
-              Center(
-                child: Container(
-                  color: Colors.blue,
-                  width: MediaQuery.of(context).size.width,
-                  height: 80,
-                  child: Padding(
-                    padding: const EdgeInsets.all(24.0),
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: Text(widget.exercise.name)
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 18.0),
-                child: OutlineButton.icon(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 10.0,
-                    horizontal: 30.0,
-                  ),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  highlightedBorderColor: Colors.blue,
-                  borderSide: BorderSide(color: Colors.blue),
-                  color: Colors.blue,
-                  textColor: Colors.blue,
-                  icon: saved ? Icon(Icons.close, size: 18.0) : Icon(Icons.favorite, size: 18.0,),
-                  label: saved ? Text('Unsave Exercise') : Text('Save Exercise'),
-                  onPressed: _saveExercise,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 28.0),
-                child: Column(
-                  children: <Widget>[
-                    ListTile(
-                      leading: Image.asset('assets/images/muscle.png',
-                      color: Colors.blue,),
-                      title: Text("Muscle Group"),
-                      subtitle: Text(widget.exercise.primary),
-                    ),
-                    ListTile(
-                      leading: Image.asset('assets/images/equipment.png',
-                        color: Colors.blue,),
-                      title: Text("Equipment"),
-                      subtitle: Text(widget.exercise.equipment.replaceAll("/", ", ")),
-                    ),
-                    ListTile(
-                      leading: Image.asset('assets/images/tempo.png',
-                        color: Colors.blue,),
-                      title: Text("Tempo"),
-                      subtitle: Text(widget.exercise.tempo.replaceAll("/", ", ")),
-                    ),
-                    ListTile(
-                      leading: Image.asset('assets/images/difficulty.png',
-                        color: Colors.blue,),
-                      title: Text("Difficulty"),
-                      subtitle: Text(_difficultyText(widget.exercise.difficulty)),
-                    ),
-                  ],
-                ),
-              )
+              _videoPlayer(videoId, startTime),
+              _title(),
+              _saveButton(),
+              _exerciseInfo(),
             ],
           ),
         ),
@@ -206,6 +135,7 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
     prefs.setString('savedExercises', savedExercises.join(','));
   }
 
+  // Change number to readable string
   String _difficultyText(String difficulty) {
     switch(difficulty) {
       case "1": {  return "Beginner"; }
@@ -227,5 +157,91 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
 
   Future<bool> _backPressed() {
     Navigator.pop(context, changed);
+    return Future.value(changed);
+  }
+
+  Widget _videoPlayer(String videoId, int startTime) {
+    return YoutubePlayer(
+      controller:  YoutubePlayerController(
+        initialVideoId: videoId,
+        flags: YoutubePlayerFlags(
+          autoPlay: true,
+          startAt: startTime,
+        ),
+      ),
+      showVideoProgressIndicator: true,
+    );
+  }
+
+  Widget _title() {
+    return Center(
+      child: Container(
+        color: Colors.blue,
+        width: MediaQuery.of(context).size.width,
+        height: 80,
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: FittedBox(
+              fit: BoxFit.contain,
+              child: Text(widget.exercise.name)
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _saveButton() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 18.0),
+      child: OutlineButton.icon(
+        padding: const EdgeInsets.symmetric(
+          vertical: 10.0,
+          horizontal: 30.0,
+        ),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0)),
+        highlightedBorderColor: Colors.blue,
+        borderSide: BorderSide(color: Colors.blue),
+        color: Colors.blue,
+        textColor: Colors.blue,
+        icon: saved ? Icon(Icons.close, size: 18.0) : Icon(Icons.favorite, size: 18.0,),
+        label: saved ? Text('Unsave Exercise') : Text('Save Exercise'),
+        onPressed: _saveExercise,
+      ),
+    );
+  }
+
+  Widget _exerciseInfo() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 28.0),
+      child: Column(
+        children: <Widget>[
+          ListTile(
+            leading: Image.asset('assets/images/muscle.png',
+              color: Colors.blue,),
+            title: Text("Muscle Group"),
+            subtitle: Text(widget.exercise.primary),
+          ),
+          ListTile(
+            leading: Image.asset('assets/images/equipment.png',
+              color: Colors.blue,),
+            title: Text("Equipment"),
+            subtitle: Text(widget.exercise.equipment.replaceAll("/", ", ")),
+          ),
+          ListTile(
+            leading: Image.asset('assets/images/tempo.png',
+              color: Colors.blue,),
+            title: Text("Tempo"),
+            subtitle: Text(widget.exercise.tempo.replaceAll("/", ", ")),
+          ),
+          ListTile(
+            leading: Image.asset('assets/images/difficulty.png',
+              color: Colors.blue,),
+            title: Text("Difficulty"),
+            subtitle: Text(_difficultyText(widget.exercise.difficulty)),
+          ),
+        ],
+      ),
+    );
   }
 }

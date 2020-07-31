@@ -25,14 +25,14 @@ class ExerciseFinder extends StatefulWidget {
 }
 
 class ExerciseFinderState extends State<ExerciseFinder> {
-  bool sortedAlpha = true;
+  bool sortedAlpha = true; // can be sorted alphabetically or by newest (highest id)
   SharedPreferences prefs;
-  Set<String> savedIds = new Set();
-  var allExercises = new List<Exercise>();
-  var startingGroups = new List<FilterGroup>();
+  Set<String> savedIds = new Set(); // Ids of saved exercises
+  var startingGroups = new List<FilterGroup>(); // Groups added by default
+  var currentGroups = new List<FilterGroup>(); // Groups available based on filter selections
   var allFilters = new List<Filter>();
   var currentFilters = new List<Filter>();
-  var currentGroups = new List<FilterGroup>();
+  var allExercises = new List<Exercise>();
   var filteredExercises = new List<Exercise>();
   var searchedExercises = new List<Exercise>();
 
@@ -42,6 +42,7 @@ class ExerciseFinderState extends State<ExerciseFinder> {
     _loadFromDatabase();
   }
 
+  // setup the starting state of the exercise search
   void _loadFromDatabase() async {
     prefs = await SharedPreferences.getInstance();
     final savedExercisesString = prefs.getString('savedExercises') ?? '';
@@ -67,7 +68,7 @@ class ExerciseFinderState extends State<ExerciseFinder> {
     return SafeArea(
       child: Column(
         children: [
-          _searchBar(),
+          _topBar(),
           _filterList(),
           _exerciseList(),
         ],
@@ -75,121 +76,80 @@ class ExerciseFinderState extends State<ExerciseFinder> {
     );
   }
 
-  Widget _searchBar() {
+  Widget _topBar() {
     return Padding(
       padding: EdgeInsets.all(16.0),
       child: Row(
         children: [
-          Expanded(
-            child: TextFormField(
-              onChanged: (searchText) {
-                filterSearchResults(searchText);
-              },
-              style: new TextStyle(color: Colors.blue),
-              decoration: new InputDecoration(
-                contentPadding: new EdgeInsets.symmetric(vertical: 5.0),
-                prefixIcon: Icon(Icons.search),
-                labelText: "Search " +
-                    searchedExercises.length.toString() +
-                    " Exercises",
-                border: new OutlineInputBorder(
-                  borderRadius: new BorderRadius.circular(25.0),
-                ),
-              ),
-            ),
-          ),
+          _searchBar(),
           IconButton(
             icon: Icon(Icons.sort, color: Colors.blue, size: 40),
-            onPressed: () {
-              setState(() {
-                if (sortedAlpha) {
-                  this.searchedExercises.sort((a,b) => a.name.compareTo(b.name));
-                  Scaffold.of(context).showSnackBar(SnackBar(
-                    content: Text("Sorting Alphabetically"),
-                    duration: Duration(milliseconds: 800),
-                  ));
-                } else {
-                  this.searchedExercises.sort((a,b) => b.id.compareTo(a.id));
-                  Scaffold.of(context).showSnackBar(SnackBar(
-                    content: Text("Sorting By Newest"),
-                    duration: Duration(milliseconds: 800),
-                  ));
-                }
-                sortedAlpha = !sortedAlpha;
-              });
-            },
+            onPressed: () => _changeSorting(),
           ),
           IconButton(
             icon: Icon(Icons.shuffle, color: Colors.blue, size: 40),
-            onPressed: () {
-              final _random = new Random();
-              var exercise = searchedExercises[_random.nextInt(searchedExercises.length)];
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ExerciseVideoScreen(
-                      exercise: exercise,
-                      saved: savedIds.contains(exercise.id.toString())),
-                ),
-              );
-            },
+            onPressed: () => _openRandomExercise(),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildChip(Filter filter) {
-    return Chip(
-      label: Text(
-        filter.name,
-        style: TextStyle(
-          color: Colors.white,
+  Widget _searchBar() {
+    return Expanded(
+      child: TextFormField(
+        onChanged: (searchText) {
+          _filterSearchResults(searchText);
+        },
+        style: new TextStyle(color: Colors.blue),
+        decoration: new InputDecoration(
+          contentPadding: new EdgeInsets.symmetric(vertical: 5.0),
+          prefixIcon: Icon(Icons.search),
+          labelText: "Search " +
+              searchedExercises.length.toString() +
+              " Exercises",
+          border: new OutlineInputBorder(
+            borderRadius: new BorderRadius.circular(25.0),
+          ),
         ),
       ),
-      backgroundColor: ExerciseDatabase.hexToColor(filter.group.color),
-      deleteIcon: Icon(Icons.close, color: Colors.white, size: 12),
-      onDeleted: () {
-        setState(() {
-          currentFilters.remove(filter);
-          _updateGroups();
-          _filterExercises();
-        });
-      },
-      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-    );
-  }
-
-  Widget _buildClearAllChip() {
-    return Chip(
-      label: Text(
-        "Clear All",
-        style: TextStyle(
-          color: Colors.white,
-        ),
-      ),
-      backgroundColor: Colors.redAccent,
-      onDeleted: () {
-        setState(() {
-          currentFilters.clear();
-          _updateGroups();
-          _filterExercises();
-        });
-      },
-      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
     );
   }
 
   Widget _filterList() {
     List<Widget> filters =
-        currentFilters.map((item) => _buildChip(item)).toList().cast<Widget>();
+    currentFilters.map((item) => _buildChip(item)).toList().cast<Widget>();
     if (filters.length > 1) {
-      filters.add(_buildClearAllChip());
+      filters.add(_buildChip(null));
     }
     return Wrap(
       spacing: 5.0,
       runSpacing: 5.0,
       children: filters,
+    );
+  }
+
+  Widget _buildChip(Filter filter) {
+    return Chip(
+      label: Text( filter == null ? "Clear All" : filter.name,
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      backgroundColor: filter==null ? Colors.red : ExerciseDatabase.hexToColor(filter.group.color),
+      deleteIcon: Icon(Icons.close, color: Colors.white, size: 12),
+      onDeleted: () {
+        setState(() {
+          if(filter==null) {
+            currentFilters.clear();
+          } else {
+            currentFilters.remove(filter);
+          }
+          _updateGroups();
+          _filterExercises();
+        });
+      },
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
     );
   }
 
@@ -210,7 +170,7 @@ class ExerciseFinderState extends State<ExerciseFinder> {
     );
   }
 
-  Widget _buildRow(Exercise exercise, bool favorite) {
+  Widget _buildRow(Exercise exercise, bool saved) {
     return InkWell(
       onTap: () async {
         bool result = await Navigator.push(
@@ -223,14 +183,13 @@ class ExerciseFinderState extends State<ExerciseFinder> {
         );
         if (result) {
           setState(() {
-            _reset();
-            _loadFromDatabase();
+            _loadFromDatabase(); // reload to get updated saved exercises
           });
         }
       },
       child: ListTile(
         title: Text(exercise.name),
-        trailing: favorite
+        trailing: saved // add a swiftset logo next to the exercise if it's been saved
             ? Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Image.asset('assets/images/swiftset.png'),
@@ -240,22 +199,23 @@ class ExerciseFinderState extends State<ExerciseFinder> {
     );
   }
 
-  void filterSearchResults(String query) {
-    if (query.isNotEmpty) {
-      setState(() {
-        searchedExercises = allExercises
-            .where((i) => i.name.toLowerCase().contains(query))
-            .toList();
-      });
-      return;
-    } else {
-      setState(() {
-        searchedExercises.clear();
-        searchedExercises.addAll(filteredExercises);
-      });
-    }
+  void _filterSearchResults(String query) {
+    setState(() {
+      searchedExercises = allExercises
+          .where((i) => _matchesQuery(i.name.toLowerCase(),query)).toList();
+    });
   }
 
+  // allows search results to still show if the words are in different order
+  bool _matchesQuery(String exerciseName, String query) {
+    bool match = true;
+    query.split(" ").forEach((word) {
+      if(!exerciseName.contains(word)) match = false;
+    });
+    return match;
+  }
+
+  // called when a filter is going to be added by a user
   void addFilter() async {
     var chosenFilter = await Navigator.push(
       context,
@@ -264,19 +224,19 @@ class ExerciseFinderState extends State<ExerciseFinder> {
       ),
     );
     setState(() {
-      if (chosenFilter.runtimeType == Filter) {
+      if (chosenFilter.runtimeType == Filter) { // return a single filter
         Filter filter = chosenFilter as Filter;
         this.currentGroups.removeWhere((g) => g.id == filter.group.id);
+        // ex: add angle after horizontal press is chosen
         this.currentGroups.addAll(filter.groupsToAdd);
         this.currentFilters.add(chosenFilter);
         _filterExercises();
-      } else if (chosenFilter != null) {
-        // returning list of filters from a multi selection
-        List<Filter> multipleFilters = chosenFilter as List<Filter>;
-        if (multipleFilters.isNotEmpty) {
-          this.currentGroups
-              .removeWhere((g) => g.id == multipleFilters[0].group.id);
-          multipleFilters.forEach((f) => this.currentFilters.add(f));
+      } else if (chosenFilter != null) { // returns list of multi filters
+        List<Filter> multiFilters = chosenFilter as List<Filter>;
+        if (multiFilters.isNotEmpty) {
+          // all filters should have the same group
+          currentGroups.removeWhere((g) => g.id == multiFilters[0].group.id);
+          multiFilters.forEach((f) => this.currentFilters.add(f));
           _filterExercises();
         }
       }
@@ -292,10 +252,39 @@ class ExerciseFinderState extends State<ExerciseFinder> {
     this.searchedExercises.addAll(this.filteredExercises);
   }
 
+  // start out with no exercises and add all exercises that match multi filter
+  void _filterMulti() {
+    List<Filter> equipFilters = currentFilters.where((f) => f.group.name == "Equipment").toList();
+    List<Filter> diffFilters = currentFilters.where((f) => f.group.name == "Difficulty").toList();
+    Set<int> exerciseIds = new Set();
+
+    if(equipFilters.isEmpty && diffFilters.isEmpty) {
+      return;
+    } else if(equipFilters.isEmpty) {
+      exerciseIds = _getMatching(diffFilters);
+    } else if(diffFilters.isEmpty) {
+      exerciseIds = _getMatching(equipFilters);
+    } else {
+      exerciseIds = _getMatching(equipFilters).intersection(_getMatching(diffFilters));
+    }
+
+    filteredExercises = filteredExercises.where((exercise) => exerciseIds.contains(exercise.id)).toList();
+  }
+
+  // remove all exercises that don't match single filters
+  void _filterSingle() {
+    List<Filter> singleFilters =
+    currentFilters.where((f) => !f.group.isMultiChoice).toList();
+    singleFilters.forEach((f) => {
+      this.filteredExercises =
+          this.filteredExercises.where((e) => _matchesFilter(e, f)).toList()
+    });
+  }
+
   // Determine if an exercise should be removed by a filter
   bool _matchesFilter(Exercise exercise, Filter filter) {
-    var exerciseValue = exercise.toMap()[filter.dbColumn
-        .toLowerCase()]; // Value from the exercise to check against filter
+    // Value from the exercise to check against filter
+    var exerciseValue = exercise.toMap()[filter.dbColumn.toLowerCase()];
     if (exerciseValue == null) {
       return false;
     }
@@ -303,7 +292,7 @@ class ExerciseFinderState extends State<ExerciseFinder> {
     var filterValue = filter.dbSortBy.toLowerCase();
 
     if (filterValue.contains('/')) {
-      // Used when multiple values are acceptable (Ex: chest, triceps both acceptable primary values for Push)
+      // When multiple values are acceptable (Ex: chest, triceps for Push)
       return filterValue.split('/').any((e) => exerciseValue.contains(e));
     } else {
       return exerciseValue.contains(filterValue);
@@ -326,30 +315,12 @@ class ExerciseFinderState extends State<ExerciseFinder> {
     currentGroups.addAll(groups.values.toList());
   }
 
-  void _filterMulti() {
-    List<Filter> equipFilters = currentFilters.where((f) => f.group.name == "Equipment").toList();
-    List<Filter> diffFilters = currentFilters.where((f) => f.group.name == "Difficulty").toList();
-    Set<int> exerciseIds = new Set();
-
-    if(equipFilters.isEmpty && diffFilters.isEmpty) {
-      return;
-    } else if(equipFilters.isEmpty) {
-      exerciseIds = _getMatching(diffFilters);
-    } else if(diffFilters.isEmpty) {
-      exerciseIds = _getMatching(equipFilters);
-    } else {
-      exerciseIds = _getMatching(equipFilters).intersection(_getMatching(diffFilters));
-    }
-
-    filteredExercises = filteredExercises.where((exercise) => exerciseIds.contains(exercise.id)).toList();
-  }
-
   void _filterHidden() {
     String filterString = '';
-    if(prefs.containsKey("4")) {
+    if(prefs.containsKey("4")) { // 4 is id of difficulty group
       filterString += prefs.getString("4");
     }
-    if(prefs.containsKey("5")) {
+    if(prefs.containsKey("5")) { // 5 is id of exercise group
       if(filterString.isNotEmpty) filterString += ",";
       filterString += "," + prefs.getString("5");
     }
@@ -362,19 +333,7 @@ class ExerciseFinderState extends State<ExerciseFinder> {
         (f) => this.filteredExercises.removeWhere((e) => _matchesFilter(e, f)));
   }
 
-  void _filterSingle() {
-    List<Filter> singleFilters =
-        currentFilters.where((f) => !f.group.isMultiChoice).toList();
-    singleFilters.forEach((f) => {
-          this.filteredExercises =
-              this.filteredExercises.where((e) => _matchesFilter(e, f)).toList()
-        });
-  }
-
-  void _reset() async {
-    // todo update saved exercises after changes made
-  }
-
+  // finf all exercises that match a least one filter from a group of filters
   Set<int> _getMatching(List<Filter> filters) {
     Set<int> exerciseIds = new Set();
     for (int i = 0; i < filters.length; i++) {
@@ -384,5 +343,37 @@ class ExerciseFinderState extends State<ExerciseFinder> {
       matchingExercises.forEach((e) => exerciseIds.add(e.id));
     }
     return exerciseIds;
+  }
+
+  void _openRandomExercise() {
+    final _random = new Random();
+    var exercise = searchedExercises[_random.nextInt(searchedExercises.length)];
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ExerciseVideoScreen(
+            exercise: exercise,
+            saved: savedIds.contains(exercise.id.toString())),
+      ),
+    );
+  }
+
+  _changeSorting() {
+    setState(() {
+      if (sortedAlpha) {
+        this.searchedExercises.sort((a,b) => a.name.compareTo(b.name));
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text("Sorting Alphabetically"),
+          duration: Duration(milliseconds: 800),
+        ));
+      } else {
+        this.searchedExercises.sort((a,b) => b.id.compareTo(a.id));
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text("Sorting By Newest"),
+          duration: Duration(milliseconds: 800),
+        ));
+      }
+      sortedAlpha = !sortedAlpha;
+    });
   }
 }

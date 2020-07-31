@@ -36,39 +36,16 @@ class _SingleFilterSelectionScreenState
             List<Filter> matchingFilters = snapshot.data
                 .where((i) => i.group.id == widget.filterGroup.id)
                 .toList();
-            matchingFilters.removeWhere((f) => hiddenOptions.contains(f.id.toString()));
+            matchingFilters
+                .removeWhere((f) => hiddenOptions.contains(f.id.toString()));
 
             return Scaffold(
               body: SafeArea(
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Padding(
-                        padding: EdgeInsets.all(13),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Image.asset(
-                              'assets/images/' +
-                                  widget.filterGroup.image.toString(),
-                              color: ExerciseDatabase.hexToColor(
-                                  widget.filterGroup.color),
-                            ),
-                            Text(
-                              widget.filterGroup.name,
-                              style: TextStyle(
-                                fontSize: 24,
-                                color: ExerciseDatabase.hexToColor(
-                                    widget.filterGroup.color),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: _filterList(matchingFilters),
-                      ),
+                      _title(),
+                      _filterList(matchingFilters),
                       _selectButton(),
                     ]),
               ),
@@ -82,11 +59,13 @@ class _SingleFilterSelectionScreenState
   }
 
   Widget _filterList(List<Filter> filters) {
-    return ListView.builder(
-      itemCount: filters.length,
-      itemBuilder: (context, index) {
-        return _buildRow(filters[index], context);
-      },
+    return Expanded(
+      child: ListView.builder(
+        itemCount: filters.length,
+        itemBuilder: (context, index) {
+          return _buildRow(filters[index], context);
+        },
+      ),
     );
   }
 
@@ -124,8 +103,10 @@ class _SingleFilterSelectionScreenState
 
   _selectPressed() async {
     List<Filter> filters = await ExerciseDatabase.getAllFilters();
-    filters = filters.where((f) => f.group.id == widget.filterGroup.id).toList();
-    filters = filters.where((f) => values.containsKey(f.id) && values[f.id]).toList();
+    filters =
+        filters.where((f) => f.group.id == widget.filterGroup.id).toList();
+    filters =
+        filters.where((f) => values.containsKey(f.id) && values[f.id]).toList();
     SchedulerBinding.instance.addPostFrameCallback((_) {
       Navigator.pop(context, filters);
     });
@@ -136,5 +117,31 @@ class _SingleFilterSelectionScreenState
     final savedExercisesString =
         prefs.getString(widget.filterGroup.id.toString()) ?? '';
     hiddenOptions = savedExercisesString.split(',').toSet();
+  }
+
+  Widget _title() {
+    return Padding(
+      padding: EdgeInsets.all(13),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset(
+            'assets/images/' +
+                widget.filterGroup.image.toString(),
+            color: ExerciseDatabase.hexToColor(
+                widget.filterGroup.color),
+          ),
+          Text(
+            widget.filterGroup.name,
+            style: TextStyle(
+              fontSize: 24,
+              color: ExerciseDatabase.hexToColor(
+                  widget.filterGroup.color),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
