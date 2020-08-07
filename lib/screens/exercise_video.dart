@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swiftset/models/exercise.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -38,7 +39,13 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
             children: [
               _videoPlayer(videoId, startTime),
               _title(),
-              _saveButton(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _saveButton(),
+                  _shareButton(),
+                ],
+              ),
               _exerciseInfo(),
             ],
           ),
@@ -135,6 +142,10 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
     prefs.setString('savedExercises', savedExercises.join(','));
   }
 
+  void _shareExercise() async {
+    Share.share("Check out this exercise I found on the SwiftSet app: " + widget.exercise.name + " - " + widget.exercise.url);
+  }
+
   // Change number to readable string
   String _difficultyText(String difficulty) {
     switch(difficulty) {
@@ -207,6 +218,27 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
         icon: saved ? Icon(Icons.close, size: 18.0) : Icon(Icons.favorite, size: 18.0,),
         label: saved ? Text('Unsave Exercise') : Text('Save Exercise'),
         onPressed: _saveExercise,
+      ),
+    );
+  }
+
+  Widget _shareButton() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 18.0),
+      child: OutlineButton.icon(
+        padding: const EdgeInsets.symmetric(
+          vertical: 10.0,
+          horizontal: 30.0,
+        ),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0)),
+        highlightedBorderColor: Colors.blue,
+        borderSide: BorderSide(color: Colors.blue),
+        color: Colors.blue,
+        textColor: Colors.blue,
+        icon: Icon(Icons.share, size: 18.0),
+        label: Text('Share Exercise'),
+        onPressed: _shareExercise,
       ),
     );
   }
