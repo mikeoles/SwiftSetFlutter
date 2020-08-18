@@ -43,7 +43,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.michaeloles.swiftset"
+        applicationId "com.mikeoles.swiftset"
         minSdkVersion 17
         targetSdkVersion 29
         versionCode flutterVersionCode.toInteger()

@@ -83,8 +83,8 @@ class Settings extends StatelessWidget {
                           title: Text("Rate SwiftSet"),
                           trailing: Icon(Icons.keyboard_arrow_right),
                           onTap: () {
-                            LaunchReview.launch(androidAppId: 'com.michaeloles.swiftset',
-                                iOSAppId: '401626263');
+                            LaunchReview.launch(androidAppId: 'com.mikeoles.swiftset',
+                                iOSAppId: '1527297876');
                           },
                         ),
                         _buildDivider(),
@@ -106,6 +106,16 @@ class Settings extends StatelessWidget {
                           title: Text("Contact Us"),
                           trailing: Icon(Icons.keyboard_arrow_right),
                           onTap: () => _launchURL('https://github.com/mikeoles/SwiftSetFlutter/wiki/Contact-Us'),
+                        ),
+                        _buildDivider(),
+                        ListTile(
+                          leading: Icon(
+                            Icons.laptop_mac,
+                            color: Colors.blue,
+                          ),
+                          title: Text("Social"),
+                          trailing: Icon(Icons.keyboard_arrow_right),
+                          onTap: () => _launchURL('https://compiled.social/swiftset'),
                         ),
                       ],
                     ),

@@ -53,7 +53,7 @@ class ExerciseDatabase {
     await deleteDatabase(dbPath);
 
     // Create the writable database file from the bundled demo database file:
-    ByteData data = await rootBundle.load("assets/main_exercises_19.db");
+    ByteData data = await rootBundle.load("assets/exercises.db");
     List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
     await File(dbPath).writeAsBytes(bytes);
 
@@ -103,7 +103,7 @@ class ExerciseDatabase {
     await deleteDatabase(dbPath);
 
     // Create the writable database file from the bundled demo database file:
-    ByteData data = await rootBundle.load("assets/main_exercises_19.db");
+    ByteData data = await rootBundle.load("assets/exercises.db");
     List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
     await File(dbPath).writeAsBytes(bytes);
 
@@ -155,7 +155,7 @@ class ExerciseDatabase {
     await deleteDatabase(dbPath);
 
     // Create the writable database file from the bundled demo database file:
-    ByteData data = await rootBundle.load("assets/main_exercises_19.db");
+    ByteData data = await rootBundle.load("assets/exercises.db");
     List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
     await File(dbPath).writeAsBytes(bytes);
 

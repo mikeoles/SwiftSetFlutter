@@ -360,6 +360,7 @@ class ExerciseFinderState extends State<ExerciseFinder> {
 
   _changeSorting() {
     setState(() {
+      sortedAlpha = !sortedAlpha;
       if (sortedAlpha) {
         this.searchedExercises.sort((a,b) => a.name.compareTo(b.name));
         Scaffold.of(context).showSnackBar(SnackBar(
@@ -373,7 +374,6 @@ class ExerciseFinderState extends State<ExerciseFinder> {
           duration: Duration(milliseconds: 800),
         ));
       }
-      sortedAlpha = !sortedAlpha;
     });
   }
 }
