@@ -4,7 +4,7 @@
 
 [**Download On Google Play Store**](https://play.google.com/store/apps/details?id=com.michaeloles.swiftset) 
 
-This is a remake of the original [Native Android Version](https://play.google.com/store/apps/details?id=com.michaeloles.swiftset) on flutter to allow it to be available on IOS Devices.  It also features and updated UI and more refined functionality.
+This is a remake of the original [Native Android Version](https://github.com/mikeoles/SwiftSet) on flutter to allow it to be available on IOS Devices.  It also features and updated UI and more refined functionality.
 
 
 Quickly narrow down the exercise you need by selecting from different categories:
