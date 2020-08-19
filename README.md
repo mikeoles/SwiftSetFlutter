@@ -1,16 +1,25 @@
-# swiftset
+# SwiftSet
 
-SwiftSet - Exercise Finder
+**Android and IOS fitness app that allows users to quickly find the perfect exercise for any situation from over 1100+ exercises in our database**
 
-## Getting Started
+[**Download On Google Play Store**](https://play.google.com/store/apps/details?id=com.michaeloles.swiftset) 
 
-This project is a starting point for a Flutter application.
+This is a remake of the original [Native Android Version](https://play.google.com/store/apps/details?id=com.michaeloles.swiftset) on flutter to allow it to be available on IOS Devices.  It also features and updated UI and more refined functionality.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+Quickly narrow down the exercise you need by selecting from different categories:
+- Equipment
+- Muscle Group
+- Push/Pull/Legs
+- Tempo(Normal,Eccentric,Isometric,Explosive,Paused Reps)
+- Compound/Isolation
+- Unilateral/Bilateral
+- Stability Exercises
+- Sport(Powerlifting,Strongman,Olympic Lifting)
+- Grip(Overhand,Neutral,Underhand)
+- Level Of Incline
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+View a list of the matching exercises or allow SwiftSet to randomly select a matching exercise for you.
+
+Once an exercise is selected you can view a video demonstrating the exercise form and technique, information about the exercise, and can share it with friends or save it to a list of your favorites for future use.
+
