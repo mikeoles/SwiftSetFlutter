@@ -18,7 +18,6 @@ class ExerciseVideoScreen extends StatefulWidget {
 
 class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
   bool saved = false; //
-  bool changed = false; // If the saved status is changed reload search page
 
   @override
   void initState() {
@@ -31,24 +30,21 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
     String videoId = YoutubePlayer.convertUrlToId(widget.exercise.url);
     int startTime = getStartTime(widget.exercise.url);
 
-    return WillPopScope(
-      onWillPop: _backPressed,
-      child: Scaffold(
-        body: SafeArea(
-          child: Column(
-            children: [
-              _videoPlayer(videoId, startTime),
-              _title(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _saveButton(),
-                  _shareButton(),
-                ],
-              ),
-              _exerciseInfo(),
-            ],
-          ),
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            _videoPlayer(videoId, startTime),
+            _title(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _saveButton(),
+                _shareButton(),
+              ],
+            ),
+            _exerciseInfo(),
+          ],
         ),
       ),
     );
@@ -136,7 +132,6 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
     }
     setState(() {
       saved = !saved;
-      changed = !changed;
     });
 
     prefs.setString('savedExercises', savedExercises.join(','));
@@ -164,11 +159,6 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
       default: { return "Unknown"; }
       break;
     }
-  }
-
-  Future<bool> _backPressed() {
-    Navigator.pop(context, changed);
-    return Future.value(changed);
   }
 
   Widget _videoPlayer(String videoId, int startTime) {

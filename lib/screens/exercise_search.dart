@@ -173,7 +173,7 @@ class ExerciseFinderState extends State<ExerciseFinder> {
   Widget _buildRow(Exercise exercise, bool saved) {
     return InkWell(
       onTap: () async {
-        bool result = await Navigator.push(
+        await Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => ExerciseVideoScreen(
@@ -181,11 +181,9 @@ class ExerciseFinderState extends State<ExerciseFinder> {
                 saved: savedIds.contains(exercise.id.toString())),
           ),
         );
-        if (result) {
-          setState(() {
-            _loadFromDatabase(); // reload to get updated saved exercises
-          });
-        }
+        setState(() {
+          _loadFromDatabase(); // reload to get updated saved exercises
+        });
       },
       child: ListTile(
         title: Text(exercise.name),
@@ -345,10 +343,10 @@ class ExerciseFinderState extends State<ExerciseFinder> {
     return exerciseIds;
   }
 
-  void _openRandomExercise() {
+  void _openRandomExercise() async {
     final _random = new Random();
     var exercise = searchedExercises[_random.nextInt(searchedExercises.length)];
-    Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ExerciseVideoScreen(
