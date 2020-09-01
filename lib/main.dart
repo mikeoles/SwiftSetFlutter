@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:swiftset/screens/exercise_search.dart';
 import 'package:swiftset/screens/saved_exercises.dart';
@@ -29,17 +31,12 @@ class _HomeState extends State<Home> {
     currentPage = exerciseFinder;
   }
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      currentPage = pages[index];
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Swift Set',
+      theme: ThemeData(),
+      darkTheme: ThemeData.dark(),
       home: Scaffold(
         body: currentPage,
         floatingActionButton: _button(),
@@ -51,10 +48,11 @@ class _HomeState extends State<Home> {
   Widget _button() {
     return Visibility(
       visible: _selectedIndex == 0,
-      child: FloatingActionButton(
+      child: FloatingActionButton.extended(
         onPressed: () => exerciseFinder.addFilter(),
         tooltip: 'Increment Counter',
-        child: const Icon(Icons.filter_list),
+        icon: const Icon(Icons.filter_list),
+        label: Text("Filter")
       ),
     );
   }
@@ -79,5 +77,12 @@ class _HomeState extends State<Home> {
       selectedItemColor: Colors.blueAccent,
       onTap: _onItemTapped,
     );
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      currentPage = pages[index];
+    });
   }
 }

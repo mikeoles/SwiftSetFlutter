@@ -8,18 +8,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 class Settings extends StatelessWidget {
 
-  Brightness _getBrightness() {
-    return Brightness.light;
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      isMaterialAppTheme: true,
-      data: ThemeData(
-        brightness: _getBrightness(),
-      ),
-      child: Scaffold(
+    return Scaffold(
         body: SafeArea(
           child: Stack(
           fit: StackFit.expand,
@@ -129,19 +121,18 @@ class Settings extends StatelessWidget {
                       color: Colors.indigo,
                     ),
                   ),
-//                  SwitchListTile(
-//                    activeColor: Colors.blue,
-//                    contentPadding: const EdgeInsets.all(0),
-//                    value: true,
-//                    title: Text("Allow Notifications"),
-//                    onChanged: (val) {},
-//                  ),
+                  SwitchListTile(
+                    activeColor: Colors.blue,
+                    contentPadding: const EdgeInsets.all(0),
+                    value: true,
+                    title: Text("Allow Notifications"),
+                    onChanged: (val) {},
+                  ),
                 ],
               ),
             ),
           ],
         ),
-      ),
       ),
     );
   }

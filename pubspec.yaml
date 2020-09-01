@@ -30,6 +30,7 @@ dependencies:
   launch_review: ^1.0.1
   url_launcher: ^5.4.2
   share:
+  showcaseview: 0.1.6
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

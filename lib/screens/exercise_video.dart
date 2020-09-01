@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swiftset/models/exercise.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class ExerciseVideoScreen extends StatefulWidget {
@@ -40,6 +41,7 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _saveButton(),
+                _openInBrowserButton(),
                 _shareButton(),
               ],
             ),
@@ -206,7 +208,7 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
         color: Colors.blue,
         textColor: Colors.blue,
         icon: saved ? Icon(Icons.close, size: 18.0) : Icon(Icons.favorite, size: 18.0,),
-        label: saved ? Text('Unsave Exercise') : Text('Save Exercise'),
+        label: saved ? Text('Unsave') : Text('Save'),
         onPressed: _saveExercise,
       ),
     );
@@ -227,8 +229,29 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
         color: Colors.blue,
         textColor: Colors.blue,
         icon: Icon(Icons.share, size: 18.0),
-        label: Text('Share Exercise'),
+        label: Text('Share'),
         onPressed: _shareExercise,
+      ),
+    );
+  }
+
+  Widget _openInBrowserButton() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 18.0),
+      child: OutlineButton.icon(
+        padding: const EdgeInsets.symmetric(
+          vertical: 10.0,
+          horizontal: 30.0,
+        ),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0)),
+        highlightedBorderColor: Colors.blue,
+        borderSide: BorderSide(color: Colors.blue),
+        color: Colors.blue,
+        textColor: Colors.blue,
+        icon: Icon(Icons.open_in_browser, size: 18.0),
+        label: Text('Watch'),
+        onPressed: _launchURL,
       ),
     );
   }
@@ -265,5 +288,13 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
         ],
       ),
     );
+  }
+
+  void _launchURL() async {
+    if (await canLaunch(widget.exercise.url)) {
+      await launch(widget.exercise.url);
+    } else {
+      throw 'Could not launch url';
+    }
   }
 }

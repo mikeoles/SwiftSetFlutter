@@ -315,8 +315,8 @@ class ExerciseFinderState extends State<ExerciseFinder> {
 
   void _filterHidden() {
     String filterString = '';
-    if(prefs.containsKey("4")) { // 4 is id of difficulty group
-      filterString += prefs.getString("4");
+    if(prefs.containsKey("12")) { // 4 is id of difficulty group
+      filterString += prefs.getString("12");
     }
     if(prefs.containsKey("5")) { // 5 is id of exercise group
       if(filterString.isNotEmpty) filterString += ",";
