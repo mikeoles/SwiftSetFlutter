@@ -1,4 +1,4 @@
-package com.mikeoles.swiftset
+package com.michaeloles.swiftset
 
 import io.flutter.embedding.android.FlutterActivity
 

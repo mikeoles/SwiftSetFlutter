@@ -113,21 +113,6 @@ class Settings extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20.0),
-                  Text(
-                    "Notification Settings",
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.indigo,
-                    ),
-                  ),
-                  SwitchListTile(
-                    activeColor: Colors.blue,
-                    contentPadding: const EdgeInsets.all(0),
-                    value: true,
-                    title: Text("Allow Notifications"),
-                    onChanged: (val) {},
-                  ),
                 ],
               ),
             ),
