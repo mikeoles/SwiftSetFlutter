@@ -14,25 +14,23 @@ import 'package:swiftset/models/filter_group.dart';
 class ExerciseDatabase {
   // groups that are added when a filter is chosen (ex: chest movemment patterns added after chest)
   static final map = {
-    6: [1,7],
-    57: [1],
-    58: [7],
-    60: [7],
-    61: [2],
-    62: [16],
-    63: [7,11],
-    65: [7],
-    66: [7,20],
-    67: [7],
-    68: [6],
-    69: [13],
-    70: [3],
-    72: [22],
-    73: [8],
-    76: [9],
-    85: [7],
-    86: [1],
-    101: [7],
+    57: [1], // Horizontal Pull -> Angle
+    58: [7], // Vertical Pull -> Grip
+    60: [7], // Pullup Variations -> Grip
+    61: [2,1,7], // Chest -> Angle, Chest Movements, Grip
+    62: [16], // Shoulders -> Shoulder Movements
+    63: [7,11], // lats -> Grip, Lat Movements
+    65: [7], // Rear Delts -> Grip
+    66: [7,20], // Triceps -> Grip, Triceps Movements
+    67: [7], // Biceps ->  Grip
+    68: [6], // Forearms -> Forearm Movements
+    69: [13], // Neck -> Neck Movements
+    70: [3], // Core -> Core Movements
+    72: [22], // Quads -> Quad Movements
+    73: [8], // Hamstrings -> Hamstring Movements
+    76: [9], // Hips -> Hip Movements
+    85: [7], // Overhead Press -> Grip
+    86: [1], // Front Raise -> Grip
   };
 
   static List<int> newGroupsByFilterId(int filterId) {

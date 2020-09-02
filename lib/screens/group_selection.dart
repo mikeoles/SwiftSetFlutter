@@ -34,7 +34,7 @@ class GroupSelectionScreen extends StatelessWidget {
   Widget _groupList() {
     return GridView.builder(
       gridDelegate:
-          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
       itemCount: filterGroups.length,
       itemBuilder: (context, index) {
         final group = filterGroups[index];
@@ -75,17 +75,22 @@ class GroupSelectionScreen extends StatelessWidget {
         color: darkModeOn ? Colors.black: Colors.white,
         child: Column(
           children: [
-            Image.asset(
-              'assets/images/' + filterGroup.image.toString(),
-              color: ExerciseDatabase.hexToColor(filterGroup.color),
-              height: 100,
-              width: 100,
+            Expanded(
+              child: Image.asset(
+                'assets/images/' + filterGroup.image.toString(),
+                color: ExerciseDatabase.hexToColor(filterGroup.color),
+                height: 70,
+                width: 70,
+              ),
             ),
-            Center(
-              child: Text(
-                filterGroup.name,
-                style: TextStyle(fontSize: 24, color: darkModeOn ? Colors.white: Colors.black),
-                textAlign: TextAlign.center,
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Center(
+                child: Text(
+                  filterGroup.name,
+                  style: TextStyle(fontSize: 20, color: darkModeOn ? Colors.white: Colors.black),
+                  textAlign: TextAlign.center,
+                ),
               ),
             ),
           ],
