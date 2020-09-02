@@ -75,7 +75,7 @@ class Settings extends StatelessWidget {
                           title: Text("Rate SwiftSet"),
                           trailing: Icon(Icons.keyboard_arrow_right),
                           onTap: () {
-                            LaunchReview.launch(androidAppId: 'com.mikeoles.swiftset',
+                            LaunchReview.launch(androidAppId: 'com.michaeloles.swiftset',
                                 iOSAppId: '1527297876');
                           },
                         ),
