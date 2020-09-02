@@ -44,6 +44,9 @@ class GroupSelectionScreen extends StatelessWidget {
   }
 
   Widget _buildRow(FilterGroup filterGroup, BuildContext context) {
+    var brightness = MediaQuery.of(context).platformBrightness;
+    bool darkModeOn = brightness == Brightness.dark;
+
     return InkWell(
       onTap: () async {
         var result;
@@ -69,7 +72,7 @@ class GroupSelectionScreen extends StatelessWidget {
         }
       },
       child: Card(
-        color: Colors.white,
+        color: darkModeOn ? Colors.black: Colors.white,
         child: Column(
           children: [
             Image.asset(
@@ -81,7 +84,7 @@ class GroupSelectionScreen extends StatelessWidget {
             Center(
               child: Text(
                 filterGroup.name,
-                style: TextStyle(fontSize: 24),
+                style: TextStyle(fontSize: 24, color: darkModeOn ? Colors.white: Colors.black),
                 textAlign: TextAlign.center,
               ),
             ),
