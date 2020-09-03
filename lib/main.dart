@@ -37,6 +37,7 @@ class _HomeState extends State<Home> {
       title: 'Swift Set',
       theme: ThemeData(),
       darkTheme: ThemeData.dark(),
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: currentPage,
         floatingActionButton: _button(),
