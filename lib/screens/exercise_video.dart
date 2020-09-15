@@ -257,35 +257,37 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
   }
 
   Widget _exerciseInfo() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 28.0),
-      child: Column(
-        children: <Widget>[
-          ListTile(
-            leading: Image.asset('assets/images/muscle.png',
-              color: Colors.blue,),
-            title: Text("Muscle Group"),
-            subtitle: Text(widget.exercise.primary),
-          ),
-          ListTile(
-            leading: Image.asset('assets/images/equipment.png',
-              color: Colors.blue,),
-            title: Text("Equipment"),
-            subtitle: Text(widget.exercise.equipment.replaceAll("/", ", ")),
-          ),
-          ListTile(
-            leading: Image.asset('assets/images/tempo.png',
-              color: Colors.blue,),
-            title: Text("Tempo"),
-            subtitle: Text(widget.exercise.tempo.replaceAll("/", ", ")),
-          ),
-          ListTile(
-            leading: Image.asset('assets/images/difficulty.png',
-              color: Colors.blue,),
-            title: Text("Difficulty"),
-            subtitle: Text(_difficultyText(widget.exercise.difficulty)),
-          ),
-        ],
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 28.0),
+        child: ListView(
+          children: <Widget>[
+            ListTile(
+              leading: Image.asset('assets/images/muscle.png',
+                color: Colors.blue,),
+              title: Text("Muscle Group"),
+              subtitle: Text(widget.exercise.primary),
+            ),
+            ListTile(
+              leading: Image.asset('assets/images/equipment.png',
+                color: Colors.blue,),
+              title: Text("Equipment"),
+              subtitle: Text(widget.exercise.equipment.replaceAll("/", ", ")),
+            ),
+            ListTile(
+              leading: Image.asset('assets/images/tempo.png',
+                color: Colors.blue,),
+              title: Text("Tempo"),
+              subtitle: Text(widget.exercise.tempo.replaceAll("/", ", ")),
+            ),
+            ListTile(
+              leading: Image.asset('assets/images/difficulty.png',
+                color: Colors.blue,),
+              title: Text("Difficulty"),
+              subtitle: Text(_difficultyText(widget.exercise.difficulty)),
+            ),
+          ],
+        ),
       ),
     );
   }
