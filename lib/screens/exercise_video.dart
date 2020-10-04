@@ -35,8 +35,8 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            _videoPlayer(videoId, startTime),
             _title(),
+            _videoPlayer(videoId, startTime),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -177,21 +177,33 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
   }
 
   Widget _title() {
-    return Center(
-      child: Container(
-        color: Colors.blue,
-        width: MediaQuery.of(context).size.width,
-        height: 80,
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: FittedBox(
-              fit: BoxFit.contain,
-              child: Text(widget.exercise.name)
+    return Row(
+      children: [
+        BackButton(),
+        Expanded(
+          child: Center(
+            child: Container(
+              color: Colors.white,
+              width: MediaQuery.of(context).size.width,
+              height: 80,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(4, 24, 24, 24),
+                child: FittedBox(
+                    fit: BoxFit.contain,
+                    child: Text(widget.exercise.name)
+                ),
+              ),
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
+
+  Widget _backButton() {
+    return BackButton();
+  }
+
 
   Widget _saveButton() {
     return Padding(
