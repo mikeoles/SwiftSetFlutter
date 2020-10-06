@@ -173,17 +173,10 @@ class ExerciseFinderState extends State<ExerciseFinder> {
   Widget _buildRow(Exercise exercise, bool saved) {
     return InkWell(
       onTap: () async {
-        await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ExerciseVideoScreen(
-                exercise: exercise,
-                saved: savedIds.contains(exercise.id.toString())),
-          ),
-        );
-        setState(() {
-          _loadFromDatabase(); // reload to get updated saved exercises
-        });
+        await Navigator.push(context, MaterialPageRoute(builder: (context)=> ExerciseVideoScreen(
+            exercise: exercise,
+            saved: savedIds.contains(exercise.id.toString())),
+          ));
       },
       child: ListTile(
         title: Text(exercise.name),
