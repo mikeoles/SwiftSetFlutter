@@ -76,6 +76,7 @@ class ExerciseFinderState extends State<ExerciseFinder> {
     );
   }
 
+  // this is the top bar
   Widget _topBar() {
     return Padding(
       padding: EdgeInsets.all(16.0),
