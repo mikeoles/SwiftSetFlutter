@@ -193,7 +193,7 @@ class ExerciseFinderState extends State<ExerciseFinder> {
 
   void _filterSearchResults(String query) {
     setState(() {
-      searchedExercises = allExercises
+      searchedExercises = searchedExercises
           .where((i) => _matchesQuery(i.name.toLowerCase(),query)).toList();
     });
   }
