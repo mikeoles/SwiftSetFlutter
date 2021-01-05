@@ -3,6 +3,7 @@
 **Swiftset is the easiest way to quickly find the perfect exercise for any situation from over 1100+ exercises in our database**
 
 [**Download On Google Play Store**](https://play.google.com/store/apps/details?id=com.michaeloles.swiftset) 
+
 [**Download On The App Store**](https://apps.apple.com/us/app/swiftset/id1527297876) 
 
 This is a remake of the original [Native Android Version](https://github.com/mikeoles/SwiftSet) on flutter to allow it to be available on IOS Devices.  It also features and updated UI and more refined functionality.
