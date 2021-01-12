@@ -241,6 +241,7 @@ class ExerciseFinderState extends State<ExerciseFinder> {
     this.filteredExercises.addAll(allExercises);
     _filterMulti();
     _filterSingle();
+    _filterHidden(); // Should keep filters from settings applied even after a new filter is added
     this.searchedExercises.addAll(this.filteredExercises);
   }
 
