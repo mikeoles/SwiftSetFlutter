@@ -1,8 +1,10 @@
 # SwiftSet
 
-**Android and IOS fitness app that allows users to quickly find the perfect exercise for any situation from over 1100+ exercises in our database**
+**Swiftset is the easiest way to quickly find the perfect exercise for any situation from over 1100+ exercises in our database**
 
 [**Download On Google Play Store**](https://play.google.com/store/apps/details?id=com.michaeloles.swiftset) 
+
+[**Download On The App Store**](https://apps.apple.com/us/app/swiftset/id1527297876) 
 
 This is a remake of the original [Native Android Version](https://github.com/mikeoles/SwiftSet) on flutter to allow it to be available on IOS Devices.  It also features and updated UI and more refined functionality.
 
@@ -23,3 +25,4 @@ View a list of the matching exercises or allow SwiftSet to randomly select a mat
 
 Once an exercise is selected you can view a video demonstrating the exercise form and technique, information about the exercise, and can share it with friends or save it to a list of your favorites for future use.
 
+Also allows users to hide exercises based on equipment or difficulty level to save time.
