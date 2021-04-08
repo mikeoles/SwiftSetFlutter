@@ -31,6 +31,10 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
     String videoId = YoutubePlayer.convertUrlToId(widget.exercise.url);
     int startTime = getStartTime(widget.exercise.url);
 
+    if(videoId == null) {
+      Navigator.pop(context, 'Exercise Video Not Found');
+    }
+
     return Scaffold(
       body: SafeArea(
         child: Column(
