@@ -179,9 +179,11 @@ class ExerciseFinderState extends State<ExerciseFinder> {
             saved: savedIds.contains(exercise.id.toString())),
           ));
 
-        Scaffold.of(context)
-          ..removeCurrentSnackBar()
-          ..showSnackBar(SnackBar(content: Text("$result")));
+        if(result!=null) {
+          Scaffold.of(context)
+            ..removeCurrentSnackBar()
+            ..showSnackBar(SnackBar(content: Text("$result")));
+        }
       },
       child: ListTile(
         title: Text(exercise.name),
