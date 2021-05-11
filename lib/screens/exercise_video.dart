@@ -187,7 +187,6 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
         Expanded(
           child: Center(
             child: Container(
-              color: Colors.white,
               width: MediaQuery.of(context).size.width,
               height: 80,
               child: Padding(
