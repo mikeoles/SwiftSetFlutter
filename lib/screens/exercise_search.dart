@@ -108,7 +108,7 @@ class ExerciseFinderState extends State<ExerciseFinder> {
           prefixIcon: Icon(Icons.search),
           labelText: "Search " +
               searchedExercises.length.toString() +
-              " Exercises",
+              " exercises",
           border: new OutlineInputBorder(
             borderRadius: new BorderRadius.circular(25.0),
           ),
