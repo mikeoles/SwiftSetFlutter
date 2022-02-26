@@ -143,9 +143,9 @@ class Settings extends StatelessWidget {
   }
 
   _launchURL(String url) async {
-    if (await canLaunch(url)) {
+    try {
       await launch(url);
-    } else {
+    } catch(e) {
       throw 'Could not launch $url';
     }
   }

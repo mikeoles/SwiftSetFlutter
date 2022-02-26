@@ -308,10 +308,10 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
   }
 
   void _launchURL() async {
-    if (await canLaunch(widget.exercise.url)) {
+    try {
       await launch(widget.exercise.url);
-    } else {
-      throw 'Could not launch url';
+    } catch(e) {
+      throw 'Could not launch ' + widget.exercise.url;
     }
   }
 }
