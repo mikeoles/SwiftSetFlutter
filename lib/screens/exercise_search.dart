@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:swiftset/models/filter_group.dart';
 import 'package:swiftset/screens/exercise_video.dart';
 import 'package:swiftset/screens/group_selection.dart';
 import 'package:swiftset/utils/exercise_database.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../models/exercise.dart';
 import '../models/filter.dart';
@@ -49,6 +51,7 @@ class ExerciseFinderState extends State<ExerciseFinder> {
     savedIds = savedExercisesString.split(',').toSet();
 
     allExercises = await ExerciseDatabase.getAllExercises();
+    //var ids = getVideoIds();
     allExercises.sort((a,b) => a.name.compareTo(b.name));
     startingGroups = await ExerciseDatabase.getStartingFilterGroups();
     allFilters = await ExerciseDatabase.getAllFilters();
@@ -374,5 +377,16 @@ class ExerciseFinderState extends State<ExerciseFinder> {
         ));
       }
     });
+  }
+
+  String getVideoIds() {
+    String text = "";
+    for(int i=0; i<allExercises.length; i++){
+      var vidid = YoutubePlayer.convertUrlToId(allExercises[i]?.url);
+      if(vidid != null) {
+        text += vidid + "\n";
+      }
+    }
+    return text;
   }
 }
