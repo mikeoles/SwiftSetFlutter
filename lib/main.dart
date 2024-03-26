@@ -14,11 +14,11 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<Widget> pages;
-  ExerciseFinder exerciseFinder;
-  SavedExercises savedExercises;
-  Settings settings;
-  Widget currentPage;
+  List<Widget> pages = [];
+  ExerciseFinder exerciseFinder = new ExerciseFinder();
+  SavedExercises savedExercises = new SavedExercises();
+  Settings settings = new Settings();
+  Widget currentPage = Text("No widget to build");
   int _selectedIndex = 0;
 
   @override
@@ -26,7 +26,6 @@ class _HomeState extends State<Home> {
     super.initState();
     exerciseFinder = new ExerciseFinder();
     savedExercises = new SavedExercises();
-    settings = new Settings();
     pages = [exerciseFinder,savedExercises, settings];
     currentPage = exerciseFinder;
   }
@@ -63,15 +62,15 @@ class _HomeState extends State<Home> {
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.search),
-          title: Text('Search'),
+          label: 'Search',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.favorite),
-          title: Text('Saved'),
+          label: 'Saved',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.settings),
-          title: Text('Settings'),
+          label: 'Settings',
         ),
       ],
       currentIndex: _selectedIndex,

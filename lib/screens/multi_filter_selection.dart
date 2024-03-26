@@ -8,7 +8,7 @@ import 'package:swiftset/utils/exercise_database.dart';
 class MultiFilterSelectionScreen extends StatefulWidget {
   final FilterGroup filterGroup;
 
-  MultiFilterSelectionScreen({this.filterGroup});
+  MultiFilterSelectionScreen({required this.filterGroup});
 
   @override
   _SingleFilterSelectionScreenState createState() =>
@@ -17,8 +17,8 @@ class MultiFilterSelectionScreen extends StatefulWidget {
 
 class _SingleFilterSelectionScreenState
     extends State<MultiFilterSelectionScreen> {
-  Map<int, bool> values;
-  Set<String> hiddenOptions;
+  Map<int, bool> values = {};
+  Set<String> hiddenOptions = {};
 
   @override
   void initState() {
@@ -34,8 +34,8 @@ class _SingleFilterSelectionScreenState
         builder: (BuildContext context, AsyncSnapshot<List<Filter>> snapshot) {
           if (snapshot.hasData) {
             List<Filter> matchingFilters = snapshot.data
-                .where((i) => i.group.id == widget.filterGroup.id)
-                .toList();
+                ?.where((i) => i.group.id == widget.filterGroup.id)
+                .toList() ?? [];
             matchingFilters
                 .removeWhere((f) => hiddenOptions.contains(f.id.toString()));
 
@@ -76,10 +76,10 @@ class _SingleFilterSelectionScreenState
         title: new Text(
           filter.name,
         ),
-        value: values.containsKey(filter.id) && values[filter.id],
-        onChanged: (bool value) {
+        value: values.containsKey(filter.id) && values[filter.id]!,
+        onChanged: (bool? value) {
           setState(() {
-            values[filter.id] = value;
+            values[filter.id] = value ?? false;
           });
         },
       ),
@@ -89,14 +89,15 @@ class _SingleFilterSelectionScreenState
   Widget _selectButton() {
     return Align(
       alignment: Alignment.bottomCenter,
-      child: RaisedButton(
+      child: ElevatedButton(
         onPressed: () {
           _selectPressed();
         },
         child: const Text('Select', style: TextStyle(fontSize: 20)),
-        color: Colors.blue,
-        textColor: Colors.white,
-        elevation: 5,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.blue,
+          elevation: 5,
+        ),
       ),
     );
   }
@@ -106,7 +107,7 @@ class _SingleFilterSelectionScreenState
     filters =
         filters.where((f) => f.group.id == widget.filterGroup.id).toList();
     filters =
-        filters.where((f) => values.containsKey(f.id) && values[f.id]).toList();
+        filters.where((f) => values.containsKey(f.id) && (values[f.id] ?? false)).toList();
     SchedulerBinding.instance.addPostFrameCallback((_) {
       Navigator.pop(context, filters);
     });

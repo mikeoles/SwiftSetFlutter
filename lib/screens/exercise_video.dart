@@ -11,7 +11,7 @@ class ExerciseVideoScreen extends StatefulWidget {
   final Exercise exercise;
   final bool saved;
 
-  ExerciseVideoScreen({Key key, @required this.exercise, @required this.saved}) : super(key: key);
+  ExerciseVideoScreen({required this.exercise, required this.saved});
 
   @override
   _ExerciseVideoScreenState createState() => _ExerciseVideoScreenState();
@@ -28,10 +28,12 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String videoId = YoutubePlayer.convertUrlToId(widget.exercise.url);
+    String? videoIdNullable = widget.exercise.url != null ? YoutubePlayer.convertUrlToId(widget.exercise.url!) : null;
+    String videoId = videoIdNullable ?? '';
+
     int startTime = getStartTime(widget.exercise.url);
 
-    if(videoId == null) {
+    if(videoId == '') {
       Navigator.pop(context, 'Exercise Video Not Found');
     }
 
@@ -211,17 +213,17 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
   Widget _saveButton() {
     return Padding(
       padding: const EdgeInsets.only(top: 18.0),
-      child: OutlineButton.icon(
-        padding: const EdgeInsets.symmetric(
-          vertical: 10.0,
-          horizontal: 30.0,
+      child: OutlinedButton.icon(
+        style: OutlinedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(
+            vertical: 10.0,
+            horizontal: 30.0,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20)
+          ),
+          side: BorderSide(width: 5.0, color: Colors.blue),
         ),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0)),
-        highlightedBorderColor: Colors.blue,
-        borderSide: BorderSide(color: Colors.blue),
-        color: Colors.blue,
-        textColor: Colors.blue,
         icon: saved ? Icon(Icons.close, size: 18.0) : Icon(Icons.favorite, size: 18.0,),
         label: saved ? Text('Unsave') : Text('Save'),
         onPressed: _saveExercise,
@@ -232,17 +234,17 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
   Widget _shareButton() {
     return Padding(
       padding: const EdgeInsets.only(top: 18.0),
-      child: OutlineButton.icon(
-        padding: const EdgeInsets.symmetric(
-          vertical: 10.0,
-          horizontal: 30.0,
+      child: OutlinedButton.icon(
+        style: OutlinedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(
+            vertical: 10.0,
+            horizontal: 30.0,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20)
+          ),
+          side: BorderSide(width: 5.0, color: Colors.blue),
         ),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0)),
-        highlightedBorderColor: Colors.blue,
-        borderSide: BorderSide(color: Colors.blue),
-        color: Colors.blue,
-        textColor: Colors.blue,
         icon: Icon(Icons.share, size: 18.0),
         label: Text('Share'),
         onPressed: _shareExercise,
@@ -253,17 +255,17 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
   Widget _openInBrowserButton() {
     return Padding(
       padding: const EdgeInsets.only(top: 18.0),
-      child: OutlineButton.icon(
-        padding: const EdgeInsets.symmetric(
-          vertical: 10.0,
-          horizontal: 30.0,
+      child: OutlinedButton.icon(
+        style: OutlinedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(
+            vertical: 10.0,
+            horizontal: 30.0,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20)
+          ),
+          side: BorderSide(width: 5.0, color: Colors.blue),
         ),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0)),
-        highlightedBorderColor: Colors.blue,
-        borderSide: BorderSide(color: Colors.blue),
-        color: Colors.blue,
-        textColor: Colors.blue,
         icon: Icon(Icons.open_in_browser, size: 18.0),
         label: Text('Watch'),
         onPressed: _launchURL,

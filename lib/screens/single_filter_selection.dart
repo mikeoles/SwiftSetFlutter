@@ -8,7 +8,7 @@ import 'package:swiftset/utils/exercise_database.dart';
 class SingleFilterSelectionScreen extends StatefulWidget {
   final FilterGroup filterGroup;
 
-  SingleFilterSelectionScreen({this.filterGroup});
+  SingleFilterSelectionScreen({required this.filterGroup});
 
   @override
   _SingleFilterSelectionScreenState createState() =>
@@ -23,9 +23,9 @@ class _SingleFilterSelectionScreenState
         future: ExerciseDatabase.getAllFilters(),
         builder: (BuildContext context, AsyncSnapshot<List<Filter>> snapshot) {
           if (snapshot.hasData) {
-            List<Filter> matchingFilters = snapshot.data
-                .where((i) => i.group.id == widget.filterGroup.id)
-                .toList();
+            List<Filter> matchingFilters = snapshot.data != null
+                ? snapshot.data!.where((i) => i.group.id == widget.filterGroup.id).toList()
+                : [];
             if (matchingFilters.length == 1)
               Navigator.pop(context, matchingFilters[0]);
             return Scaffold(

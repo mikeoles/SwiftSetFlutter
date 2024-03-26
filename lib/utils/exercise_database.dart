@@ -34,8 +34,11 @@ class ExerciseDatabase {
   };
 
   static List<int> newGroupsByFilterId(int filterId) {
-    if(map.containsKey(filterId)) return map[filterId];
-    return List();
+    if (map.containsKey(filterId)) {
+      return map[filterId] ?? []; // Provide a default value if the list is null
+    } else {
+      return []; // Provide a default value if the filterId is not found
+    }
   }
 
   static Future<List<Exercise>> getAllExercises() async {

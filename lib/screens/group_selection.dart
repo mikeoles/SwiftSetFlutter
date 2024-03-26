@@ -7,8 +7,7 @@ import 'package:swiftset/utils/exercise_database.dart';
 class GroupSelectionScreen extends StatelessWidget {
   final List<FilterGroup> filterGroups;
 
-  GroupSelectionScreen({Key key, @required this.filterGroups})
-      : super(key: key);
+  GroupSelectionScreen({required this.filterGroups});
 
   @override
   Widget build(BuildContext context) {

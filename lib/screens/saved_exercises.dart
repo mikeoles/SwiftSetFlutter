@@ -18,10 +18,10 @@ class _SavedExercisesState extends State<SavedExercises> {
       future: _getSavedExercises(),
       builder: (BuildContext c, AsyncSnapshot<List<Exercise>> snapshot) {
         if (snapshot.hasData) {
-          if(snapshot.data == null || snapshot.data.isEmpty) {
+          if(snapshot.data == null || snapshot.data!.isEmpty) {
             return _emptyMessage("No Saved Exercises");
           }
-          return SafeArea(child: _exerciseList(snapshot.data));
+          return SafeArea(child: _exerciseList(snapshot.data ?? []));
         } else {
           return _emptyMessage("Loading Saved Exercises");
         }

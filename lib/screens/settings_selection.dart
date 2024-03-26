@@ -8,7 +8,7 @@ import 'package:swiftset/utils/exercise_database.dart';
 class SettingsSelectionScreen extends StatefulWidget {
   final FilterGroup filterGroup;
 
-  SettingsSelectionScreen({this.filterGroup});
+  SettingsSelectionScreen({required this.filterGroup});
 
   @override
   _SettingsSelectionScreenState createState() =>
@@ -17,7 +17,7 @@ class SettingsSelectionScreen extends StatefulWidget {
 
 class _SettingsSelectionScreenState
     extends State<SettingsSelectionScreen> {
-  Map<int, bool> values;
+  Map<int, bool> values = {};
 
   @override
   void initState() {
@@ -32,9 +32,9 @@ class _SettingsSelectionScreenState
         future: ExerciseDatabase.getAllFilters(),
         builder: (BuildContext context, AsyncSnapshot<List<Filter>> snapshot) {
           if (snapshot.hasData) {
-            List<Filter> matchingFilters = snapshot.data
-                .where((i) => i.group.id == widget.filterGroup.id)
-                .toList();
+            List<Filter>? matchingFilters = snapshot.data
+              ?.where((f) => values.containsKey(f.id) && (values[f.id] ?? false))
+              .toList();
 //            if (!widget.settings) {
 //              matchingFilters.removeWhere((f) => savedValues.containsKey(f.id.toString()) && savedValues[f.id.toString()]);
 //            }
@@ -67,7 +67,7 @@ class _SettingsSelectionScreenState
                         ),
                       ),
                       Expanded(
-                        child: _filterList(matchingFilters),
+                        child: _filterList(matchingFilters ?? []),
                       ),
                       _selectButton(),
                     ]),
@@ -97,10 +97,10 @@ class _SettingsSelectionScreenState
         title: new Text(
           filter.name,
         ),
-        value: values.containsKey(filter.id) && values[filter.id],
-        onChanged: (bool value) {
+        value: values.containsKey(filter.id) && (values[filter.id] ?? false),
+        onChanged: (bool? value) {
           setState(() {
-            values[filter.id] = value;
+            values[filter.id] = value ?? false;
           });
         },
       ),
@@ -110,14 +110,15 @@ class _SettingsSelectionScreenState
   Widget _selectButton() {
     return Align(
       alignment: Alignment.bottomCenter,
-      child: RaisedButton(
+      child: ElevatedButton(
         onPressed: () {
           _selectPressed();
         },
         child: Text('Save', style: TextStyle(fontSize: 20)),
-        color: Colors.blue,
-        textColor: Colors.white,
-        elevation: 5,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.blue,
+          elevation: 5,
+        ),
       ),
     );
   }

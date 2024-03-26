@@ -14,8 +14,9 @@ class Exercise {
   final String sport;
   final String grip;
 
-  Exercise({this.id, this.name, this.url, this.difficulty, this.primary, this.equipment,
-  this.movement, this.angle, this.tempo, this.unilateral, this.joint, this.stability, this.sport, this.grip});
+  Exercise({required this.id, required this.name, required this.url, required this.difficulty, required this.primary, 
+  required this.equipment, required this.movement, required this.angle, required this.tempo, required this.unilateral, 
+  required this.joint, required this.stability, required this.sport, required this.grip});
 
   Map<String, dynamic> toMap() {
     return {

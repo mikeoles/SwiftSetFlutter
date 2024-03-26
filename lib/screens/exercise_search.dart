@@ -13,7 +13,7 @@ import '../models/exercise.dart';
 import '../models/filter.dart';
 
 class ExerciseFinder extends StatefulWidget {
-  ExerciseFinderState efs;
+  ExerciseFinderState efs = new ExerciseFinderState();
 
   void addFilter() {
     efs.addFilter();
@@ -28,15 +28,14 @@ class ExerciseFinder extends StatefulWidget {
 
 class ExerciseFinderState extends State<ExerciseFinder> {
   bool sortedAlpha = true; // can be sorted alphabetically or by newest (highest id)
-  SharedPreferences prefs;
   Set<String> savedIds = new Set(); // Ids of saved exercises
-  var startingGroups = new List<FilterGroup>(); // Groups added by default
-  var currentGroups = new List<FilterGroup>(); // Groups available based on filter selections
-  var allFilters = new List<Filter>();
-  var currentFilters = new List<Filter>();
-  var allExercises = new List<Exercise>();
-  var filteredExercises = new List<Exercise>();
-  var searchedExercises = new List<Exercise>();
+  var startingGroups = <FilterGroup>[]; // Groups added by default
+  var currentGroups = <FilterGroup>[]; // Groups available based on filter selections
+  var allFilters = <Filter>[];
+  var currentFilters = <Filter>[];
+  var allExercises = <Exercise>[];
+  var filteredExercises = <Exercise>[];
+  var searchedExercises = <Exercise>[];
 
   @override
   void initState() {
@@ -46,7 +45,7 @@ class ExerciseFinderState extends State<ExerciseFinder> {
 
   // setup the starting state of the exercise search
   void _loadFromDatabase() async {
-    prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
     final savedExercisesString = prefs.getString('savedExercises') ?? '';
     savedIds = savedExercisesString.split(',').toSet();
 
@@ -133,7 +132,7 @@ class ExerciseFinderState extends State<ExerciseFinder> {
     );
   }
 
-  Widget _buildChip(Filter filter) {
+  Widget _buildChip(Filter? filter) {
     return Chip(
       label: Text( filter == null ? "Clear All" : filter.name,
         style: TextStyle(
@@ -183,7 +182,7 @@ class ExerciseFinderState extends State<ExerciseFinder> {
           ));
 
         if(result!=null) {
-          Scaffold.of(context)
+          ScaffoldMessenger.of(context)
             ..removeCurrentSnackBar()
             ..showSnackBar(SnackBar(content: Text("$result")));
         }
@@ -317,14 +316,15 @@ class ExerciseFinderState extends State<ExerciseFinder> {
     currentGroups.addAll(groups.values.toList());
   }
 
-  void _filterHidden() {
+  void _filterHidden() async {
     String filterString = '';
+    final prefs = await SharedPreferences.getInstance();
     if(prefs.containsKey("4")) { // 4 is id of difficulty group
-      filterString += prefs.getString("4");
+      filterString += prefs.getString("4") ?? "";
     }
     if(prefs.containsKey("5")) { // 5 is id of exercise group
       if(filterString.isNotEmpty) filterString += ",";
-      filterString += "," + prefs.getString("5");
+      filterString += "," + (prefs.getString("5") ?? "");
     }
     Set filterIds = filterString.split(",").toSet();
     List<Filter> hiddenFilters =
@@ -365,13 +365,13 @@ class ExerciseFinderState extends State<ExerciseFinder> {
       sortedAlpha = !sortedAlpha;
       if (sortedAlpha) {
         this.searchedExercises.sort((a,b) => a.name.compareTo(b.name));
-        Scaffold.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text("Sorting Alphabetically"),
           duration: Duration(milliseconds: 800),
         ));
       } else {
         this.searchedExercises.sort((a,b) => b.id.compareTo(a.id));
-        Scaffold.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text("Sorting By Newest"),
           duration: Duration(milliseconds: 800),
         ));
@@ -382,7 +382,7 @@ class ExerciseFinderState extends State<ExerciseFinder> {
   String getVideoIds() {
     String text = "";
     for(int i=0; i<allExercises.length; i++){
-      var vidid = YoutubePlayer.convertUrlToId(allExercises[i]?.url);
+      var vidid = YoutubePlayer.convertUrlToId(allExercises[i]?.url ?? "");
       if(vidid != null) {
         text += vidid + "\n";
       }

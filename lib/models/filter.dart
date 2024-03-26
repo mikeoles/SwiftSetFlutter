@@ -8,7 +8,7 @@ class Filter {
   final FilterGroup group;
   final List<FilterGroup> groupsToAdd;
 
-  Filter({this.id, this.name, this.dbColumn, this.dbSortBy, this.group, this.groupsToAdd});
+  Filter({required this.id, required this.name, required this.dbColumn, required this.dbSortBy, required this.group, required this.groupsToAdd});
 
   Map<String, dynamic> toMap() {
     return {

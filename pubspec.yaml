@@ -28,7 +28,7 @@ dependencies:
   path:
   youtube_player_flutter:
   launch_review:
-  url_launcher: ^6.1.2
+  url_launcher:
   share:
 
   # The following adds the Cupertino Icons font to your application.
