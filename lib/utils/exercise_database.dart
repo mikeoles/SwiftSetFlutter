@@ -71,19 +71,19 @@ class ExerciseDatabase {
       return List.generate(maps.length, (i) {
         return Exercise(
           id: maps[i]['id'],
-          name: maps[i]['name'],
-          url: maps[i]['url'],
-          difficulty: maps[i]['difficulty'],
-          primary: maps[i]['primary'],
-          equipment: maps[i]['equipment'],
-          angle: maps[i]['angle'],
-          tempo: maps[i]['tempo'],
-          unilateral: maps[i]['unilateral'],
-          joint: maps[i]['joint'],
-          stability: maps[i]['stability'],
-          sport: maps[i]['sport'],
-          grip: maps[i]['grip'],
-          movement: maps[i]['movement']
+          name: maps[i]['name']?.toString() ?? '',
+          url: maps[i]['url']?.toString() ?? '',
+          difficulty: maps[i]['difficulty']?.toString() ?? '',
+          primary: maps[i]['primary']?.toString() ?? '',
+          equipment: maps[i]['equipment']?.toString() ?? '',
+          angle: maps[i]['angle']?.toString() ?? '',
+          tempo: maps[i]['tempo']?.toString() ?? '',
+          unilateral: maps[i]['unilateral']?.toString() ?? '',
+          joint: maps[i]['joint']?.toString() ?? '',
+          stability: maps[i]['stability']?.toString() ?? '',
+          sport: maps[i]['sport']?.toString() ?? '',
+          grip: maps[i]['grip']?.toString() ?? '',
+          movement: maps[i]['movement']?.toString() ?? ''
         );
       });
     }
