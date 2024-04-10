@@ -189,7 +189,7 @@ class ExerciseFinderState extends State<ExerciseFinder> {
       },
       child: ListTile(
         title: Text(exercise.name),
-        trailing: saved // add a swiftset logo next to the exercise if it's been saved
+        trailing: saved // add a Swiftset logo next to the exercise if it's been saved
             ? Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Image.asset('assets/images/swiftset.png'),
