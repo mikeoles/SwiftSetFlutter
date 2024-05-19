@@ -12,7 +12,7 @@ import 'package:swiftset/models/filter.dart';
 import 'package:swiftset/models/filter_group.dart';
 
 class ExerciseDatabase {
-  // groups that are added when a filter is chosen (ex: chest movemment patterns added after chest)
+  // groups that are added when a filter is chosen (ex: chest movement patterns added after chest)
   static final map = {
     57: [1], // Horizontal Pull -> Angle
     58: [7], // Vertical Pull -> Grip
@@ -187,7 +187,6 @@ class ExerciseDatabase {
   }
 
   static Color hexToColor(String code) {
-    if (code == null) return Colors.red;
     return new Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
   }
 }

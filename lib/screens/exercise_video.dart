@@ -211,6 +211,8 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
 
 
   Widget _saveButton() {
+    var labelText = saved ? "Unsave" : "Save";
+    var iconType = saved ? Icons.close : Icons.favorite;
     return Padding(
       padding: const EdgeInsets.only(top: 18.0),
       child: OutlinedButton.icon(
@@ -223,9 +225,17 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
             borderRadius: BorderRadius.circular(20)
           ),
           side: BorderSide(width: 5.0, color: Colors.blue),
+          backgroundColor: Colors.blue
         ),
-        icon: saved ? Icon(Icons.close, size: 18.0) : Icon(Icons.favorite, size: 18.0,),
-        label: saved ? Text('Unsave') : Text('Save'),
+        icon: new IconTheme(
+          data: new IconThemeData(
+              color: Colors.white),
+          child: new Icon(iconType, size: 18),
+        ),
+        label: Text(
+          labelText,
+          style: TextStyle(color: Colors.white),
+        ),
         onPressed: _saveExercise,
       ),
     );
@@ -244,9 +254,17 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
             borderRadius: BorderRadius.circular(20)
           ),
           side: BorderSide(width: 5.0, color: Colors.blue),
+          backgroundColor: Colors.blue
         ),
-        icon: Icon(Icons.share, size: 18.0),
-        label: Text('Share'),
+        icon: new IconTheme(
+          data: new IconThemeData(
+              color: Colors.white),
+          child: new Icon(Icons.share, size: 18),
+        ),
+        label: Text(
+          'Share',
+          style: TextStyle(color: Colors.white),
+        ),
         onPressed: _shareExercise,
       ),
     );
@@ -265,9 +283,17 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
             borderRadius: BorderRadius.circular(20)
           ),
           side: BorderSide(width: 5.0, color: Colors.blue),
+            backgroundColor: Colors.blue
         ),
-        icon: Icon(Icons.open_in_browser, size: 18.0),
-        label: Text('Watch'),
+        icon: new IconTheme(
+          data: new IconThemeData(
+              color: Colors.white),
+          child: new Icon(Icons.open_in_browser, size: 18),
+        ),
+        label: Text(
+          'Watch',
+          style: TextStyle(color: Colors.white),
+        ),
         onPressed: _launchURL,
       ),
     );

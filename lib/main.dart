@@ -48,11 +48,22 @@ class _HomeState extends State<Home> {
   Widget _button() {
     return Visibility(
       visible: _selectedIndex == 0,
-      child: FloatingActionButton.extended(
-        onPressed: () => exerciseFinder.addFilter(),
-        tooltip: 'Increment Counter',
-        icon: const Icon(Icons.filter_list),
-        label: Text("Filter")
+      child: Tooltip(
+        message: 'Increment Counter',
+        textStyle: TextStyle(color: Colors.white), // Set text color to white
+        decoration: BoxDecoration(
+          color: Colors.black, // Set the background color of the tooltip
+          borderRadius: BorderRadius.circular(4),
+        ),
+        child: FloatingActionButton.extended(
+          onPressed: () => exerciseFinder.addFilter(),
+          icon: const Icon(Icons.filter_list, color: Colors.white), // Set icon color to white
+          label: Text(
+            "Filter",
+            style: TextStyle(color: Colors.white), // Set text color to white
+          ),
+          backgroundColor: Colors.blue, // Set the background color here
+        ),
       ),
     );
   }

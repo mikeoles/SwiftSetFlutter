@@ -60,7 +60,20 @@ class _SingleFilterSelectionScreenState
 
   Widget _filterList(List<Filter> filters) {
     return Expanded(
-      child: ListView.builder(
+      child: filters.length > 10
+          ? GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisSpacing: 4.0,
+          crossAxisSpacing: 4.0,
+          childAspectRatio: 3,
+        ),
+        itemCount: filters.length,
+        itemBuilder: (context, index) {
+          return _buildRow(filters[index], context);
+        },
+      )
+          : ListView.builder(
         itemCount: filters.length,
         itemBuilder: (context, index) {
           return _buildRow(filters[index], context);
@@ -70,21 +83,46 @@ class _SingleFilterSelectionScreenState
   }
 
   Widget _buildRow(Filter filter, BuildContext context) {
-    return Container(
-      height: 50,
-      child: CheckboxListTile(
-        title: new Text(
-          filter.name,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 2.0),
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
         ),
-        value: values.containsKey(filter.id) && values[filter.id]!,
-        onChanged: (bool? value) {
-          setState(() {
-            values[filter.id] = value ?? false;
-          });
-        },
+        elevation: 3,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 0.0),
+          child: Row(
+            children: [
+              Checkbox(
+                value: values.containsKey(filter.id) && values[filter.id]!,
+                onChanged: (bool? value) {
+                  setState(() {
+                    values[filter.id] = value ?? false;
+                  });
+                },
+                activeColor: Colors.blue,
+                checkColor: Colors.white,
+              ),
+              SizedBox(width: 2.0), // Adjust this width to control space
+              Expanded(
+                child: Text(
+                  filter.name,
+                  style: TextStyle(
+                    fontSize: 16, // Slightly smaller font to fit grid
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black87,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
+
+
 
   Widget _selectButton() {
     return Align(
@@ -93,7 +131,13 @@ class _SingleFilterSelectionScreenState
         onPressed: () {
           _selectPressed();
         },
-        child: const Text('Select', style: TextStyle(fontSize: 20)),
+        child: const Text(
+          'Select',
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.white, // Set text color to white
+          ),
+        ),
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.blue,
           elevation: 5,

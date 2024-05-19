@@ -55,7 +55,7 @@ class _SingleFilterSelectionScreenState
                       ],
                     ),
                     ),
-                    Expanded(child: _filterList(matchingFilters))
+                    Expanded(child: _filterGrid(matchingFilters))
                   ],
                 ),
               ),
@@ -74,6 +74,48 @@ class _SingleFilterSelectionScreenState
       itemBuilder: (context, index) {
         final group = filters[index];
         return _buildRow(group, filters.length, context);
+      },
+    );
+  }
+
+  Widget _buildGridTile(Filter filter, BuildContext context) {
+    return Card(
+      color: Colors.white,
+      child: ListTile(
+        title: Center(
+          child: Text(
+            filter.name,
+            style: TextStyle(fontSize: 24),
+          ),
+        ),
+        onTap: () => Navigator.pop(context, filter),
+      ),
+    );
+  }
+
+  Widget _filterGrid(List<Filter> filters) {
+    int crossAxisCount = filters.length < 10 ? 1 : 2;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        double itemHeight = max(
+          ((constraints.maxHeight - 100) / filters.length),
+          80,
+        );
+
+        return GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: crossAxisCount,
+            childAspectRatio: (constraints.maxWidth / crossAxisCount) / itemHeight,
+            crossAxisSpacing: 5,
+            mainAxisSpacing: 5,
+          ),
+          padding: EdgeInsets.all(5),
+          itemCount: filters.length,
+          itemBuilder: (context, index) {
+            final filter = filters[index];
+            return _buildGridTile(filter, context);
+          },
+        );
       },
     );
   }
