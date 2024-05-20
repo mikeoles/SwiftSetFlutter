@@ -83,42 +83,48 @@ class _SingleFilterSelectionScreenState
   }
 
   Widget _buildRow(Filter filter, BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 2.0),
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        elevation: 3,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 0.0),
-          child: Row(
-            children: [
-              Checkbox(
-                value: values.containsKey(filter.id) && values[filter.id]!,
-                onChanged: (bool? value) {
-                  setState(() {
-                    values[filter.id] = value ?? false;
-                  });
-                },
-                activeColor: Colors.blue,
-                checkColor: Colors.white,
-              ),
-              SizedBox(width: 2.0), // Adjust this width to control space
-              Expanded(
-                child: Text(
-                  filter.name,
-                  style: TextStyle(
-                    fontSize: 16, // Slightly smaller font to fit grid
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black87,
+    return GestureDetector(
+        onTap: () {
+          setState(() {
+            values[filter.id] = !(values[filter.id] ?? false);
+          });
+        },
+        child:Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 2.0),
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            elevation: 3,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 0.0),
+              child: Row(
+                children: [
+                  Checkbox(
+                    value: values.containsKey(filter.id) && values[filter.id]!,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        values[filter.id] = value ?? false;
+                      });
+                    },
+                    activeColor: Colors.blue,
+                    checkColor: Colors.white,
                   ),
-                ),
+                  Expanded(
+                    child: Text(
+                      filter.name,
+                      style: TextStyle(
+                        fontSize: 16, // Slightly smaller font to fit grid
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
-      ),
     );
   }
 

@@ -36,15 +36,18 @@ class Settings extends StatelessWidget {
                           title: Text("Hide Difficulty Levels"),
                           trailing: Icon(Icons.keyboard_arrow_right),
                           onTap: () async {
-                            FilterGroup group = await ExerciseDatabase.getGroupsById(4);
-                            var hiddenEquipment = await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    SettingsSelectionScreen(filterGroup: group,),
-                              ),
-                            );
-                            _saveHidden(hiddenEquipment as Map<int, bool>, group.id);},
+                              FilterGroup group = await ExerciseDatabase.getGroupsById(4);
+                              var hiddenEquipment = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      SettingsSelectionScreen(filterGroup: group,),
+                                ),
+                              );
+                              if (hiddenEquipment != null && hiddenEquipment is Map<int, bool>) {
+                                _saveHidden(hiddenEquipment, group.id);
+                              }
+                            },
                         ),
                         _buildDivider(),
                         ListTile(
@@ -63,7 +66,9 @@ class Settings extends StatelessWidget {
                                     SettingsSelectionScreen(filterGroup: group),
                               ),
                             );
-                            _saveHidden(hiddenEquipment as Map<int, bool>, group.id);
+                            if (hiddenEquipment != null && hiddenEquipment is Map<int, bool>) {
+                              _saveHidden(hiddenEquipment, group.id);
+                            }
                           },
                         ),
                         _buildDivider(),
