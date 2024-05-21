@@ -36,11 +36,13 @@ class ExerciseFinderState extends State<ExerciseFinder> {
   var allExercises = <Exercise>[];
   var filteredExercises = <Exercise>[];
   var searchedExercises = <Exercise>[];
+  Set<String> hiddenFilterIds = new Set(); // Ids of filters that will be hidden by the users selected defaults from the settings menu
 
   @override
   void initState() {
     super.initState();
     _loadFromDatabase();
+    _loadHiddenFilters();
   }
 
   // setup the starting state of the exercise search
@@ -64,6 +66,22 @@ class ExerciseFinderState extends State<ExerciseFinder> {
       currentGroups.addAll(startingGroups);
     });
   }
+
+  Future<void> _loadHiddenFilters() async {
+    final prefs = await SharedPreferences.getInstance();
+    String filterString = '';
+    if (prefs.containsKey("4")) { // 4 is id of difficulty group
+      filterString += prefs.getString("4") ?? "";
+    }
+    if (prefs.containsKey("5")) { // 5 is id of exercise group
+      if (filterString.isNotEmpty) filterString += ",";
+      filterString += prefs.getString("5") ?? "";
+    }
+    setState(() {
+      hiddenFilterIds = filterString.split(",").toSet();
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -316,26 +334,14 @@ class ExerciseFinderState extends State<ExerciseFinder> {
     currentGroups.addAll(groups.values.toList());
   }
 
-  void _filterHidden() async {
-    String filterString = '';
-    final prefs = await SharedPreferences.getInstance();
-    if(prefs.containsKey("4")) { // 4 is id of difficulty group
-      filterString += prefs.getString("4") ?? "";
-    }
-    if(prefs.containsKey("5")) { // 5 is id of exercise group
-      if(filterString.isNotEmpty) filterString += ",";
-      filterString += "," + (prefs.getString("5") ?? "");
-    }
-    Set filterIds = filterString.split(",").toSet();
+  void _filterHidden() {
     List<Filter> hiddenFilters =
-        allFilters.where((f) => filterIds.contains(f.id.toString())).toList();
+    allFilters.where((f) => hiddenFilterIds.contains(f.id.toString())).toList();
     hiddenFilters.forEach(
-        (f) => this.filteredExercises.removeWhere((e) => _matchesFilter(e, f)));
-    hiddenFilters.forEach(
-        (f) => this.filteredExercises.removeWhere((e) => _matchesFilter(e, f)));
+            (f) => this.filteredExercises.removeWhere((e) => _matchesFilter(e, f)));
   }
 
-  // finf all exercises that match a least one filter from a group of filters
+  // find all exercises that match a least one filter from a group of filters
   Set<int> _getMatching(List<Filter> filters) {
     Set<int> exerciseIds = new Set();
     for (int i = 0; i < filters.length; i++) {

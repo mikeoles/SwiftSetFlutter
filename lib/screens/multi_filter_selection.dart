@@ -46,6 +46,14 @@ class _SingleFilterSelectionScreenState
                     children: [
                       _title(),
                       _filterList(matchingFilters),
+                      if (hiddenOptions.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Some filters are hidden based on your settings.',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ),
                       _selectButton(),
                     ]),
               ),

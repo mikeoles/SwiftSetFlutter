@@ -33,7 +33,7 @@ class _SettingsSelectionScreenState
         builder: (BuildContext context, AsyncSnapshot<List<Filter>> snapshot) {
           if (snapshot.hasData) {
             List<Filter>? matchingFilters = snapshot.data
-              ?.where((f) => values.containsKey(f.id) && (values[f.id] ?? false))
+              ?.where((i) => i.group.id == widget.filterGroup.id)
               .toList();
 //            if (!widget.settings) {
 //              matchingFilters.removeWhere((f) => savedValues.containsKey(f.id.toString()) && savedValues[f.id.toString()]);
@@ -117,11 +117,13 @@ class _SettingsSelectionScreenState
         child: Text('Save', style: TextStyle(fontSize: 20)),
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.blue,
+          foregroundColor: Colors.white, // Set text color to white
           elevation: 5,
         ),
       ),
     );
   }
+
 
   _selectPressed() async {
       SchedulerBinding.instance.addPostFrameCallback((_) {
