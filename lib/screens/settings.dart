@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:launch_review/launch_review.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swiftset/models/filter_group.dart';
 import 'package:swiftset/screens/settings_selection.dart';
@@ -80,8 +79,11 @@ class Settings extends StatelessWidget {
                           title: Text("Rate SwiftSet"),
                           trailing: Icon(Icons.keyboard_arrow_right),
                           onTap: () {
-                            LaunchReview.launch(androidAppId: 'com.michaeloles.swiftset',
-                                iOSAppId: '1527297876');
+                            if (Theme.of(context).platform == TargetPlatform.android) {
+                              _launchURL('market://details?id=com.michaeloles.swiftset');
+                            } else if (Theme.of(context).platform == TargetPlatform.iOS) {
+                              _launchURL('https://apps.apple.com/us/app/swiftset/id1527297876');
+                            }
                           },
                         ),
                         _buildDivider(),
