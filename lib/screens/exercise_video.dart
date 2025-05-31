@@ -1,11 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swiftset/models/exercise.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ExerciseVideoScreen extends StatefulWidget {
   final Exercise exercise;
@@ -146,7 +146,9 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
   }
 
   void _shareExercise() async {
-    Share.share("Check out this exercise I found on the SwiftSet app: " + widget.exercise.name + " - " + widget.exercise.url);
+    SharePlus.instance.share(
+      ShareParams(text: "Check out this exercise I found on the SwiftSet app: " + widget.exercise.name + " - " + widget.exercise.url)
+    );
   }
 
   // Change number to readable string
