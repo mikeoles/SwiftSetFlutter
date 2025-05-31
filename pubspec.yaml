@@ -27,7 +27,7 @@ dependencies:
   sqflite:
   path:
   youtube_player_flutter:
-  launch_review: ^4.0.0 
+  launch_review: ^3.0.1
   url_launcher:
   share:
 
