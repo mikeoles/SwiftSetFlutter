@@ -31,6 +31,8 @@ if (keystorePropertiesFile.exists()) {
 android {
     compileSdkVersion 35
 
+    namespace "com.michaeloles.swiftset" 
+
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
