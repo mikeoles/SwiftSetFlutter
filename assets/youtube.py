@@ -4,7 +4,7 @@ from urllib.parse import urlparse, parse_qs
 
 # Function to check if a YouTube video exists
 def is_valid_youtube_video(video_id):
-    api_key = "enterhere"
+    api_key = "AIzaSyDZ2gn-RXkPLVCF6g4Ty0SY8DVVJLusiLE"
     youtube = build('youtube', 'v3', developerKey=api_key)
     request = youtube.videos().list(part='snippet', id=video_id)
     try:
@@ -49,7 +49,6 @@ cursor.execute("SELECT id, url FROM exercises")
 entries = cursor.fetchall()
 
 # Iterate through each entry and check URL validity
-x = 0
 count = 0
 for entry in entries:
     exercise_id, url = entry
@@ -57,7 +56,9 @@ for entry in entries:
         video_id = extract_video_id(url)
         if video_id:
             if is_valid_youtube_video(video_id):
-                x = 1
+                count += 1
+                if (count - 1) % 50 == 0:
+                    print(f"valid video entry number (every 50 printed): {count}")
             else:
                 print(f"Video ID {video_id} extracted from URL {url} is invalid.")
         else:
