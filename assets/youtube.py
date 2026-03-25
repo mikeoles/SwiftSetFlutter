@@ -4,7 +4,7 @@ from urllib.parse import urlparse, parse_qs
 
 # Function to check if a YouTube video exists
 def is_valid_youtube_video(video_id):
-    api_key = "AIzaSyDZ2gn-RXkPLVCF6g4Ty0SY8DVVJLusiLE"
+    api_key = "enterhere"
     youtube = build('youtube', 'v3', developerKey=api_key)
     request = youtube.videos().list(part='snippet', id=video_id)
     try:
