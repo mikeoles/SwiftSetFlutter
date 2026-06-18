@@ -1,6 +1,6 @@
 import os
 import sqlite3
-import traceback  # Add this import at the top of the file
+import traceback
 from googleapiclient.discovery import build
 from urllib.parse import urlparse, parse_qs
 
@@ -18,7 +18,6 @@ def extract_video_id(url):
         query_params = parse_qs(parsed_url.query)
         if 'v' in query_params:
             return query_params['v'][0]
-        # Fallback for path-based IDs like /embed/ or /v/
         path_parts = parsed_url.path.split('/')
         if path_parts:
             return path_parts[-1].split('?')[0]
@@ -32,7 +31,7 @@ def check_youtube_videos_batch(video_ids):
         
     api_key = os.environ.get("YOUTUBE_API_KEY")
     if not api_key:
-        print("CRITICAL ERROR: YOUTUBE_API_KEY environment variable is completely empty or missing.")
+        print("CRITICAL ERROR: YOUTUBE_API_KEY environment variable is missing.")
         return set()
 
     try:
@@ -43,9 +42,6 @@ def check_youtube_videos_batch(video_ids):
         return valid_ids
     except Exception as e:
         print("\n--- API REQUEST EXCEPTION ---")
-        print(f"Error Type: {type(e)}")
-        
-        # Safely extract the hidden payload from the Google API wrapper
         if hasattr(e, 'content'):
             try:
                 import json
@@ -55,12 +51,10 @@ def check_youtube_videos_batch(video_ids):
                 print("Raw Server Response:", e.content)
         else:
             print(f"Error Message: {e}")
-            
         print("-----------------------------\n")
         return set()
-        
+
 def main():
-    # Path adjusted to 'assets/exercises.db' because GitHub Actions executes from the root folder
     db_path = os.path.join('assets', 'exercises.db')
     
     if not os.path.exists(db_path):
@@ -69,21 +63,23 @@ def main():
 
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
-    cursor.execute("SELECT id, url FROM exercises")
+    
+    # UPDATED: Pulling 'name' alongside 'url' from the database
+    # (If your column is named 'exercise_name', change 'name' to 'exercise_name' below)
+    cursor.execute("SELECT name, url FROM exercises")
     entries = cursor.fetchall()
     conn.close()
 
-    # Step 1: Parse all valid video IDs and map them back to their URLs
-    id_to_url_map = {}
-    for _, url in entries:
+    # UPDATED: Maps video_id -> {"url": url, "name": exercise_name}
+    video_data_map = {}
+    for name, url in entries:
         video_id = extract_video_id(url)
         if video_id:
-            id_to_url_map[video_id] = url
+            video_data_map[video_id] = {"url": url, "name": name}
         elif url:
-            print(f"Unable to extract video ID from URL: {url}")
+            print(f"Unable to extract video ID from URL: {url} (Exercise: {name})")
 
-    # Step 2: Batch process the unique IDs in chunks of 50
-    unique_ids = list(id_to_url_map.keys())
+    unique_ids = list(video_data_map.keys())
     valid_count = 0
     invalid_count = 0
     
@@ -95,11 +91,13 @@ def main():
         
         valid_count += len(valid_batch_ids)
         
-        # Identify invalid ones in this specific batch
+        # Cross-reference the batch to pinpoint dead links
         for vid in batch:
             if vid not in valid_batch_ids:
                 invalid_count += 1
-                print(f"[INVALID] Video ID: {vid} | URL: {id_to_url_map[vid]}")
+                exercise_meta = video_data_map[vid]
+                # UPDATED: Now neatly prints the exercise name next to the broken link
+                print(f"[INVALID] Exercise: {exercise_meta['name']} | Video ID: {vid} | URL: {exercise_meta['url']}")
 
     print("\n--- Final Summary ---")
     print(f"Total Unique Videos Checked: {len(unique_ids)}")
