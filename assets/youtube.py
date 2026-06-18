@@ -1,5 +1,6 @@
 import os
 import sqlite3
+import traceback  # Add this import at the top of the file
 from googleapiclient.discovery import build
 from urllib.parse import urlparse, parse_qs
 
@@ -29,23 +30,23 @@ def check_youtube_videos_batch(video_ids):
     if not video_ids:
         return set()
         
-    # Grabs the key securely from the GitHub Actions environment variables
     api_key = os.environ.get("YOUTUBE_API_KEY")
     if not api_key:
-        print("CRITICAL ERROR: YOUTUBE_API_KEY environment variable is missing.")
+        print("CRITICAL ERROR: YOUTUBE_API_KEY environment variable is completely empty or missing.")
         return set()
 
-    youtube = build('youtube', 'v3', developerKey=api_key)
-    
     try:
-        # Join up to 50 IDs with commas to save API quota limits
+        youtube = build('youtube', 'v3', developerKey=api_key)
         request = youtube.videos().list(part='id', id=','.join(video_ids))
         response = request.execute()
-        # Extract the IDs that actually returned a valid item
         valid_ids = {item['id'] for item in response.get('items', [])}
         return valid_ids
     except Exception as e:
-        print("API Error:", e)
+        print("--- API REQUEST EXCEPTION ---")
+        print(f"Error Type: {type(e)}")
+        print(f"Error Message: {e}")
+        traceback.print_exc()  # This forces Python to print exactly where and why it failed
+        print("-----------------------------")
         return set()
 
 def main():
