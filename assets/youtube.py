@@ -1,3 +1,4 @@
+import re
 import os
 import sqlite3
 import traceback
@@ -7,21 +8,15 @@ from urllib.parse import urlparse, parse_qs
 def extract_video_id(url):
     if not url:
         return None
-    parsed_url = urlparse(url)
-    
-    # Handle short URLs (youtu.be/VIDEO_ID)
-    if parsed_url.hostname == 'youtu.be':
-        return parsed_url.path[1:].split('?')[0].split('&')[0]
         
-    # Handle standard URLs (youtube.com/...)
-    elif parsed_url.hostname in ('www.youtube.com', 'youtube.com'):
-        query_params = parse_qs(parsed_url.query)
-        if 'v' in query_params:
-            return query_params['v'][0]
-        path_parts = parsed_url.path.split('/')
-        if path_parts:
-            return path_parts[-1].split('?')[0]
-            
+    # Regex to handle regular watch links, embed links, short links, and paths with malformed query joins
+    # It strictly extracts the 11-character alphanumeric string following v=, embed/, short paths, etc.
+    regex = r'(?:v=|\/embed\/|\/v\/|youtu\.be\/|\/shorts\/|^)([a-zA-Z0-9_-]{11})'
+    
+    match = re.search(regex, url)
+    if match:
+        return match.group(1)
+        
     return None
 
 def check_youtube_videos_batch(video_ids):
