@@ -41,11 +41,11 @@ def check_youtube_videos_batch(video_ids):
         response = request.execute()
         valid_ids = {item['id'] for item in response.get('items', [])}
         return valid_ids
-except Exception as e:
-        print("--- API REQUEST EXCEPTION ---")
+    except Exception as e:
+        print("\n--- API REQUEST EXCEPTION ---")
         print(f"Error Type: {type(e)}")
         
-        # Pull the underlying server error string directly out of the HttpError container
+        # Safely extract the hidden payload from the Google API wrapper
         if hasattr(e, 'content'):
             try:
                 import json
@@ -56,7 +56,7 @@ except Exception as e:
         else:
             print(f"Error Message: {e}")
             
-        print("-----------------------------")
+        print("-----------------------------\n")
         return set()
 def main():
     # Path adjusted to 'assets/exercises.db' because GitHub Actions executes from the root folder
