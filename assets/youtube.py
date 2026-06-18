@@ -1,68 +1,99 @@
+import os
 import sqlite3
 from googleapiclient.discovery import build
 from urllib.parse import urlparse, parse_qs
 
-# Function to check if a YouTube video exists
-def is_valid_youtube_video(video_id):
-    api_key = "enterhere"
-    youtube = build('youtube', 'v3', developerKey=api_key)
-    request = youtube.videos().list(part='snippet', id=video_id)
-    try:
-        response = request.execute()
-        return bool(response.get('items'))
-    except Exception as e:
-        print("Error:", e)
-        return False
-
-# Function to extract video ID from YouTube URL
 def extract_video_id(url):
-    parsed_url = urlparse(url)
-    if parsed_url.hostname == 'youtu.be':
-        video_id = parsed_url.path[1:]
-        if '&t=' in video_id:
-            video_id = video_id.split("&t=")[0]  # Remove any additional query parameters
-        return video_id
-    elif parsed_url.hostname in ('www.youtube.com', 'youtube.com'):
-        if 'v' in parsed_url.query:
-            video_id = parse_qs(parsed_url.query)['v'][0]
-            if '&t=' in video_id:
-                video_id = video_id.split("&t=")[0]  # Remove any additional query parameters
-            if '?t=' in video_id:
-                video_id = video_id.split("?t=")[0]  # Remove any additional query parameters
-            return video_id
-        elif 'list' in parsed_url.query and 'v' in parsed_url.query:
-            return parse_qs(parsed_url.query)['v'][0]
-        else:
-            video_id = parsed_url.path.split('/')[-1]
-            if 't' in parse_qs(parsed_url.query):
-                video_id = video_id.split('?')[0]
-            return video_id
-    else:
+    if not url:
         return None
+    parsed_url = urlparse(url)
+    
+    # Handle short URLs (youtu.be/VIDEO_ID)
+    if parsed_url.hostname == 'youtu.be':
+        return parsed_url.path[1:].split('?')[0].split('&')[0]
+        
+    # Handle standard URLs (youtube.com/...)
+    elif parsed_url.hostname in ('www.youtube.com', 'youtube.com'):
+        query_params = parse_qs(parsed_url.query)
+        if 'v' in query_params:
+            return query_params['v'][0]
+        # Fallback for path-based IDs like /embed/ or /v/
+        path_parts = parsed_url.path.split('/')
+        if path_parts:
+            return path_parts[-1].split('?')[0]
+            
+    return None
 
-# Connect to the SQLite database
-conn = sqlite3.connect('exercises.db')
-cursor = conn.cursor()
+def check_youtube_videos_batch(video_ids):
+    """Checks up to 50 video IDs in a single API call. Returns a set of valid IDs."""
+    if not video_ids:
+        return set()
+        
+    # Grabs the key securely from the GitHub Actions environment variables
+    api_key = os.environ.get("YOUTUBE_API_KEY")
+    if not api_key:
+        print("CRITICAL ERROR: YOUTUBE_API_KEY environment variable is missing.")
+        return set()
 
-# Execute a query to select all entries from the "exercises" table
-cursor.execute("SELECT id, url FROM exercises")
-entries = cursor.fetchall()
+    youtube = build('youtube', 'v3', developerKey=api_key)
+    
+    try:
+        # Join up to 50 IDs with commas to save API quota limits
+        request = youtube.videos().list(part='id', id=','.join(video_ids))
+        response = request.execute()
+        # Extract the IDs that actually returned a valid item
+        valid_ids = {item['id'] for item in response.get('items', [])}
+        return valid_ids
+    except Exception as e:
+        print("API Error:", e)
+        return set()
 
-# Iterate through each entry and check URL validity
-count = 0
-for entry in entries:
-    exercise_id, url = entry
-    if url:  # Check if URL is not empty
+def main():
+    # Path adjusted to 'assets/exercises.db' because GitHub Actions executes from the root folder
+    db_path = os.path.join('assets', 'exercises.db')
+    
+    if not os.path.exists(db_path):
+        print(f"CRITICAL ERROR: Database file not found at path: {db_path}")
+        return
+
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, url FROM exercises")
+    entries = cursor.fetchall()
+    conn.close()
+
+    # Step 1: Parse all valid video IDs and map them back to their URLs
+    id_to_url_map = {}
+    for _, url in entries:
         video_id = extract_video_id(url)
         if video_id:
-            if is_valid_youtube_video(video_id):
-                count += 1
-                if (count - 1) % 50 == 0:
-                    print(f"valid video entry number (every 50 printed): {count}")
-            else:
-                print(f"Video ID {video_id} extracted from URL {url} is invalid.")
-        else:
-            print(f"Unable to extract video ID from URL {url}")
+            id_to_url_map[video_id] = url
+        elif url:
+            print(f"Unable to extract video ID from URL: {url}")
 
-# Close the database connection
-conn.close()
+    # Step 2: Batch process the unique IDs in chunks of 50
+    unique_ids = list(id_to_url_map.keys())
+    valid_count = 0
+    invalid_count = 0
+    
+    print(f"Starting validation for {len(unique_ids)} unique video links...\n")
+    
+    for i in range(0, len(unique_ids), 50):
+        batch = unique_ids[i:i+50]
+        valid_batch_ids = check_youtube_videos_batch(batch)
+        
+        valid_count += len(valid_batch_ids)
+        
+        # Identify invalid ones in this specific batch
+        for vid in batch:
+            if vid not in valid_batch_ids:
+                invalid_count += 1
+                print(f"[INVALID] Video ID: {vid} | URL: {id_to_url_map[vid]}")
+
+    print("\n--- Final Summary ---")
+    print(f"Total Unique Videos Checked: {len(unique_ids)}")
+    print(f"Valid Videos: {valid_count}")
+    print(f"Invalid Videos Broken: {invalid_count}")
+
+if __name__ == "__main__":
+    main()
