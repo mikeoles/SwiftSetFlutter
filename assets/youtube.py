@@ -58,6 +58,7 @@ def check_youtube_videos_batch(video_ids):
             
         print("-----------------------------\n")
         return set()
+        
 def main():
     # Path adjusted to 'assets/exercises.db' because GitHub Actions executes from the root folder
     db_path = os.path.join('assets', 'exercises.db')
