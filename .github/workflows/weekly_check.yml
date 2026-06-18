@@ -1,0 +1,54 @@
+name: Weekly YouTube Link Validation
+
+on:
+  schedule:
+    # Runs every Sunday at 12:15 PM UTC (approx. 8:15 AM EDT)
+    - cron: '15 12 * * 1'
+  workflow_dispatch: # Allows you to manually click "Run workflow" in GitHub anytime
+
+jobs:
+  validate-links:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Pull the repository files (including your assets/youtube.py and exercises.db)
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # 2. Set up a clean Python environment
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    # 3. Install the official Google API client
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install google-api-python-client
+
+    # 4. Execute the script, feed it the API secret, and capture the logs into an HTML wrapper
+    - name: Run validation script and format report
+      env:
+        YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+      run: |
+        # Run script, output logs to console, and simultaneously save to output.txt
+        python assets/youtube.py 2>&1 | tee output.txt
+        
+        # Format the text output into a clean HTML block for the email body
+        echo "<html><body><h3>Weekly YouTube Link Validation Report</h3><pre>" > email_body.html
+        cat output.txt >> email_body.html
+        echo "</pre></body></html>" >> email_body.html
+
+    # 5. Authenticate with Mailgun's SMTP server and email the HTML log file
+    - name: Send Report Email via Mailgun
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.mailgun.org
+        server_port: 465
+        username: mikeoles@sandbox5bde607d462e4c50a8e12968fef9749c.mailgun.org
+        password: ${{ secrets.MAILGUN_SMTP_PASSWORD }}
+        subject: "Weekly YouTube Link Validation Summary"
+        to: ${{ secrets.TO_EMAIL }}
+        from: "Automated Reports <mikeoles@sandbox5bde607d462e4c50a8e12968fef9749c.mailgun.org>"
+        html_body: file://email_body.html
