@@ -41,14 +41,23 @@ def check_youtube_videos_batch(video_ids):
         response = request.execute()
         valid_ids = {item['id'] for item in response.get('items', [])}
         return valid_ids
-    except Exception as e:
+except Exception as e:
         print("--- API REQUEST EXCEPTION ---")
         print(f"Error Type: {type(e)}")
-        print(f"Error Message: {e}")
-        traceback.print_exc()  # This forces Python to print exactly where and why it failed
+        
+        # Pull the underlying server error string directly out of the HttpError container
+        if hasattr(e, 'content'):
+            try:
+                import json
+                error_details = json.loads(e.content.decode('utf-8'))
+                print("Detailed Server Message:", json.dumps(error_details, indent=2))
+            except Exception:
+                print("Raw Server Response:", e.content)
+        else:
+            print(f"Error Message: {e}")
+            
         print("-----------------------------")
         return set()
-
 def main():
     # Path adjusted to 'assets/exercises.db' because GitHub Actions executes from the root folder
     db_path = os.path.join('assets', 'exercises.db')
