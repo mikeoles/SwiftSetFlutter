@@ -28,7 +28,7 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String? videoIdNullable = widget.exercise.url != null ? YoutubePlayer.convertUrlToId(widget.exercise.url!) : null;
+    String? videoIdNullable = widget.exercise.url != null ? YoutubePlayerController.convertUrlToId(widget.exercise.url!) : null;
     String videoId = videoIdNullable ?? '';
 
     int startTime = getStartTime(widget.exercise.url);
@@ -173,14 +173,11 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
 
   Widget _videoPlayer(String videoId, int startTime) {
     return YoutubePlayer(
-      controller:  YoutubePlayerController(
-        initialVideoId: videoId,
-        flags: YoutubePlayerFlags(
-          autoPlay: true,
-          startAt: startTime,
-        ),
+      controller: YoutubePlayerController.fromVideoId(
+        videoId: videoId,
+        autoPlay: true,
+        startSeconds: startTime.toDouble(),
       ),
-      showVideoProgressIndicator: true,
     );
   }
 

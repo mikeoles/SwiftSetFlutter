@@ -388,7 +388,7 @@ class ExerciseFinderState extends State<ExerciseFinder> {
   String getVideoIds() {
     String text = "";
     for(int i=0; i<allExercises.length; i++){
-      var vidid = YoutubePlayer.convertUrlToId(allExercises[i]?.url ?? "");
+      var vidid = YoutubePlayerController.convertUrlToId(allExercises[i]?.url ?? "");
       if(vidid != null) {
         text += vidid + "\n";
       }
